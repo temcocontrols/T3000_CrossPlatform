@@ -8,8 +8,8 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 before_build:
-  - nuget restore "./PRGReaderLibrary.sln"
+  - nuget restore "./T3000.sln"
 build:
-  project: ./PRGReaderLibrary.sln
+  project: ./T3000.sln
 test_script:
   - nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll

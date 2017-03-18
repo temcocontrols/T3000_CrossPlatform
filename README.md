@@ -1,4 +1,4 @@
-# PRGReaderLibrary [![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/HavenDV/PRGReaderLibrary/search?l=C%23)
+# T3000_CrossPlatform [![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/temcocontrols/T3000_CrossPlatform/search?l=C%23)
 
 Branches
 ========
@@ -15,4 +15,4 @@ Travic CI(Mono) | AppVeyor
 # Contacts
 * [mail](mailto:havendv@gmail.com)
 
-PRGReaderLibrary for TemcoControls
+T3000 Building Automation System - for Linux-Win-Android deployment

@@ -32,7 +32,7 @@
             prgData.Size1 = size1;
             index += 2;
 
-            var data1 = BitConverter.To(data, index);
+            //var data1 = BitConverter(data, index);
 
             index += size1 + 3;
 
