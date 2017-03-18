@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRGReaderLibrary", "PRGReaderLibrary\PRGReaderLibrary.csproj", "{573991EF-5A2B-4BBF-8283-1307DA619967}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRGReaderLibrary.Tests", "PRGReaderLibrary.Tests\PRGReaderLibrary.Tests.csproj", "{303CD7A2-07B6-4B8C-A38F-A570F42D9830}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{41809FB3-B502-4ECD-814D-BE600959B163}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{573991EF-5A2B-4BBF-8283-1307DA619967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573991EF-5A2B-4BBF-8283-1307DA619967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573991EF-5A2B-4BBF-8283-1307DA619967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573991EF-5A2B-4BBF-8283-1307DA619967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{303CD7A2-07B6-4B8C-A38F-A570F42D9830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{303CD7A2-07B6-4B8C-A38F-A570F42D9830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{303CD7A2-07B6-4B8C-A38F-A570F42D9830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{303CD7A2-07B6-4B8C-A38F-A570F42D9830}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

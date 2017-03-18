@@ -1,0 +1,15 @@
+version: 0.{build}
+skip_tags: true
+configuration: Release
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+before_build:
+  - nuget restore "./PRGReaderLibrary.sln"
+build:
+  project: ./PRGReaderLibrary.sln
+test_script:
+  - nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll

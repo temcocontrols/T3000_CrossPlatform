@@ -1,0 +1,7 @@
+language: csharp
+solution: PRGReaderLibrary.sln
+script:
+  - xbuild /p:Configuration=Release
+  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
+notifications:
+  email: false
