@@ -1,6 +1,7 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
 
@@ -29,7 +30,7 @@
                     prg.NetworkNumber = reader.ReadUInt16();
                     prg.Version = reader.ReadUInt16();
                     prg.MiniVersion = reader.ReadUInt16();
-                    reader.ReadBytes(32); // reserved bytes
+                    prg.Reserved = reader.ReadBytes(32);
 
                     if (prg.Version < 210 || prg.Version == 0x2020)
                     {
@@ -124,12 +125,27 @@
 
                     {
                         var size = reader.ReadUInt16();
-                        prg.WrTimes = reader.ReadBytes(size);
+                        //prg.WrTimes = reader.ReadBytes(size);
+                        for (var j = 0; j < size; j += 9 * 16)
+                        {
+                            var list = new List<WrOneDay>();
+                            for (var k = 0; k < 9; ++k)
+                            {
+                                var data = reader.ReadBytes(16);
+                                list.Add(WrOneDay.FromBytes(data));
+                            }
+
+                            prg.WrTimes.Add(list);
+                        }
                     }
 
                     {
                         var size = reader.ReadUInt16();
-                        prg.ArDates = reader.ReadBytes(size);
+                        for (var j = 0; j < size; j += 46)
+                        {
+                            var data = reader.ReadBytes(46);
+                            prg.ArDates.Add(data);
+                        }
                     }
 
                     {

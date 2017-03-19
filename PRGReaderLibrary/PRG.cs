@@ -10,12 +10,13 @@
         public ushort NetworkNumber { get; set; }
         public ushort Version { get; set; }
         public ushort MiniVersion { get; set; }
+        public byte[] Reserved { get; set; }
         public long Lenght { get; set; }
         public long Coef { get; set; }
         public IList<char[]> Infos { get; set; } = new List<char[]>();
         public IList<PRGData> PrgDatas { get; set; } = new List<PRGData>();
-        public byte[] WrTimes { get; set; }
-        public byte[] ArDates { get; set; }
+        public IList<IList<WrOneDay>> WrTimes { get; set; } = new List<IList<WrOneDay>>();
+        public IList<byte[]> ArDates { get; set; } = new List<byte[]>();
         public IList<byte[]> GrpDatas { get; set; } = new List<byte[]>();
         public byte[] IconNameTable { get; set; }
 

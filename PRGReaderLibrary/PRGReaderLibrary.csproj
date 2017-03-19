@@ -45,8 +45,10 @@
     <Compile Include="PRG.cs" />
     <Compile Include="PRGData.cs" />
     <Compile Include="PRGReader.cs" />
+    <Compile Include="PRGType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
+    <Compile Include="WrOneDay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

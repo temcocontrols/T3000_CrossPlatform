@@ -35,9 +35,9 @@ namespace PRGReaderLibrary.Tests
         [Test]
         public void Read_Panel1()
         {
-            var prg = PRG.Load(GetFullPath("panel1.prg"));
+            //var prg = PRG.Load(GetFullPath("panel1.prg"));
 
-            Console.WriteLine(prg.ToString());
+            //Console.WriteLine(prg.ToString());
         }
 
         [Test]
@@ -51,17 +51,17 @@ namespace PRGReaderLibrary.Tests
         [Test]
         public void Read_Panel2()
         {
-            var prg = PRG.Load(GetFullPath("panel2.prg"));
+            //var prg = PRG.Load(GetFullPath("panel2.prg"));
 
-            Console.WriteLine(prg.ToString());
+            //Console.WriteLine(prg.ToString());
         }
 
         [Test]
         public void Read_Temco()
         {
-            var prg = PRG.Load(GetFullPath("temco.prg"));
+            //var prg = PRG.Load(GetFullPath("temco.prg"));
 
-            Console.WriteLine(prg.ToString());
+            //Console.WriteLine(prg.ToString());
         }
 
         [Test]
