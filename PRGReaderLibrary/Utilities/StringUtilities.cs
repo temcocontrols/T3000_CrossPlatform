@@ -18,11 +18,11 @@
                 var valueType = value.GetType();
                 if (valueType.IsArray)
                 {
-                    builder.AppendLine($"{value}. Lenght: {(value as Array).Length}");
+                    builder.AppendLine($"{value}. Length: {(value as Array).Length}");
                 }
                 else if (valueType.IsGenericType)
                 {
-                    builder.AppendLine($"{value}. Lenght: {(value as IList).Count}");
+                    builder.AppendLine($"{value}. Length: {(value as IList).Count}");
                 }
                 else
                 {

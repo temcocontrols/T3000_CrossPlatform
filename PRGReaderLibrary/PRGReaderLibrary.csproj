@@ -44,6 +44,7 @@
     <Compile Include="Enums\BlocksEnum.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
+    <Compile Include="Types\BasePoint.cs" />
     <Compile Include="Types\InfoTable.cs" />
     <Compile Include="Types\NetPoint.cs" />
     <Compile Include="Enums\PanelsEnum.cs" />

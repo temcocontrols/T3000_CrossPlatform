@@ -11,7 +11,7 @@
         public ushort Version { get; set; }
         public ushort MiniVersion { get; set; }
         public byte[] Reserved { get; set; }
-        public long Lenght { get; set; }
+        public long Length { get; set; }
         public long Coef { get; set; }
         public IList<char[]> Infos { get; set; } = new List<char[]>();
         public IList<PRGData> PrgDatas { get; set; } = new List<PRGData>();

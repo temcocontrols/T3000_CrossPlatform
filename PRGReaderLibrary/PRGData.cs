@@ -6,7 +6,7 @@
 
     public class PRGData
     {
-        public int Lenght { get; set; }
+        public int Length { get; set; }
         public ushort Size1 { get; set; }
         public string Data1 { get; set; }
         public ushort TypesSize { get; set; }
@@ -23,11 +23,11 @@
                 return prgData;
             }
 
-            var lenght = data.Length;
-            prgData.Lenght = lenght;
+            var length = data.Length;
+            prgData.Length = length;
 
             var index = 0;
-            if (index >= lenght)
+            if (index >= length)
             {
                 return prgData;
             }
@@ -99,7 +99,7 @@
             prgData.IndexRemoteLocalList = BitConverter.ToUInt16(data, index);
             index += 2;
 
-            if (index != lenght)
+            if (index != length)
             {
                 throw new Exception($"Last index not equals length. Error in data: {prgData.ToString()}");
             }

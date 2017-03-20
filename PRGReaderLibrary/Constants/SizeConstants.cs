@@ -2,10 +2,13 @@ namespace PRGReaderLibrary
 {
     public static class SizeConstants
     {
-        public const int NAME_SIZE = 17;
-        public const int ALARM_MESSAGE_SIZE = 58;
+        public static readonly int NAME_SIZE = 17;
+        public static readonly int ALARM_MESSAGE_SIZE = 58;
 
-        public const int SIZE_TEXT_RANGE = 13;
-        public const int SIZE_TEXT_UNITS = 6;  /* 5 characeters plus a null   */
+        public static readonly int SIZE_TEXT_RANGE = 13;
+        public static readonly int SIZE_TEXT_UNITS = 6;  /* 5 characeters plus a null   */
+
+        public static readonly int AR_DATES_SIZE = 46;
+        public static readonly int WR_ONE_DAY_SIZE = 9;
     }
 }

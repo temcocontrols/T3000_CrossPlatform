@@ -37,9 +37,9 @@
                         throw new Exception($"File not loaded. File version less than 2.10. {prg.ToString()}");
                     }
 
-                    prg.Lenght = stream.Length;
-                    prg.Coef = ((prg.Lenght * 1000L) / 20000L) * 1000L +
-                        (((prg.Lenght * 1000L) % 20000L) * 1000L) / 20000L;
+                    prg.Length = stream.Length;
+                    prg.Coef = ((prg.Length * 1000L) / 20000L) * 1000L +
+                        (((prg.Length * 1000L) % 20000L) * 1000L) / 20000L;
                     //float coef = (float)length/20.;
 
                     var ltot = 0L;
@@ -126,12 +126,12 @@
                     {
                         var size = reader.ReadUInt16();
                         //prg.WrTimes = reader.ReadBytes(size);
-                        for (var j = 0; j < size; j += 9 * 16)
+                        for (var j = 0; j < size; j += SizeConstants.WR_ONE_DAY_SIZE * MaxConstants.MAX_WR)
                         {
                             var list = new List<WrOneDay>();
-                            for (var k = 0; k < 9; ++k)
+                            for (var k = 0; k < SizeConstants.WR_ONE_DAY_SIZE; ++k)
                             {
-                                var data = reader.ReadBytes(16);
+                                var data = reader.ReadBytes(MaxConstants.MAX_WR);
                                 list.Add(WrOneDay.FromBytes(data));
                             }
 
@@ -141,9 +141,9 @@
 
                     {
                         var size = reader.ReadUInt16();
-                        for (var j = 0; j < size; j += 46)
+                        for (var j = 0; j < size; j += SizeConstants.AR_DATES_SIZE)
                         {
-                            var data = reader.ReadBytes(46);
+                            var data = reader.ReadBytes(SizeConstants.AR_DATES_SIZE);
                             prg.ArDates.Add(data);
                         }
                     }

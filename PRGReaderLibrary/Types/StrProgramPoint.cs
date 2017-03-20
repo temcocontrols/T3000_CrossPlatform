@@ -1,11 +1,10 @@
 namespace PRGReaderLibrary
 {
-
-    /* 21+9+2+1+1 = 34 bytes*/
-    public class StrProgramPoint
+    /// <summary>
+    /// Size: 30 + 2 + 1 + 1 = 34 bytes
+    /// </summary>
+    public class StrProgramPoint : BasePoint
     {
-        public string Description { get; set; }   // (21 bytes; string)*/
-        public string Label { get; set; }         // (9 bytes; string)*/
         public ushort Bytes { get; set; }             // (2 bytes; size in bytes of program)*/
         public bool Enabled { get; set; }// = 1;    // (1 bit; 0=off; 1=on)*/
         public bool IsManual { get; set; }// = 1;    // (1 bit; 0=auto; 1=manual)*/

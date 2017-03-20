@@ -7,8 +7,8 @@ namespace PRGReaderLibrary
         public ushort DesLength { get; set; }
         public int Version { get; set; }
         public byte Number { get; set; }
-        public string Name { get; set; } //Lenght is SizeConstants.NAME_SIZE
+        public string Name { get; set; } //Length is SizeConstants.NAME_SIZE
         public ushort Network { get; set; }
-        public string NetworkName { get; set; } //Lenght is SizeConstants.NAME_SIZE
+        public string NetworkName { get; set; } //Length is SizeConstants.NAME_SIZE
     }
 }

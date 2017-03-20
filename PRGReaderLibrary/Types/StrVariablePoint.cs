@@ -1,12 +1,10 @@
 namespace PRGReaderLibrary
 {
     /// <summary>
-    /// 21+9+4+2 = 36
+    /// Size: 30 + 4 + 2 = 36
     /// </summary>
-    public class StrVariablePoint
+    public class StrVariablePoint : BasePoint
     {
-        public string Description { get; set; }   // (21 bytes; string)*/
-        public string Label { get; set; }         // (9 bytes; string)*/
         public float Value { get; set; }         /*  (4 bytes; float)*/
         public bool IsManual { get; set; } /*  (1 bit; 0=auto, 1=manual)*/
         public bool IsAnalog { get; set; }  /*  (1 bit; 0=digital, 1=analog)*/
