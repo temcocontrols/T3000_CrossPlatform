@@ -10,5 +10,7 @@ namespace PRGReaderLibrary
 
         public static readonly int AR_DATES_SIZE = 46;
         public static readonly int WR_ONE_DAY_SIZE = 9;
+
+        public static readonly int TBL_POINT_TABLE_SIZE = 16;
     }
 }

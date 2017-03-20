@@ -5,7 +5,14 @@
     /// </summary>
     public class Time
     {
+        /// <summary>
+        /// Size: 1 byte
+        /// </summary>
         public byte Minutes { get; set; }
+
+        /// <summary>
+        /// Size: 1 byte
+        /// </summary>
         public byte Hours { get; set; }
 
         public static Time FromBytes(byte[] data, int offset = 0)
@@ -23,7 +30,15 @@
     /// </summary>
     public class OnOffTime
     {
+
+        /// <summary>
+        /// Size: 2 bytes
+        /// </summary>
         public Time OnTime { get; set; }
+
+        /// <summary>
+        /// Size: 2 bytes
+        /// </summary>
         public Time OffTime { get; set; }
 
         public static OnOffTime FromBytes(byte[] data, int offset = 0)
@@ -41,9 +56,25 @@
     /// </summary>
     public class WrOneDay
     {
+
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
         public OnOffTime time1 { get; set; }
+
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
         public OnOffTime time2 { get; set; }
+
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
         public OnOffTime time3 { get; set; }
+
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
         public OnOffTime time4 { get; set; }
 
         public static WrOneDay FromBytes(byte[] data, int offset = 0)

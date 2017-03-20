@@ -1,14 +1,48 @@
 namespace PRGReaderLibrary
 {
+    /// <summary>
+    /// Size: 5 + 4 + 1 + 1 = 11 bytes
+    /// </summary>
     public class PointInfo
     {
+        /// <summary>
+        /// Size: 5 bytes
+        /// </summary>
         public NetPoint Point { get; set; }
+
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
         public float Value { get; set; }
+
+        /// <summary>
+        /// Size: 1 bit. false - Automatic
+        /// </summary>
         public bool IsManual { get; set; }  // 0=auto, 1=manual
-        public bool IsAnalog { get; set; }  // 0=digital, 1=analog
-        public bool IsDisplayLabel { get; set; } // 0=display description, 1=display label
-        public byte Security { get; set; }  // 0-3 correspond to 2-5 access level
-        public bool IsDecomisioned { get; set; }  // 0=normal, 1=point decommissioned
+
+        /// <summary>
+        /// Size: 1 bit. false - Digital
+        /// </summary>
+        public bool IsAnalog { get; set; }
+
+        /// <summary>
+        /// Size: 3 bits. false - Display description
+        /// </summary>
+        public bool IsDisplayLabel { get; set; }
+
+        /// <summary>
+        /// Size: 2 bits. 0-3 correspond to 2-5 access level
+        /// </summary>
+        public byte Security { get; set; }
+
+        /// <summary>
+        /// Size: 1 bit
+        /// </summary>
+        public bool IsDecomisioned { get; set; }
+
+        /// <summary>
+        /// Size: 1 byte
+        /// </summary>
         public UnitsEnum Unit { get; set; }
     }
 }

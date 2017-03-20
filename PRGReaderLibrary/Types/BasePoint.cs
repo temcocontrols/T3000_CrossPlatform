@@ -9,6 +9,7 @@ namespace PRGReaderLibrary
         /// Size: 21 bytes
         /// </summary>
         public string Description { get; set; }
+
         /// <summary>
         /// Size: 9 bytes
         /// </summary>

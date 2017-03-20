@@ -1,9 +1,23 @@
 namespace PRGReaderLibrary
 {
+    /// <summary>
+    /// Size: 11 + 1 + 4 = 16 bytes
+    /// </summary>
     public class View
     {
-        public string Name { get; set; } //char view_name[11];
-        public bool Enabled { get; set; } //char onoff;
-        public int TimeRange { get; set; } //int32_t timerange;
+        /// <summary>
+        /// Size: 11 bytes
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Size: 1 byte
+        /// </summary>
+        public byte OnOff { get; set; }
+
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
+        public int TimeRange { get; set; }
     }
 }
