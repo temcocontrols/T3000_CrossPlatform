@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum Unit
+    public enum UnitsEnum
     {
         Unused,
         degC,

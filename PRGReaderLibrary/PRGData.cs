@@ -49,24 +49,25 @@
             {
                 var type = new PRGType();
                 type.Size = 1;
-                switch (data[index + j])
+                var typeFromData = (TypesEnum)(data[index + j]);
+                switch (typeFromData)
                 {
-                    case TypeConstants.FLOAT_TYPE:
-                    case TypeConstants.LONG_TYPE:
+                    case TypesEnum.FLOAT_TYPE:
+                    case TypesEnum.LONG_TYPE:
                         type.Size = 4;
                         break;
-                    case TypeConstants.INTEGER_TYPE:
+                    case TypesEnum.INTEGER_TYPE:
                         type.Size = 2;
                         break;
                     default:
                     {
-                        switch (data[index + j])
+                        switch (typeFromData)
                         {
-                            case TypeConstants.FLOAT_TYPE_ARRAY:
-                            case TypeConstants.LONG_TYPE_ARRAY:
+                            case TypesEnum.FLOAT_TYPE_ARRAY:
+                            case TypesEnum.LONG_TYPE_ARRAY:
                                 type.Size = 4;
                                 break;
-                            case TypeConstants.INTEGER_TYPE_ARRAY:
+                            case TypesEnum.INTEGER_TYPE_ARRAY:
                                 type.Size = 2;
                                 break;
                         }

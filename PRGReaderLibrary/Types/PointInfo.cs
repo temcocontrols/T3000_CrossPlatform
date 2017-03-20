@@ -9,6 +9,6 @@ namespace PRGReaderLibrary
         public bool IsDisplayLabel { get; set; } // 0=display description, 1=display label
         public byte Security { get; set; }  // 0-3 correspond to 2-5 access level
         public bool IsDecomisioned { get; set; }  // 0=normal, 1=point decommissioned
-        public Unit Unit { get; set; }
+        public UnitsEnum Unit { get; set; }
     }
 }

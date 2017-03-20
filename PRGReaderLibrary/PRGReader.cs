@@ -45,15 +45,15 @@
                     var ltot = 0L;
                     var maxPrg = 0;
                     var maxGrp = 0;
-
-                    for (var i = Constants.OUT; i <= Constants.UNIT; ++i)
+                    
+                    for (var i = BlocksEnum.OUT; i <= BlocksEnum.UNIT; ++i)
                     {
-                        if (i == Constants.DMON)
+                        if (i == BlocksEnum.DMON)
                         {
                             continue;
                         }
 
-                        if (i == Constants.AMON)
+                        if (i == BlocksEnum.AMON)
                         {
                             if (prg.Version < 230 && prg.MiniVersion >= 230)
                             {
@@ -63,7 +63,7 @@
                                 continue;
                         }
 
-                        if (i == Constants.ALARMM)
+                        if (i == BlocksEnum.ALARMM)
                         {
                             if (prg.Version < 216)
                             {
@@ -81,11 +81,11 @@
                         {
                             var size = reader.ReadUInt16();
                             var count = reader.ReadUInt16();
-                            if (i == Constants.PRG)
+                            if (i == BlocksEnum.PRG)
                             {
                                 maxPrg = size;
                             }
-                            if (i == Constants.GRP)
+                            if (i == BlocksEnum.GRP)
                             {
                                 maxGrp = size;
                             }
