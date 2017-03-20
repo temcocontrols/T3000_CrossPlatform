@@ -51,6 +51,7 @@
     <Compile Include="Types\ControlGroupElements.cs" />
     <Compile Include="Types\ControlGroupPoint.cs" />
     <Compile Include="Types\InfoTable.cs" />
+    <Compile Include="Types\MainData.cs" />
     <Compile Include="Types\NetPoint.cs" />
     <Compile Include="Enums\PanelsEnum.cs" />
     <Compile Include="Constants\SizeConstants.cs" />

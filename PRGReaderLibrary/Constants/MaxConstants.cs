@@ -31,5 +31,7 @@ namespace PRGReaderLibrary
         public static readonly int MAX_ALARMS_SET = 16;
 
         public static readonly int MAX_POINTS_IN_MONITOR = 14;
+        public static readonly int MAX_INFOS = 18;
+        public static readonly int MAX_LOCAL_STATIONS = 32;
     }
 }
