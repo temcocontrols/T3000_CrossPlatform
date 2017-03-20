@@ -1,43 +1,49 @@
 ﻿namespace PRGReaderLibrary
 {
+    public class Time
+    {
+        public byte Minutes { get; set; }
+        public byte Hours { get; set; }
+
+        public static Time FromBytes(byte[] data, int offset = 0)
+        {
+            var time = new Time();
+            time.Minutes = data[0 + offset];
+            time.Hours = data[1 + offset];
+
+            return time;
+        }
+    }
+
+    public class OnOffTime
+    {
+        public Time OnTime { get; set; }
+        public Time OffTime { get; set; }
+
+        public static OnOffTime FromBytes(byte[] data, int offset = 0)
+        {
+            var time = new OnOffTime();
+            time.OnTime = Time.FromBytes(data, 0);
+            time.OffTime = Time.FromBytes(data, 2);
+
+            return time;
+        }
+    }
+
     public class WrOneDay
     {
-        public byte time_on_minutes1 { get; set; }
-        public byte time_on_hours1 { get; set; }
-        public byte time_off_minutes1 { get; set; }
-        public byte time_off_hours1 { get; set; }
-        public byte time_on_minutes2 { get; set; }
-        public byte time_on_hours2 { get; set; }
-        public byte time_off_minutes2 { get; set; }
-        public byte time_off_hours2 { get; set; }
-        public byte time_on_minutes3 { get; set; }
-        public byte time_on_hours3 { get; set; }
-        public byte time_off_minutes3 { get; set; }
-        public byte time_off_hours3 { get; set; }
-        public byte time_on_minutes4 { get; set; }
-        public byte time_on_hours4 { get; set; }
-        public byte time_off_minutes4 { get; set; }
-        public byte time_off_hours4 { get; set; }
+        public OnOffTime time1 { get; set; }
+        public OnOffTime time2 { get; set; }
+        public OnOffTime time3 { get; set; }
+        public OnOffTime time4 { get; set; }
 
-        public static WrOneDay FromBytes(byte[] data)
+        public static WrOneDay FromBytes(byte[] data, int offset = 0)
         {
             var day = new WrOneDay();
-            day.time_on_minutes1 = data[0];
-            day.time_on_hours1 = data[1];
-            day.time_off_minutes1 = data[2];
-            day.time_off_hours1 = data[3];
-            day.time_on_minutes2 = data[4];
-            day.time_on_hours2 = data[5];
-            day.time_off_minutes2 = data[6];
-            day.time_off_hours2 = data[7];
-            day.time_on_minutes3 = data[8];
-            day.time_on_hours3 = data[9];
-            day.time_off_minutes3 = data[10];
-            day.time_off_hours3 = data[11];
-            day.time_on_minutes4 = data[12];
-            day.time_on_hours4 = data[13];
-            day.time_off_minutes4 = data[14];
-            day.time_off_hours4 = data[15];
+            day.time1 = OnOffTime.FromBytes(data, 0);
+            day.time2 = OnOffTime.FromBytes(data, 4);
+            day.time3 = OnOffTime.FromBytes(data, 8);
+            day.time4 = OnOffTime.FromBytes(data, 12);
 
             return day;
         }
