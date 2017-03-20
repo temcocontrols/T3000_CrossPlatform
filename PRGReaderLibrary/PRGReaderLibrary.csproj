@@ -40,15 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="PanelInfo1.cs" />
+    <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Constants\MaxConstants.cs" />
+    <Compile Include="Types\InfoTable.cs" />
+    <Compile Include="Types\NetPoint.cs" />
+    <Compile Include="Types\PanelType.cs" />
+    <Compile Include="Constants\SizeConstants.cs" />
+    <Compile Include="Constants\TypeConstants.cs" />
+    <Compile Include="Types\PasswordPoint.cs" />
+    <Compile Include="Types\PointInfo.cs" />
+    <Compile Include="Types\StrProgramPoint.cs" />
+    <Compile Include="Types\StrVariablePoint.cs" />
+    <Compile Include="Types\T3000Point.cs" />
+    <Compile Include="Types\Unit.cs" />
+    <Compile Include="Types\PanelInfo1.cs" />
     <Compile Include="PRG.cs" />
     <Compile Include="PRGData.cs" />
     <Compile Include="PRGReader.cs" />
     <Compile Include="PRGType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\View.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
-    <Compile Include="WrOneDay.cs" />
+    <Compile Include="Types\WrOneDay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

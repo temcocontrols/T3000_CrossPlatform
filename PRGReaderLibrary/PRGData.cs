@@ -51,22 +51,22 @@
                 type.Size = 1;
                 switch (data[index + j])
                 {
-                    case TypesConstants.FLOAT_TYPE:
-                    case TypesConstants.LONG_TYPE:
+                    case TypeConstants.FLOAT_TYPE:
+                    case TypeConstants.LONG_TYPE:
                         type.Size = 4;
                         break;
-                    case TypesConstants.INTEGER_TYPE:
+                    case TypeConstants.INTEGER_TYPE:
                         type.Size = 2;
                         break;
                     default:
                     {
                         switch (data[index + j])
                         {
-                            case TypesConstants.FLOAT_TYPE_ARRAY:
-                            case TypesConstants.LONG_TYPE_ARRAY:
+                            case TypeConstants.FLOAT_TYPE_ARRAY:
+                            case TypeConstants.LONG_TYPE_ARRAY:
                                 type.Size = 4;
                                 break;
-                            case TypesConstants.INTEGER_TYPE_ARRAY:
+                            case TypeConstants.INTEGER_TYPE_ARRAY:
                                 type.Size = 2;
                                 break;
                         }
