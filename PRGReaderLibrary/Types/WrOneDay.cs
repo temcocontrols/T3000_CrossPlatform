@@ -1,5 +1,8 @@
 ﻿namespace PRGReaderLibrary
 {
+    /// <summary>
+    /// Size: 2 bytes
+    /// </summary>
     public class Time
     {
         public byte Minutes { get; set; }
@@ -15,6 +18,9 @@
         }
     }
 
+    /// <summary>
+    /// Size: 2 + 2 = 4 bytes
+    /// </summary>
     public class OnOffTime
     {
         public Time OnTime { get; set; }
@@ -30,6 +36,9 @@
         }
     }
 
+    /// <summary>
+    /// Size: 4 + 4 + 4 + 4 = 16 bytes
+    /// </summary>
     public class WrOneDay
     {
         public OnOffTime time1 { get; set; }
@@ -47,6 +56,7 @@
 
             return day;
         }
+
         public override string ToString() => StringUtilities.ObjectToString(this);
     }
 }

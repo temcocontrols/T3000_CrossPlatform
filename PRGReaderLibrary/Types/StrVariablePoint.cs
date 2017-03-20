@@ -1,15 +1,38 @@
 namespace PRGReaderLibrary
 {
     /// <summary>
-    /// Size: 30 + 4 + 2 = 36
+    /// Size: 30 + 4 + 1 + 1 = 36
     /// </summary>
     public class StrVariablePoint : BasePoint
     {
-        public float Value { get; set; }         /*  (4 bytes; float)*/
-        public bool IsManual { get; set; } /*  (1 bit; 0=auto, 1=manual)*/
-        public bool IsAnalog { get; set; }  /*  (1 bit; 0=digital, 1=analog)*/
+        /// <summary>
+        /// Size: 4 bytes
+        /// </summary>
+        public float Value { get; set; }
+
+        /// <summary>
+        /// Size: 1 bit. false - Automatic
+        /// </summary>
+        public bool IsManual { get; set; }
+
+        /// <summary>
+        /// Size: 1 bit. false - Digital
+        /// </summary>
+        public bool IsAnalog { get; set; }
+
+        /// <summary>
+        /// Size: 1 bit
+        /// </summary>
         public bool IsControl { get; set; }
-        public byte Unused { get; set; } //5
-        public byte Range { get; set; } //8; /*  (1 Byte ; variable_range_equate)*/
+
+        /// <summary>
+        /// Size: 5 bit
+        /// </summary>
+        public byte Unused { get; set; }
+
+        /// <summary>
+        /// Size: 1 byte. variable_range_equate
+        /// </summary>
+        public byte Range { get; set; }
     }
 }
