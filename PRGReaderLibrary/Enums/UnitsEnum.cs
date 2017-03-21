@@ -37,13 +37,14 @@ namespace PRGReaderLibrary
         CF,
         BTU,
         CMH,
-        Cust1,
-        Cust2,
-        Cust3,
-        Cust4,
-        Cust5,
-        Cust6,
-        Cust7,
-        Cust8
+        Custom1,
+        Custom2,
+        Custom3,
+        Custom4,
+        Custom5,
+        Custom6,
+        Custom7,
+        Custom8,
+        OffOn = 101
     }
 }

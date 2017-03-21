@@ -82,9 +82,11 @@
     <Compile Include="Types\TblPoint.cs" />
     <Compile Include="Types\UnitsElement.cs" />
     <Compile Include="Types\View.cs" />
-    <Compile Include="Utilities\StringUtilities.cs" />
+    <Compile Include="Extensions\BytesExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Types\WrOneDay.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

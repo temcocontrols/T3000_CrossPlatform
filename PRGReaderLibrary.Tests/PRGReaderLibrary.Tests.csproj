@@ -60,6 +60,7 @@
     <None Include="TestFiles\panel2.prg" />
     <None Include="TestFiles\SelfTestRev3.prg" />
     <None Include="TestFiles\temco.prg" />
+    <None Include="TestFiles\testvariables.prg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">

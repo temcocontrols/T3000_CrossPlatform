@@ -4,9 +4,9 @@
     using System.Text;
     using System.Collections;
 
-    public static class StringUtilities
+    public static class StringExtensions
     {
-        public static string ObjectToString<T>(T obj)
+        public static string PropertiesText<T>(this T obj)
         {
             var type = obj.GetType();
             var builder = new StringBuilder();
@@ -15,6 +15,12 @@
             {
                 builder.Append($"{property.Name}: ");
                 var value = property.GetValue(obj);
+                if (value == null)
+                {
+                    builder.AppendLine($"null");
+                    continue;
+                }
+
                 var valueType = value.GetType();
                 if (valueType.IsArray)
                 {

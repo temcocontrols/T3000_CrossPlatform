@@ -87,7 +87,5 @@
 
             return day;
         }
-
-        public override string ToString() => StringUtilities.ObjectToString(this);
     }
 }

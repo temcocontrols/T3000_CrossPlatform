@@ -19,11 +19,11 @@
                 using (var reader = new BinaryReader(stream, Encoding.ASCII))
                 {
                     var prg = new PRG();
-                    prg.DateTime = new string(reader.ReadChars(26));
-                    prg.Signature = new string(reader.ReadChars(4));
+                    prg.DateTime = reader.ReadBytes(26).ConvertToString();
+                    prg.Signature = reader.ReadBytes(4).ConvertToString();
                     if (!prg.Signature.Equals(Constants.Signature, StringComparison.Ordinal))
                     {
-                        throw new Exception($"File corrupted. {prg.ToString()}");
+                        throw new Exception($"File corrupted. {prg.PropertiesText()}");
                     }
 
                     prg.PanelNumber = reader.ReadUInt16();
@@ -34,8 +34,10 @@
 
                     if (prg.Version < 210 || prg.Version == 0x2020)
                     {
-                        throw new Exception($"File not loaded. File version less than 2.10. {prg.ToString()}");
+                        throw new Exception($"File not loaded. File version less than 2.10. {prg.PropertiesText()}");
                     }
+
+                    var l = MaxConstants.MAX_TBL_BANK;
 
                     prg.Length = stream.Length;
                     prg.Coef = ((prg.Length * 1000L) / 20000L) * 1000L +
@@ -57,7 +59,7 @@
                         {
                             if (prg.Version < 230 && prg.MiniVersion >= 230)
                             {
-                                throw new Exception($"Versions conflict! {prg.ToString()}");
+                                throw new Exception($"Versions conflict! {prg.PropertiesText()}");
                             }
                             if (prg.Version >= 230 && prg.MiniVersion > 0)
                                 continue;
@@ -71,7 +73,7 @@
                                 var count = reader.ReadUInt16();
                                 for (var j = 0; j < count; ++j)
                                 {
-                                    var data = reader.ReadChars(size);
+                                    var data = reader.ReadBytes(size);
                                     prg.Infos.Add(data);
                                 }
                                 continue;
@@ -79,15 +81,15 @@
                         }
                         else
                         {
-                            var size = reader.ReadUInt16();
                             var count = reader.ReadUInt16();
+                            var size = reader.ReadUInt16();
                             if (i == BlocksEnum.PRG)
                             {
-                                maxPrg = size;
+                                maxPrg = count;
                             }
                             if (i == BlocksEnum.GRP)
                             {
-                                maxGrp = size;
+                                maxGrp = count;
                             }
                             //if (count == info[i].str_size)
                             {
@@ -95,15 +97,24 @@
                             }
                             for (var j = 0; j < count; ++j)
                             {
-                                var data = reader.ReadChars(size);
-                                prg.Infos.Add(data);
+                                var bytes = reader.ReadBytes(size);
+                                switch (i)
+                                {
+                                    case BlocksEnum.VAR:
+                                        prg.Data.Vars.Add(StrVariablePoint.FromBytes(bytes));
+                                        break;
+
+                                    default:
+                                        prg.Infos.Add(bytes);
+                                        break;
+                                }
                             }
                             //Console.WriteLine(string.Join(Environment.NewLine,
                             //    prg.Alarms.Select(c=>new string(c)).Where(c => !string.IsNullOrWhiteSpace(c))));
                             ltot += size * count + 2;
                         }
                     }
-
+                    //return prg;
                     //var l = Math.Min(maxPrg, tbl_bank[PRG]);
                     for (var i = 0; i < maxPrg; ++i)
                     {
@@ -111,16 +122,16 @@
                         var data = reader.ReadBytes(size);
                         ltot += size + 2;
 
-                        var prgData = PRGData.FromBytes(data);
-                        if (!prgData.IsEmpty)
+                        //var prgData = PRGData.FromBytes(data);
+                        //if (!prgData.IsEmpty)
                         {
-                            prg.PrgDatas.Add(prgData);
+                            //prg.PrgDatas.Add(prgData);
                         }
                     }
 
                     foreach (var data in prg.PrgDatas)
                     {
-                        Console.WriteLine(data.ToString());
+                        Console.WriteLine(data.PropertiesText());
                     }
 
                     {

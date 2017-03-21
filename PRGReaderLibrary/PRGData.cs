@@ -101,16 +101,14 @@
 
             if (index != length)
             {
-                throw new Exception($"Last index not equals length. Error in data: {prgData.ToString()}");
+                //throw new Exception($"Last index not equals length. Error in data: {prgData.PropertiesText()}");
             }
             foreach (var type in prgData.Types)
             {
-                Console.WriteLine(type.ToString());
+                Console.WriteLine(type.PropertiesText());
             }
 
             return prgData;
         }
-
-        public override string ToString() => StringUtilities.ObjectToString(this);
     }
 }

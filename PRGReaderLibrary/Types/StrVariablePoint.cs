@@ -8,7 +8,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 4 bytes
         /// </summary>
-        public float Value { get; set; }
+        public bool Value { get; set; }
 
         /// <summary>
         /// Size: 1 bit. false - Automatic
@@ -33,6 +33,19 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 1 byte. variable_range_equate
         /// </summary>
-        public byte Range { get; set; }
+        public UnitsEnum Units { get; set; }
+
+        public static StrVariablePoint FromBytes(byte[] bytes, int offset = 0)
+        {
+            var point = new StrVariablePoint();
+
+            point.Description = bytes.ConvertToString(0 + offset, 21);
+            point.Label = bytes.ConvertToString(21 + offset, 9);
+            point.Value = bytes.ConvertToBoolean(30 + offset);
+            point.IsManual = bytes.ConvertToBoolean(30 + offset);
+            point.Units = (UnitsEnum)bytes[35 + offset];
+
+            return point;
+        }
     }
 }
