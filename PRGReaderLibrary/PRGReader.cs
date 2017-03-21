@@ -101,7 +101,7 @@
                                 switch (i)
                                 {
                                     case BlocksEnum.VAR:
-                                        prg.Data.Vars.Add(StrVariablePoint.FromBytes(bytes));
+                                        prg.Vars.Add(StrVariablePoint.FromBytes(bytes));
                                         break;
 
                                     default:
@@ -174,7 +174,12 @@
 
                     {
                         var size = reader.ReadUInt16();
-                        prg.IconNameTable = reader.ReadBytes(size);
+
+                        for (var j = 0; j < MaxConstants.MAX_ICON_NAME_TABLE; ++j)
+                        {
+                            var bytes = reader.ReadBytes(SizeConstants.ICON_NAME_TABLE_SIZE);
+                            prg.IconNameTable.Add(bytes);
+                        }
                     }
 
                     return prg;
