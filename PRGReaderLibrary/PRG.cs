@@ -1,5 +1,6 @@
 ﻿namespace PRGReaderLibrary
 {
+    using System;
     using System.Collections.Generic;
 
     public class PRG
@@ -163,7 +164,192 @@
 
         #endregion
 
-        public byte[] RawData { get; set; }//TODO: private set when FromBytes. Base class with RawData FromBytes
+        public byte[] RawData { get; protected set; }
+
+        public static PRG FromBytes(byte[] bytes)
+        {
+            var prg = new PRG();
+            prg.DateTime = bytes.GetString(0, 26);
+            prg.Signature = bytes.GetString(26, 4);
+            if (!prg.Signature.Equals(Constants.Signature, StringComparison.Ordinal))
+            {
+                throw new Exception($"Data is corrupted. {prg.PropertiesText()}");
+            }
+
+            prg.PanelNumber = bytes.ToUInt16(30);
+            prg.NetworkNumber = bytes.ToUInt16(32);
+            prg.Version = bytes.ToUInt16(34);
+            prg.MiniVersion = bytes.ToUInt16(36);
+            prg.Reserved = bytes.ToBytes(38, 32);
+            if (prg.Version < 210 || prg.Version == 0x2020)
+            {
+                throw new Exception($"Data not loaded. Data version less than 2.10. {prg.PropertiesText()}");
+            }
+
+            prg.Length = bytes.Length;
+            prg.Coef = ((prg.Length * 1000L) / 20000L) * 1000L +
+                (((prg.Length * 1000L) % 20000L) * 1000L) / 20000L;
+            //float coef = (float)length/20.;
+
+            //Main block
+            var l = MaxConstants.MAX_TBL_BANK;
+            var offset = 70;
+            var maxPrg = 0;
+            var maxGrp = 0;
+
+            for (var i = BlocksEnum.OUT; i <= BlocksEnum.UNIT; ++i)
+            {
+                if (i == BlocksEnum.DMON)
+                {
+                    continue;
+                }
+
+                if (i == BlocksEnum.AMON)
+                {
+                    if (prg.Version < 230 && prg.MiniVersion >= 230)
+                    {
+                        throw new Exception($"Versions conflict! {prg.PropertiesText()}");
+                    }
+                    if (prg.Version >= 230 && prg.MiniVersion > 0)
+                        continue;
+                }
+                
+                if (i == BlocksEnum.ALARMM)
+                {
+                    if (prg.Version < 216)
+                    {
+                        var size = bytes.ToUInt16(offset);
+                        offset += 2;
+                        var count = bytes.ToUInt16(offset);
+                        offset += 2;
+                        for (var j = 0; j < count; ++j)
+                        {
+                            var data = bytes.ToBytes(offset, size);
+                            offset += size;
+                            prg.Infos.Add(data);
+                        }
+                        continue;
+                    }
+                }
+                else
+                {
+                    var count = bytes.ToUInt16(offset);
+                    offset += 2;
+                    var size = bytes.ToUInt16(offset);
+                    offset += 2;
+                    if (i == BlocksEnum.PRG)
+                    {
+                        maxPrg = count;
+                    }
+                    if (i == BlocksEnum.GRP)
+                    {
+                        maxGrp = count;
+                    }
+                    //if (count == info[i].str_size)
+                    {
+                        // fread(info[i].address, nitem, l, h);
+                    }
+                    for (var j = 0; j < count; ++j)
+                    {
+                        var data = bytes.ToBytes(offset, size);
+                        offset += size;
+                        switch (i)
+                        {
+                            case BlocksEnum.VAR:
+                                prg.Vars.Add(StrVariablePoint.FromBytes(data));
+                                break;
+
+                            default:
+                                prg.Infos.Add(data);
+                                break;
+                        }
+                    }
+                    //Console.WriteLine(string.Join(Environment.NewLine,
+                    //    prg.Alarms.Select(c=>new string(c)).Where(c => !string.IsNullOrWhiteSpace(c))));
+                    //offset += size * count + 2;
+                }
+            }
+
+            //var l = Math.Min(maxPrg, tbl_bank[PRG]);
+            for (var i = 0; i < maxPrg; ++i)
+            {
+                var size = bytes.ToUInt16(offset);
+                offset += 2;
+                var data = bytes.ToBytes(offset, size);
+                offset += size;
+
+                //var prgData = PRGData.FromBytes(data);
+                //if (!prgData.IsEmpty)
+                {
+                    //prg.PrgDatas.Add(prgData);
+                }
+            }
+
+            foreach (var data in prg.PrgDatas)
+            {
+                Console.WriteLine(data.PropertiesText());
+            }
+
+            {
+                var size = bytes.ToUInt16(offset);
+                offset += 2;
+                //prg.WrTimes = reader.ReadBytes(size);
+                for (var j = 0; j < size; j += SizeConstants.WR_ONE_DAY_SIZE * MaxConstants.MAX_WR)
+                {
+                    var list = new List<WrOneDay>();
+                    for (var k = 0; k < SizeConstants.WR_ONE_DAY_SIZE; ++k)
+                    {
+                        var data = bytes.ToBytes(offset, MaxConstants.MAX_WR);
+                        offset += MaxConstants.MAX_WR;
+                        list.Add(WrOneDay.FromBytes(data));
+                    }
+
+                    prg.WrTimes.Add(list);
+                }
+            }
+
+            {
+                var size = bytes.ToUInt16(offset);
+                offset += 2;
+                for (var j = 0; j < size; j += SizeConstants.AR_DATES_SIZE)
+                {
+                    var data = bytes.ToBytes(offset, SizeConstants.AR_DATES_SIZE);
+                    offset += SizeConstants.AR_DATES_SIZE;
+                    prg.ArDates.Add(data);
+                }
+            }
+
+            {
+                var size = bytes.ToUInt16(offset);
+                offset += 2;
+            }
+
+            for (var i = 0; i < maxGrp; ++i)
+            {
+                var size = bytes.ToUInt16(offset);
+                offset += 2;
+                var data = bytes.ToBytes(offset, size);
+                offset += size;
+
+                prg.GrpDatas.Add(data);
+            }
+
+            {
+                var size = bytes.ToUInt16(offset);
+                offset += 2;
+
+                for (var j = 0; j < MaxConstants.MAX_ICON_NAME_TABLE; ++j)
+                {
+                    //var data = bytes.ToBytes(offset, SizeConstants.ICON_NAME_TABLE_SIZE);
+                    offset += SizeConstants.ICON_NAME_TABLE_SIZE;
+                    //prg.IconNameTable.Add(data);
+                }
+            }
+
+            prg.RawData = bytes;
+
+            return prg;
+        }
 
         public byte[] ToBytes()
         {

@@ -39,10 +39,10 @@ namespace PRGReaderLibrary
         {
             var point = new StrVariablePoint();
 
-            point.Description = bytes.ConvertToString(0 + offset, 21);
-            point.Label = bytes.ConvertToString(21 + offset, 9);
-            point.Value = bytes.ConvertToBoolean(30 + offset);
-            point.IsManual = bytes.ConvertToBoolean(30 + offset);
+            point.Description = bytes.GetString(0 + offset, 21);
+            point.Label = bytes.GetString(21 + offset, 9);
+            point.Value = bytes.ToBoolean(30 + offset);
+            point.IsManual = bytes.ToBoolean(30 + offset);
             point.Units = (UnitsEnum)bytes[35 + offset];
 
             return point;

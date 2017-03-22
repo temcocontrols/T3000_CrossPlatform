@@ -11,6 +11,10 @@
             {
                 throw new ArgumentNullException(nameof(prg));
             }
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
 
             File.WriteAllBytes(path, prg.ToBytes());
         }

@@ -1,7 +1,6 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
-    using System.Text;
     using System.Collections.Generic;
 
     public class PRGData
@@ -15,15 +14,15 @@
         public ushort IndexRemoteLocalList { get; set; }
         public bool IsEmpty => Size1 == 0;
 
-        public static PRGData FromBytes(byte[] data)
+        public static PRGData FromBytes(byte[] bytes)
         {
             var prgData = new PRGData();
-            if (data == null || data.Length == 0)
+            if (bytes == null || bytes.Length == 0)
             {
                 return prgData;
             }
 
-            var length = data.Length;
+            var length = bytes.Length;
             prgData.Length = length;
 
             var index = 0;
@@ -32,16 +31,16 @@
                 return prgData;
             }
 
-            var size1 = BitConverter.ToUInt16(data, index);
+            var size1 = bytes.ToUInt16(index);
             prgData.Size1 = size1;
             index += 2;
 
-            prgData.Data1 = Encoding.Unicode.GetString(data, index, size1);
+            prgData.Data1 = bytes.GetString(index, size1);
             index += size1;
 
             index += 3; //TODO: what is it? reserved?
 
-            var typesSize = BitConverter.ToUInt16(data, index);
+            var typesSize = bytes.ToUInt16(index);
             prgData.TypesSize = typesSize;
             index += 2;
 
@@ -49,7 +48,7 @@
             {
                 var type = new PRGType();
                 type.Size = 1;
-                var typeFromData = (TypesEnum)(data[index + j]);
+                var typeFromData = (TypesEnum)(bytes[index + j]);
                 switch (typeFromData)
                 {
                     case TypesEnum.FLOAT_TYPE:
@@ -71,8 +70,8 @@
                                 type.Size = 2;
                                 break;
                         }
-                        var l1 = BitConverter.ToUInt16(data, index + j + 1);
-                        var c1 = BitConverter.ToUInt16(data, index + j + 3);
+                        var l1 = bytes.ToUInt16(index + j + 1);
+                        var c1 = bytes.ToUInt16(index + j + 3);
                         type.Size *= c1 * Math.Max(l1, (ushort)1);
                         j += 4;
                     }
@@ -81,22 +80,22 @@
                 ++j;
 
                 type.Data = new byte[type.Size];
-                Array.ConstrainedCopy(data, index + j, type.Data, 0, type.Size);
+                Array.ConstrainedCopy(bytes, index + j, type.Data, 0, type.Size);
                 j += type.Size;
 
                 var start = j;
-                for (; data[index + j] != 0; ++j);
-                type.Name = Encoding.ASCII.GetString(data, index + start, j - start);
+                for (; bytes[index + j] != 0; ++j);
+                type.Name = bytes.GetString(index + start, j - start);
                 ++j;
 
                 prgData.Types.Add(type);
             }
             index += typesSize;
 
-            prgData.Time = BitConverter.ToUInt16(data, index);
+            prgData.Time = bytes.ToUInt16(index);
             index += 2;
 
-            prgData.IndexRemoteLocalList = BitConverter.ToUInt16(data, index);
+            prgData.IndexRemoteLocalList = bytes.ToUInt16(index);
             index += 2;
 
             if (index != length)
