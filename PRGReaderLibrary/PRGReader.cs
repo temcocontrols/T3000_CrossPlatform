@@ -19,6 +19,7 @@
                 using (var reader = new BinaryReader(stream, Encoding.ASCII))
                 {
                     var prg = new PRG();
+                    prg.RawData = File.ReadAllBytes(path);
                     prg.DateTime = reader.ReadBytes(26).ConvertToString();
                     prg.Signature = reader.ReadBytes(4).ConvertToString();
                     if (!prg.Signature.Equals(Constants.Signature, StringComparison.Ordinal))
@@ -114,7 +115,7 @@
                             ltot += size * count + 2;
                         }
                     }
-                    //return prg;
+                    
                     //var l = Math.Min(maxPrg, tbl_bank[PRG]);
                     for (var i = 0; i < maxPrg; ++i)
                     {

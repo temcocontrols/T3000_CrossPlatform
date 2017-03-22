@@ -163,6 +163,27 @@
 
         #endregion
 
+        public byte[] RawData { get; set; }//TODO: private set when FromBytes. Base class with RawData FromBytes
+
+        public byte[] ToBytes()
+        {
+            var bytes = new List<byte>();
+
+            bytes.AddRange(DateTime.ToBytes(26));
+            bytes.AddRange(Signature.ToBytes(4));
+            bytes.AddRange(PanelNumber.ToBytes());
+            bytes.AddRange(NetworkNumber.ToBytes());
+            bytes.AddRange(Version.ToBytes());
+            bytes.AddRange(MiniVersion.ToBytes());
+            bytes.AddRange(Reserved);
+
+            //Append raw data from file.
+            bytes.AddRange(RawData.ToBytes(bytes.Count, RawData.Length - bytes.Count));
+
+            return bytes.ToArray();
+        }
+
         public static PRG Load(string path) => PRGReader.Read(path);
+        public void Save(string path) => PRGWriter.Write(this, path);
     }
 }

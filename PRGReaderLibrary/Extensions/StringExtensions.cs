@@ -38,5 +38,16 @@
 
             return builder.ToString();
         }
+
+        public static byte[] ToBytes(this string text, int length = 0)
+        {
+            var bytes = new byte[length > 0 ? length : text.Length];
+            for (var i = 0; i < Math.Min(text.Length, bytes.Length); ++i)
+            {
+                bytes[i] = (byte)text[i];
+            }
+
+            return bytes;
+        }
     }
 }

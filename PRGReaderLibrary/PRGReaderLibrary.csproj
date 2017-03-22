@@ -44,6 +44,8 @@
     <Compile Include="Enums\BlocksEnum.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
+    <Compile Include="Extensions\IntegerExtensions.cs" />
+    <Compile Include="PRGWriter.cs" />
     <Compile Include="Types\AlarmPoint.cs" />
     <Compile Include="Types\AlarmSetPoint.cs" />
     <Compile Include="Types\AnRangeForm.cs" />

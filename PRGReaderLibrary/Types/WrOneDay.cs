@@ -1,5 +1,7 @@
 ﻿namespace PRGReaderLibrary
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Size: 2 bytes
     /// </summary>
@@ -15,11 +17,11 @@
         /// </summary>
         public byte Hours { get; set; }
 
-        public static Time FromBytes(byte[] data, int offset = 0)
+        public static Time FromBytes(byte[] bytes, int offset = 0)
         {
             var time = new Time();
-            time.Minutes = data[0 + offset];
-            time.Hours = data[1 + offset];
+            time.Minutes = bytes[0 + offset];
+            time.Hours = bytes[1 + offset];
 
             return time;
         }
@@ -41,49 +43,33 @@
         /// </summary>
         public Time OffTime { get; set; }
 
-        public static OnOffTime FromBytes(byte[] data, int offset = 0)
+        public static OnOffTime FromBytes(byte[] bytes, int offset = 0)
         {
             var time = new OnOffTime();
-            time.OnTime = Time.FromBytes(data, 0);
-            time.OffTime = Time.FromBytes(data, 2);
+            time.OnTime = Time.FromBytes(bytes, 0);
+            time.OffTime = Time.FromBytes(bytes, 2);
 
             return time;
         }
     }
 
     /// <summary>
-    /// Size: 4 + 4 + 4 + 4 = 16 bytes
+    /// Size: 16 bytes
     /// </summary>
     public class WrOneDay
     {
-
         /// <summary>
-        /// Size: 4 bytes
+        /// Size: 4 * 4 = 16 bytes
         /// </summary>
-        public OnOffTime time1 { get; set; }
+        public IList<OnOffTime> Times { get; set; } = new List<OnOffTime>();
 
-        /// <summary>
-        /// Size: 4 bytes
-        /// </summary>
-        public OnOffTime time2 { get; set; }
-
-        /// <summary>
-        /// Size: 4 bytes
-        /// </summary>
-        public OnOffTime time3 { get; set; }
-
-        /// <summary>
-        /// Size: 4 bytes
-        /// </summary>
-        public OnOffTime time4 { get; set; }
-
-        public static WrOneDay FromBytes(byte[] data, int offset = 0)
+        public static WrOneDay FromBytes(byte[] bytes, int offset = 0)
         {
             var day = new WrOneDay();
-            day.time1 = OnOffTime.FromBytes(data, 0);
-            day.time2 = OnOffTime.FromBytes(data, 4);
-            day.time3 = OnOffTime.FromBytes(data, 8);
-            day.time4 = OnOffTime.FromBytes(data, 12);
+            for (var i = 0; i < 4; ++i)
+            {
+                day.Times.Add(OnOffTime.FromBytes(bytes, 4 * i));
+            }
 
             return day;
         }

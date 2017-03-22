@@ -1,10 +1,12 @@
 ﻿using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace PRGReaderLibrary.Tests
 {
     using System;
     using NUnit.Framework;
+    using System.Text;
 
     [TestFixture]
     public class PRGReader_Tests
@@ -32,10 +34,32 @@ namespace PRGReaderLibrary.Tests
             }
         }
 
+        public string GetFileHash(string path)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(path))
+                {
+                    return Encoding.Default.GetString(md5.ComputeHash(stream));
+                }
+            }
+        }
+
+        public void FilesIsEquals(string path1, string path2)
+        {
+            Assert.AreEqual(GetFileHash(path1), GetFileHash(path2));
+        }
+
         [Test]
         public void Read_Asy1()
         {
-            var prg = PRG.Load(GetFullPath("asy1.prg"));
+            var originalFile = GetFullPath("asy1.prg");
+            var prg = PRG.Load(originalFile);
+
+            var temp = Path.GetTempFileName();
+            prg.Save(temp);
+            prg = PRG.Load(temp);
+            FilesIsEquals(originalFile, temp);
 
             Console.WriteLine(prg.PropertiesText());
         }
