@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
             this.prgView = new System.Windows.Forms.DataGridView();
             this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Label = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,7 +40,10 @@
             this.openButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // prgView
@@ -53,31 +57,28 @@
             this.Description,
             this.IsManual,
             this.Units});
-            this.prgView.Enabled = false;
-            this.prgView.Location = new System.Drawing.Point(12, 12);
+            resources.ApplyResources(this.prgView, "prgView");
             this.prgView.Name = "prgView";
-            this.prgView.Size = new System.Drawing.Size(627, 449);
-            this.prgView.TabIndex = 0;
             // 
             // N
             // 
-            this.N.HeaderText = "N";
+            resources.ApplyResources(this.N, "N");
             this.N.Name = "N";
             this.N.ReadOnly = true;
             // 
             // Label
             // 
-            this.Label.HeaderText = "Label";
+            resources.ApplyResources(this.Label, "Label");
             this.Label.Name = "Label";
             // 
             // Description
             // 
-            this.Description.HeaderText = "Description";
+            resources.ApplyResources(this.Description, "Description");
             this.Description.Name = "Description";
             // 
             // IsManual
             // 
-            this.IsManual.HeaderText = "IsManual";
+            resources.ApplyResources(this.IsManual, "IsManual");
             this.IsManual.Name = "IsManual";
             // 
             // Units
@@ -89,65 +90,66 @@
             // 
             // addButton
             // 
-            this.addButton.Location = new System.Drawing.Point(645, 12);
+            resources.ApplyResources(this.addButton, "addButton");
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(145, 32);
-            this.addButton.TabIndex = 1;
-            this.addButton.Text = "Add";
             this.addButton.UseVisualStyleBackColor = true;
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(645, 50);
+            resources.ApplyResources(this.deleteButton, "deleteButton");
             this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(145, 32);
-            this.deleteButton.TabIndex = 2;
-            this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
             // 
             // openButton
             // 
-            this.openButton.Location = new System.Drawing.Point(648, 391);
+            resources.ApplyResources(this.openButton, "openButton");
             this.openButton.Name = "openButton";
-            this.openButton.Size = new System.Drawing.Size(145, 32);
-            this.openButton.TabIndex = 3;
-            this.openButton.Text = "Open .PRG";
             this.openButton.UseVisualStyleBackColor = true;
             this.openButton.Click += new System.EventHandler(this.openButton_Click);
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(648, 429);
+            resources.ApplyResources(this.saveButton, "saveButton");
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(145, 32);
-            this.saveButton.TabIndex = 4;
-            this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // statusLabel
             // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 464);
+            resources.ApplyResources(this.statusLabel, "statusLabel");
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(121, 13);
-            this.statusLabel.TabIndex = 5;
-            this.statusLabel.Text = "Status: Please, open file";
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox1});
+            resources.ApplyResources(this.menuStrip, "menuStrip");
+            this.menuStrip.Name = "menuStrip";
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.Items.AddRange(new object[] {
+            resources.GetString("toolStripComboBox1.Items"),
+            resources.GetString("toolStripComboBox1.Items1")});
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            resources.ApplyResources(this.toolStripComboBox1, "toolStripComboBox1");
             // 
             // VariablesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 523);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.openButton);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.prgView);
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "VariablesForm";
-            this.Text = "Variables";
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).EndInit();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,6 +168,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsManual;
         private System.Windows.Forms.DataGridViewComboBoxColumn Units;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
     }
 }
 
