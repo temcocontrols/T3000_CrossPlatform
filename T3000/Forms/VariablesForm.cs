@@ -22,7 +22,7 @@
 
             prgView.Rows.Clear();
             var i = 0;
-            foreach (var variable in Prg.Vars)
+            foreach (var variable in Prg.Variables)
             {
                 prgView.Rows.Add(new object[]
                 {
@@ -37,12 +37,12 @@
             var i = 0;
             foreach (DataGridViewRow row in prgView.Rows)
             {
-                if (i >= Prg.Vars.Count)
+                if (i >= Prg.Variables.Count)
                 {
                     break;
                 }
 
-                var variable = Prg.Vars[i];
+                var variable = Prg.Variables[i];
                 variable.Description = row.Cells["Description"].ToString();
                 variable.Label = row.Cells["Label"].ToString();
                 variable.IsManual = (bool)row.Cells["IsManual"].Value;

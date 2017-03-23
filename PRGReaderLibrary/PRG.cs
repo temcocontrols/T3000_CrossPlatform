@@ -44,7 +44,7 @@
         /// <summary>
         /// Size: MaxConstants.MAX_VARS(128) * 36 = 4608 bytes
         /// </summary>
-        public IList<StrVariablePoint> Vars { get; set; } = new List<StrVariablePoint>();
+        public IList<StrVariablePoint> Variables { get; set; } = new List<StrVariablePoint>();
 
         /// <summary>
         /// Size: MaxConstants.MAX_CONS(16) * 24 = 384 bytes
@@ -258,7 +258,7 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                prg.Vars.Add(StrVariablePoint.FromBytes(data));
+                                prg.Variables.Add(StrVariablePoint.FromBytes(data));
                                 break;
 
                             default:

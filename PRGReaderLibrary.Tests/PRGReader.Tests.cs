@@ -20,7 +20,7 @@ namespace PRGReaderLibrary.Tests
 
         public void PrintVariables(PRG prg)
         {
-            foreach (var var in prg.Vars)
+            foreach (var var in prg.Variables)
             {
                 if (string.IsNullOrWhiteSpace(var.Description))
                 {
@@ -96,7 +96,7 @@ namespace PRGReaderLibrary.Tests
 
             PrintVariables(prg);
 
-            var variable1 = prg.Vars[0];
+            var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription", variable1.Description); //20 bytes  
             Assert.AreEqual("FirstLabe", variable1.Label); //9 bytes
             Assert.AreEqual(false, variable1.Value);
@@ -105,7 +105,7 @@ namespace PRGReaderLibrary.Tests
             //Assert.AreEqual(false, variable1.IsControl);
             Assert.AreEqual(UnitsEnum.GPM, variable1.Units);
 
-            var variable2 = prg.Vars[1];
+            var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription", variable2.Description); //20 bytes
             Assert.AreEqual("SecondLab", variable2.Label); //9 bytes
             Assert.AreEqual(true, variable2.Value);
@@ -114,7 +114,7 @@ namespace PRGReaderLibrary.Tests
             //Assert.AreEqual(false, variable2.IsControl);
             Assert.AreEqual(UnitsEnum.OffOn, variable2.Units);
 
-            var variable3 = prg.Vars[2];
+            var variable3 = prg.Variables[2];
             Assert.AreEqual("ThirdDescription", variable3.Description); //20 bytes
             Assert.AreEqual("ThirdLabe", variable3.Label); //9 bytes
             Assert.AreEqual(false, variable3.Value);
