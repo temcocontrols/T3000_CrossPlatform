@@ -16,3 +16,19 @@ Travic CI(Mono) | AppVeyor
 * [mail](mailto:havendv@gmail.com)
 
 T3000 Building Automation System - for Linux-Win-Android deployment
+
+# Linux
+
+Preinstall:
+```
+sudo apt install mono-complete git nuget
+```
+
+Launch:
+```
+rm -r -f T3000_CrossPlatform
+git clone https://github.com/temcocontrols/T3000_CrossPlatform
+nuget restore T3000_CrossPlatform/T3000.sln
+xbuild T3000_CrossPlatform/T3000.sln /p:Configuration=Release
+T3000_CrossPlatform/T3000/bin/Release/T3000.exe
+```
