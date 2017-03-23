@@ -26,7 +26,7 @@
             {
                 prgView.Rows.Add(new object[]
                 {
-                    i, variable.Description, variable.Label, variable.IsManual
+                    i, variable.Description, variable.Label, variable.IsManual, variable.Units
                 });
                 ++i;
             }
@@ -46,6 +46,7 @@
                 variable.Description = row.Cells["Description"].ToString();
                 variable.Label = row.Cells["Label"].ToString();
                 variable.IsManual = (bool)row.Cells["IsManual"].Value;
+                variable.Units = (UnitsEnum)row.Cells["Units"].Value;
                 ++i;
             }
             Prg.Save(path);

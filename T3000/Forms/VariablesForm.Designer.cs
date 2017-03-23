@@ -29,31 +29,63 @@
         private void InitializeComponent()
         {
             this.prgView = new System.Windows.Forms.DataGridView();
-            this.addButton = new System.Windows.Forms.Button();
-            this.deleteButton = new System.Windows.Forms.Button();
-            this.openButton = new System.Windows.Forms.Button();
-            this.saveButton = new System.Windows.Forms.Button();
             this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Label = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsManual = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Units = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.addButton = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
+            this.openButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
             this.SuspendLayout();
             // 
             // prgView
             // 
+            this.prgView.AllowUserToAddRows = false;
+            this.prgView.AllowUserToDeleteRows = false;
             this.prgView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.prgView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.N,
             this.Label,
             this.Description,
-            this.IsManual});
+            this.IsManual,
+            this.Units});
             this.prgView.Enabled = false;
             this.prgView.Location = new System.Drawing.Point(12, 12);
             this.prgView.Name = "prgView";
             this.prgView.Size = new System.Drawing.Size(627, 449);
             this.prgView.TabIndex = 0;
+            // 
+            // N
+            // 
+            this.N.HeaderText = "N";
+            this.N.Name = "N";
+            this.N.ReadOnly = true;
+            // 
+            // Label
+            // 
+            this.Label.HeaderText = "Label";
+            this.Label.Name = "Label";
+            // 
+            // Description
+            // 
+            this.Description.HeaderText = "Description";
+            this.Description.Name = "Description";
+            // 
+            // IsManual
+            // 
+            this.IsManual.HeaderText = "IsManual";
+            this.IsManual.Name = "IsManual";
+            // 
+            // Units
+            // 
+            this.Units.ValueType = typeof(PRGReaderLibrary.UnitsEnum);
+            this.Units.DataSource = System.Enum.GetValues(typeof(PRGReaderLibrary.UnitsEnum));
+            this.Units.HeaderText = "Units";
+            this.Units.Name = "Units";
             // 
             // addButton
             // 
@@ -93,27 +125,6 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // N
-            // 
-            this.N.HeaderText = "N";
-            this.N.Name = "N";
-            this.N.ReadOnly = true;
-            // 
-            // Label
-            // 
-            this.Label.HeaderText = "Label";
-            this.Label.Name = "Label";
-            // 
-            // Description
-            // 
-            this.Description.HeaderText = "Description";
-            this.Description.Name = "Description";
-            // 
-            // IsManual
-            // 
-            this.IsManual.HeaderText = "IsManual";
-            this.IsManual.Name = "IsManual";
-            // 
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
@@ -149,11 +160,12 @@
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button openButton;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn N;
         private System.Windows.Forms.DataGridViewTextBoxColumn Label;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsManual;
-        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Units;
     }
 }
 
