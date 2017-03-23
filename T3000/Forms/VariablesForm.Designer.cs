@@ -33,12 +33,11 @@
             this.deleteButton = new System.Windows.Forms.Button();
             this.openButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
-            this.currentLabel = new System.Windows.Forms.Label();
-            this.currentFileLabel = new System.Windows.Forms.Label();
             this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Label = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsManual = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.statusLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +49,7 @@
             this.Label,
             this.Description,
             this.IsManual});
+            this.prgView.Enabled = false;
             this.prgView.Location = new System.Drawing.Point(12, 12);
             this.prgView.Name = "prgView";
             this.prgView.Size = new System.Drawing.Size(627, 449);
@@ -91,24 +91,7 @@
             this.saveButton.TabIndex = 4;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
-            // 
-            // currentLabel
-            // 
-            this.currentLabel.AutoSize = true;
-            this.currentLabel.Location = new System.Drawing.Point(12, 464);
-            this.currentLabel.Name = "currentLabel";
-            this.currentLabel.Size = new System.Drawing.Size(44, 13);
-            this.currentLabel.TabIndex = 5;
-            this.currentLabel.Text = "Current:";
-            // 
-            // currentFileLabel
-            // 
-            this.currentFileLabel.AutoSize = true;
-            this.currentFileLabel.Location = new System.Drawing.Point(53, 464);
-            this.currentFileLabel.Name = "currentFileLabel";
-            this.currentFileLabel.Size = new System.Drawing.Size(31, 13);
-            this.currentFileLabel.TabIndex = 6;
-            this.currentFileLabel.Text = "none";
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // N
             // 
@@ -131,13 +114,21 @@
             this.IsManual.HeaderText = "IsManual";
             this.IsManual.Name = "IsManual";
             // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(12, 464);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(121, 13);
+            this.statusLabel.TabIndex = 5;
+            this.statusLabel.Text = "Status: Please, open file";
+            // 
             // VariablesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(801, 485);
-            this.Controls.Add(this.currentFileLabel);
-            this.Controls.Add(this.currentLabel);
+            this.ClientSize = new System.Drawing.Size(805, 523);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.openButton);
             this.Controls.Add(this.deleteButton);
@@ -158,12 +149,11 @@
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button openButton;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.Label currentLabel;
-        private System.Windows.Forms.Label currentFileLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn N;
         private System.Windows.Forms.DataGridViewTextBoxColumn Label;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsManual;
+        private System.Windows.Forms.Label statusLabel;
     }
 }
 
