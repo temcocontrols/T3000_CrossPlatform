@@ -164,6 +164,8 @@
 
         #endregion
 
+        #region Binary data
+        
         public byte[] RawData { get; protected set; }
 
         public static PRG FromBytes(byte[] bytes)
@@ -368,6 +370,8 @@
 
             return bytes.ToArray();
         }
+
+        #endregion
 
         public static PRG Load(string path) => PRGReader.Read(path);
         public void Save(string path) => PRGWriter.Write(this, path);
