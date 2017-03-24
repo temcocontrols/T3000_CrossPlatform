@@ -6,6 +6,6 @@ namespace T3000.Utilities
 
     public class BaseForm : Form
     {
-        public override Font Font { get; set; } = SystemFonts.CaptionFont;
+        public override Font Font { get; set; } = SystemFonts.MessageBoxFont;
     }
 }

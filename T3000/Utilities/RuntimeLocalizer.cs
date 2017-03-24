@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 
 namespace T3000.Utilities
 {
@@ -24,11 +25,7 @@ namespace T3000.Utilities
             if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
                 cultureCode.StartsWith("zh"))
             {
-                var dialog = new FontDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    form.Font = dialog.Font;
-                }
+                form.Font = SystemFonts.GetFontByName("Microsoft MingLiU") ?? SystemFonts.CaptionFont;
             }
         }
 
