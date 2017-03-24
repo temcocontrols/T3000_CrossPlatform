@@ -25,7 +25,11 @@ namespace T3000.Utilities
             if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
                 cultureCode.StartsWith("zh"))
             {
-                form.Font = SystemFonts.GetFontByName("Deja vu Sans") ?? SystemFonts.DialogFont;
+                var dialog = new FontDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    form.Font = dialog.Font ?? SystemFonts.DialogFont;
+                }
             }
         }
 
