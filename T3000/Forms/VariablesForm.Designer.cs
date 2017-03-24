@@ -70,6 +70,7 @@
             this.Description,
             this.ManualControl,
             this.Units});
+            this.prgView.MultiSelect = false;
             this.prgView.Name = "prgView";
             this.prgView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
             // 
@@ -96,6 +97,7 @@
             // 
             // Units
             // 
+            this.Units.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             resources.ApplyResources(this.Units, "Units");
             this.Units.Name = "Units";
             // 

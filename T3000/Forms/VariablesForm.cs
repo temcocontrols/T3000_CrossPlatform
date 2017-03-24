@@ -117,7 +117,7 @@
         }
 
         private void englishToolStripMenuItem_Click(object sender, EventArgs e) =>
-            RuntimeLocalizer.ChangeCulture(this, "en-EU");
+            RuntimeLocalizer.ChangeCulture(this, string.Empty);
 
         private void germanToolStripMenuItem_Click(object sender, EventArgs e) =>
             RuntimeLocalizer.ChangeCulture(this, "de-DE");

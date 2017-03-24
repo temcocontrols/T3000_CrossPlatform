@@ -152,9 +152,6 @@
   <data name="saveButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>648, 429</value>
   </data>
-  <data name="openButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>648, 391</value>
-  </data>
   <data name="&gt;&gt;saveButton.Name" xml:space="preserve">
     <value>saveButton</value>
   </data>
@@ -201,6 +198,9 @@
   <data name="&gt;&gt;statusStrip.Name" xml:space="preserve">
     <value>statusStrip</value>
   </data>
+  <data name="&gt;&gt;saveButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;openButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
@@ -212,12 +212,6 @@
   </data>
   <data name="deleteButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>648, 68</value>
-  </data>
-  <data name="languageMenuItem.Text" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="menuStrip.Text" xml:space="preserve">
-    <value>menu</value>
   </data>
   <data name="&gt;&gt;prgView.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -237,11 +231,17 @@
   <data name="addButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 32</value>
   </data>
+  <data name="openButton.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
   <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>796, 22</value>
   </data>
   <data name="&gt;&gt;openButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Units.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;germanToolStripMenuItem.Name" xml:space="preserve">
     <value>germanToolStripMenuItem</value>
@@ -267,14 +267,20 @@
   <data name="&gt;&gt;menuStrip.Name" xml:space="preserve">
     <value>menuStrip</value>
   </data>
+  <data name="prgView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>631, 431</value>
+  </data>
+  <data name="deleteButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
   <data name="menuStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="prgView.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;Units.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="languageMenuItem.Text" xml:space="preserve">
+    <value>Language</value>
   </data>
   <data name="saveButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 32</value>
@@ -291,12 +297,6 @@
   <data name="openButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 32</value>
   </data>
-  <data name="&gt;&gt;N.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="germanToolStripMenuItem.Text" xml:space="preserve">
-    <value>German</value>
-  </data>
   <data name="&gt;&gt;addButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -306,8 +306,11 @@
   <data name="&gt;&gt;addButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="addButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;addButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="openButton.Text" xml:space="preserve">
+    <value>Open .PRG</value>
   </data>
   <data name="deleteButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -315,14 +318,11 @@
   <data name="menuStrip.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="openButton.Text" xml:space="preserve">
-    <value>Open .PRG</value>
+  <data name="germanToolStripMenuItem.Text" xml:space="preserve">
+    <value>German</value>
   </data>
   <data name="&gt;&gt;statusStrip.Parent" xml:space="preserve">
     <value>$this</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Description.HeaderText" xml:space="preserve">
     <value>Description</value>
@@ -342,8 +342,8 @@
   <data name="&gt;&gt;Units.Name" xml:space="preserve">
     <value>Units</value>
   </data>
-  <data name="prgView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>631, 431</value>
+  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="deleteButton.Text" xml:space="preserve">
     <value>Delete</value>
@@ -351,11 +351,11 @@
   <data name="&gt;&gt;prgView.Name" xml:space="preserve">
     <value>prgView</value>
   </data>
-  <data name="&gt;&gt;addButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="openButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>648, 391</value>
   </data>
-  <data name="deleteButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="menuStrip.Text" xml:space="preserve">
+    <value>menu</value>
   </data>
   <data name="&gt;&gt;deleteButton.Name" xml:space="preserve">
     <value>deleteButton</value>
@@ -387,9 +387,6 @@
   <data name="&gt;&gt;deleteButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="languageMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 20</value>
   </data>
@@ -399,8 +396,8 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>796, 496</value>
   </data>
-  <data name="openButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;languageMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -417,17 +414,17 @@
   <data name="&gt;&gt;prgView.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;saveButton.ZOrder" xml:space="preserve">
+  <data name="addButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;N.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="Description.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="Units.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
