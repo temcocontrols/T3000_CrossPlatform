@@ -25,10 +25,22 @@ namespace T3000.Utilities
             if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
                 cultureCode.StartsWith("zh"))
             {
-                var dialog = new FontDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
+                var font = SystemFonts.GetFontByName("AR PL UMing CN");
+                if (font == null)
                 {
-                    form.Font = dialog.Font ?? SystemFonts.DialogFont;
+                    var dialog = new FontDialog();
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        form.Font = dialog.Font;
+                    }
+                }
+                else
+                {
+                    form.Font = font;
+                }
+                foreach (Control control in form.Controls)
+                {
+                    control.Font = form.Font;
                 }
             }
         }

@@ -6,7 +6,7 @@
     using Utilities;
     using Properties;
 
-    public partial class VariablesForm : BaseForm
+    public partial class VariablesForm : Form
     {
         private PRG Prg { get; set; }
         private string PrgPath { get; set; }
