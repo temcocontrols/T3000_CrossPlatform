@@ -37,6 +37,11 @@
                 prgView.Rows.Add(new object[] {
                     i + 1, variable.Description, variable.ControlType, variable.Value, variable.Units, variable.Label
                 });
+                if (variable.ControlType == ControlTypeEnum.Automatic)
+                {
+                    //or set manual if editing
+                    prgView.Rows[prgView.RowCount - 1].Cells["Value"].ReadOnly = true;
+                }
                 ++i;
             }
         }

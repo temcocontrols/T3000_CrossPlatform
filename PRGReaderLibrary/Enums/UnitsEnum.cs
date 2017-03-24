@@ -2,6 +2,9 @@ namespace PRGReaderLibrary
 {
     public enum UnitsEnum
     {
+        /// <summary>
+        /// Analog part
+        /// </summary>
         Unused,
         degC,
         degF,
@@ -45,6 +48,23 @@ namespace PRGReaderLibrary
         Custom6,
         Custom7,
         Custom8,
-        OffOn = 101
+        /// <summary>
+        /// Digital part
+        /// </summary>
+        OffOn = 101,
+        CloseOpen,
+        StopStart,
+        DisableEnable,
+        NormalAlarm,
+        NormalHigh,
+        NormalLow,
+        NoYes,
+        CoolHeat,
+        UnOccupied,
+        LowHigh,
+        /// <summary>
+        /// Custom part
+        /// </summary>
+        InactiveActive = 123
     }
 }

@@ -7,7 +7,7 @@
     {
         public static string GetString(this byte[] bytes, int offset = 0, int length = 0) =>
             Encoding.ASCII.GetString(bytes, offset, 
-                length == 0 ? bytes.Length : length).Trim('\0');
+                length == 0 ? bytes.Length : length).Trim('\0', ' ');
 
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
             BitConverter.ToBoolean(bytes, offset);
