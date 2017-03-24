@@ -1,4 +1,7 @@
-﻿namespace T3000.Utilities
+﻿using System;
+using System.Drawing;
+
+namespace T3000.Utilities
 {
     using System.Windows.Forms;
     using System.Globalization;
@@ -17,6 +20,12 @@
 
             ApplyResourceToControl(resources, form, culture);
             resources.ApplyResources(form, "$this", culture);
+
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
+                cultureCode.StartsWith("zh"))
+            {
+                form.Font = new Font("Microsoft MingLiU", 8.25F);
+            }
         }
 
         private static void ApplyResourceToControl(ComponentResourceManager manager, Control control, CultureInfo info)
