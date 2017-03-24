@@ -15,7 +15,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 1 bit. false - Automatic
         /// </summary>
-        public bool IsManual { get; set; }
+        public bool ManualControl { get; set; }
 
         /// <summary>
         /// Size: 1 bit. false - Digital
@@ -46,7 +46,7 @@ namespace PRGReaderLibrary
         public StrVariablePoint(byte[] bytes, int offset = 0) : base(bytes, offset)
         {
             Value = bytes.ToBoolean(30 + offset);
-            IsManual = bytes.ToBoolean(30 + offset);
+            ManualControl = bytes.ToBoolean(30 + offset);
             Units = (UnitsEnum)bytes[35 + offset];
 
             RawData = bytes.ToBytes(30 + offset, 6);
@@ -58,7 +58,7 @@ namespace PRGReaderLibrary
 
             bytes.AddRange(base.ToBytes());
             //bytes.AddRange(Value.ToBytes());
-            //bytes.AddRange(IsManual.ToBytes());
+            //bytes.AddRange(ManualControl.ToBytes());
 
             //Append raw data.
             bytes.AddRange(RawData.ToBytes(bytes.Count, RawData.Length - bytes.Count));

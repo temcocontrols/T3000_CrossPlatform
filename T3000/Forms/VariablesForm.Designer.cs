@@ -31,11 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
             this.addButton = new System.Windows.Forms.Button();
             this.prgView = new System.Windows.Forms.DataGridView();
-            this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Label = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsManual = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Units = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.deleteButton = new System.Windows.Forms.Button();
             this.openButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
@@ -46,6 +41,11 @@
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Label = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ManualControl = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Units = new System.Windows.Forms.DataGridViewComboBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -67,36 +67,10 @@
             this.N,
             this.Label,
             this.Description,
-            this.IsManual,
+            this.ManualControl,
             this.Units});
             this.prgView.Name = "prgView";
             this.prgView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
-            // 
-            // N
-            // 
-            resources.ApplyResources(this.N, "N");
-            this.N.Name = "N";
-            this.N.ReadOnly = true;
-            // 
-            // Label
-            // 
-            resources.ApplyResources(this.Label, "Label");
-            this.Label.Name = "Label";
-            // 
-            // Description
-            // 
-            resources.ApplyResources(this.Description, "Description");
-            this.Description.Name = "Description";
-            // 
-            // IsManual
-            // 
-            resources.ApplyResources(this.IsManual, "IsManual");
-            this.IsManual.Name = "IsManual";
-            // 
-            // Units
-            // 
-            resources.ApplyResources(this.Units, "Units");
-            this.Units.Name = "Units";
             // 
             // deleteButton
             // 
@@ -164,6 +138,32 @@
             this.statusLabel.Name = "statusLabel";
             resources.ApplyResources(this.statusLabel, "statusLabel");
             // 
+            // N
+            // 
+            resources.ApplyResources(this.N, "N");
+            this.N.Name = "N";
+            this.N.ReadOnly = true;
+            // 
+            // Label
+            // 
+            resources.ApplyResources(this.Label, "Label");
+            this.Label.Name = "Label";
+            // 
+            // Description
+            // 
+            resources.ApplyResources(this.Description, "Description");
+            this.Description.Name = "Description";
+            // 
+            // ManualControl
+            // 
+            resources.ApplyResources(this.ManualControl, "ManualControl");
+            this.ManualControl.Name = "ManualControl";
+            // 
+            // Units
+            // 
+            resources.ApplyResources(this.Units, "Units");
+            this.Units.Name = "Units";
+            // 
             // VariablesForm
             // 
             resources.ApplyResources(this, "$this");
@@ -199,13 +199,13 @@
         private System.Windows.Forms.ToolStripMenuItem germanToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chineseToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn N;
         private System.Windows.Forms.DataGridViewTextBoxColumn Label;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsManual;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ManualControl;
         private System.Windows.Forms.DataGridViewComboBoxColumn Units;
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
     }
 }
 

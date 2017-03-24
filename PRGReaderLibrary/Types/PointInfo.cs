@@ -18,7 +18,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 1 bit. false - Automatic
         /// </summary>
-        public bool IsManual { get; set; }  // 0=auto, 1=manual
+        public bool ManualControl { get; set; }  // 0=auto, 1=manual
 
         /// <summary>
         /// Size: 1 bit. false - Digital

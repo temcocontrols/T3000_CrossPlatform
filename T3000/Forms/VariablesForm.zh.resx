@@ -151,7 +151,7 @@
   <data name="Description.HeaderText" xml:space="preserve">
     <value>描述</value>
   </data>
-  <data name="IsManual.HeaderText" xml:space="preserve">
+  <data name="ManualControl.HeaderText" xml:space="preserve">
     <value>手動</value>
   </data>
   <data name="Units.HeaderText" xml:space="preserve">

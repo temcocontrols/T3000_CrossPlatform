@@ -33,7 +33,7 @@
             {
                 prgView.Rows.Add(new object[]
                 {
-                    i, variable.Description, variable.Label, variable.IsManual, variable.Units
+                    i, variable.Description, variable.Label, variable.ManualControl, variable.Units
                 });
                 ++i;
             }
@@ -52,7 +52,7 @@
                 var variable = Prg.Variables[i];
                 variable.Description = row.Cells["Description"].ToString();
                 variable.Label = row.Cells["Label"].ToString();
-                variable.IsManual = (bool)row.Cells["IsManual"].Value;
+                variable.ManualControl = (bool)row.Cells["ManualControl"].Value;
                 variable.Units = (UnitsEnum)row.Cells["Units"].Value;
                 ++i;
             }
@@ -107,12 +107,12 @@
 
         private void prgView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            //Set IsManual to true, if user changed units
+            //Set ManualControl to true, if user changed units
             if (e.ColumnIndex == prgView.Columns["Units"]?.Index &&
                 e.RowIndex >= 0 && e.RowIndex < prgView.RowCount)
             {
                 var row = prgView.Rows[e.RowIndex];
-                row.Cells["IsManual"].Value = true;
+                row.Cells["ManualControl"].Value = true;
             }
         }
 
