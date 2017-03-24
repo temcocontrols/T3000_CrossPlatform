@@ -24,7 +24,11 @@ namespace T3000.Utilities
             if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
                 cultureCode.StartsWith("zh"))
             {
-                form.Font = new Font("Microsoft MingLiU", 8.25F);
+                var dialog = new FontDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    form.Font = dialog.Font;
+                }
             }
         }
 
