@@ -123,6 +123,6 @@
             RuntimeLocalizer.ChangeCulture(this, "de-DE");
 
         private void chineseToolStripMenuItem_Click(object sender, EventArgs e) =>
-            RuntimeLocalizer.ChangeCulture(this, "zh");
+            RuntimeLocalizer.ChangeCulture(this, "zh-Hant");
     }
 }

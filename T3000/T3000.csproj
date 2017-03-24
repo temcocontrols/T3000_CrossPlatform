@@ -59,7 +59,7 @@
     <EmbeddedResource Include="Forms\VariablesForm.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm.zh.resx">
+    <EmbeddedResource Include="Forms\VariablesForm.zh-Hant.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

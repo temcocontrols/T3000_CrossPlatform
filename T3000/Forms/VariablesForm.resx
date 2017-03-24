@@ -198,9 +198,6 @@
   <data name="&gt;&gt;statusStrip.Name" xml:space="preserve">
     <value>statusStrip</value>
   </data>
-  <data name="&gt;&gt;saveButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;openButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
@@ -267,9 +264,6 @@
   <data name="&gt;&gt;menuStrip.Name" xml:space="preserve">
     <value>menuStrip</value>
   </data>
-  <data name="prgView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>631, 431</value>
-  </data>
   <data name="deleteButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
@@ -296,6 +290,9 @@
   </data>
   <data name="openButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 32</value>
+  </data>
+  <data name="&gt;&gt;N.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;addButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -342,8 +339,8 @@
   <data name="&gt;&gt;Units.Name" xml:space="preserve">
     <value>Units</value>
   </data>
-  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="prgView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>631, 431</value>
   </data>
   <data name="deleteButton.Text" xml:space="preserve">
     <value>Delete</value>
@@ -387,6 +384,9 @@
   <data name="&gt;&gt;deleteButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="languageMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 20</value>
   </data>
@@ -417,8 +417,8 @@
   <data name="addButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;N.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;saveButton.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="Description.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
