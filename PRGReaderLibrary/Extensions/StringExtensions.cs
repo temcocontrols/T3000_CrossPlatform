@@ -41,10 +41,17 @@
 
         public static byte[] ToBytes(this string text, int length = 0)
         {
-            var bytes = new byte[length > 0 ? length : text.Length];
-            for (var i = 0; i < Math.Min(text.Length, bytes.Length); ++i)
+            if (text == null)
             {
-                bytes[i] = (byte)text[i];
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            length = length == 0 ? text.Length : length;
+            var bytes = new byte[length];
+            for (var i = 0; i < Math.Min(text.Length, length); ++i)
+            {
+                bytes[i] = i < text.Length ? 
+                    (byte)text[i] : (byte)0; //'\0'
             }
 
             return bytes;

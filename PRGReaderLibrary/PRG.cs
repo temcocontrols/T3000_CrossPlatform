@@ -258,7 +258,7 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                prg.Variables.Add(StrVariablePoint.FromBytes(data));
+                                prg.Variables.Add(new StrVariablePoint(data));
                                 break;
 
                             default:
@@ -364,6 +364,65 @@
             bytes.AddRange(Version.ToBytes());
             bytes.AddRange(MiniVersion.ToBytes());
             bytes.AddRange(Reserved);
+
+            var offset = bytes.Count;
+            for (var i = BlocksEnum.OUT; i <= BlocksEnum.UNIT; ++i)
+            {
+                if (i == BlocksEnum.DMON)
+                {
+                    continue;
+                }
+
+                if (i == BlocksEnum.AMON)
+                {
+                    if (Version >= 230 && MiniVersion > 0)
+                        continue;
+                }
+
+                if (i == BlocksEnum.ALARMM)
+                {
+                    if (Version < 216)
+                    {
+                        var size = RawData.ToUInt16(offset);
+                        offset += 2;
+                        bytes.AddRange(size.ToBytes());
+                        var count = RawData.ToUInt16(offset);
+                        offset += 2;
+                        bytes.AddRange(count.ToBytes());
+                        for (var j = 0; j < count; ++j)
+                        {
+                            var data = RawData.ToBytes(offset, size);
+                            offset += size;
+                            bytes.AddRange(data);
+                        }
+                        continue;
+                    }
+                }
+                else
+                {
+                    var count = RawData.ToUInt16(offset);
+                    offset += 2;
+                    bytes.AddRange(count.ToBytes());
+                    var size = RawData.ToUInt16(offset);
+                    offset += 2;
+                    bytes.AddRange(size.ToBytes());
+                    for (var j = 0; j < count; ++j)
+                    {
+                        var data = RawData.ToBytes(offset, size);
+                        offset += size;
+                        switch (i)
+                        {
+                            case BlocksEnum.VAR:
+                                //bytes.AddRange(Variables[j].ToBytes());
+                                //break;
+
+                            default:
+                                bytes.AddRange(data);
+                                break;
+                        }
+                    }
+                }
+            }
 
             //Append raw data from file.
             bytes.AddRange(RawData.ToBytes(bytes.Count, RawData.Length - bytes.Count));

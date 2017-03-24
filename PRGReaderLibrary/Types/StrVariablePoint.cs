@@ -1,5 +1,7 @@
 namespace PRGReaderLibrary
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Size: 30 + 4 + 1 + 1 = 36
     /// </summary>
@@ -35,17 +37,35 @@ namespace PRGReaderLibrary
         /// </summary>
         public UnitsEnum Units { get; set; }
 
-        public static StrVariablePoint FromBytes(byte[] bytes, int offset = 0)
+        #region Binary data
+
+        public byte[] RawData { get; protected set; }
+
+        //public StrVariablePoint() {}
+
+        public StrVariablePoint(byte[] bytes, int offset = 0) : base(bytes, offset)
         {
-            var point = new StrVariablePoint();
+            Value = bytes.ToBoolean(30 + offset);
+            IsManual = bytes.ToBoolean(30 + offset);
+            Units = (UnitsEnum)bytes[35 + offset];
 
-            point.Description = bytes.GetString(0 + offset, 21);
-            point.Label = bytes.GetString(21 + offset, 9);
-            point.Value = bytes.ToBoolean(30 + offset);
-            point.IsManual = bytes.ToBoolean(30 + offset);
-            point.Units = (UnitsEnum)bytes[35 + offset];
-
-            return point;
+            RawData = bytes.ToBytes(30 + offset, 6);
         }
+
+        public new byte[] ToBytes()
+        {
+            var bytes = new List<byte>();
+
+            bytes.AddRange(base.ToBytes());
+            //bytes.AddRange(Value.ToBytes());
+            //bytes.AddRange(IsManual.ToBytes());
+
+            //Append raw data.
+            bytes.AddRange(RawData.ToBytes(bytes.Count, RawData.Length - bytes.Count));
+
+            return bytes.ToArray();
+        }
+
+        #endregion
     }
 }

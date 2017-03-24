@@ -1,12 +1,12 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Security.Cryptography;
-
-namespace PRGReaderLibrary.Tests
+﻿namespace PRGReaderLibrary.Tests
 {
-    using System;
     using NUnit.Framework;
+    using System;
     using System.Text;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Security.Cryptography;
 
     [TestFixture]
     public class PRGReader_Tests
@@ -48,6 +48,41 @@ namespace PRGReaderLibrary.Tests
         public void FilesIsEquals(string path1, string path2)
         {
             Assert.AreEqual(GetFileHash(path1), GetFileHash(path2));
+        }
+
+        [Test]
+        public void StringToFromBytes_Simple()
+        {
+            var expected = "Text";
+            var bytes = expected.ToBytes();
+            var actual = bytes.GetString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void StringToFromBytes_Cropped()
+        {
+            var expected = "CroppedDescription";
+            var bytes = expected.ToBytes(10);
+            var actual = bytes.GetString(0, 10);
+
+            Assert.AreEqual(expected.Substring(0, 10), actual);
+        }
+
+        [Test]
+        public void StrVariablePointFromToBytes_Simple()
+        {
+            var list = new List<byte>();
+            list.AddRange("Description".ToBytes(21));
+            list.AddRange("Label".ToBytes(9));
+            list.AddRange(new byte[6]);
+
+            var expected = list.ToArray();
+            var point = new StrVariablePoint(expected);
+            var actual = expected.ToBytes();
+
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
