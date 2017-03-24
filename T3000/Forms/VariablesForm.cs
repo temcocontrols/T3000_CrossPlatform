@@ -19,6 +19,9 @@
             Units.ValueType = typeof(UnitsEnum);
             Units.DataSource = Enum.GetValues(typeof(UnitsEnum));
 
+            AutoManual.ValueType = typeof(ControlTypeEnum);
+            AutoManual.DataSource = Enum.GetValues(typeof(ControlTypeEnum));
+
             statusLabel.Text = Resources.PleaseOpenFile;
         }
 
@@ -31,9 +34,8 @@
             var i = 0;
             foreach (var variable in Prg.Variables)
             {
-                prgView.Rows.Add(new object[]
-                {
-                    i, variable.Description, variable.Label, variable.ManualControl, variable.Units
+                prgView.Rows.Add(new object[] {
+                    i + 1, variable.Description, variable.ControlType, variable.Value, variable.Units, variable.Label
                 });
                 ++i;
             }
@@ -52,7 +54,7 @@
                 var variable = Prg.Variables[i];
                 variable.Description = row.Cells["Description"].ToString();
                 variable.Label = row.Cells["Label"].ToString();
-                variable.ManualControl = (bool)row.Cells["ManualControl"].Value;
+                variable.ControlType = (ControlTypeEnum)row.Cells["AutoManual"].Value;
                 variable.Units = (UnitsEnum)row.Cells["Units"].Value;
                 ++i;
             }
@@ -106,12 +108,12 @@
 
         private void prgView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            //Set ManualControl to true, if user changed units
+            //Set AutoManual to Manual, if user changed units
             if (e.ColumnIndex == prgView.Columns["Units"]?.Index &&
                 e.RowIndex >= 0 && e.RowIndex < prgView.RowCount)
             {
                 var row = prgView.Rows[e.RowIndex];
-                row.Cells["ManualControl"].Value = true;
+                row.Cells["AutoManual"].Value = ControlTypeEnum.Manual;
             }
         }
 

@@ -126,7 +126,7 @@
   <data name="Description.HeaderText" xml:space="preserve">
     <value>Beschreibung</value>
   </data>
-  <data name="ManualControl.HeaderText" xml:space="preserve">
+  <data name="AutoManual.HeaderText" xml:space="preserve">
     <value>Manuelle Steuerung</value>
   </data>
   <data name="Units.HeaderText" xml:space="preserve">

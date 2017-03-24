@@ -135,7 +135,7 @@
             Assert.AreEqual("FirstDescription", variable1.Description); //20 bytes  
             Assert.AreEqual("FirstLabe", variable1.Label); //9 bytes
             Assert.AreEqual(false, variable1.Value);
-            Assert.AreEqual(false, variable1.ManualControl);
+            Assert.AreEqual(ControlTypeEnum.Automatic, variable1.ControlType);
             //Assert.AreEqual(false, variable1.IsAnalog);
             //Assert.AreEqual(false, variable1.IsControl);
             Assert.AreEqual(UnitsEnum.GPM, variable1.Units);
@@ -144,7 +144,7 @@
             Assert.AreEqual("SecondDescription", variable2.Description); //20 bytes
             Assert.AreEqual("SecondLab", variable2.Label); //9 bytes
             Assert.AreEqual(true, variable2.Value);
-            Assert.AreEqual(true, variable2.ManualControl);
+            Assert.AreEqual(ControlTypeEnum.Manual, variable2.ControlType);
             //Assert.AreEqual(false, variable2.IsAnalog);
             //Assert.AreEqual(false, variable2.IsControl);
             Assert.AreEqual(UnitsEnum.OffOn, variable2.Units);
@@ -153,7 +153,7 @@
             Assert.AreEqual("ThirdDescription", variable3.Description); //20 bytes
             Assert.AreEqual("ThirdLabe", variable3.Label); //9 bytes
             Assert.AreEqual(false, variable3.Value);
-            Assert.AreEqual(false, variable3.ManualControl);
+            Assert.AreEqual(ControlTypeEnum.Automatic, variable3.ControlType);
             //Assert.AreEqual(false, variable3.IsAnalog);
             //Assert.AreEqual(false, variable3.IsControl);
             Assert.AreEqual(UnitsEnum.Custom1, variable3.Units);

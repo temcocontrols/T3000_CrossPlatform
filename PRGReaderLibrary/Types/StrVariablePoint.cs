@@ -13,9 +13,9 @@ namespace PRGReaderLibrary
         public bool Value { get; set; }
 
         /// <summary>
-        /// Size: 1 bit. false - Automatic
+        /// Size: 1 bit
         /// </summary>
-        public bool ManualControl { get; set; }
+        public ControlTypeEnum ControlType { get; set; }
 
         /// <summary>
         /// Size: 1 bit. false - Digital
@@ -46,7 +46,7 @@ namespace PRGReaderLibrary
         public StrVariablePoint(byte[] bytes, int offset = 0) : base(bytes, offset)
         {
             Value = bytes.ToBoolean(30 + offset);
-            ManualControl = bytes.ToBoolean(30 + offset);
+            ControlType = bytes[30 + offset] > 0 ? ControlTypeEnum.Manual : ControlTypeEnum.Automatic;
             Units = (UnitsEnum)bytes[35 + offset];
 
             RawData = bytes.ToBytes(30 + offset, 6);

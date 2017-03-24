@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ControlTypeEnum.cs" />
     <Compile Include="Enums\TypesEnum.cs" />
     <Compile Include="Enums\BlocksEnum.cs" />
     <Compile Include="Constants\Constants.cs" />
