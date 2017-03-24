@@ -6,7 +6,7 @@
     using Utilities;
     using Properties;
 
-    public partial class VariablesForm : Form
+    public partial class VariablesForm : BaseForm
     {
         private PRG Prg { get; set; }
         private string PrgPath { get; set; }
@@ -77,7 +77,6 @@
                 var path = dialog.FileName;
                 LoadPrg(path);
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
-                prgView.Enabled = true;
             }
             catch (Exception exception)
             {
@@ -124,5 +123,29 @@
 
         private void chineseToolStripMenuItem_Click(object sender, EventArgs e) =>
             RuntimeLocalizer.ChangeCulture(this, "zh-Hant");
+
+        private void prgView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (prgView.CurrentCell.ColumnIndex == prgView.Columns["Units"]?.Index &&
+                prgView.CurrentCell.IsInEditMode)
+            {
+                var currentValue = (UnitsEnum)prgView.CurrentCell.Value;
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        prgView.CurrentCell.Value = currentValue + 1;
+                        break;
+
+                    case Keys.Down:
+                        prgView.CurrentCell.Value = currentValue - 1;
+                        break;
+                }
+            }
+        }
+
+        private void prgView_CellContextMenuStripChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //MessageBox.Show("prgView_CellContextMenuStripChanged");
+        }
     }
 }

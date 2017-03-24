@@ -52,6 +52,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Forms\VariablesForm.de-DE.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
