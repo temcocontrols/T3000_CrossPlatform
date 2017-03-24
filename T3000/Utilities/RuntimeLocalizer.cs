@@ -25,7 +25,7 @@ namespace T3000.Utilities
             if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
                 cultureCode.StartsWith("zh"))
             {
-                form.Font = SystemFonts.GetFontByName("Microsoft MingLiU") ?? SystemFonts.CaptionFont;
+                form.Font = SystemFonts.GetFontByName("Deja vu Sans") ?? SystemFonts.DialogFont;
             }
         }
 
