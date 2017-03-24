@@ -4,6 +4,7 @@
     using System.Windows.Forms;
     using PRGReaderLibrary;
     using Utilities;
+    using Properties;
 
     public partial class VariablesForm : Form
     {
@@ -17,6 +18,8 @@
 
             Units.ValueType = typeof(UnitsEnum);
             Units.DataSource = Enum.GetValues(typeof(UnitsEnum));
+
+            statusLabel.Text = Resources.PleaseOpenFile;
         }
 
         private void LoadPrg(string path)
@@ -57,13 +60,13 @@
         }
 
         private void ShowException(Exception exception) =>
-            statusLabel.Text = $"Exception: {exception.Message}{exception.StackTrace}";
+            statusLabel.Text = string.Format(Resources.Exception, exception.Message, exception.StackTrace);
 
         private void openButton_Click(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog();
-            dialog.Filter = ".PRG files (*.prg)|*.prg|All files (*.*)|*.*";
-            dialog.Title = "Please select an .PRG file";
+            dialog.Filter = $"{Resources.PRGFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Title = Resources.SelectPRGFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -73,7 +76,7 @@
             {
                 var path = dialog.FileName;
                 LoadPrg(path);
-                statusLabel.Text = $"Current file: {path}";
+                statusLabel.Text = string.Format(Resources.CurrentFile, path);
                 prgView.Enabled = true;
             }
             catch (Exception exception)
@@ -86,7 +89,7 @@
         {
             if (Prg == null || PrgPath == null)
             {
-                statusLabel.Text = $"File isn't open";
+                statusLabel.Text = Resources.FileIsNotOpen;
                 return;
             } 
 
@@ -94,7 +97,7 @@
             {
                 var path = PrgPath;
                 SavePrg(path);
-                statusLabel.Text = $"Saved: {path}";
+                statusLabel.Text = string.Format(Resources.Saved, path);
             }
             catch (Exception exception)
             {

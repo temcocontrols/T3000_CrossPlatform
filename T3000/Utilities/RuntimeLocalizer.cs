@@ -32,7 +32,10 @@
             if (control.GetType() == typeof(DataGridView))
             {
                 var view = (DataGridView)control;
-                ApplyResourceToColumns(view.Columns, manager, info);
+                foreach (DataGridViewColumn item in view.Columns)
+                {
+                    manager.ApplyResources(item, item.Name, info);
+                }
             }
 
             // Apply to all sub-controls
@@ -56,21 +59,6 @@
                     var menuitem = item;
                     ApplyResourceToToolStripItemCollection(menuitem.DropDownItems, manager, info);
                 }
-
-                manager.ApplyResources(item, item.Name, info);
-            }
-        }
-
-        private static void ApplyResourceToColumns(DataGridViewColumnCollection collection, ComponentResourceManager manager, CultureInfo info)
-        {
-            // Apply to all sub items
-            foreach (DataGridViewColumn item in collection)
-            {
-                //if (item.GetType() == typeof(ToolStripMenuItem))
-                //{
-                 //   var menuitem = item;
-                 //   ApplyResourceToToolStripItemCollection(menuitem.DropDownItems, manager, info);
-                //}
 
                 manager.ApplyResources(item, item.Name, info);
             }

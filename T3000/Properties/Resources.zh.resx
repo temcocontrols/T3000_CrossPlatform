@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AllFiles" xml:space="preserve">
-    <value>All files</value>
+    <value>全部文件</value>
   </data>
   <data name="CurrentFile" xml:space="preserve">
-    <value>Current file: {0}</value>
+    <value>當前文件: {0}</value>
   </data>
   <data name="Exception" xml:space="preserve">
-    <value>Exception: {0}{1}</value>
+    <value>例外: {0}{1}</value>
   </data>
   <data name="FileIsNotOpen" xml:space="preserve">
-    <value>File isn't open</value>
+    <value>文件未打開</value>
   </data>
   <data name="PleaseOpenFile" xml:space="preserve">
-    <value>Please open a file</value>
+    <value>請打開一個文件</value>
   </data>
   <data name="PRGFiles" xml:space="preserve">
-    <value>.PRG files</value>
+    <value>.PRG文件</value>
   </data>
   <data name="Saved" xml:space="preserve">
-    <value>Saved: {0}</value>
+    <value>保存: {0}</value>
   </data>
   <data name="SelectPRGFile" xml:space="preserve">
-    <value>Please select an .PRG file</value>
+    <value>請選擇一個.PRG文件</value>
   </data>
 </root>

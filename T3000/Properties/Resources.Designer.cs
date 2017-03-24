@@ -59,5 +59,77 @@ namespace T3000.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All files.
+        /// </summary>
+        internal static string AllFiles {
+            get {
+                return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current file: {0}.
+        /// </summary>
+        internal static string CurrentFile {
+            get {
+                return ResourceManager.GetString("CurrentFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exception: {0}{1}.
+        /// </summary>
+        internal static string Exception {
+            get {
+                return ResourceManager.GetString("Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File isn&apos;t open.
+        /// </summary>
+        internal static string FileIsNotOpen {
+            get {
+                return ResourceManager.GetString("FileIsNotOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please open a file.
+        /// </summary>
+        internal static string PleaseOpenFile {
+            get {
+                return ResourceManager.GetString("PleaseOpenFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .PRG files.
+        /// </summary>
+        internal static string PRGFiles {
+            get {
+                return ResourceManager.GetString("PRGFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved: {0}.
+        /// </summary>
+        internal static string Saved {
+            get {
+                return ResourceManager.GetString("Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select an .PRG file.
+        /// </summary>
+        internal static string SelectPRGFile {
+            get {
+                return ResourceManager.GetString("SelectPRGFile", resourceCulture);
+            }
+        }
     }
 }

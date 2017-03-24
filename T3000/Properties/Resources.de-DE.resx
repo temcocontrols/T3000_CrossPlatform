@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AllFiles" xml:space="preserve">
-    <value>All files</value>
+    <value>Alle Dateien</value>
   </data>
   <data name="CurrentFile" xml:space="preserve">
-    <value>Current file: {0}</value>
+    <value>Aktuelle Datei: {0}</value>
   </data>
   <data name="Exception" xml:space="preserve">
-    <value>Exception: {0}{1}</value>
+    <value>Ausnahme: {0}{1}</value>
   </data>
   <data name="FileIsNotOpen" xml:space="preserve">
-    <value>File isn't open</value>
+    <value>Datei ist nicht geöffnet</value>
   </data>
   <data name="PleaseOpenFile" xml:space="preserve">
-    <value>Please open a file</value>
+    <value>Bitte öffnen Sie eine Datei</value>
   </data>
   <data name="PRGFiles" xml:space="preserve">
-    <value>.PRG files</value>
+    <value>.PRG-Dateien</value>
   </data>
   <data name="Saved" xml:space="preserve">
-    <value>Saved: {0}</value>
+    <value>Gerettet: {0}</value>
   </data>
   <data name="SelectPRGFile" xml:space="preserve">
-    <value>Please select an .PRG file</value>
+    <value>Bitte wählen Sie eine .PRG Datei aus</value>
   </data>
 </root>
