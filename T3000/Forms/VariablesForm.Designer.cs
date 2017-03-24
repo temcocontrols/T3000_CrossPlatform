@@ -29,27 +29,39 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
+            this.addButton = new System.Windows.Forms.Button();
             this.prgView = new System.Windows.Forms.DataGridView();
             this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Label = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsManual = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Units = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.addButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.openButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
-            this.statusLabel = new System.Windows.Forms.Label();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.germanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
             this.menuStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // addButton
+            // 
+            resources.ApplyResources(this.addButton, "addButton");
+            this.addButton.Name = "addButton";
+            this.addButton.UseVisualStyleBackColor = true;
             // 
             // prgView
             // 
             this.prgView.AllowUserToAddRows = false;
             this.prgView.AllowUserToDeleteRows = false;
+            resources.ApplyResources(this.prgView, "prgView");
             this.prgView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.prgView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.N,
@@ -57,8 +69,8 @@
             this.Description,
             this.IsManual,
             this.Units});
-            resources.ApplyResources(this.prgView, "prgView");
             this.prgView.Name = "prgView";
+            this.prgView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
             // 
             // N
             // 
@@ -83,16 +95,8 @@
             // 
             // Units
             // 
-            this.Units.ValueType = typeof(PRGReaderLibrary.UnitsEnum);
-            this.Units.DataSource = System.Enum.GetValues(typeof(PRGReaderLibrary.UnitsEnum));
-            this.Units.HeaderText = "Units";
+            resources.ApplyResources(this.Units, "Units");
             this.Units.Name = "Units";
-            // 
-            // addButton
-            // 
-            resources.ApplyResources(this.addButton, "addButton");
-            this.addButton.Name = "addButton";
-            this.addButton.UseVisualStyleBackColor = true;
             // 
             // deleteButton
             // 
@@ -114,31 +118,57 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // statusLabel
-            // 
-            resources.ApplyResources(this.statusLabel, "statusLabel");
-            this.statusLabel.Name = "statusLabel";
-            // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBox1});
+            this.languageMenuItem});
             resources.ApplyResources(this.menuStrip, "menuStrip");
             this.menuStrip.Name = "menuStrip";
             // 
-            // toolStripComboBox1
+            // languageMenuItem
             // 
-            this.toolStripComboBox1.Items.AddRange(new object[] {
-            resources.GetString("toolStripComboBox1.Items"),
-            resources.GetString("toolStripComboBox1.Items1")});
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            resources.ApplyResources(this.toolStripComboBox1, "toolStripComboBox1");
+            this.languageMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.englishToolStripMenuItem,
+            this.germanToolStripMenuItem,
+            this.chineseToolStripMenuItem});
+            this.languageMenuItem.Name = "languageMenuItem";
+            resources.ApplyResources(this.languageMenuItem, "languageMenuItem");
+            // 
+            // englishToolStripMenuItem
+            // 
+            this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            resources.ApplyResources(this.englishToolStripMenuItem, "englishToolStripMenuItem");
+            this.englishToolStripMenuItem.Click += new System.EventHandler(this.englishToolStripMenuItem_Click);
+            // 
+            // germanToolStripMenuItem
+            // 
+            this.germanToolStripMenuItem.Name = "germanToolStripMenuItem";
+            resources.ApplyResources(this.germanToolStripMenuItem, "germanToolStripMenuItem");
+            this.germanToolStripMenuItem.Click += new System.EventHandler(this.germanToolStripMenuItem_Click);
+            // 
+            // chineseToolStripMenuItem
+            // 
+            this.chineseToolStripMenuItem.Name = "chineseToolStripMenuItem";
+            resources.ApplyResources(this.chineseToolStripMenuItem, "chineseToolStripMenuItem");
+            this.chineseToolStripMenuItem.Click += new System.EventHandler(this.chineseToolStripMenuItem_Click);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            resources.ApplyResources(this.statusStrip, "statusStrip");
+            this.statusStrip.Name = "statusStrip";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            resources.ApplyResources(this.statusLabel, "statusLabel");
             // 
             // VariablesForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.statusLabel);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.openButton);
             this.Controls.Add(this.deleteButton);
@@ -150,6 +180,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,14 +194,18 @@
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button openButton;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem languageMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem germanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chineseToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn N;
         private System.Windows.Forms.DataGridViewTextBoxColumn Label;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsManual;
         private System.Windows.Forms.DataGridViewComboBoxColumn Units;
-        private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
     }
 }
 

@@ -117,4 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="addButton.Text" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="deleteButton.Text" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="openButton.Text" xml:space="preserve">
+    <value>打開.PRG文件</value>
+  </data>
+  <data name="saveButton.Text" xml:space="preserve">
+    <value>保留</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="languageMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <data name="languageMenuItem.Text" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="englishToolStripMenuItem.Text" xml:space="preserve">
+    <value>英語</value>
+  </data>
+  <data name="germanToolStripMenuItem.Text" xml:space="preserve">
+    <value>德國</value>
+  </data>
+  <data name="chineseToolStripMenuItem.Text" xml:space="preserve">
+    <value>中國</value>
+  </data>
+  <data name="Label.HeaderText" xml:space="preserve">
+    <value>標籤</value>
+  </data>
+  <data name="Description.HeaderText" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="IsManual.HeaderText" xml:space="preserve">
+    <value>手動</value>
+  </data>
+  <data name="Units.HeaderText" xml:space="preserve">
+    <value>單位</value>
+  </data>
 </root>

@@ -47,7 +47,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\RuntimeLocalizer.cs" />
+    <EmbeddedResource Include="Forms\VariablesForm.de-DE.resx">
+      <DependentUpon>VariablesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm.resx">
+      <DependentUpon>VariablesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VariablesForm.zh.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

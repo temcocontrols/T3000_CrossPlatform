@@ -3,6 +3,7 @@
     using System;
     using System.Windows.Forms;
     using PRGReaderLibrary;
+    using Utilities;
 
     public partial class VariablesForm : Form
     {
@@ -13,6 +14,9 @@
         public VariablesForm()
         {
             InitializeComponent();
+
+            Units.ValueType = typeof(UnitsEnum);
+            Units.DataSource = Enum.GetValues(typeof(UnitsEnum));
         }
 
         private void LoadPrg(string path)
@@ -52,7 +56,7 @@
             Prg.Save(path);
         }
 
-        private void ShowException(Exception exception) => 
+        private void ShowException(Exception exception) =>
             statusLabel.Text = $"Exception: {exception.Message}{exception.StackTrace}";
 
         private void openButton_Click(object sender, EventArgs e)
@@ -97,5 +101,25 @@
                 ShowException(exception);
             }
         }
+
+        private void prgView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //Set IsManual to true, if user changed units
+            if (e.ColumnIndex == prgView.Columns["Units"]?.Index &&
+                e.RowIndex >= 0 && e.RowIndex < prgView.RowCount)
+            {
+                var row = prgView.Rows[e.RowIndex];
+                row.Cells["IsManual"].Value = true;
+            }
+        }
+
+        private void englishToolStripMenuItem_Click(object sender, EventArgs e) =>
+            RuntimeLocalizer.ChangeCulture(this, "en-EU");
+
+        private void germanToolStripMenuItem_Click(object sender, EventArgs e) =>
+            RuntimeLocalizer.ChangeCulture(this, "de-DE");
+
+        private void chineseToolStripMenuItem_Click(object sender, EventArgs e) =>
+            RuntimeLocalizer.ChangeCulture(this, "zh");
     }
 }
