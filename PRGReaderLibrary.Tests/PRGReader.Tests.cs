@@ -2,11 +2,8 @@
 {
     using NUnit.Framework;
     using System;
-    using System.Text;
-    using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-    using System.Security.Cryptography;
 
     [TestFixture]
     public class PRGReader_Tests
@@ -34,57 +31,6 @@
             }
         }
 
-        public string GetFileHash(string path)
-        {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(path))
-                {
-                    return Encoding.Default.GetString(md5.ComputeHash(stream));
-                }
-            }
-        }
-
-        public void FilesIsEquals(string path1, string path2)
-        {
-            Assert.AreEqual(GetFileHash(path1), GetFileHash(path2));
-        }
-
-        [Test]
-        public void StringToFromBytes_Simple()
-        {
-            var expected = "Text";
-            var bytes = expected.ToBytes();
-            var actual = bytes.GetString();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void StringToFromBytes_Cropped()
-        {
-            var expected = "CroppedDescription";
-            var bytes = expected.ToBytes(10);
-            var actual = bytes.GetString(0, 10);
-
-            Assert.AreEqual(expected.Substring(0, 10), actual);
-        }
-
-        [Test]
-        public void StrVariablePointFromToBytes_Simple()
-        {
-            var list = new List<byte>();
-            list.AddRange("Description".ToBytes(21));
-            list.AddRange("Label".ToBytes(9));
-            list.AddRange(new byte[6]);
-
-            var expected = list.ToArray();
-            var point = new StrVariablePoint(expected);
-            var actual = expected.ToBytes();
-
-            Assert.AreEqual(expected, actual);
-        }
-
         [Test]
         public void Read_Asy1()
         {
@@ -93,8 +39,12 @@
 
             var temp = Path.GetTempFileName();
             prg.Save(temp);
+            Assert.IsTrue(FileUtilities.FilesIsEquals(originalFile, temp));
+
             prg = PRG.Load(temp);
-            FilesIsEquals(originalFile, temp);
+            prg.Variables[0].Units = UnitsEnum.CoolHeat;
+            prg.Save(temp);
+            Assert.IsFalse(FileUtilities.FilesIsEquals(originalFile, temp));
 
             Console.WriteLine(prg.PropertiesText());
         }
@@ -148,25 +98,25 @@
             PrintVariables(prg);
 
             var variable1 = prg.Variables[0];
-            Assert.AreEqual("FirstDescription", variable1.Description); //20 bytes  
+            Assert.AreEqual("FirstDescription    \0", variable1.Description); //20 bytes  
             Assert.AreEqual("FirstLabe", variable1.Label); //9 bytes
             //Assert.AreEqual(5000, variable1.Value);
-            Assert.AreEqual(ControlTypeEnum.Automatic, variable1.ControlType);
+            Assert.AreEqual(AutoManualEnum.Automatic, variable1.AutoManual);
             //Assert.AreEqual(false, variable1.IsAnalog);
             //Assert.AreEqual(false, variable1.IsControl);
             Assert.AreEqual(UnitsEnum.degC, variable1.Units);
 
             var variable2 = prg.Variables[1];
-            Assert.AreEqual("SecondDescription", variable2.Description); //20 bytes
+            Assert.AreEqual("SecondDescription   \0", variable2.Description); //20 bytes
             Assert.AreEqual("SecondLab", variable2.Label); //9 bytes
             //Assert.AreEqual(true, variable2.Value);
-            Assert.AreEqual(ControlTypeEnum.Manual, variable2.ControlType);
+            Assert.AreEqual(AutoManualEnum.Manual, variable2.AutoManual);
             //Assert.AreEqual(false, variable2.IsAnalog);
             //Assert.AreEqual(false, variable2.IsControl);
             Assert.AreEqual(UnitsEnum.OffOn, variable2.Units);
 
             var variable3 = prg.Variables[2];
-            Assert.AreEqual("ThirdDescription", variable3.Description); //20 bytes
+            Assert.AreEqual("ThirdDescription    \0", variable3.Description); //20 bytes
             Assert.AreEqual("ThirdLabe", variable3.Label); //9 bytes
 
             //var test = ((int)variable3.Value / 256 / 256 / 256) % 256;
@@ -176,7 +126,7 @@
             //var dateTime = new TimeSpan(one, two, three);
             //Console.WriteLine($"{test}, {one}, {two}, {three}");
             //Assert.AreEqual(false, variable3.Value);
-            Assert.AreEqual(ControlTypeEnum.Automatic, variable3.ControlType);
+            Assert.AreEqual(AutoManualEnum.Automatic, variable3.AutoManual);
             //Assert.AreEqual(false, variable3.IsAnalog);
             //Assert.AreEqual(false, variable3.IsControl);
             Assert.AreEqual(UnitsEnum.Time, variable3.Units);
