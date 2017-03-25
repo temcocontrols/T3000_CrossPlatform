@@ -10,7 +10,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Return correct object for value and units
         /// </summary>
-        public object ValueObject {
+        public object Value {
             get {
                 return DigitalAnalog == DigitalAnalogEnum.Analog
                     ? ValueRaw / 1000.0F
@@ -34,11 +34,11 @@ namespace PRGReaderLibrary
         public string ValueString {
             get {
                 return DigitalAnalog == DigitalAnalogEnum.Analog
-                    ? ((float)ValueObject).ToString("F3")
-                    : $"{ValueObject}";
+                    ? ((float)Value).ToString("F3")
+                    : $"{Value}";
             }
             set {
-                ValueObject = DigitalAnalog == DigitalAnalogEnum.Analog
+                Value = DigitalAnalog == DigitalAnalogEnum.Analog
                     ? float.Parse(value)
                     : (object)(value.Equals("0") ? false : true);
             }
