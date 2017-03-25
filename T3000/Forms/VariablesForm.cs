@@ -19,8 +19,8 @@
             Units.ValueType = typeof(UnitsEnum);
             Units.DataSource = Enum.GetValues(typeof(UnitsEnum));
 
-            AutoManual.ValueType = typeof(ControlTypeEnum);
-            AutoManual.DataSource = Enum.GetValues(typeof(ControlTypeEnum));
+            AutoManual.ValueType = typeof(AutoManualEnum);
+            AutoManual.DataSource = Enum.GetValues(typeof(AutoManualEnum));
 
             statusLabel.Text = Resources.PleaseOpenFile;
         }
@@ -35,9 +35,9 @@
             foreach (var variable in Prg.Variables)
             {
                 prgView.Rows.Add(new object[] {
-                    i + 1, variable.Description, variable.ControlType, variable.Value, variable.Units, variable.Label
+                    i + 1, variable.Description, variable.AutoManual, variable.ValueString, variable.Units, variable.Label
                 });
-                if (variable.ControlType == ControlTypeEnum.Automatic)
+                if (variable.AutoManual == AutoManualEnum.Automatic)
                 {
                     //or set manual if editing
                     prgView.Rows[prgView.RowCount - 1].Cells["Value"].ReadOnly = true;
@@ -57,10 +57,12 @@
                 }
 
                 var variable = Prg.Variables[i];
-                variable.Description = row.Cells["Description"].ToString();
-                variable.Label = row.Cells["Label"].ToString();
-                variable.ControlType = (ControlTypeEnum)row.Cells["AutoManual"].Value;
+                variable.Description = (string)row.Cells["Description"].Value;
+                variable.AutoManual = (AutoManualEnum)row.Cells["AutoManual"].Value;
                 variable.Units = (UnitsEnum)row.Cells["Units"].Value;
+                variable.Label = (string)row.Cells["Label"].Value;
+                //The latter. Depends on the units.
+                variable.ValueString = (string)row.Cells["Value"].Value;
                 ++i;
             }
             Prg.Save(path);
@@ -118,7 +120,7 @@
                 e.RowIndex >= 0 && e.RowIndex < prgView.RowCount)
             {
                 var row = prgView.Rows[e.RowIndex];
-                row.Cells["AutoManual"].Value = ControlTypeEnum.Manual;
+                row.Cells["AutoManual"].Value = AutoManualEnum.Manual;
             }
         }
 
