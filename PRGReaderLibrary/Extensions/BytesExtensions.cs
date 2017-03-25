@@ -6,8 +6,7 @@
     public static class BytesExtensions
     {
         public static string GetString(this byte[] bytes, int offset = 0, int length = 0) =>
-            Encoding.ASCII.GetString(bytes, offset, 
-                length == 0 ? bytes.Length : length).Trim('\0', ' ');
+            Encoding.ASCII.GetString(bytes, offset, length == 0 ? bytes.Length : length);
 
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
             BitConverter.ToBoolean(bytes, offset);
@@ -51,5 +50,8 @@
 
             return newBytes;
         }
+
+        public static bool GetBit(this byte[] bytes, uint bit, int offset = 0) =>
+            bytes[offset].GetBit(bit);
     }
 }

@@ -56,5 +56,18 @@
 
             return bytes;
         }
+
+        public static string ClearBinarySymvols(this string text) =>
+            text.Normalize();
+
+        public static string AddBinarySymvols(this string text, int length)
+        {
+            for (var i = text.Length; i < length; ++i)
+            {
+                text += '\0';
+            }
+
+            return text;
+        }
     }
 }
