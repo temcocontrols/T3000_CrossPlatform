@@ -413,8 +413,8 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                //bytes.AddRange(Variables[j].ToBytes());
-                                //break;
+                                bytes.AddRange(Variables[j].ToBytes());
+                                break;
 
                             default:
                                 bytes.AddRange(data);

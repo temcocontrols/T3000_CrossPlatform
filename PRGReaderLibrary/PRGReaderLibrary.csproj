@@ -41,11 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ControlTypeEnum.cs" />
+    <Compile Include="Enums\ControlEnum.cs" />
+    <Compile Include="Enums\DigitalAnalogEnum.cs" />
+    <Compile Include="Enums\AutoManualEnum.cs" />
     <Compile Include="Enums\TypesEnum.cs" />
     <Compile Include="Enums\BlocksEnum.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
+    <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="PRGWriter.cs" />
     <Compile Include="Types\AlarmPoint.cs" />

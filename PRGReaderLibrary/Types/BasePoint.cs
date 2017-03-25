@@ -7,31 +7,47 @@ namespace PRGReaderLibrary
     /// </summary>
     public class BasePoint
     {
+        public string Description
+        {
+            get { return DescriptionRaw.ClearBinarySymvols(); }
+            set { DescriptionRaw = value.AddBinarySymvols(21); }
+        }
+
+        public string Label
+        {
+            get { return LabelRaw.ClearBinarySymvols(); }
+            set { LabelRaw = value.AddBinarySymvols(9); }
+        }
+
+        public BasePoint() {}
+
+        #region Binary data
+
         /// <summary>
         /// Size: 21 bytes
         /// </summary>
-        public string Description { get; set; }
+        protected string DescriptionRaw { get; set; }
 
         /// <summary>
         /// Size: 9 bytes
         /// </summary>
-        public string Label { get; set; }
-
-        public BasePoint() {}
+        protected string LabelRaw { get; set; }
 
         public BasePoint(byte[] bytes, int offset = 0)
         {
-            Description = bytes.GetString(0 + offset, 21);
-            Label = bytes.GetString(21 + offset, 9);
+            DescriptionRaw = bytes.GetString(0 + offset, 21);
+            LabelRaw = bytes.GetString(21 + offset, 9);
         }
 
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.AddRange(Description.ToBytes(21));
-            bytes.AddRange(Label.ToBytes(9));
+            bytes.AddRange(DescriptionRaw.ToBytes(21));
+            bytes.AddRange(LabelRaw.ToBytes(9));
 
             return bytes.ToArray();
         }
+
+        #endregion
     }
 }
