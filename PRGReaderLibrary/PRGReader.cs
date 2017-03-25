@@ -17,7 +17,9 @@
                 throw new ArgumentException($"File not exists: {path}", nameof(path));
             }
 
-            return PRG.FromBytes(File.ReadAllBytes(path));
+            var bytes = File.ReadAllBytes(path);
+            //Console.WriteLine(bytes.GetString());
+            return PRG.FromBytes(bytes);
         }
     }
 }

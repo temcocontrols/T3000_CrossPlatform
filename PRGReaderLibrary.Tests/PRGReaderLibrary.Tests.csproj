@@ -53,6 +53,9 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="TestFiles\90185.prg" />
+    <None Include="TestFiles\90880.prg" />
+    <None Include="TestFiles\97910.prg" />
     <None Include="TestFiles\asy1.prg" />
     <None Include="TestFiles\balsam2.prg" />
     <None Include="TestFiles\panel1.prg" />

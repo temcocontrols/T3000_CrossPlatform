@@ -116,6 +116,22 @@
         }
 
         [Test]
+        public void Read_90185()
+        {
+            //Unsupported
+            try
+            {
+                var prg = PRG.Load(GetFullPath(@"90185.prg"));
+
+                Console.WriteLine(prg.PropertiesText());
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+        }
+
+        [Test]
         public void Read_Panel1()
         {
             var prg = PRG.Load(GetFullPath("panel1.prg"));
@@ -134,16 +150,16 @@
             var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription", variable1.Description); //20 bytes  
             Assert.AreEqual("FirstLabe", variable1.Label); //9 bytes
-            Assert.AreEqual(false, variable1.Value);
+            //Assert.AreEqual(5000, variable1.Value);
             Assert.AreEqual(ControlTypeEnum.Automatic, variable1.ControlType);
             //Assert.AreEqual(false, variable1.IsAnalog);
             //Assert.AreEqual(false, variable1.IsControl);
-            Assert.AreEqual(UnitsEnum.GPM, variable1.Units);
+            Assert.AreEqual(UnitsEnum.degC, variable1.Units);
 
             var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription", variable2.Description); //20 bytes
             Assert.AreEqual("SecondLab", variable2.Label); //9 bytes
-            Assert.AreEqual(true, variable2.Value);
+            //Assert.AreEqual(true, variable2.Value);
             Assert.AreEqual(ControlTypeEnum.Manual, variable2.ControlType);
             //Assert.AreEqual(false, variable2.IsAnalog);
             //Assert.AreEqual(false, variable2.IsControl);
@@ -152,11 +168,18 @@
             var variable3 = prg.Variables[2];
             Assert.AreEqual("ThirdDescription", variable3.Description); //20 bytes
             Assert.AreEqual("ThirdLabe", variable3.Label); //9 bytes
-            Assert.AreEqual(false, variable3.Value);
+
+            //var test = ((int)variable3.Value / 256 / 256 / 256) % 256;
+            //var one = ((int) variable3.Value / 256 / 256) % 256;
+            //var two = ((int)variable3.Value / 256) % 256;
+            //var three = (int)variable3.Value % 256;
+            //var dateTime = new TimeSpan(one, two, three);
+            //Console.WriteLine($"{test}, {one}, {two}, {three}");
+            //Assert.AreEqual(false, variable3.Value);
             Assert.AreEqual(ControlTypeEnum.Automatic, variable3.ControlType);
             //Assert.AreEqual(false, variable3.IsAnalog);
             //Assert.AreEqual(false, variable3.IsControl);
-            Assert.AreEqual(UnitsEnum.Custom1, variable3.Units);
+            Assert.AreEqual(UnitsEnum.Time, variable3.Units);
 
             Console.WriteLine(prg.PropertiesText());
         }
