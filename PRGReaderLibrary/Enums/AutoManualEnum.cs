@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum ControlTypeEnum
+    public enum AutoManualEnum
     {
         Automatic,
         Manual
