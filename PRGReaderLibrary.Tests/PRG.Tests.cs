@@ -40,12 +40,12 @@
             }
 
             prg.Save(temp);
-            Assert.IsTrue(FileUtilities.FilesIsEquals(originalFile, temp));
-
+            FileAssert.AreEqual(originalFile, temp);
+            
             prg = PRG.Load(temp);
             prg.Variables[0].ValueString = "9998.8999";
             prg.Save(temp);
-            Assert.IsFalse(FileUtilities.FilesIsEquals(originalFile, temp));
+            FileAssert.AreNotEqual(originalFile, temp);
             
             Console.WriteLine(prg.PropertiesText());
         }
