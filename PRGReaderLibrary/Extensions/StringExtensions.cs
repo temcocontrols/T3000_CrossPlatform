@@ -58,7 +58,7 @@
         }
 
         public static string ClearBinarySymvols(this string text) =>
-            text.Normalize();
+            text.TrimEnd('\0');
 
         public static string AddBinarySymvols(this string text, int length)
         {
