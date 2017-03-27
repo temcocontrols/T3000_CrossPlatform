@@ -10,6 +10,17 @@
         public static bool IsCurrentVersion(byte[] bytes) =>
             bytes.ToByte(0) == 0x55 &&
             bytes.ToByte(1) == 0xff &&
-            true; //bytes.ToByte(2) == 0x06; it is version
+            bytes.ToByte(2) == 0x06; //version
+
+        public static FileVersionEnum GetFileVersion(byte[] bytes)
+        {
+            if (IsCurrentVersion(bytes))
+                return FileVersionEnum.Current;
+
+            if (IsDosVersion(bytes))
+                return FileVersionEnum.Dos;
+
+            return FileVersionEnum.Unsupported;
+        }
     }
 }

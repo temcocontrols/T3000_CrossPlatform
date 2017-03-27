@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\CurrentVersionConstants.cs" />
+    <Compile Include="Enums\FileVersionEnum.cs" />
     <Compile Include="Enums\ControlEnum.cs" />
     <Compile Include="Enums\DigitalAnalogEnum.cs" />
     <Compile Include="Enums\AutoManualEnum.cs" />

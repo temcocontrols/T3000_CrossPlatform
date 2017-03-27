@@ -14,8 +14,7 @@
         public byte[] Reserved { get; set; }
         public long Length { get; set; }
         public long Coef { get; set; }
-        public bool IsDosVersion { get; set; }
-        public bool IsCurrentVersion { get; set; }
+        public FileVersionEnum FileVersion { get; set; }
         public IList<byte[]> Infos { get; set; } = new List<byte[]>();
         public IList<PrgData> PrgDatas { get; set; } = new List<PrgData>();
         public IList<byte[]> GrpDatas { get; set; } = new List<byte[]>();
@@ -170,7 +169,7 @@
         
         public byte[] RawData { get; protected set; }
 
-        private int LoadDataFromDosFormat(byte[] bytes)
+        private void FromDosFormat(byte[] bytes)
         {
             DateTime = bytes.GetString(0, 26);
             Signature = bytes.GetString(26, 4);
@@ -194,31 +193,8 @@
                 (((Length * 1000L) % 20000L) * 1000L) / 20000L;
             //float coef = (float)length/20.;
 
-            //return offset
-            return 70;
-        }
-
-        private int LoadDataFromCurrentFormat(byte[] bytes)
-        {
-            //return offset
-            return 3;
-        }
-
-        public Prg(byte[] bytes)
-        {
-            IsDosVersion = PrgUtilities.IsDosVersion(bytes);
-            IsCurrentVersion = PrgUtilities.IsCurrentVersion(bytes);
-            if (!IsDosVersion && !IsCurrentVersion)
-            {
-                throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
-{bytes.GetString(0, Math.Min(100, bytes.Length))}");
-            }
-
-            var offset = IsDosVersion 
-                ? LoadDataFromDosFormat(bytes)
-                : LoadDataFromCurrentFormat(bytes);
-
             //Main block
+            var offset = 70;
             var l = MaxConstants.MAX_TBL_BANK;
             var maxPrg = 0;
             var maxGrp = 0;
@@ -239,7 +215,7 @@
                     if (Version >= 230 && MiniVersion > 0)
                         continue;
                 }
-                
+
                 if (i == BlocksEnum.ALARMM)
                 {
                     if (Version < 216)
@@ -283,7 +259,7 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                Variables.Add(new StrVariablePoint(data));
+                                Variables.Add(new StrVariablePoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -376,7 +352,50 @@
             RawData = bytes;
         }
 
-        public byte[] ToBytes()
+        private void FromCurrentFormat(byte[] bytes)
+        {
+            Version = bytes.ToByte(3);
+            var offset = 3;
+            offset += CurrentVersionConstants.BAC_INPUT_ITEM_COUNT*CurrentVersionConstants.BAC_INPUT_ITEM_SIZE;
+            offset += CurrentVersionConstants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionConstants.BAC_OUTPUT_ITEM_SIZE;
+
+            //Get all variables
+            for (var i = 0; i < CurrentVersionConstants.BAC_VARIABLE_ITEM_COUNT; ++i)
+            {
+                var data = bytes.ToBytes(offset, CurrentVersionConstants.BAC_VARIABLE_ITEM_SIZE);
+                offset += CurrentVersionConstants.BAC_VARIABLE_ITEM_SIZE;
+
+                Variables.Add(new StrVariablePoint(data, 0, FileVersion));
+            }
+
+            RawData = bytes;
+        }
+
+        public Prg(byte[] bytes)
+        {
+            FileVersion = PrgUtilities.GetFileVersion(bytes);
+            if (FileVersion == FileVersionEnum.Unsupported)
+            {
+                throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
+{bytes.GetString(0, Math.Min(100, bytes.Length))}");
+            }
+
+            switch (FileVersion)
+            {
+                case FileVersionEnum.Dos:
+                    FromDosFormat(bytes);
+                    break;
+
+                case FileVersionEnum.Current:
+                    FromCurrentFormat(bytes);
+                    break;
+
+                default:
+                    throw new NotImplementedException("This version not implemented");
+            }
+        }
+
+        public byte[] ToDosFormat()
         {
             var bytes = new List<byte>();
 
@@ -436,7 +455,7 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                bytes.AddRange(Variables[j].ToBytes());
+                                bytes.AddRange(Variables[j].ToBytes(FileVersion));
                                 break;
 
                             default:
@@ -451,6 +470,37 @@
             bytes.AddRange(RawData.ToBytes(bytes.Count, RawData.Length - bytes.Count));
 
             return bytes.ToArray();
+        }
+
+        public byte[] ToCurrentFormat()
+        {
+            var bytes = new List<byte>();
+            
+            bytes.AddRange(RawData.ToBytes(0, 3));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionConstants.BAC_INPUT_ITEM_COUNT * CurrentVersionConstants.BAC_INPUT_ITEM_SIZE));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionConstants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionConstants.BAC_OUTPUT_ITEM_SIZE));
+            foreach (var variable in Variables)
+            {
+                bytes.AddRange(variable.ToBytes(FileVersion));
+            }
+            bytes.AddRange(RawData.ToBytes(bytes.Count));
+
+            return bytes.ToArray();
+        }
+
+        public byte[] ToBytes()
+        {
+            switch (FileVersion)
+            {
+                case FileVersionEnum.Dos:
+                    return ToDosFormat();
+
+                case FileVersionEnum.Current:
+                    return ToCurrentFormat();
+
+                default:
+                    throw new NotImplementedException("This version not implemented");
+            }
         }
 
         #endregion

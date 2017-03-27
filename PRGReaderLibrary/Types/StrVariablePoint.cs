@@ -1,5 +1,6 @@
 namespace PRGReaderLibrary
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -105,23 +106,71 @@ namespace PRGReaderLibrary
         /// </summary>
         protected byte UnitsRaw { get; set; }
 
-        public StrVariablePoint(byte[] bytes, int offset = 0) : base(bytes, offset)
+        public StrVariablePoint(byte[] bytes, int offset = 0, FileVersionEnum version = FileVersionEnum.Current) : base(bytes, offset)
         {
-            ValueRaw = bytes.ToUInt32(30 + offset);
-            AutoManualRaw = bytes.GetBit(0, 34 + offset);
-            DigitalAnalogRaw = bytes.GetBit(1, 34 + offset);
-            ControlRaw = bytes.GetBit(2, 34 + offset);
-            UnitsRaw = bytes[35 + offset];
+            switch (version)
+            {
+                case FileVersionEnum.Dos:
+                    ValueRaw = bytes.ToUInt32(30 + offset);
+                    AutoManualRaw = bytes.GetBit(0, 34 + offset);
+                    DigitalAnalogRaw = bytes.GetBit(1, 34 + offset);
+                    ControlRaw = bytes.GetBit(2, 34 + offset);
+                    UnitsRaw = bytes[35 + offset];
+                    break;
+
+                case FileVersionEnum.Current:
+                    /* For debug
+                    Console.WriteLine(bytes.GetString(0 + offset, 21));
+                    Console.WriteLine(bytes.GetString(21 + offset, 9));
+                    Console.WriteLine(bytes.ToUInt32(30 + offset));
+                    Console.WriteLine(bytes.ToByte(34 + offset));
+                    Console.WriteLine(bytes.ToByte(35 + offset));
+                    Console.WriteLine(bytes.ToByte(36 + offset));
+                    Console.WriteLine(bytes.ToByte(37 + offset));
+                    Console.WriteLine(bytes.ToByte(38 + offset));
+                    Console.WriteLine();
+                    */
+                    ValueRaw = bytes.ToUInt32(30 + offset);
+                    AutoManualRaw = bytes.ToByte(34 + offset) > 0;
+                    DigitalAnalogRaw = bytes.ToByte(35 + offset) > 0;
+                    ControlRaw = bytes.ToByte(36 + offset) > 0;
+                    //37 unused
+                    UnitsRaw = DigitalAnalogRaw
+                        ? bytes[38 + offset]
+                        : (byte)(bytes[38 + offset] + 100);
+                    break;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
         }
 
-        public new byte[] ToBytes()
+        public byte[] ToBytes(FileVersionEnum version = FileVersionEnum.Current)
         {
             var bytes = new List<byte>();
 
-            bytes.AddRange(base.ToBytes());
-            bytes.AddRange(ValueRaw.ToBytes());
-            bytes.Add(new[]{ AutoManualRaw, DigitalAnalogRaw, ControlRaw }.ToBits());
-            bytes.Add(UnitsRaw);
+            switch (version)
+            {
+                case FileVersionEnum.Dos:
+                    bytes.AddRange(base.ToBytes());
+                    bytes.AddRange(ValueRaw.ToBytes());
+                    bytes.Add(new[] { AutoManualRaw, DigitalAnalogRaw, ControlRaw }.ToBits());
+                    bytes.Add(UnitsRaw);
+                    break;
+
+                case FileVersionEnum.Current:
+                    bytes.AddRange(base.ToBytes());
+                    bytes.AddRange(ValueRaw.ToBytes());
+                    bytes.Add(AutoManualRaw.ToByte());
+                    bytes.Add(DigitalAnalogRaw.ToByte());
+                    bytes.Add(ControlRaw.ToByte());
+                    bytes.Add(2); //Unused byte WTF 2??
+                    bytes.Add(DigitalAnalogRaw ? UnitsRaw : (byte)(UnitsRaw - 100));
+                    break;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
 
             return bytes.ToArray();
         }

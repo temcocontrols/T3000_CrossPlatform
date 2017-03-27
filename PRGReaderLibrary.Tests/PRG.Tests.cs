@@ -34,12 +34,15 @@
 
             prg.Save(temp);
             FileAssert.AreEqual(originalFile, temp);
-            
-            prg = Prg.Load(temp);
-            prg.Variables[0].ValueString = "9998.8999";
-            prg.Save(temp);
-            FileAssert.AreNotEqual(originalFile, temp);
-            
+
+            if (prg.Variables.Count > 0)
+            {
+                prg = Prg.Load(temp);
+                prg.Variables[0].ValueString = "9998.8999";
+                prg.Save(temp);
+                FileAssert.AreNotEqual(originalFile, temp);
+            }
+
             Console.WriteLine(prg.PropertiesText());
         }
 
@@ -160,7 +163,7 @@
         [Test]
         public void Prg_BTUMeter()
         {
-            UnsupportedTest("BTUMeter.prg");
+            BaseTest("BTUMeter.prg");
         }
 
         [Test]

@@ -19,7 +19,7 @@
         }
 
         [Test]
-        public void StrVariablePointFromToBytes_Simple()
+        public void StrVariablePoint_Dos_FromToBytes()
         {
             var list = new List<byte>();
             list.AddRange("Description".ToBytes(21));
@@ -29,7 +29,7 @@
             list.Add(1);
 
             var expected = list.ToArray();
-            var point = new StrVariablePoint(expected);
+            var point = new StrVariablePoint(expected, 0, FileVersionEnum.Dos);
             var actual = expected.ToBytes();
 
             BytesAssert.AreEqual(expected, actual);
@@ -46,7 +46,103 @@
             point2.ValueString = "5.000";
 
             StrVariableAreEqual(point2, point);
-            BytesAssert.AreEqual(point2.ToBytes(), point.ToBytes());
+            BytesAssert.AreEqual(point2.ToBytes(FileVersionEnum.Dos), point.ToBytes(FileVersionEnum.Dos));
+        }
+
+        [Test]
+        public void StrVariablePoint_Current_Digital()
+        {
+            var version = FileVersionEnum.Current;
+
+            var list = new List<byte>();
+            list.AddRange("START TEST FLAG\0\0\0\0\0\0INIT\0\0\0\0\0".ToBytes());
+            list.AddRange(((uint)0).ToBytes());//Value
+            list.Add(0);//AutoManual
+            list.Add(0);//DigitalAnalog
+            list.Add(0);//Control
+            list.Add(2);//Unused
+            list.Add(1);//Units
+
+            var actual = new StrVariablePoint(list.ToArray(), 0, version);
+
+            var expected = new StrVariablePoint();
+            expected.Description = "START TEST FLAG";
+            expected.Label = "INIT";
+            expected.AutoManual = AutoManualEnum.Automatic;
+            expected.DigitalAnalog = DigitalAnalogEnum.Digital;
+            expected.Control = ControlEnum.Off;
+            expected.Units = UnitsEnum.OffOn;
+
+            //The latter. Depends on the units.
+            expected.ValueString = "0";
+
+            StrVariableAreEqual(expected, actual);
+            BytesAssert.AreEqual(expected.ToBytes(version), actual.ToBytes(version));
+            BytesAssert.AreEqual(list.ToArray(), expected.ToBytes(version));
+        }
+
+        [Test]
+        public void StrVariablePoint_Current_Analog()
+        {
+            var version = FileVersionEnum.Current;
+
+            var list = new List<byte>();
+            list.AddRange("PUMP SPEED\0\0\0\0\0\0\0\0\0\0\0PMPSPEED\0".ToBytes());
+            list.AddRange(((uint)40000).ToBytes());//Value
+            list.Add(0);//AutoManual
+            list.Add(1);//DigitalAnalog
+            list.Add(0);//Control
+            list.Add(2);//Unused
+            list.Add(22);//Units
+
+            var actual = new StrVariablePoint(list.ToArray(), 0, version);
+
+            var expected = new StrVariablePoint();
+            expected.Description = "PUMP SPEED";
+            expected.Label = "PMPSPEED";
+            expected.AutoManual = AutoManualEnum.Automatic;
+            expected.DigitalAnalog = DigitalAnalogEnum.Analog;
+            expected.Control = ControlEnum.Off;
+            expected.Units = UnitsEnum.Percents;
+
+            //The latter. Depends on the units.
+            expected.ValueString = "40.000";
+
+            StrVariableAreEqual(expected, actual);
+            BytesAssert.AreEqual(expected.ToBytes(version), actual.ToBytes(version));
+            BytesAssert.AreEqual(list.ToArray(), expected.ToBytes(version));
+        }
+
+        [Test]
+        public void StrVariablePoint_Current_Time()
+        {
+            var version = FileVersionEnum.Current;
+
+            var list = new List<byte>();
+            list.AddRange("TEST RUN TIMER\0\0\0\0\0\0\0TESTTIM\0\0".ToBytes());
+            list.AddRange(((uint)13355105).ToBytes());//Value
+            list.Add(0);//AutoManual
+            list.Add(1);//DigitalAnalog
+            list.Add(1);//Control
+            list.Add(2);//Unused
+            list.Add(20);//Units
+
+            var actual = new StrVariablePoint(list.ToArray(), 0, version);
+
+            var expected = new StrVariablePoint();
+            expected.Description = "TEST RUN TIMERD";
+            expected.Label = "TESTTIM";
+            expected.AutoManual = AutoManualEnum.Automatic;
+            expected.DigitalAnalog = DigitalAnalogEnum.Analog;
+            expected.Control = ControlEnum.On;
+            expected.Units = UnitsEnum.Time;
+
+            //The latter. Depends on the units.
+            //expected.ValueString = "03:45:09";
+
+            //StrVariableAreEqual(expected, actual);
+            //BytesAssert.AreEqual(expected.ToBytes(version), actual.ToBytes(version));
+            //BytesAssert.AreEqual(list.ToArray(), expected.ToBytes(version));
         }
     }
 }

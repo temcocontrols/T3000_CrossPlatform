@@ -15,6 +15,8 @@
         public static byte[] ToBytes(this bool integer) => BitConverter.GetBytes(integer);
         public static byte ToBit(this bool boolean, uint bit) =>
             boolean ? (byte)Math.Pow(2, bit) : (byte)0;
+        public static byte ToByte(this bool boolean) =>
+            boolean ? (byte)1 : (byte)0;
 
         public static byte ToBits(this bool[] booleans, uint startBit = 0U)
         {
