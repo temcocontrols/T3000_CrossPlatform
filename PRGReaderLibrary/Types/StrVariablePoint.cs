@@ -14,14 +14,26 @@ namespace PRGReaderLibrary
         public object Value {
             get {
                 return DigitalAnalog == DigitalAnalogEnum.Analog
-                    ? ValueRaw / 1000.0F
+                    ? Units == UnitsEnum.Time
+                        ? (object)new TimeSpan(0,
+                            (int)ValueRaw / 1000 / 60 / 60 % 24,
+                            (int)ValueRaw / 1000 / 60 % 60,
+                            (int)ValueRaw / 1000 % 60,
+                            (int)ValueRaw % 1000
+                            )
+                        : ValueRaw / 1000.0F
                     : ValueRaw;
             }
             set {
                 var type = value.GetType();
                 if (type == typeof(bool))
                 {
-                    ValueRaw = ((bool)value) ? 1U : 0U;
+                    ValueRaw = ((bool)value).ToByte();
+                }
+                else if (type == typeof(TimeSpan))
+                {
+                    var time = ((TimeSpan) value);
+                    ValueRaw = (uint)((time.Hours*60*60 + time.Minutes*60 + time.Seconds)*1000 + time.Milliseconds);
                 }
                 else
                 {
@@ -35,12 +47,16 @@ namespace PRGReaderLibrary
         public string ValueString {
             get {
                 return DigitalAnalog == DigitalAnalogEnum.Analog
-                    ? ((float)Value).ToString("F3")
+                    ? Units == UnitsEnum.Time
+                        ? ((TimeSpan)Value).ToString(@"hh\:mm\:ss")
+                        : ((float)Value).ToString("F3")
                     : $"{Value}";
             }
             set {
                 Value = DigitalAnalog == DigitalAnalogEnum.Analog
-                    ? float.Parse(value)
+                    ? Units == UnitsEnum.Time
+                        ? (object)TimeSpan.Parse(value)
+                        : float.Parse(value)
                     : (object)(value.Equals("0") ? false : true);
             }
         }
@@ -99,7 +115,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 5 bit
         /// </summary>
-        //protected byte Unused { get; set; }
+        protected byte UnusedRaw { get; set; } = 2; //TODO: WTF
 
         /// <summary>
         /// Size: 1 byte
@@ -122,19 +138,19 @@ namespace PRGReaderLibrary
                     /* For debug
                     Console.WriteLine(bytes.GetString(0 + offset, 21));
                     Console.WriteLine(bytes.GetString(21 + offset, 9));
-                    Console.WriteLine(bytes.ToUInt32(30 + offset));
+                    Console.WriteLine(bytes.ToInt32(30 + offset));
                     Console.WriteLine(bytes.ToByte(34 + offset));
                     Console.WriteLine(bytes.ToByte(35 + offset));
                     Console.WriteLine(bytes.ToByte(36 + offset));
                     Console.WriteLine(bytes.ToByte(37 + offset));
                     Console.WriteLine(bytes.ToByte(38 + offset));
                     Console.WriteLine();
-                    */
+                    //*/
                     ValueRaw = bytes.ToUInt32(30 + offset);
                     AutoManualRaw = bytes.ToByte(34 + offset) > 0;
                     DigitalAnalogRaw = bytes.ToByte(35 + offset) > 0;
                     ControlRaw = bytes.ToByte(36 + offset) > 0;
-                    //37 unused
+                    UnusedRaw = bytes.ToByte(37 + offset);
                     UnitsRaw = DigitalAnalogRaw
                         ? bytes[38 + offset]
                         : (byte)(bytes[38 + offset] + 100);
@@ -164,7 +180,7 @@ namespace PRGReaderLibrary
                     bytes.Add(AutoManualRaw.ToByte());
                     bytes.Add(DigitalAnalogRaw.ToByte());
                     bytes.Add(ControlRaw.ToByte());
-                    bytes.Add(2); //Unused byte WTF 2??
+                    bytes.Add(UnusedRaw); //WTF 2??
                     bytes.Add(DigitalAnalogRaw ? UnitsRaw : (byte)(UnitsRaw - 100));
                     break;
 

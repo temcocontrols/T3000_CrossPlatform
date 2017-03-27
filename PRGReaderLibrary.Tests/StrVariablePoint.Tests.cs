@@ -19,17 +19,19 @@
         }
 
         [Test]
-        public void StrVariablePoint_Dos_FromToBytes()
+        public void StrVariablePoint_Dos_Analog()
         {
+            var version = FileVersionEnum.Dos;
+
             var list = new List<byte>();
             list.AddRange("Description".ToBytes(21));
             list.AddRange("Label".ToBytes(9));
             list.AddRange(((uint)5000).ToBytes());
-            list.Add(4 + 2 + 1);
-            list.Add(1);
+            list.Add(new [] {true,true,true}.ToBits());
+            list.Add((byte)UnitsEnum.degC);
 
             var expected = list.ToArray();
-            var point = new StrVariablePoint(expected, 0, FileVersionEnum.Dos);
+            var point = new StrVariablePoint(expected, 0, version);
             var actual = expected.ToBytes();
 
             BytesAssert.AreEqual(expected, actual);
@@ -46,7 +48,7 @@
             point2.ValueString = "5.000";
 
             StrVariableAreEqual(point2, point);
-            BytesAssert.AreEqual(point2.ToBytes(FileVersionEnum.Dos), point.ToBytes(FileVersionEnum.Dos));
+            BytesAssert.AreEqual(point2.ToBytes(version), point.ToBytes(version));
         }
 
         [Test]
@@ -120,7 +122,7 @@
 
             var list = new List<byte>();
             list.AddRange("TEST RUN TIMER\0\0\0\0\0\0\0TESTTIM\0\0".ToBytes());
-            list.AddRange(((uint)13355105).ToBytes());//Value
+            list.AddRange(((uint)13509000).ToBytes());//Value
             list.Add(0);//AutoManual
             list.Add(1);//DigitalAnalog
             list.Add(1);//Control
@@ -130,7 +132,7 @@
             var actual = new StrVariablePoint(list.ToArray(), 0, version);
 
             var expected = new StrVariablePoint();
-            expected.Description = "TEST RUN TIMERD";
+            expected.Description = "TEST RUN TIMER";
             expected.Label = "TESTTIM";
             expected.AutoManual = AutoManualEnum.Automatic;
             expected.DigitalAnalog = DigitalAnalogEnum.Analog;
@@ -138,11 +140,11 @@
             expected.Units = UnitsEnum.Time;
 
             //The latter. Depends on the units.
-            //expected.ValueString = "03:45:09";
+            expected.ValueString = "03:45:09";
 
-            //StrVariableAreEqual(expected, actual);
-            //BytesAssert.AreEqual(expected.ToBytes(version), actual.ToBytes(version));
-            //BytesAssert.AreEqual(list.ToArray(), expected.ToBytes(version));
+            StrVariableAreEqual(expected, actual);
+            BytesAssert.AreEqual(expected.ToBytes(version), actual.ToBytes(version));
+            BytesAssert.AreEqual(list.ToArray(), expected.ToBytes(version));
         }
     }
 }
