@@ -3,9 +3,9 @@
     using System;
     using System.IO;
 
-    public static class PRGWriter
+    public static class PrgWriter
     {
-        public static void Write(PRG prg, string path)
+        public static void Write(Prg prg, string path)
         {
             if (prg == null)
             {

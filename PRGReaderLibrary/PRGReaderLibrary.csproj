@@ -50,7 +50,7 @@
     <Compile Include="Constants\MaxConstants.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
-    <Compile Include="PRGWriter.cs" />
+    <Compile Include="PrgWriter.cs" />
     <Compile Include="Types\AlarmPoint.cs" />
     <Compile Include="Types\AlarmSetPoint.cs" />
     <Compile Include="Types\AnRangeForm.cs" />
@@ -80,10 +80,10 @@
     <Compile Include="Types\T3000Point.cs" />
     <Compile Include="Enums\UnitsEnum.cs" />
     <Compile Include="Types\PanelInfo1.cs" />
-    <Compile Include="PRG.cs" />
-    <Compile Include="PRGData.cs" />
-    <Compile Include="PRGReader.cs" />
-    <Compile Include="PRGType.cs" />
+    <Compile Include="Prg.cs" />
+    <Compile Include="PrgData.cs" />
+    <Compile Include="PrgReader.cs" />
+    <Compile Include="PrgType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\TblPoint.cs" />
     <Compile Include="Types\UnitsElement.cs" />

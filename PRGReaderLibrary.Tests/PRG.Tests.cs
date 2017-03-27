@@ -11,7 +11,7 @@
         public void BaseTest(string name)
         {
             var originalFile = TestUtilities.GetFullPathForTestFile(name);
-            var prg = PRG.Load(originalFile);
+            var prg = Prg.Load(originalFile);
             PrintVariables(prg);
 
             var temp = Path.GetTempFileName();
@@ -35,7 +35,7 @@
             prg.Save(temp);
             FileAssert.AreEqual(originalFile, temp);
             
-            prg = PRG.Load(temp);
+            prg = Prg.Load(temp);
             prg.Variables[0].ValueString = "9998.8999";
             prg.Save(temp);
             FileAssert.AreNotEqual(originalFile, temp);
@@ -47,14 +47,14 @@
         {
             var exception = Assert.Catch(() =>
             {
-                var prg = PRG.Load(TestUtilities.GetFullPathForTestFile(name));
+                var prg = Prg.Load(TestUtilities.GetFullPathForTestFile(name));
 
                 Console.WriteLine(prg.PropertiesText());
             });
             Console.WriteLine(exception.Message);
         }
 
-        public void PrintVariables(PRG prg)
+        public void PrintVariables(Prg prg)
         {
             foreach (var var in prg.Variables)
             {
@@ -98,7 +98,7 @@
         public void PRG_TestVariables()
         {
             BaseTest("testvariables.prg");
-            var prg = PRG.Load(TestUtilities.GetFullPathForTestFile("testvariables.prg"));
+            var prg = Prg.Load(TestUtilities.GetFullPathForTestFile("testvariables.prg"));
 
             PrintVariables(prg);
 

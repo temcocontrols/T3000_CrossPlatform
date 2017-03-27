@@ -3,20 +3,20 @@
     using System;
     using System.Collections.Generic;
 
-    public class PRGData
+    public class PrgData
     {
         public int Length { get; set; }
         public ushort Size1 { get; set; }
         public string Data1 { get; set; }
         public ushort TypesSize { get; set; }
-        public IList<PRGType> Types { get; set; } = new List<PRGType>();
+        public IList<PrgType> Types { get; set; } = new List<PrgType>();
         public ushort Time { get; set; }
         public ushort IndexRemoteLocalList { get; set; }
         public bool IsEmpty => Size1 == 0;
 
-        public static PRGData FromBytes(byte[] bytes)
+        public static PrgData FromBytes(byte[] bytes)
         {
-            var prgData = new PRGData();
+            var prgData = new PrgData();
             if (bytes == null || bytes.Length == 0)
             {
                 return prgData;
@@ -46,7 +46,7 @@
 
             for (var j = 0; j < typesSize;)
             {
-                var type = new PRGType();
+                var type = new PrgType();
                 type.Size = 1;
                 var typeFromData = (TypesEnum)(bytes[index + j]);
                 switch (typeFromData)

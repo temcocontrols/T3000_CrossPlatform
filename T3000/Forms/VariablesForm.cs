@@ -8,7 +8,7 @@
 
     public partial class VariablesForm : Form
     {
-        private PRG Prg { get; set; }
+        private Prg Prg { get; set; }
         private string PrgPath { get; set; }
         private bool IsOpened => prgView.Enabled;
 
@@ -28,7 +28,7 @@
         private void LoadPrg(string path)
         {
             PrgPath = path;
-            Prg = PRG.Load(path);
+            Prg = Prg.Load(path);
 
             prgView.Rows.Clear();
             var i = 0;

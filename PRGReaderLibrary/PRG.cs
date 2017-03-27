@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class PRG
+    public class Prg
     {
         public string DateTime { get; set; }
         public string Signature { get; set; }
@@ -14,9 +14,10 @@
         public byte[] Reserved { get; set; }
         public long Length { get; set; }
         public long Coef { get; set; }
-        public bool IsDosVersion { get; set; } = false;
+        public bool IsDosVersion { get; set; }
+        public bool IsCurrentVersion { get; set; }
         public IList<byte[]> Infos { get; set; } = new List<byte[]>();
-        public IList<PRGData> PrgDatas { get; set; } = new List<PRGData>();
+        public IList<PrgData> PrgDatas { get; set; } = new List<PrgData>();
         public IList<byte[]> GrpDatas { get; set; } = new List<byte[]>();
 
         /// <summary>
@@ -203,18 +204,19 @@
             return 3;
         }
 
-        public static PRG FromBytes(byte[] bytes)
+        public Prg(byte[] bytes)
         {
-            var prg = new PRG();
-            prg.IsDosVersion = PrgUtilities.IsDosVersion(bytes);
-            if (!prg.IsDosVersion && !PrgUtilities.IsCurrentVersion(bytes))
+            IsDosVersion = PrgUtilities.IsDosVersion(bytes);
+            IsCurrentVersion = PrgUtilities.IsCurrentVersion(bytes);
+            if (!IsDosVersion && !IsCurrentVersion)
             {
-                throw new Exception($"Data is corrupted or unsupported. {prg.PropertiesText()}");
+                throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
+{bytes.GetString(0, Math.Min(100, bytes.Length))}");
             }
 
-            var offset = prg.IsDosVersion 
-                ? prg.LoadDataFromDosFormat(bytes)
-                : prg.LoadDataFromCurrentFormat(bytes);
+            var offset = IsDosVersion 
+                ? LoadDataFromDosFormat(bytes)
+                : LoadDataFromCurrentFormat(bytes);
 
             //Main block
             var l = MaxConstants.MAX_TBL_BANK;
@@ -230,17 +232,17 @@
 
                 if (i == BlocksEnum.AMON)
                 {
-                    if (prg.Version < 230 && prg.MiniVersion >= 230)
+                    if (Version < 230 && MiniVersion >= 230)
                     {
-                        throw new Exception($"Versions conflict! {prg.PropertiesText()}");
+                        throw new Exception($"Versions conflict! {this.PropertiesText()}");
                     }
-                    if (prg.Version >= 230 && prg.MiniVersion > 0)
+                    if (Version >= 230 && MiniVersion > 0)
                         continue;
                 }
                 
                 if (i == BlocksEnum.ALARMM)
                 {
-                    if (prg.Version < 216)
+                    if (Version < 216)
                     {
                         var size = bytes.ToUInt16(offset);
                         offset += 2;
@@ -250,7 +252,7 @@
                         {
                             var data = bytes.ToBytes(offset, size);
                             offset += size;
-                            prg.Infos.Add(data);
+                            Infos.Add(data);
                         }
                         continue;
                     }
@@ -281,11 +283,11 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                prg.Variables.Add(new StrVariablePoint(data));
+                                Variables.Add(new StrVariablePoint(data));
                                 break;
 
                             default:
-                                prg.Infos.Add(data);
+                                Infos.Add(data);
                                 break;
                         }
                     }
@@ -310,7 +312,7 @@
                 }
             }
 
-            foreach (var data in prg.PrgDatas)
+            foreach (var data in PrgDatas)
             {
                 Console.WriteLine(data.PropertiesText());
             }
@@ -329,7 +331,7 @@
                         list.Add(WrOneDay.FromBytes(data));
                     }
 
-                    prg.WrTimes.Add(list);
+                    WrTimes.Add(list);
                 }
             }
 
@@ -340,7 +342,7 @@
                 {
                     var data = bytes.ToBytes(offset, SizeConstants.AR_DATES_SIZE);
                     offset += SizeConstants.AR_DATES_SIZE;
-                    prg.ArDates.Add(data);
+                    ArDates.Add(data);
                 }
             }
 
@@ -356,7 +358,7 @@
                 var data = bytes.ToBytes(offset, size);
                 offset += size;
 
-                prg.GrpDatas.Add(data);
+                GrpDatas.Add(data);
             }
 
             {
@@ -371,9 +373,7 @@
                 }
             }
 
-            prg.RawData = bytes;
-
-            return prg;
+            RawData = bytes;
         }
 
         public byte[] ToBytes()
@@ -455,7 +455,7 @@
 
         #endregion
 
-        public static PRG Load(string path) => PRGReader.Read(path);
-        public void Save(string path) => PRGWriter.Write(this, path);
+        public static Prg Load(string path) => PrgReader.Read(path);
+        public void Save(string path) => PrgWriter.Write(this, path);
     }
 }

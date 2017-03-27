@@ -3,23 +3,21 @@
     using System;
     using System.IO;
 
-    public static class PRGReader
+    public static class PrgReader
     {
         /// <summary>
-        /// TODO: Other file versions
+        /// Read file from disk
         /// </summary>
         /// <param name="path">Path to .prg file</param>
         /// <returns></returns>
-        public static PRG Read(string path)
+        public static Prg Read(string path)
         {
             if (!File.Exists(path))
             {
                 throw new ArgumentException($"File not exists: {path}", nameof(path));
             }
 
-            var bytes = File.ReadAllBytes(path);
-            //Console.WriteLine(bytes.GetString());
-            return PRG.FromBytes(bytes);
+            return new Prg(File.ReadAllBytes(path));
         }
     }
 }
