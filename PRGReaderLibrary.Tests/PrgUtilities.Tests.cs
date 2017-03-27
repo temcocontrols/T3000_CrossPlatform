@@ -6,28 +6,55 @@
     [TestFixture]
     public class PRGUtilities_Tests
     {
-        public bool IsDos(string name, bool isDos = true)
+        public byte[] GetBytesFromName(string name)
         {
             var path = TestUtilities.GetFullPathForTestFile(name);
-            var bytes = File.ReadAllBytes(path);
 
-            return PrgUtilities.IsDosVersion(bytes);
+            return File.ReadAllBytes(path);
         }
+
+        public void IsDos(string name, bool expected) =>
+            Assert.AreEqual(expected,
+                PrgUtilities.IsDosVersion(GetBytesFromName(name)),
+                $"{nameof(PrgUtilities.IsDosVersion)}: {name}");
+
+        public void IsCurrentVersion(string name, bool expected) =>
+            Assert.AreEqual(expected, 
+                PrgUtilities.IsCurrentVersion(GetBytesFromName(name)),
+                $"{nameof(PrgUtilities.IsCurrentVersion)}: {name}");
 
         [Test]
         public void PRGUtilities_IsDos()
         {
-            Assert.IsTrue(IsDos("asy1.prg"));
-            Assert.IsTrue(IsDos("panel1.prg"));
-            Assert.IsTrue(IsDos("testvariables.prg"));
-            Assert.IsTrue(IsDos("panel11.prg"));
-            Assert.IsTrue(IsDos("panel2.prg"));
-            Assert.IsTrue(IsDos("temco.prg"));
+            IsDos("asy1.prg", true);
+            IsDos("panel1.prg", true);
+            IsDos("testvariables.prg", true);
+            IsDos("panel11.prg", true);
+            IsDos("panel2.prg", true);
+            IsDos("temco.prg", true);
 
-            Assert.IsFalse(IsDos("balsam2.prg"));
-            Assert.IsFalse(IsDos("90185.prg"));
-            Assert.IsFalse(IsDos("BTUMeter.prg"));
-            Assert.IsFalse(IsDos("SelfTestRev3.prg"));
+            IsDos("balsam2.prg", false);
+            IsDos("90185.prg", false);
+            IsDos("BTUMeter.prg", false);
+            IsDos("SelfTestRev3.prg", false);
+        }
+
+        [Test]
+        public void PRGUtilities_IsCurrentVersion()
+        {
+            IsCurrentVersion("BTUMeter.prg", true);
+
+            //I don't know this versions
+            //IsCurrentVersion("SelfTestRev3.prg", true);
+            //IsCurrentVersion("balsam2.prg", true);
+            //IsCurrentVersion("90185.prg", true);
+
+            IsCurrentVersion("asy1.prg", false);
+            IsCurrentVersion("panel1.prg", false);
+            IsCurrentVersion("testvariables.prg", false);
+            IsCurrentVersion("panel11.prg", false);
+            IsCurrentVersion("panel2.prg", false);
+            IsCurrentVersion("temco.prg", false);
         }
     }
 }

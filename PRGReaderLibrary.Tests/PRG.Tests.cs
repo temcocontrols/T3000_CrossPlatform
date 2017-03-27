@@ -8,16 +8,9 @@
     [TestFixture]
     public class PRGReader_Tests
     {
-        private string GetFullPath(string filename) =>
-            Path.Combine(
-                Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location))
-                ),
-                "TestFiles", filename);
-
         public void BaseTest(string name)
         {
-            var originalFile = GetFullPath(name);
+            var originalFile = TestUtilities.GetFullPathForTestFile(name);
             var prg = PRG.Load(originalFile);
             PrintVariables(prg);
 
@@ -54,7 +47,7 @@
         {
             var exception = Assert.Catch(() =>
             {
-                var prg = PRG.Load(GetFullPath(name));
+                var prg = PRG.Load(TestUtilities.GetFullPathForTestFile(name));
 
                 Console.WriteLine(prg.PropertiesText());
             });
@@ -105,7 +98,7 @@
         public void PRG_TestVariables()
         {
             BaseTest("testvariables.prg");
-            var prg = PRG.Load(GetFullPath("testvariables.prg"));
+            var prg = PRG.Load(TestUtilities.GetFullPathForTestFile("testvariables.prg"));
 
             PrintVariables(prg);
 

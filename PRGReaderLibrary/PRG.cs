@@ -14,6 +14,7 @@
         public byte[] Reserved { get; set; }
         public long Length { get; set; }
         public long Coef { get; set; }
+        public bool IsDosVersion { get; set; } = false;
         public IList<byte[]> Infos { get; set; } = new List<byte[]>();
         public IList<PRGData> PrgDatas { get; set; } = new List<PRGData>();
         public IList<byte[]> GrpDatas { get; set; } = new List<byte[]>();
@@ -168,34 +169,55 @@
         
         public byte[] RawData { get; protected set; }
 
+        private int LoadDataFromDosFormat(byte[] bytes)
+        {
+            DateTime = bytes.GetString(0, 26);
+            Signature = bytes.GetString(26, 4);
+            if (!Signature.Equals(Constants.Signature, StringComparison.Ordinal))
+            {
+                throw new Exception($"Data is corrupted. {this.PropertiesText()}");
+            }
+
+            PanelNumber = bytes.ToUInt16(30);
+            NetworkNumber = bytes.ToUInt16(32);
+            Version = bytes.ToUInt16(34);
+            MiniVersion = bytes.ToUInt16(36);
+            Reserved = bytes.ToBytes(38, 32);
+            if (Version < 210 || Version == 0x2020)
+            {
+                throw new Exception($"Data not loaded. Data version less than 2.10. {this.PropertiesText()}");
+            }
+
+            Length = bytes.Length;
+            Coef = ((Length * 1000L) / 20000L) * 1000L +
+                (((Length * 1000L) % 20000L) * 1000L) / 20000L;
+            //float coef = (float)length/20.;
+
+            //return offset
+            return 70;
+        }
+
+        private int LoadDataFromCurrentFormat(byte[] bytes)
+        {
+            //return offset
+            return 3;
+        }
+
         public static PRG FromBytes(byte[] bytes)
         {
             var prg = new PRG();
-            prg.DateTime = bytes.GetString(0, 26);
-            prg.Signature = bytes.GetString(26, 4);
-            if (!prg.Signature.Equals(Constants.Signature, StringComparison.Ordinal))
+            prg.IsDosVersion = PrgUtilities.IsDosVersion(bytes);
+            if (!prg.IsDosVersion && !PrgUtilities.IsCurrentVersion(bytes))
             {
-                throw new Exception($"Data is corrupted. {prg.PropertiesText()}");
+                throw new Exception($"Data is corrupted or unsupported. {prg.PropertiesText()}");
             }
 
-            prg.PanelNumber = bytes.ToUInt16(30);
-            prg.NetworkNumber = bytes.ToUInt16(32);
-            prg.Version = bytes.ToUInt16(34);
-            prg.MiniVersion = bytes.ToUInt16(36);
-            prg.Reserved = bytes.ToBytes(38, 32);
-            if (prg.Version < 210 || prg.Version == 0x2020)
-            {
-                throw new Exception($"Data not loaded. Data version less than 2.10. {prg.PropertiesText()}");
-            }
-
-            prg.Length = bytes.Length;
-            prg.Coef = ((prg.Length * 1000L) / 20000L) * 1000L +
-                (((prg.Length * 1000L) % 20000L) * 1000L) / 20000L;
-            //float coef = (float)length/20.;
+            var offset = prg.IsDosVersion 
+                ? prg.LoadDataFromDosFormat(bytes)
+                : prg.LoadDataFromCurrentFormat(bytes);
 
             //Main block
             var l = MaxConstants.MAX_TBL_BANK;
-            var offset = 70;
             var maxPrg = 0;
             var maxGrp = 0;
 
@@ -239,6 +261,7 @@
                     offset += 2;
                     var size = bytes.ToUInt16(offset);
                     offset += 2;
+
                     if (i == BlocksEnum.PRG)
                     {
                         maxPrg = count;
