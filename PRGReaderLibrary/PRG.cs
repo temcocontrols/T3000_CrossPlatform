@@ -355,6 +355,7 @@
         private void FromCurrentFormat(byte[] bytes)
         {
             Version = bytes.ToByte(3);
+
             var offset = 3;
             offset += CurrentVersionConstants.BAC_INPUT_ITEM_COUNT*CurrentVersionConstants.BAC_INPUT_ITEM_SIZE;
             offset += CurrentVersionConstants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionConstants.BAC_OUTPUT_ITEM_SIZE;
