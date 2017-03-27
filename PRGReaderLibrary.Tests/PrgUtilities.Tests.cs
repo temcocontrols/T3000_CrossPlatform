@@ -43,9 +43,9 @@
         public void PRGUtilities_IsCurrentVersion()
         {
             IsCurrentVersion("BTUMeter.prg", true);
+            IsCurrentVersion("SelfTestRev3.prg", true);
 
             //I don't know this versions
-            //IsCurrentVersion("SelfTestRev3.prg", true);
             //IsCurrentVersion("balsam2.prg", true);
             //IsCurrentVersion("90185.prg", true);
 
