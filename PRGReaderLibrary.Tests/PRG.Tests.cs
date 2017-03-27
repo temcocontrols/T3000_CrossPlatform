@@ -6,7 +6,7 @@
     using System.Reflection;
 
     [TestFixture]
-    public class PRGReader_Tests
+    public class PrgReader_Tests
     {
         public void BaseTest(string name)
         {
@@ -71,31 +71,31 @@
         }
 
         [Test]
-        public void PRG_Asy1()
+        public void Prg_Asy1()
         {
             BaseTest("asy1.prg");
         }
 
         [Test]
-        public void PRG_Balsam2()
+        public void Prg_Balsam2()
         {
             UnsupportedTest("balsam2.prg");
         }
 
         [Test]
-        public void PRG_90185()
+        public void Prg_90185()
         {
             UnsupportedTest("90185.prg");
         }
 
         [Test]
-        public void PRG_Panel1()
+        public void Prg_Panel1()
         {
             BaseTest("panel1.prg");
         }
 
         [Test]
-        public void PRG_TestVariables()
+        public void Prg_TestVariables()
         {
             BaseTest("testvariables.prg");
             var prg = Prg.Load(TestUtilities.GetFullPathForTestFile("testvariables.prg"));
@@ -140,31 +140,31 @@
         }
 
         [Test]
-        public void PRG_Panel11()
+        public void Prg_Panel11()
         {
             BaseTest("panel11.prg");
         }
 
         [Test]
-        public void PRG_Panel2()
+        public void Prg_Panel2()
         {
             BaseTest("panel2.prg");
         }
 
         [Test]
-        public void PRG_Temco()
+        public void Prg_Temco()
         {
             BaseTest("temco.prg");
         }
 
         [Test]
-        public void PRG_BTUMeter()
+        public void Prg_BTUMeter()
         {
             UnsupportedTest("BTUMeter.prg");
         }
 
         [Test]
-        public void PRG_SelfTestRev3()
+        public void Prg_SelfTestRev3()
         {
             UnsupportedTest("SelfTestRev3.prg");
         }
