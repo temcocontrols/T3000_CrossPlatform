@@ -91,6 +91,7 @@
     <Compile Include="Extensions\BytesExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Types\WrOneDay.cs" />
+    <Compile Include="Utilities\PrgUtilities.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

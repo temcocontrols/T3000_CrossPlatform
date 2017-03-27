@@ -165,6 +165,12 @@
         }
 
         [Test]
+        public void PRG_BTUMeter()
+        {
+            UnsupportedTest("BTUMeter.prg");
+        }
+
+        [Test]
         public void PRG_SelfTestRev3()
         {
             UnsupportedTest("SelfTestRev3.prg");
