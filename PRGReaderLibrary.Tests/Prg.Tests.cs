@@ -3,7 +3,6 @@
     using NUnit.Framework;
     using System;
     using System.IO;
-    using System.Reflection;
 
     [TestFixture]
     public class PrgReader_Tests
