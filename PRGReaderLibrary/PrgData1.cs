@@ -9,7 +9,7 @@
         public ushort Size1 { get; set; }
         public string Data1 { get; set; }
         public ushort TypesSize { get; set; }
-        public IList<PrgType> Types { get; set; } = new List<PrgType>();
+        public IList<PrgType1> Types { get; set; } = new List<PrgType1>();
         public ushort Time { get; set; }
         public ushort IndexRemoteLocalList { get; set; }
         public bool IsEmpty => Size1 == 0;
@@ -46,7 +46,7 @@
 
             for (var j = 0; j < typesSize;)
             {
-                var type = new PrgType();
+                var type = new PrgType1();
                 type.Size = 1;
                 var typeFromData = (TypesEnum)(bytes[index + j]);
                 switch (typeFromData)

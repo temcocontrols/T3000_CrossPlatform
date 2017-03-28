@@ -507,6 +507,6 @@
         #endregion
 
         public static Prg Load(string path) => PrgReader.Read(path);
-        public void Save(string path) => PrgWriter.Write(this, path);
+        public void Save(string path) => PrgWriter1.Write(this, path);
     }
 }

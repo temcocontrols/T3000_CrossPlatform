@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    public static class PrgWriter
+    public static class PrgWriter1
     {
         public static void Write(Prg prg, string path)
         {
