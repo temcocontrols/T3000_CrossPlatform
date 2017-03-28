@@ -102,7 +102,6 @@
         public void Prg_TestVariables()
         {
             var prg = Prg.Load(TestUtilities.GetFullPathForTestFile("testvariables.prg"));
-
             PrintVariables(prg);
 
             var variable1 = prg.Variables[0];
