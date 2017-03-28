@@ -195,7 +195,7 @@
 
             //Main block
             var offset = 70;
-            var l = MaxConstants.MAX_TBL_BANK;
+            //var l = MaxConstants.MAX_TBL_BANK;
             var maxPrg = 0;
             var maxGrp = 0;
 
@@ -278,7 +278,8 @@
             {
                 var size = bytes.ToUInt16(offset);
                 offset += 2;
-                var data = bytes.ToBytes(offset, size);
+                //var data = 
+                bytes.ToBytes(offset, size);
                 offset += size;
 
                 //var prgData = PRGData.FromBytes(data);
@@ -290,7 +291,7 @@
 
             foreach (var data in PrgDatas)
             {
-                Console.WriteLine(data.PropertiesText());
+                //Console.WriteLine(data.PropertiesText());
             }
 
             {
@@ -323,7 +324,8 @@
             }
 
             {
-                var size = bytes.ToUInt16(offset);
+                //var size = 
+                bytes.ToUInt16(offset);
                 offset += 2;
             }
 
@@ -338,7 +340,7 @@
             }
 
             {
-                var size = bytes.ToUInt16(offset);
+                //var size = bytes.ToUInt16(offset);
                 offset += 2;
 
                 for (var j = 0; j < MaxConstants.MAX_ICON_NAME_TABLE; ++j)
