@@ -16,8 +16,9 @@
         {
             InitializeComponent();
 
-            Units.ValueType = typeof(UnitsEnum);
-            Units.DataSource = Enum.GetValues(typeof(UnitsEnum));
+            Units.DataSource = UnitsNamesConstants.GetNames();
+            Units.DisplayMember = "Text";
+            Units.ValueMember = "Value";
 
             AutoManual.ValueType = typeof(AutoManualEnum);
             AutoManual.DataSource = Enum.GetValues(typeof(AutoManualEnum));

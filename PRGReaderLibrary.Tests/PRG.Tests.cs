@@ -10,8 +10,8 @@
     {
         public void BaseTest(string name)
         {
-            var originalFile = TestUtilities.GetFullPathForTestFile(name);
-            var prg = Prg.Load(originalFile);
+            var path = TestUtilities.GetFullPathForTestFile(name);
+            var prg = Prg.Load(path);
             PrintVariables(prg);
 
             var temp = Path.GetTempFileName();
@@ -33,14 +33,14 @@
             }
 
             prg.Save(temp);
-            FileAssert.AreEqual(originalFile, temp, name);
+            FileAssert.AreEqual(path, temp, name);
 
             if (prg.Variables.Count > 0)
             {
                 prg = Prg.Load(temp);
                 prg.Variables[0].ValueString = "9998.8999";
                 prg.Save(temp);
-                FileAssert.AreNotEqual(originalFile, temp);
+                FileAssert.AreNotEqual(path, temp);
             }
 
             Console.WriteLine(prg.PropertiesText());

@@ -39,6 +39,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\Types\UnitsNameItem.cs" />
+    <Compile Include="Constants\UnitsNamesConstants.cs" />
     <Compile Include="Forms\VariablesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +105,7 @@
       <Name>PRGReaderLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
