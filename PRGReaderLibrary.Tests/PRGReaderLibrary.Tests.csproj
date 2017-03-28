@@ -48,7 +48,7 @@
     <Compile Include="Bytes.Tests.cs" />
     <Compile Include="PrgUtilities.Tests.cs" />
     <Compile Include="StrVariablePoint.Tests.cs" />
-    <Compile Include="Prg.Tests.cs" />
+    <Compile Include="Prg.Tests1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BytesAssert.cs" />
     <Compile Include="Utilities\TestUtilities.cs" />
