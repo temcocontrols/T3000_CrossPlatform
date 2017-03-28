@@ -28,7 +28,7 @@
             list.AddRange("Label".ToBytes(9));
             list.AddRange(((uint)5000).ToBytes());
             list.Add(new [] {true,true,true}.ToBits());
-            list.Add((byte)UnitsEnum.degC);
+            list.Add((byte)UnitsEnum.DegreesC);
 
             var expected = list.ToArray();
             var point = new StrVariablePoint(expected, 0, version);
@@ -42,7 +42,7 @@
             point2.AutoManual = AutoManualEnum.Manual;
             point2.DigitalAnalog = DigitalAnalogEnum.Analog;
             point2.Control = ControlEnum.On;
-            point2.Units = UnitsEnum.degC;
+            point2.Units = UnitsEnum.DegreesC;
             
             //The latter. Depends on the units.
             point2.ValueString = "5.000";

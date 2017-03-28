@@ -112,7 +112,7 @@
             Assert.AreEqual(AutoManualEnum.Automatic, variable1.AutoManual);
             Assert.AreEqual(DigitalAnalogEnum.Analog, variable1.DigitalAnalog);
             Assert.AreEqual(ControlEnum.Off, variable1.Control);
-            Assert.AreEqual(UnitsEnum.degC, variable1.Units);
+            Assert.AreEqual(UnitsEnum.DegreesC, variable1.Units);
 
             var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription   ", variable2.Description);
