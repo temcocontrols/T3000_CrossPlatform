@@ -120,18 +120,6 @@
   <data name="addButton.Text" xml:space="preserve">
     <value>Hinzufügen </value>
   </data>
-  <data name="Label.HeaderText" xml:space="preserve">
-    <value>Etikette</value>
-  </data>
-  <data name="Description.HeaderText" xml:space="preserve">
-    <value>Beschreibung</value>
-  </data>
-  <data name="AutoManual.HeaderText" xml:space="preserve">
-    <value>Manuelle Steuerung</value>
-  </data>
-  <data name="Units.HeaderText" xml:space="preserve">
-    <value>Einheiten</value>
-  </data>
   <data name="deleteButton.Text" xml:space="preserve">
     <value>Löschen</value>
   </data>
@@ -142,6 +130,12 @@
     <value>Sparen</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="languageMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
+  </data>
+  <data name="languageMenuItem.Text" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
   <data name="englishToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>131, 22</value>
   </data>
@@ -160,11 +154,20 @@
   <data name="chineseToolStripMenuItem.Text" xml:space="preserve">
     <value>Chinesisch</value>
   </data>
-  <data name="languageMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 20</value>
+  <data name="Number.HeaderText" xml:space="preserve">
+    <value>Anzahl</value>
   </data>
-  <data name="languageMenuItem.Text" xml:space="preserve">
-    <value>Sprache</value>
+  <data name="Description.HeaderText" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="AutoManual.HeaderText" xml:space="preserve">
+    <value>Manuelle Steuerung</value>
+  </data>
+  <data name="Units.HeaderText" xml:space="preserve">
+    <value>Einheiten</value>
+  </data>
+  <data name="Label.HeaderText" xml:space="preserve">
+    <value>Etikette</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Variablen</value>
