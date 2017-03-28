@@ -1,6 +1,6 @@
 ﻿namespace PRGReaderLibrary
 {
-    public class PrgType1
+    public class PrgType
     {
         public int Size { get; set; }
         public byte[] Data { get; set; }
