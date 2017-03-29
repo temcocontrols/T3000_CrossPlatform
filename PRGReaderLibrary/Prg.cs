@@ -271,9 +271,9 @@
             var offset = 3;
 
             //Get all inputs
-            for (var i = 0; i < CurrentVersionConstants.BAC_INPUT_ITEM_COUNT; ++i)
+            for (var i = 0; i < CurrentVersionRev6Constants.BAC_INPUT_ITEM_COUNT; ++i)
             {
-                var size = CurrentVersionConstants.BAC_INPUT_ITEM_SIZE;
+                var size = CurrentVersionRev6Constants.BAC_INPUT_ITEM_SIZE;
                 var data = bytes.ToBytes(offset, size);
                 offset += size;
 
@@ -281,9 +281,9 @@
             }
 
             //Get all outputs
-            for (var i = 0; i < CurrentVersionConstants.BAC_OUTPUT_ITEM_COUNT; ++i)
+            for (var i = 0; i < CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_COUNT; ++i)
             {
-                var size = CurrentVersionConstants.BAC_OUTPUT_ITEM_SIZE;
+                var size = CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_SIZE;
                 var data = bytes.ToBytes(offset, size);
                 offset += size;
 
@@ -291,9 +291,9 @@
             }
 
             //Get all variables
-            for (var i = 0; i < CurrentVersionConstants.BAC_VARIABLE_ITEM_COUNT; ++i)
+            for (var i = 0; i < CurrentVersionRev6Constants.BAC_VARIABLE_ITEM_COUNT; ++i)
             {
-                var size = CurrentVersionConstants.BAC_VARIABLE_ITEM_SIZE;
+                var size = CurrentVersionRev6Constants.BAC_VARIABLE_ITEM_SIZE;
                 var data = bytes.ToBytes(offset, size);
                 offset += size;
 
@@ -305,7 +305,7 @@
 
         public Prg(byte[] bytes)
         {
-            FileVersion = PrgUtilities.GetFileVersion(bytes);
+            FileVersion = FileVersionUtilities.GetFileVersion(bytes);
             if (FileVersion == FileVersionEnum.Unsupported)
             {
                 throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
@@ -409,8 +409,8 @@
             var bytes = new List<byte>();
             
             bytes.AddRange(RawData.ToBytes(0, 3));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionConstants.BAC_INPUT_ITEM_COUNT * CurrentVersionConstants.BAC_INPUT_ITEM_SIZE));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionConstants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionConstants.BAC_OUTPUT_ITEM_SIZE));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionRev6Constants.BAC_INPUT_ITEM_COUNT * CurrentVersionRev6Constants.BAC_INPUT_ITEM_SIZE));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_SIZE));
             foreach (var variable in Variables)
             {
                 bytes.AddRange(variable.ToBytes(FileVersion));

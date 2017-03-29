@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bytes.Tests.cs" />
-    <Compile Include="PrgUtilities.Tests.cs" />
+    <Compile Include="FileVersionUtilities.Tests.cs" />
     <Compile Include="StrVariablePoint.Tests.cs" />
     <Compile Include="Prg.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

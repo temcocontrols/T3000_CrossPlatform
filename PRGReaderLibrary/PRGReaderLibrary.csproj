@@ -36,6 +36,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\CurrentVersionRev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Enums\FileVersionEnum.cs" />
     <Compile Include="Enums\ControlEnum.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="Extensions\BytesExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Types\WrOneDay.cs" />
-    <Compile Include="Utilities\PrgUtilities.cs" />
+    <Compile Include="Utilities\FileVersionUtilities.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

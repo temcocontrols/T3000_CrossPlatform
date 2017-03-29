@@ -4,7 +4,7 @@
     using System.IO;
 
     [TestFixture]
-    public class PRGUtilities_Tests
+    public class FileVersionUtilities_Tests
     {
         public byte[] GetBytesFromName(string name)
         {
@@ -15,18 +15,18 @@
 
         public void IsDos(string name, bool expected) =>
             Assert.AreEqual(expected,
-                PrgUtilities.IsDosVersion(GetBytesFromName(name)),
-                $"{nameof(PrgUtilities.IsDosVersion)}: {name}");
+                FileVersionUtilities.IsDosVersion(GetBytesFromName(name)),
+                $"{nameof(FileVersionUtilities.IsDosVersion)}: {name}");
 
-        public void IsCurrentVersion(string name, bool expected) =>
-            Assert.AreEqual(expected, 
-                PrgUtilities.IsCurrentVersion(GetBytesFromName(name)),
-                $"{nameof(PrgUtilities.IsCurrentVersion)}: {name}");
+        public void IsCurrentVersion(string name, bool expected, int revision = CurrentVersionConstants.FileRevision) =>
+            Assert.AreEqual(expected,
+                FileVersionUtilities.IsCurrentVersion(GetBytesFromName(name), revision),
+                $"{nameof(FileVersionUtilities.IsCurrentVersion)}: {name}. Rev: {revision}");
 
         public void GetFileVersion(string name, FileVersionEnum expected) =>
             Assert.AreEqual(expected,
-                PrgUtilities.GetFileVersion(GetBytesFromName(name)),
-                $"{nameof(PrgUtilities.GetFileVersion)}: {name}");
+                FileVersionUtilities.GetFileVersion(GetBytesFromName(name)),
+                $"{nameof(FileVersionUtilities.GetFileVersion)}: {name}");
 
         [Test]
         public void PRGUtilities_IsDos()
@@ -64,10 +64,13 @@
             IsCurrentVersion("temco.prg", false);
 
             //Unsupported
-            IsCurrentVersion("SelfTestRev3.prg", false);
-            IsCurrentVersion("ChamberRev5.prg", false);
             IsCurrentVersion("balsam2.prg", false);
             IsCurrentVersion("90185.prg", false);
+
+            //Past revisions
+            //The version number, apparently, was not yet supported
+            IsCurrentVersion("SelfTestRev3.prg", false, 3);
+            IsCurrentVersion("ChamberRev5.prg", false, 5);
         }
 
         [Test]
