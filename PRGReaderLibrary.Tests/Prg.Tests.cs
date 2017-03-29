@@ -21,7 +21,9 @@
                 //if (variable.Units == UnitsEnum.Time)
                 {
                     //variable.Value = variable.Value;
+                    //var temp1 = variable.Value;
                     //variable.ValueString = variable.ValueString;
+                    //Assert.AreEqual(temp1, variable.Value);
                 }
                 variable.AutoManual = variable.AutoManual;
                 variable.DigitalAnalog = variable.DigitalAnalog;
@@ -90,11 +92,12 @@
             BaseTest("panel11.prg");
             BaseTest("testvariables.prg");
             BaseTest("panel1.prg");
-
+            
             //Unsupported
             UnsupportedTest("balsam2.prg");
             UnsupportedTest("90185.prg");
             UnsupportedTest("SelfTestRev3.prg");
+            UnsupportedTest("ChamberRev5.prg");
         }
 
         [Test]

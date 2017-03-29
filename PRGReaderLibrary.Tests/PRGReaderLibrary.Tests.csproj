@@ -63,6 +63,7 @@
     <None Include="TestFiles\asy1.prg" />
     <None Include="TestFiles\balsam2.prg" />
     <None Include="TestFiles\BTUMeter.prg" />
+    <None Include="TestFiles\ChamberRev5.prg" />
     <None Include="TestFiles\panel1.prg" />
     <None Include="TestFiles\panel11.prg" />
     <None Include="TestFiles\panel2.prg" />

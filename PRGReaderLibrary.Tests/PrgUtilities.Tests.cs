@@ -41,9 +41,10 @@
 
             //Current
             IsDos("BTUMeter.prg", false);
-            IsDos("SelfTestRev3.prg", false);
 
-            //I don't know this versions
+            //Unsupported
+            IsDos("SelfTestRev3.prg", false);
+            IsDos("ChamberRev5.prg", false);
             IsDos("balsam2.prg", false);
             IsDos("90185.prg", false);
         }
@@ -62,8 +63,9 @@
             IsCurrentVersion("panel2.prg", false);
             IsCurrentVersion("temco.prg", false);
 
-            //I don't know this versions
+            //Unsupported
             IsCurrentVersion("SelfTestRev3.prg", false);
+            IsCurrentVersion("ChamberRev5.prg", false);
             IsCurrentVersion("balsam2.prg", false);
             IsCurrentVersion("90185.prg", false);
         }
@@ -82,8 +84,9 @@
             GetFileVersion("panel2.prg", FileVersionEnum.Dos);
             GetFileVersion("temco.prg", FileVersionEnum.Dos);
 
-            //I don't know this versions
+            //Unsupported
             GetFileVersion("SelfTestRev3.prg", FileVersionEnum.Unsupported);
+            GetFileVersion("ChamberRev5.prg", FileVersionEnum.Unsupported);
             GetFileVersion("balsam2.prg", FileVersionEnum.Unsupported);
             GetFileVersion("90185.prg", FileVersionEnum.Unsupported);
         }
