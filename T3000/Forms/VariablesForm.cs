@@ -70,7 +70,7 @@
         }
 
         private void ShowException(Exception exception) =>
-            statusLabel.Text = string.Format(Resources.Exception, exception.Message, exception.StackTrace);
+            MessageBox.Show(string.Format(Resources.Exception, exception.Message, exception.StackTrace), "Exception: ", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         private void openButton_Click(object sender, EventArgs e)
         {
