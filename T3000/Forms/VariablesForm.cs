@@ -36,7 +36,7 @@
             foreach (var variable in Prg.Variables)
             {
                 prgView.Rows.Add(new object[] {
-                    i + 1, variable.Description, variable.AutoManual, variable.ValueString, variable.Units, variable.Label
+                    i + 1, variable.Description, variable.AutoManual, variable.Value.ToString(), variable.Value.Units, variable.Label
                 });
                 if (variable.AutoManual == AutoManualEnum.Automatic)
                 {
@@ -59,11 +59,9 @@
 
                 var variable = Prg.Variables[i];
                 variable.Description = (string)row.Cells["Description"].Value;
-                variable.AutoManual = (AutoManualEnum)row.Cells["AutoManual"].Value;
-                variable.Units = (UnitsEnum)row.Cells["Units"].Value;
                 variable.Label = (string)row.Cells["Label"].Value;
-                //The latter. Depends on the units.
-                variable.ValueString = (string)row.Cells["Value"].Value;
+                variable.Value = new VariableVariant((string)row.Cells["Value"].Value, (UnitsEnum)row.Cells["Units"].Value);
+                variable.AutoManual = (AutoManualEnum)row.Cells["AutoManual"].Value;
                 ++i;
             }
             Prg.Save(path);

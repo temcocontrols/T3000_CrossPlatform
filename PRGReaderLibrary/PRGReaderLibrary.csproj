@@ -49,6 +49,7 @@
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="PrgWriter.cs" />
+    <Compile Include="Types\AdditionalTypes\VariableVariant.cs" />
     <Compile Include="Types\AlarmPoint.cs" />
     <Compile Include="Types\AlarmSetPoint.cs" />
     <Compile Include="Types\AnRangeForm.cs" />

@@ -12,7 +12,7 @@
                         Path.GetDirectoryName(
                             Assembly.GetExecutingAssembly().Location
                         )
-                    )        
+                    )
                 ),
                 "TestFiles", filename);
     }

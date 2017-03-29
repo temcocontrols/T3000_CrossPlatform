@@ -5,9 +5,10 @@
 
     public static class BytesAssert
     {
-        public static void AreEqual(byte[] bytes1, byte[] bytes2)
+        public static void AreEqual(byte[] bytes1, byte[] bytes2, string message = "")
         {
-            Assert.AreEqual(bytes1.Length, bytes2.Length, "Bytes arrays lenghts not equals");
+            Assert.AreEqual(bytes1.Length, bytes2.Length, $@"{message}
+Bytes arrays lenghts not equals.");
 
             var isEquals = true;
             for (var i = 0; i < bytes1.Length; ++i)
@@ -19,7 +20,8 @@
                 }
             }
 
-            Assert.IsTrue(isEquals, "Bytes arrays not equals");
+            Assert.IsTrue(isEquals, $@"{message}
+Bytes arrays not equals.");
         }
     }
 }
