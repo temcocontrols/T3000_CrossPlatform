@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum Types
+    public enum VariableTypes
     {
         LOCAL_VARIABLE = 0x82, //0x82 - 0x8C
         FLOAT_TYPE,

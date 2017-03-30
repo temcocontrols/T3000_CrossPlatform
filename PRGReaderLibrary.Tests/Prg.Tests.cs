@@ -93,6 +93,15 @@ Value.ToFromToString(): {tempValue.ToString()}
         }
 
         [Test]
+        public void Prg_BTUMeter()
+        {
+            var path = TestUtilities.GetFullPathForTestFile("BTUMeter.prg");
+            var prg = Prg.Load(path);
+
+            ObjectAssert.AreEqual(new UnitsElement(false, "TANK1", "TANK2"), prg.Units[0]);
+        }
+
+        [Test]
         public void Prg_BaseTests()
         {
             //Current

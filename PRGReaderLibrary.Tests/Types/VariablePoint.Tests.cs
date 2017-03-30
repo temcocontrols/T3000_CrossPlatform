@@ -4,18 +4,18 @@
     using System.Collections.Generic;
 
     [TestFixture]
-    public class StrVariablePoint_Tests
+    public class VariablePoint_Tests
     {
-        public void BaseTest(byte[] bytes, StrVariablePoint expected, FileVersion version)
+        public void BaseTest(byte[] bytes, VariablePoint expected, FileVersion version)
         {
-            var actual = new StrVariablePoint(bytes, 0, version);
+            var actual = new VariablePoint(bytes, 0, version);
             ObjectAssert.AreEqual(expected, actual);
             BytesAssert.AreEqual(expected.ToBytes(), actual.ToBytes());
             BytesAssert.AreEqual(bytes, expected.ToBytes());
         }
 
         [Test]
-        public void StrVariablePoint_Dos_Analog()
+        public void VariablePoint_Dos_Analog()
         {
             var list = new List<byte>();
             list.AddRange("Description".ToBytes(21));
@@ -24,7 +24,7 @@
             list.Add(new [] {true,true,true}.ToBits()); //AutoManual DigitalAnalog Control
             list.Add((byte)Units.DegreesC);//Units
 
-            var expected = new StrVariablePoint("Description", "Label", FileVersion.Dos);
+            var expected = new VariablePoint("Description", "Label", FileVersion.Dos);
             expected.Value = new VariableVariant("5.000", Units.DegreesC);
             expected.AutoManual = AutoManual.Manual;
             expected.DigitalAnalog = DigitalAnalog.Analog;
@@ -34,7 +34,7 @@
         }
 
         [Test]
-        public void StrVariablePoint_Current_Digital()
+        public void VariablePoint_Current_Digital()
         {
             var list = new List<byte>();
             list.AddRange("START TEST FLAG\0\0\0\0\0\0INIT\0\0\0\0\0".ToBytes());
@@ -45,7 +45,7 @@
             list.Add(2);//Unused
             list.Add(1);//Units
 
-            var expected = new StrVariablePoint("START TEST FLAG", "INIT");
+            var expected = new VariablePoint("START TEST FLAG", "INIT");
             expected.Value = new VariableVariant("Off", Units.OffOn);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
@@ -55,7 +55,7 @@
         }
 
         [Test]
-        public void StrVariablePoint_Current_Analog()
+        public void VariablePoint_Current_Analog()
         {
             var list = new List<byte>();
             list.AddRange("PUMP SPEED\0\0\0\0\0\0\0\0\0\0\0PMPSPEED\0".ToBytes());
@@ -66,7 +66,7 @@
             list.Add(2);//Unused
             list.Add(22);//Units
 
-            var expected = new StrVariablePoint("PUMP SPEED", "PMPSPEED");
+            var expected = new VariablePoint("PUMP SPEED", "PMPSPEED");
             expected.Value = new VariableVariant("40.000", Units.Percents);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Analog;
@@ -76,7 +76,7 @@
         }
 
         [Test]
-        public void StrVariablePoint_Current_Time()
+        public void VariablePoint_Current_Time()
         {
             var list = new List<byte>();
             list.AddRange("TEST RUN TIMER\0\0\0\0\0\0\0TESTTIM\0\0".ToBytes());
@@ -87,7 +87,7 @@
             list.Add(2);//Unused
             list.Add(20);//Units
 
-            var expected = new StrVariablePoint("TEST RUN TIMER", "TESTTIM");
+            var expected = new VariablePoint("TEST RUN TIMER", "TESTTIM");
             expected.Value = new VariableVariant("03:45:09", Units.Time);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Analog;

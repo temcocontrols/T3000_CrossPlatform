@@ -19,5 +19,11 @@
 
             return (value / ((uint)Math.Pow(2, bit))) % 2 == 1;
         }
+
+        public static bool ToBoolean(this byte value) =>
+            BitConverter.ToBoolean(new byte[] {value}, 0);
+
+        //Marasmus 2
+        public static byte[] ToBytes(this byte value) => new byte[] { value };
     }
 }

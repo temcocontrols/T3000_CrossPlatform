@@ -6,7 +6,7 @@ namespace PRGReaderLibrary
     /// <summary>
     /// Size: 30 + 4 + 1 + 1 = 36
     /// </summary>
-    public class StrVariablePoint : BasePoint
+    public class VariablePoint : BasePoint
     {
         private VariableVariant _value;
         public VariableVariant Value {
@@ -36,7 +36,7 @@ namespace PRGReaderLibrary
             set { ControlRaw = value == Control.On; }
         }
 
-        public StrVariablePoint(string description = "", string label = "", FileVersion version = PRGReaderLibrary.FileVersion.Current)
+        public VariablePoint(string description = "", string label = "", FileVersion version = FileVersion.Current)
             : base(description, label, version) { }
 
         #region Binary data
@@ -71,12 +71,12 @@ namespace PRGReaderLibrary
         /// </summary>
         protected byte UnitsRaw { get; set; }
 
-        public StrVariablePoint(byte[] bytes, int offset = 0, FileVersion version = PRGReaderLibrary.FileVersion.Current)
+        public VariablePoint(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
             switch (FileVersion)
             {
-                case PRGReaderLibrary.FileVersion.Dos:
+                case FileVersion.Dos:
                     ValueRaw = bytes.ToUInt32(30 + offset);
                     AutoManualRaw = bytes.GetBit(0, 34 + offset);
                     DigitalAnalogRaw = bytes.GetBit(1, 34 + offset);
@@ -84,7 +84,7 @@ namespace PRGReaderLibrary
                     UnitsRaw = bytes[35 + offset];
                     break;
 
-                case PRGReaderLibrary.FileVersion.Current:
+                case FileVersion.Current:
                     ValueRaw = bytes.ToUInt32(30 + offset);
                     AutoManualRaw = bytes.ToBoolean(34 + offset);
                     DigitalAnalogRaw = bytes.ToBoolean(35 + offset);
@@ -106,14 +106,14 @@ namespace PRGReaderLibrary
 
             switch (FileVersion)
             {
-                case PRGReaderLibrary.FileVersion.Dos:
+                case FileVersion.Dos:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(ValueRaw.ToBytes());
                     bytes.Add(new[] { AutoManualRaw, DigitalAnalogRaw, ControlRaw }.ToBits());
                     bytes.Add(UnitsRaw);
                     break;
 
-                case PRGReaderLibrary.FileVersion.Current:
+                case FileVersion.Current:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(ValueRaw.ToBytes());
                     bytes.Add(AutoManualRaw.ToByte());

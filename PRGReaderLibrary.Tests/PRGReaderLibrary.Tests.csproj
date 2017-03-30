@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Bytes.Tests.cs" />
     <Compile Include="FileVersionUtilities.Tests.cs" />
-    <Compile Include="Types\StrVariablePoint.Tests.cs" />
+    <Compile Include="Types\VariablePoint.Tests.cs" />
     <Compile Include="Prg.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BytesAssert.cs" />

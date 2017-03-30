@@ -36,7 +36,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\CurrentVersionRev6Constants.cs" />
+    <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />
     <Compile Include="Enums\CommandRequest.cs" />
@@ -51,6 +51,7 @@
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="PrgWriter.cs" />
+    <Compile Include="Types\AdditionalTypes\Description.cs" />
     <Compile Include="Types\AdditionalTypes\VariableVariant.cs" />
     <Compile Include="Types\AlarmPoint.cs" />
     <Compile Include="Types\AlarmSetPoint.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Types\StrOutPoint.cs" />
     <Compile Include="Types\StrProgramPoint.cs" />
     <Compile Include="Types\StrTblPoint.cs" />
-    <Compile Include="Types\StrVariablePoint.cs" />
+    <Compile Include="Types\VariablePoint.cs" />
     <Compile Include="Types\StrWeeklyRoutinePoint.cs" />
     <Compile Include="Types\T3000Point.cs" />
     <Compile Include="Enums\Units.cs" />

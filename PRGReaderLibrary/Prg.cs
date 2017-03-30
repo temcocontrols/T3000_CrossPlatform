@@ -1,7 +1,9 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
+    using CustomUnitPoint = DescriptionPoint;
 
     public class Prg
     {
@@ -20,27 +22,29 @@
 
         #region Main data
 
-        public IList<InfoTable> Info { get; set; } = new List<InfoTable>();
-        public IList<StrOutPoint> Outputs { get; set; } = new List<StrOutPoint>();
-        public IList<StrInPoint> Inputs { get; set; } = new List<StrInPoint>();
-        public IList<StrVariablePoint> Variables { get; set; } = new List<StrVariablePoint>();
-        public IList<StrControllerPoint> Controllers { get; set; } = new List<StrControllerPoint>();
-        public IList<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
-        public IList<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
-        public IList<StrWeeklyRoutinePoint> WeeklyRoutines { get; set; } = new List<StrWeeklyRoutinePoint>();
-        public IList<IList<WrOneDay>> WrTimes { get; set; } = new List<IList<WrOneDay>>();
-        public IList<StrAnnualRoutinePoint> AnnualRoutines { get; set; } = new List<StrAnnualRoutinePoint>();
-        public IList<StrProgramPoint> Programs { get; set; } = new List<StrProgramPoint>();
+        public List<InfoTable> Info { get; set; } = new List<InfoTable>();
+        public List<StrOutPoint> Outputs { get; set; } = new List<StrOutPoint>();
+        public List<StrInPoint> Inputs { get; set; } = new List<StrInPoint>();
+        public List<VariablePoint> Variables { get; set; } = new List<VariablePoint>();
+        public List<StrProgramPoint> Programs { get; set; } = new List<StrProgramPoint>();
+        public List<StrControllerPoint> Controllers { get; set; } = new List<StrControllerPoint>();
+        public List<ControlGroupPoint> Screens { get; set; } = new List<ControlGroupPoint>();
+        public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
+        public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
+        public List<StrWeeklyRoutinePoint> WeeklyRoutines { get; set; } = new List<StrWeeklyRoutinePoint>();
+        public List<List<WrOneDay>> WrTimes { get; set; } = new List<List<WrOneDay>>();
+        public List<StrAnnualRoutinePoint> AnnualRoutines { get; set; } = new List<StrAnnualRoutinePoint>();
         public byte[] ProgramCodes { get; set; }
-        public IList<ControlGroupPoint> ControlGroups { get; set; } = new List<ControlGroupPoint>();
-        public IList<ControlGroupElements> ControlGroupElements { get; set; } = new List<ControlGroupElements>();
-        public IList<StationPoint> LocalStations { get; set; } = new List<StationPoint>();
+        public List<ControlGroupElements> ControlGroupElements { get; set; } = new List<ControlGroupElements>();
+        public List<StationPoint> LocalStations { get; set; } = new List<StationPoint>();
         public PasswordStruct Passwords { get; set; } = new PasswordStruct();
-        public IList<AlarmPoint> Alarms { get; set; } = new List<AlarmPoint>();
-        public IList<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
-        public IList<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
-        public IList<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
-        public IList<UnitsElement> Units { get; set; } = new List<UnitsElement>();
+        public List<AlarmPoint> Alarms { get; set; } = new List<AlarmPoint>();
+        public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
+        public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
+        public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
+        public List<UnitsElement> Units { get; set; } = new List<UnitsElement>();
+
+        public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
 
         /// <summary>
         /// Size: 8 bytes
@@ -169,7 +173,7 @@
                         switch (i)
                         {
                             case PointTypes.VAR:
-                                Variables.Add(new StrVariablePoint(data, 0, FileVersion));
+                                Variables.Add(new VariablePoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -264,6 +268,25 @@
             RawData = bytes;
         }
 
+        private byte[] GetObject(byte[] bytes, int size, ref int offset)
+        {
+            var data = bytes.ToBytes(offset, size);
+            offset += size;
+
+            return data;
+        }
+
+        private IList<byte[]> GetArray(byte[] bytes, int count, int size, ref int offset)
+        {
+            var array = new List<byte[]>();
+            for (var i = 0; i < count; ++i)
+            {
+                array.Add(GetObject(bytes, size, ref offset));
+            }
+
+            return array;
+        }
+
         private void FromCurrentFormat(byte[] bytes)
         {
             Version = bytes.ToByte(3);
@@ -271,33 +294,95 @@
             var offset = 3;
 
             //Get all inputs
-            for (var i = 0; i < CurrentVersionRev6Constants.BAC_INPUT_ITEM_COUNT; ++i)
-            {
-                var size = CurrentVersionRev6Constants.BAC_INPUT_ITEM_SIZE;
-                var data = bytes.ToBytes(offset, size);
-                offset += size;
-
-                //Inputs.Add(new StrInputPoint(data, 0, FileVersion));
-            }
+            Inputs.AddRange(GetArray(bytes, 
+                Rev6Constants.InputCount,
+                Rev6Constants.InputSize, ref offset)
+                .Select(i => new StrInPoint()));
 
             //Get all outputs
-            for (var i = 0; i < CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_COUNT; ++i)
-            {
-                var size = CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_SIZE;
-                var data = bytes.ToBytes(offset, size);
-                offset += size;
-
-                //Outputs.Add(new StrOutputPoint(data, 0, FileVersion));
-            }
+            Outputs.AddRange(GetArray(bytes,
+                Rev6Constants.OutputCount,
+                Rev6Constants.OutputSize, ref offset)
+                .Select(i => new StrOutPoint()));
 
             //Get all variables
-            for (var i = 0; i < CurrentVersionRev6Constants.BAC_VARIABLE_ITEM_COUNT; ++i)
-            {
-                var size = CurrentVersionRev6Constants.BAC_VARIABLE_ITEM_SIZE;
-                var data = bytes.ToBytes(offset, size);
-                offset += size;
+            Variables.AddRange(GetArray(bytes,
+                Rev6Constants.VariableCount,
+                Rev6Constants.VariableSize, ref offset)
+                .Select(i => new VariablePoint(i, 0, FileVersion)));
 
-                Variables.Add(new StrVariablePoint(data, 0, FileVersion));
+            //Get all programs
+            Programs.AddRange(GetArray(bytes,
+                Rev6Constants.ProgramCount,
+                Rev6Constants.ProgramSize, ref offset)
+                .Select(i => new StrProgramPoint()));
+
+            //Get all controllers
+            Controllers.AddRange(GetArray(bytes,
+                Rev6Constants.ControllerCount,
+                Rev6Constants.ControllerSize, ref offset)
+                .Select(i => new StrControllerPoint()));
+
+            //Get all screens
+            Screens.AddRange(GetArray(bytes,
+                Rev6Constants.ScreenCount,
+                Rev6Constants.ScreenSize, ref offset)
+                .Select(i => new ControlGroupPoint()));
+
+            //Get all graphic labels
+            //Labels.AddRange(
+            GetArray(bytes,
+                Rev6Constants.GraphicLabelCount,
+                Rev6Constants.GraphicLabelSize, ref offset);
+            //    .Select(i => new Str_label_point()));
+
+            GetArray(bytes,
+                Rev6Constants.UserLoginCount,
+                Rev6Constants.UserLoginSize, ref offset);
+
+            Units.AddRange(GetArray(bytes,
+                Rev6Constants.CustomerUnitsCount,
+                Rev6Constants.CustomerUnitsSize, ref offset)
+                .Select(i => new UnitsElement(i, 0, FileVersion)));
+
+            GetArray(bytes,
+                Rev6Constants.AnalogCustomerRangeTableCount,
+                Rev6Constants.AnalogCustomerRangeTableSize, ref offset);
+
+            GetObject(bytes, Rev6Constants.SettingSize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.ScheduleCount,
+                Rev6Constants.ScheduleSize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.HolidayCount,
+                Rev6Constants.HolidaySize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.MonitorCount,
+                Rev6Constants.MonitorSize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.WeeklyRoutinesCount,
+                Rev6Constants.WeeklyRoutinesSize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.AnnualRoutinesCount,
+                Rev6Constants.AnnualRoutinesSize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.ProgramCodeCount,
+                Rev6Constants.ProgramCodeSize, ref offset);
+
+            GetArray(bytes,
+                Rev6Constants.VariableCustomUnitCount,
+                Rev6Constants.VariableCustomUnitSize, ref offset);
+
+            if (offset != bytes.Length)
+            {
+                throw new ArgumentException($@"Bytes lenght != offset after reading.
+Offset: {offset}, Length: {bytes.Length}");
             }
 
             RawData = bytes;
@@ -409,13 +494,45 @@
             var bytes = new List<byte>();
 
             bytes.AddRange(RawData.ToBytes(0, 3));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionRev6Constants.BAC_INPUT_ITEM_COUNT * CurrentVersionRev6Constants.BAC_INPUT_ITEM_SIZE));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_SIZE));
-            foreach (var variable in Variables)
+
+            //'for' instead 'foreach' for upgrade support
+
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.InputCount * Rev6Constants.InputSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.OutputCount * Rev6Constants.OutputSize));
+
+            for (var i = 0; i < Rev6Constants.VariableCount; ++i)
             {
-                bytes.AddRange(variable.ToBytes());
+                var obj = i < Variables.Count ? Variables[i] : new VariablePoint();
+                bytes.AddRange(obj.ToBytes());
             }
-            bytes.AddRange(RawData.ToBytes(bytes.Count));
+
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ProgramCount * Rev6Constants.ProgramSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ControllerCount * Rev6Constants.ControllerSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ScreenCount * Rev6Constants.ScreenSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.GraphicLabelCount * Rev6Constants.GraphicLabelSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.UserLoginCount * Rev6Constants.UserLoginSize));
+
+            for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
+            {
+                var obj = i < Units.Count ? Units[i] : new UnitsElement();
+                bytes.AddRange(obj.ToBytes());
+            }
+
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnalogCustomerRangeTableCount * Rev6Constants.AnalogCustomerRangeTableSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.SettingSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ScheduleCount * Rev6Constants.ScheduleSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.HolidayCount * Rev6Constants.HolidaySize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.MonitorCount * Rev6Constants.MonitorSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.WeeklyRoutinesCount * Rev6Constants.WeeklyRoutinesSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnnualRoutinesCount * Rev6Constants.AnnualRoutinesSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ProgramCodeCount * Rev6Constants.ProgramCodeSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.VariableCustomUnitCount * Rev6Constants.VariableCustomUnitSize));
+
+            if (RawData.Length != bytes.Count)
+            {
+                throw new ArgumentException($@"Bytes lenght != RawData.Length after writing.
+Offset: {RawData.Length}, Length: {bytes.Count}");
+            }
 
             return bytes.ToArray();
         }

@@ -5,8 +5,12 @@
 
     public static class BytesExtensions
     {
-        public static string GetString(this byte[] bytes, int offset = 0, int length = 0) =>
-            Encoding.ASCII.GetString(bytes, offset, length == 0 ? bytes.Length : length);
+        public static string GetString(this byte[] bytes, int offset = 0, int length = 0)
+        {
+            var buffer = bytes.ToBytes(offset, length);
+
+            return Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+        }
 
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
             BitConverter.ToBoolean(bytes, offset);
