@@ -39,6 +39,7 @@
     <Compile Include="Constants\CurrentVersionRev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />
+    <Compile Include="Enums\CommandRequest.cs" />
     <Compile Include="Enums\FileVersion.cs" />
     <Compile Include="Enums\Control.cs" />
     <Compile Include="Enums\DigitalAnalog.cs" />
