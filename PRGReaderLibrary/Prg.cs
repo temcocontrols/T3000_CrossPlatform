@@ -109,14 +109,14 @@
             var maxPrg = 0;
             var maxGrp = 0;
 
-            for (var i = Blocks.OUT; i <= Blocks.UNIT; ++i)
+            for (var i = PointTypes.OUT; i <= PointTypes.UNIT; ++i)
             {
-                if (i == Blocks.DMON)
+                if (i == PointTypes.TZ)
                 {
                     continue;
                 }
 
-                if (i == Blocks.AMON)
+                if (i == PointTypes.AMON)
                 {
                     if (Version < 230 && MiniVersion >= 230)
                     {
@@ -126,7 +126,7 @@
                         continue;
                 }
 
-                if (i == Blocks.ALARMM)
+                if (i == PointTypes.ALARMM)
                 {
                     if (Version < 216)
                     {
@@ -150,11 +150,11 @@
                     var size = bytes.ToUInt16(offset);
                     offset += 2;
 
-                    if (i == Blocks.PRG)
+                    if (i == PointTypes.PRG)
                     {
                         maxPrg = count;
                     }
-                    if (i == Blocks.GRP)
+                    if (i == PointTypes.GRP)
                     {
                         maxGrp = count;
                     }
@@ -168,7 +168,7 @@
                         offset += size;
                         switch (i)
                         {
-                            case Blocks.VAR:
+                            case PointTypes.VAR:
                                 Variables.Add(new StrVariablePoint(data, 0, FileVersion));
                                 break;
 
@@ -340,20 +340,20 @@
             bytes.AddRange(Reserved);
 
             var offset = bytes.Count;
-            for (var i = Blocks.OUT; i <= Blocks.UNIT; ++i)
+            for (var i = PointTypes.OUT; i <= PointTypes.UNIT; ++i)
             {
-                if (i == Blocks.DMON)
+                if (i == PointTypes.TZ)
                 {
                     continue;
                 }
 
-                if (i == Blocks.AMON)
+                if (i == PointTypes.AMON)
                 {
                     if (Version >= 230 && MiniVersion > 0)
                         continue;
                 }
 
-                if (i == Blocks.ALARMM)
+                if (i == PointTypes.ALARMM)
                 {
                     if (Version < 216)
                     {
@@ -386,7 +386,7 @@
                         offset += size;
                         switch (i)
                         {
-                            case Blocks.VAR:
+                            case PointTypes.VAR:
                                 bytes.AddRange(Variables[j].ToBytes());
                                 break;
 

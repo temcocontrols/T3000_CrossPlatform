@@ -38,12 +38,13 @@
   <ItemGroup>
     <Compile Include="Constants\CurrentVersionRev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
+    <Compile Include="Enums\AnalogOutput.cs" />
     <Compile Include="Enums\FileVersion.cs" />
     <Compile Include="Enums\Control.cs" />
     <Compile Include="Enums\DigitalAnalog.cs" />
     <Compile Include="Enums\AutoManual.cs" />
     <Compile Include="Enums\Types.cs" />
-    <Compile Include="Enums\Blocks.cs" />
+    <Compile Include="Enums\PointTypes.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
