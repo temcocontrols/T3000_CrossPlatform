@@ -21,13 +21,13 @@
                 case Units.OffOn:
                     return "Off/On";
 
-                case Units.CloseOpen:
+                case Units.ClosedOpen:
                     return "Close/Open";
 
                 case Units.StopStart:
                     return "Stop/Start";
 
-                case Units.DisableEnable:
+                case Units.DisabledEnabled:
                     return "Disable/Enable";
 
                 case Units.NormalAlarm:
@@ -45,14 +45,14 @@
                 case Units.CoolHeat:
                     return "Cool/Heat";
 
-                case Units.UnOccupied:
+                case Units.UnoccupiedOccupied:
                     return "Unoccupied/Occupied";
 
                 case Units.LowHigh:
                     return "Low/High";
 
-                case Units.InactiveActive:
-                    return "Inactive/Active";
+                //case Units.Custom1:
+                //    return "Inactive/Active";
 
                 default:
                     return units.ToString();
