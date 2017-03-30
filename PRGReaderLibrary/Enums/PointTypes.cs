@@ -1,24 +1,24 @@
 namespace PRGReaderLibrary
 {
-    public enum Blocks
+    public enum PointTypes
     {
         OUT = 0, // 0-17
         IN,
         VAR,
         CON,
-        WR,
+        WRT,
         AR,
         PRG,
         TBL,
-        DMON,
+        TZ,
         AMON,
         GRP,
-        AY,   /* table to hold file names */
+        ARRAY,   /* table to hold file names */
         ALARMM,
         UNIT,
         USER_NAME,
-        ALARMS,
+        ALARM_SET,
         WR_TIME,
-        AR_Y
+        AR_DATA
     }
 }
