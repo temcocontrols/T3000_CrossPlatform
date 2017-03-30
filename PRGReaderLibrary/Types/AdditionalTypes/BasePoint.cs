@@ -5,21 +5,24 @@ namespace PRGReaderLibrary
     /// <summary>
     /// Size: 30 bytes
     /// </summary>
-    public class BasePoint
+    public class BasePoint : Version
     {
-        public string Description
-        {
+        public string Description {
             get { return DescriptionRaw.ClearBinarySymvols(); }
             set { DescriptionRaw = value.AddBinarySymvols(21); }
         }
 
-        public string Label
-        {
+        public string Label {
             get { return LabelRaw.ClearBinarySymvols(); }
             set { LabelRaw = value.AddBinarySymvols(9); }
         }
 
-        public BasePoint() {}
+        public BasePoint(string description = "", string label = "", FileVersionEnum version = FileVersionEnum.Current)
+            : base(version)
+        {
+            Description = description;
+            Label = label;
+        }
 
         #region Binary data
 
@@ -33,7 +36,8 @@ namespace PRGReaderLibrary
         /// </summary>
         protected string LabelRaw { get; set; }
 
-        public BasePoint(byte[] bytes, int offset = 0)
+        public BasePoint(byte[] bytes, int offset = 0, FileVersionEnum version = FileVersionEnum.Current)
+            : base(version)
         {
             DescriptionRaw = bytes.GetString(0 + offset, 21);
             LabelRaw = bytes.GetString(21 + offset, 9);

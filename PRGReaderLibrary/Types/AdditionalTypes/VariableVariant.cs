@@ -7,18 +7,15 @@
         public uint Value { get; set; }
         public UnitsEnum Units { get; set; }
 
-        public object Object
-        {
+        public object Object {
             get { return ToObject(Value, Units); }
         }
 
-        public Type Type
-        {
+        public Type Type {
             get { return Object.GetType(); }
         }
 
-        public string Text
-        {
+        public string Text {
             get { return ToString(Object, Units); }
         }
 
@@ -26,7 +23,7 @@
             units < UnitsEnum.OffOn;
 
         public static int FromTimeSpan(TimeSpan time) =>
-                ((  time.Days * 60 * 60 * 24 +
+                ((time.Days * 60 * 60 * 24 +
                     time.Hours * 60 * 60 +
                     time.Minutes * 60 +
                     time.Seconds) * 1000 +

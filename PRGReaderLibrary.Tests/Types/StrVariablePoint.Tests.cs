@@ -10,8 +10,8 @@
         {
             var actual = new StrVariablePoint(bytes, 0, version);
             ObjectAssert.AreEqual(expected, actual);
-            BytesAssert.AreEqual(expected.ToBytes(version), actual.ToBytes(version));
-            BytesAssert.AreEqual(bytes, expected.ToBytes(version));
+            BytesAssert.AreEqual(expected.ToBytes(), actual.ToBytes());
+            BytesAssert.AreEqual(bytes, expected.ToBytes());
         }
 
         [Test]
@@ -24,9 +24,7 @@
             list.Add(new [] {true,true,true}.ToBits());
             list.Add((byte)UnitsEnum.DegreesC);
 
-            var expected = new StrVariablePoint();
-            expected.Description = "Description";
-            expected.Label = "Label";
+            var expected = new StrVariablePoint("Description", "Label", FileVersionEnum.Dos);
             expected.Value = new VariableVariant("5.000", UnitsEnum.DegreesC);
             expected.AutoManual = AutoManualEnum.Manual;
             expected.DigitalAnalog = DigitalAnalogEnum.Analog;
@@ -47,9 +45,7 @@
             list.Add(2);//Unused
             list.Add(1);//Units
 
-            var expected = new StrVariablePoint();
-            expected.Description = "START TEST FLAG";
-            expected.Label = "INIT";
+            var expected = new StrVariablePoint("START TEST FLAG", "INIT");
             expected.Value = new VariableVariant("Off", UnitsEnum.OffOn);
             expected.AutoManual = AutoManualEnum.Automatic;
             expected.DigitalAnalog = DigitalAnalogEnum.Digital;
@@ -70,9 +66,7 @@
             list.Add(2);//Unused
             list.Add(22);//Units
 
-            var expected = new StrVariablePoint();
-            expected.Description = "PUMP SPEED";
-            expected.Label = "PMPSPEED";
+            var expected = new StrVariablePoint("PUMP SPEED", "PMPSPEED");
             expected.Value = new VariableVariant("40.000", UnitsEnum.Percents);
             expected.AutoManual = AutoManualEnum.Automatic;
             expected.DigitalAnalog = DigitalAnalogEnum.Analog;
@@ -93,9 +87,7 @@
             list.Add(2);//Unused
             list.Add(20);//Units
 
-            var expected = new StrVariablePoint();
-            expected.Description = "TEST RUN TIMER";
-            expected.Label = "TESTTIM";
+            var expected = new StrVariablePoint("TEST RUN TIMER", "TESTTIM");
             expected.Value = new VariableVariant("03:45:09", UnitsEnum.Time);
             expected.AutoManual = AutoManualEnum.Automatic;
             expected.DigitalAnalog = DigitalAnalogEnum.Analog;

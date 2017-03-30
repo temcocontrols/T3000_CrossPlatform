@@ -9,15 +9,12 @@ namespace PRGReaderLibrary
     public class StrVariablePoint : BasePoint
     {
         private VariableVariant _value;
-        public VariableVariant Value
-        {
-            get
-            {
-                _value = _value ?? new VariableVariant(ValueRaw, (UnitsEnum) UnitsRaw);
+        public VariableVariant Value {
+            get {
+                _value = _value ?? new VariableVariant(ValueRaw, (UnitsEnum)UnitsRaw);
                 return _value;
             }
-            set
-            {
+            set {
                 _value = value;
                 ValueRaw = value.Value;
                 UnitsRaw = (byte)value.Units;
@@ -39,7 +36,8 @@ namespace PRGReaderLibrary
             set { ControlRaw = value == ControlEnum.On; }
         }
 
-        public StrVariablePoint() { }
+        public StrVariablePoint(string description = "", string label = "", FileVersionEnum version = FileVersionEnum.Current)
+            : base(description, label, version) { }
 
         #region Binary data
 
@@ -73,9 +71,10 @@ namespace PRGReaderLibrary
         /// </summary>
         protected byte UnitsRaw { get; set; }
 
-        public StrVariablePoint(byte[] bytes, int offset = 0, FileVersionEnum version = FileVersionEnum.Current) : base(bytes, offset)
+        public StrVariablePoint(byte[] bytes, int offset = 0, FileVersionEnum version = FileVersionEnum.Current)
+            : base(bytes, offset, version)
         {
-            switch (version)
+            switch (FileVersion)
             {
                 case FileVersionEnum.Dos:
                     ValueRaw = bytes.ToUInt32(30 + offset);
@@ -86,21 +85,10 @@ namespace PRGReaderLibrary
                     break;
 
                 case FileVersionEnum.Current:
-                    /* For debug
-                    Console.WriteLine(bytes.GetString(0 + offset, 21));
-                    Console.WriteLine(bytes.GetString(21 + offset, 9));
-                    Console.WriteLine(bytes.ToInt32(30 + offset));
-                    Console.WriteLine(bytes.ToByte(34 + offset));
-                    Console.WriteLine(bytes.ToByte(35 + offset));
-                    Console.WriteLine(bytes.ToByte(36 + offset));
-                    Console.WriteLine(bytes.ToByte(37 + offset));
-                    Console.WriteLine(bytes.ToByte(38 + offset));
-                    Console.WriteLine();
-                    //*/
                     ValueRaw = bytes.ToUInt32(30 + offset);
-                    AutoManualRaw = bytes.ToByte(34 + offset) > 0;
-                    DigitalAnalogRaw = bytes.ToByte(35 + offset) > 0;
-                    ControlRaw = bytes.ToByte(36 + offset) > 0;
+                    AutoManualRaw = bytes.ToBoolean(34 + offset);
+                    DigitalAnalogRaw = bytes.ToBoolean(35 + offset);
+                    ControlRaw = bytes.ToBoolean(36 + offset);
                     UnusedRaw = bytes.ToByte(37 + offset);
                     UnitsRaw = DigitalAnalogRaw
                         ? bytes[38 + offset]
@@ -112,11 +100,11 @@ namespace PRGReaderLibrary
             }
         }
 
-        public byte[] ToBytes(FileVersionEnum version = FileVersionEnum.Current)
+        public new byte[] ToBytes()
         {
             var bytes = new List<byte>();
 
-            switch (version)
+            switch (FileVersion)
             {
                 case FileVersionEnum.Dos:
                     bytes.AddRange(base.ToBytes());
@@ -131,7 +119,7 @@ namespace PRGReaderLibrary
                     bytes.Add(AutoManualRaw.ToByte());
                     bytes.Add(DigitalAnalogRaw.ToByte());
                     bytes.Add(ControlRaw.ToByte());
-                    bytes.Add(UnusedRaw); //WTF 2??
+                    bytes.Add(UnusedRaw); //WTF (it equals 2)??
                     bytes.Add(DigitalAnalogRaw ? UnitsRaw : (byte)(UnitsRaw - 100));
                     break;
 

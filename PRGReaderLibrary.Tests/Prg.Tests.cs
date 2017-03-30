@@ -17,13 +17,17 @@
             //Test variables binary load/save compatible
             foreach (var variable in prg.Variables)
             {
-                //Additional check for Value
-                var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units);
-                ObjectAssert.AreEqual(variable.Value, tempValue,
-                    $@"Variable value toFrom string test failed.
+                //Bit to bit compatible supported only for current version
+                if (prg.FileVersion == FileVersionEnum.Current)
+                {
+                    //Additional check for Value
+                    var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units);
+                    ObjectAssert.AreEqual(variable.Value, tempValue,
+                        $@"Variable value toFrom string test failed.
 Value.ToString(): {variable.Value.ToString()}
 Value.ToFromToString(): {tempValue.ToString()}
 ");
+                }
 
                 var tempVariable = variable;
                 variable.AutoManual = variable.AutoManual;
@@ -46,6 +50,19 @@ Value.ToFromToString(): {tempValue.ToString()}
                 prg.Save(temp);
                 FileAssert.AreNotEqual(path, temp);
             }
+
+            //Not supported while using RawData. 
+            //Only updating the file without changing the format is available.
+            /*
+            //Additional check for upgrade to current
+            if (prg.FileVersion != FileVersionEnum.Current)
+            {
+                prg.Upgrade();
+                prg.Save(temp);
+                prg = Prg.Load(temp);
+                Assert.AreEqual(FileVersionEnum.Current, prg.FileVersion);
+            }
+            */
         }
 
         public void UnsupportedTest(string name)
@@ -86,10 +103,8 @@ Value.ToFromToString(): {tempValue.ToString()}
             BaseTest("panel2.prg");
             BaseTest("panel11.prg");
             BaseTest("panel1.prg");
-
-            //Binaries load/save temporaly not compatible
-            //BaseTest("testvariables.prg");
-            //BaseTest("temco.prg");
+            BaseTest("testvariables.prg");
+            BaseTest("temco.prg");
 
             //Unsupported
             UnsupportedTest("balsam2.prg");

@@ -76,7 +76,7 @@
         #endregion
 
         #region Binary data
-        
+
         public byte[] RawData { get; protected set; }
 
         private void FromDosFormat(byte[] bytes)
@@ -387,7 +387,7 @@
                         switch (i)
                         {
                             case BlocksEnum.VAR:
-                                bytes.AddRange(Variables[j].ToBytes(FileVersion));
+                                bytes.AddRange(Variables[j].ToBytes());
                                 break;
 
                             default:
@@ -407,13 +407,13 @@
         public byte[] ToCurrentFormat()
         {
             var bytes = new List<byte>();
-            
+
             bytes.AddRange(RawData.ToBytes(0, 3));
             bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionRev6Constants.BAC_INPUT_ITEM_COUNT * CurrentVersionRev6Constants.BAC_INPUT_ITEM_SIZE));
             bytes.AddRange(RawData.ToBytes(bytes.Count, CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_COUNT * CurrentVersionRev6Constants.BAC_OUTPUT_ITEM_SIZE));
             foreach (var variable in Variables)
             {
-                bytes.AddRange(variable.ToBytes(FileVersion));
+                bytes.AddRange(variable.ToBytes());
             }
             bytes.AddRange(RawData.ToBytes(bytes.Count));
 
@@ -436,6 +436,15 @@
         }
 
         #endregion
+
+        public void Upgrade(FileVersionEnum version = FileVersionEnum.Current)
+        {
+            FileVersion = version;
+            foreach (var variable in Variables)
+            {
+                variable.FileVersion = version;
+            }
+        }
 
         public static Prg Load(string path) => PrgReader.Read(path);
         public void Save(string path) => PrgWriter.Write(this, path);
