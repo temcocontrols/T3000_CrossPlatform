@@ -33,7 +33,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 1 byte. Analog_units_equate
         /// </summary>
-        public UnitsEnum Units { get; set; }
+        public Units Units { get; set; }
 
         /// <summary>
         /// Size: 1 bit. false - Automatic

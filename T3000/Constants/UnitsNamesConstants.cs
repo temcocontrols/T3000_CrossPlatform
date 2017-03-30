@@ -8,50 +8,50 @@
     /// </summary>
     public static class UnitsNamesConstants
     {
-        public static string GetName(UnitsEnum units)
+        public static string GetName(Units units)
         {
             switch (units)
             {
-                case UnitsEnum.DegreesC:
+                case Units.DegreesC:
                     return "°C";
 
-                case UnitsEnum.DegreesF:
+                case Units.DegreesF:
                     return "°F";
                     
-                case UnitsEnum.OffOn:
+                case Units.OffOn:
                     return "Off/On";
 
-                case UnitsEnum.CloseOpen:
+                case Units.CloseOpen:
                     return "Close/Open";
 
-                case UnitsEnum.StopStart:
+                case Units.StopStart:
                     return "Stop/Start";
 
-                case UnitsEnum.DisableEnable:
+                case Units.DisableEnable:
                     return "Disable/Enable";
 
-                case UnitsEnum.NormalAlarm:
+                case Units.NormalAlarm:
                     return "Normal/Alarm";
 
-                case UnitsEnum.NormalHigh:
+                case Units.NormalHigh:
                     return "Normal/High";
 
-                case UnitsEnum.NormalLow:
+                case Units.NormalLow:
                     return "Normal/Low";
 
-                case UnitsEnum.NoYes:
+                case Units.NoYes:
                     return "No/Yes";
 
-                case UnitsEnum.CoolHeat:
+                case Units.CoolHeat:
                     return "Cool/Heat";
 
-                case UnitsEnum.UnOccupied:
+                case Units.UnOccupied:
                     return "Unoccupied/Occupied";
 
-                case UnitsEnum.LowHigh:
+                case Units.LowHigh:
                     return "Low/High";
 
-                case UnitsEnum.InactiveActive:
+                case Units.InactiveActive:
                     return "Inactive/Active";
 
                 default:
@@ -59,13 +59,13 @@
             }
         }
 
-        public static UnitsNameItem GetNameItem(UnitsEnum units) =>
+        public static UnitsNameItem GetNameItem(Units units) =>
             new UnitsNameItem(units, GetName(units));
 
         public static IList<UnitsNameItem> GetNames()
         {
             var names = new List<UnitsNameItem>();
-            foreach (UnitsEnum units in Enum.GetValues(typeof(UnitsEnum)))
+            foreach (Units units in Enum.GetValues(typeof(Units)))
             {
                 names.Add(GetNameItem(units));
             }

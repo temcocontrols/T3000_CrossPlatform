@@ -12,15 +12,15 @@
             bytes.ToByte(1) == 0xff &&
             bytes.ToByte(2) == revision; //version
 
-        public static FileVersionEnum GetFileVersion(byte[] bytes)
+        public static FileVersion GetFileVersion(byte[] bytes)
         {
             if (IsCurrentVersion(bytes, CurrentVersionConstants.FileRevision))
-                return FileVersionEnum.Current;
+                return FileVersion.Current;
 
             if (IsDosVersion(bytes))
-                return FileVersionEnum.Dos;
+                return FileVersion.Dos;
 
-            return FileVersionEnum.Unsupported;
+            return FileVersion.Unsupported;
         }
     }
 }

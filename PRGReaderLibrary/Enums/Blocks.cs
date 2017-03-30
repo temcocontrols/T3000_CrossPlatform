@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum BlocksEnum
+    public enum Blocks
     {
         OUT = 0, // 0-17
         IN,

@@ -1,6 +1,6 @@
 ﻿namespace PRGReaderLibrary
 {
-    public enum FileVersionEnum
+    public enum FileVersion
     {
         Unsupported,
         Dos,

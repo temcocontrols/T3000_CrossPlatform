@@ -23,7 +23,7 @@
                 FileVersionUtilities.IsCurrentVersion(GetBytesFromName(name), revision),
                 $"{nameof(FileVersionUtilities.IsCurrentVersion)}: {name}. Rev: {revision}");
 
-        public void GetFileVersion(string name, FileVersionEnum expected) =>
+        public void GetFileVersion(string name, FileVersion expected) =>
             Assert.AreEqual(expected,
                 FileVersionUtilities.GetFileVersion(GetBytesFromName(name)),
                 $"{nameof(FileVersionUtilities.GetFileVersion)}: {name}");
@@ -77,21 +77,21 @@
         public void PRGUtilities_GetFileVersion()
         {
             //Current
-            GetFileVersion("BTUMeter.prg", FileVersionEnum.Current);
+            GetFileVersion("BTUMeter.prg", FileVersion.Current);
 
             //Dos
-            GetFileVersion("asy1.prg", FileVersionEnum.Dos);
-            GetFileVersion("panel1.prg", FileVersionEnum.Dos);
-            GetFileVersion("testvariables.prg", FileVersionEnum.Dos);
-            GetFileVersion("panel11.prg", FileVersionEnum.Dos);
-            GetFileVersion("panel2.prg", FileVersionEnum.Dos);
-            GetFileVersion("temco.prg", FileVersionEnum.Dos);
+            GetFileVersion("asy1.prg", FileVersion.Dos);
+            GetFileVersion("panel1.prg", FileVersion.Dos);
+            GetFileVersion("testvariables.prg", FileVersion.Dos);
+            GetFileVersion("panel11.prg", FileVersion.Dos);
+            GetFileVersion("panel2.prg", FileVersion.Dos);
+            GetFileVersion("temco.prg", FileVersion.Dos);
 
             //Unsupported
-            GetFileVersion("SelfTestRev3.prg", FileVersionEnum.Unsupported);
-            GetFileVersion("ChamberRev5.prg", FileVersionEnum.Unsupported);
-            GetFileVersion("balsam2.prg", FileVersionEnum.Unsupported);
-            GetFileVersion("90185.prg", FileVersionEnum.Unsupported);
+            GetFileVersion("SelfTestRev3.prg", FileVersion.Unsupported);
+            GetFileVersion("ChamberRev5.prg", FileVersion.Unsupported);
+            GetFileVersion("balsam2.prg", FileVersion.Unsupported);
+            GetFileVersion("90185.prg", FileVersion.Unsupported);
         }
     }
 }

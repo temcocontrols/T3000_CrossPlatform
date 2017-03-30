@@ -5,7 +5,7 @@
     public class VariableVariant
     {
         public uint Value { get; set; }
-        public UnitsEnum Units { get; set; }
+        public Units Units { get; set; }
 
         public object Object {
             get { return ToObject(Value, Units); }
@@ -19,8 +19,8 @@
             get { return ToString(Object, Units); }
         }
 
-        public static bool IsAnalogUnits(UnitsEnum units) =>
-            units < UnitsEnum.OffOn;
+        public static bool IsAnalogUnits(Units units) =>
+            units < Units.OffOn;
 
         public static int FromTimeSpan(TimeSpan time) =>
                 ((time.Days * 60 * 60 * 24 +
@@ -38,11 +38,11 @@
                 value % 1000                 //milliseconds
             );
 
-        public static object ToObject(uint value, UnitsEnum units)
+        public static object ToObject(uint value, Units units)
         {
             switch (units)
             {
-                case UnitsEnum.Time:
+                case Units.Time:
                     return ToTimeSpan((int)value);
 
                 default:
@@ -52,14 +52,14 @@
             }
         }
 
-        public static object ToObject(string value, UnitsEnum units)
+        public static object ToObject(string value, Units units)
         {
             switch (units)
             {
-                case UnitsEnum.Time:
+                case Units.Time:
                     return TimeSpan.Parse(value);
 
-                case UnitsEnum.OffOn:
+                case Units.OffOn:
                     if (!value.Equals("On", StringComparison.OrdinalIgnoreCase) &&
                         !value.Equals("Off", StringComparison.OrdinalIgnoreCase))
                     {
@@ -77,7 +77,7 @@ Supporting values: On, Off");
             }
         }
 
-        public static string ToString(object value, UnitsEnum units)
+        public static string ToString(object value, Units units)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -85,7 +85,7 @@ Supporting values: On, Off");
                 var boolean = Convert.ToBoolean(value);
                 switch (units)
                 {
-                    case UnitsEnum.OffOn:
+                    case Units.OffOn:
                         return boolean ? "On" : "Off";
 
                     default:
@@ -108,7 +108,7 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public static uint ToUInt(object value, UnitsEnum units)
+        public static uint ToUInt(object value, Units units)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -121,7 +121,7 @@ Supported types: bool, float, TimeSpan");
 
                 switch (units)
                 {
-                    case UnitsEnum.NoYes:
+                    case Units.NoYes:
                         return Convert.ToUInt32(value) * 1000;
 
                     default:
@@ -157,17 +157,17 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public VariableVariant(uint value, UnitsEnum units)
+        public VariableVariant(uint value, Units units)
         {
             Value = value;
             Units = units;
         }
 
-        public VariableVariant(object value, UnitsEnum units)
+        public VariableVariant(object value, Units units)
             : this(ToUInt(value, units), units)
         { }
 
-        public VariableVariant(string value, UnitsEnum units)
+        public VariableVariant(string value, Units units)
             : this(ToObject(value, units), units)
         { }
 

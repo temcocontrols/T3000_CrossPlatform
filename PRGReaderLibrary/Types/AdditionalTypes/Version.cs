@@ -2,9 +2,9 @@
 {
     public class Version
     {
-        public FileVersionEnum FileVersion { get; set; }
+        public FileVersion FileVersion { get; set; }
 
-        public Version(FileVersionEnum version)
+        public Version(FileVersion version)
         {
             FileVersion = version;
         }

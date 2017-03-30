@@ -5,7 +5,7 @@
 
     public class Prg
     {
-        public FileVersionEnum FileVersion { get; set; }
+        public FileVersion FileVersion { get; set; }
         public string DateTime { get; set; }
         public string Signature { get; set; }
         public ushort PanelNumber { get; set; }
@@ -109,14 +109,14 @@
             var maxPrg = 0;
             var maxGrp = 0;
 
-            for (var i = BlocksEnum.OUT; i <= BlocksEnum.UNIT; ++i)
+            for (var i = Blocks.OUT; i <= Blocks.UNIT; ++i)
             {
-                if (i == BlocksEnum.DMON)
+                if (i == Blocks.DMON)
                 {
                     continue;
                 }
 
-                if (i == BlocksEnum.AMON)
+                if (i == Blocks.AMON)
                 {
                     if (Version < 230 && MiniVersion >= 230)
                     {
@@ -126,7 +126,7 @@
                         continue;
                 }
 
-                if (i == BlocksEnum.ALARMM)
+                if (i == Blocks.ALARMM)
                 {
                     if (Version < 216)
                     {
@@ -150,11 +150,11 @@
                     var size = bytes.ToUInt16(offset);
                     offset += 2;
 
-                    if (i == BlocksEnum.PRG)
+                    if (i == Blocks.PRG)
                     {
                         maxPrg = count;
                     }
-                    if (i == BlocksEnum.GRP)
+                    if (i == Blocks.GRP)
                     {
                         maxGrp = count;
                     }
@@ -168,7 +168,7 @@
                         offset += size;
                         switch (i)
                         {
-                            case BlocksEnum.VAR:
+                            case Blocks.VAR:
                                 Variables.Add(new StrVariablePoint(data, 0, FileVersion));
                                 break;
 
@@ -306,7 +306,7 @@
         public Prg(byte[] bytes)
         {
             FileVersion = FileVersionUtilities.GetFileVersion(bytes);
-            if (FileVersion == FileVersionEnum.Unsupported)
+            if (FileVersion == FileVersion.Unsupported)
             {
                 throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
 {bytes.GetString(0, Math.Min(100, bytes.Length))}");
@@ -314,11 +314,11 @@
 
             switch (FileVersion)
             {
-                case FileVersionEnum.Dos:
+                case FileVersion.Dos:
                     FromDosFormat(bytes);
                     break;
 
-                case FileVersionEnum.Current:
+                case FileVersion.Current:
                     FromCurrentFormat(bytes);
                     break;
 
@@ -340,20 +340,20 @@
             bytes.AddRange(Reserved);
 
             var offset = bytes.Count;
-            for (var i = BlocksEnum.OUT; i <= BlocksEnum.UNIT; ++i)
+            for (var i = Blocks.OUT; i <= Blocks.UNIT; ++i)
             {
-                if (i == BlocksEnum.DMON)
+                if (i == Blocks.DMON)
                 {
                     continue;
                 }
 
-                if (i == BlocksEnum.AMON)
+                if (i == Blocks.AMON)
                 {
                     if (Version >= 230 && MiniVersion > 0)
                         continue;
                 }
 
-                if (i == BlocksEnum.ALARMM)
+                if (i == Blocks.ALARMM)
                 {
                     if (Version < 216)
                     {
@@ -386,7 +386,7 @@
                         offset += size;
                         switch (i)
                         {
-                            case BlocksEnum.VAR:
+                            case Blocks.VAR:
                                 bytes.AddRange(Variables[j].ToBytes());
                                 break;
 
@@ -424,10 +424,10 @@
         {
             switch (FileVersion)
             {
-                case FileVersionEnum.Dos:
+                case FileVersion.Dos:
                     return ToDosFormat();
 
-                case FileVersionEnum.Current:
+                case FileVersion.Current:
                     return ToCurrentFormat();
 
                 default:
@@ -437,7 +437,7 @@
 
         #endregion
 
-        public void Upgrade(FileVersionEnum version = FileVersionEnum.Current)
+        public void Upgrade(FileVersion version = FileVersion.Current)
         {
             FileVersion = version;
             foreach (var variable in Variables)

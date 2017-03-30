@@ -38,12 +38,12 @@
   <ItemGroup>
     <Compile Include="Constants\CurrentVersionRev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
-    <Compile Include="Enums\FileVersionEnum.cs" />
-    <Compile Include="Enums\ControlEnum.cs" />
-    <Compile Include="Enums\DigitalAnalogEnum.cs" />
-    <Compile Include="Enums\AutoManualEnum.cs" />
-    <Compile Include="Enums\TypesEnum.cs" />
-    <Compile Include="Enums\BlocksEnum.cs" />
+    <Compile Include="Enums\FileVersion.cs" />
+    <Compile Include="Enums\Control.cs" />
+    <Compile Include="Enums\DigitalAnalog.cs" />
+    <Compile Include="Enums\AutoManual.cs" />
+    <Compile Include="Enums\Types.cs" />
+    <Compile Include="Enums\Blocks.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
@@ -58,7 +58,7 @@
     <Compile Include="Types\ControlGroupPoint.cs" />
     <Compile Include="Types\InfoTable.cs" />
     <Compile Include="Types\NetPoint.cs" />
-    <Compile Include="Enums\PanelsEnum.cs" />
+    <Compile Include="Enums\Panels.cs" />
     <Compile Include="Constants\SizeConstants.cs" />
     <Compile Include="Types\PasswordPoint.cs" />
     <Compile Include="Types\PasswordStruct.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="Types\StrVariablePoint.cs" />
     <Compile Include="Types\StrWeeklyRoutinePoint.cs" />
     <Compile Include="Types\T3000Point.cs" />
-    <Compile Include="Enums\UnitsEnum.cs" />
+    <Compile Include="Enums\Units.cs" />
     <Compile Include="Types\PanelInfo1.cs" />
     <Compile Include="Prg.cs" />
     <Compile Include="PrgData.cs" />

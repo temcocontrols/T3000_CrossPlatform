@@ -17,7 +17,7 @@ namespace PRGReaderLibrary
             set { LabelRaw = value.AddBinarySymvols(9); }
         }
 
-        public BasePoint(string description = "", string label = "", FileVersionEnum version = FileVersionEnum.Current)
+        public BasePoint(string description = "", string label = "", FileVersion version = FileVersion.Current)
             : base(version)
         {
             Description = description;
@@ -36,7 +36,7 @@ namespace PRGReaderLibrary
         /// </summary>
         protected string LabelRaw { get; set; }
 
-        public BasePoint(byte[] bytes, int offset = 0, FileVersionEnum version = FileVersionEnum.Current)
+        public BasePoint(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
             : base(version)
         {
             DescriptionRaw = bytes.GetString(0 + offset, 21);

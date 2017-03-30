@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum DigitalAnalogEnum
+    public enum DigitalAnalog
     {
         Digital,
         Analog

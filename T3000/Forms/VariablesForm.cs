@@ -20,8 +20,8 @@
             Units.DisplayMember = "Text";
             Units.ValueMember = "Value";
 
-            AutoManual.ValueType = typeof(AutoManualEnum);
-            AutoManual.DataSource = Enum.GetValues(typeof(AutoManualEnum));
+            AutoManual.ValueType = typeof(AutoManual);
+            AutoManual.DataSource = Enum.GetValues(typeof(AutoManual));
 
             statusLabel.Text = Resources.PleaseOpenFile;
         }
@@ -38,7 +38,7 @@
                 prgView.Rows.Add(new object[] {
                     i + 1, variable.Description, variable.AutoManual, variable.Value.ToString(), variable.Value.Units, variable.Label
                 });
-                if (variable.AutoManual == AutoManualEnum.Automatic)
+                if (variable.AutoManual == PRGReaderLibrary.AutoManual.Automatic)
                 {
                     //or set manual if editing
                     prgView.Rows[prgView.RowCount - 1].Cells["Value"].ReadOnly = true;
@@ -60,8 +60,8 @@
                 var variable = Prg.Variables[i];
                 variable.Description = (string)row.Cells["Description"].Value;
                 variable.Label = (string)row.Cells["Label"].Value;
-                variable.Value = new VariableVariant((string)row.Cells["Value"].Value, (UnitsEnum)row.Cells["Units"].Value);
-                variable.AutoManual = (AutoManualEnum)row.Cells["AutoManual"].Value;
+                variable.Value = new VariableVariant((string)row.Cells["Value"].Value, (Units)row.Cells["Units"].Value);
+                variable.AutoManual = (AutoManual)row.Cells["AutoManual"].Value;
                 ++i;
             }
             Prg.Save(path);
@@ -119,7 +119,7 @@
                 e.RowIndex >= 0 && e.RowIndex < prgView.RowCount)
             {
                 var row = prgView.Rows[e.RowIndex];
-                row.Cells["AutoManual"].Value = AutoManualEnum.Manual;
+                row.Cells["AutoManual"].Value = PRGReaderLibrary.AutoManual.Manual;
             }
         }
 
@@ -137,7 +137,7 @@
             if (prgView.CurrentCell.ColumnIndex == prgView.Columns["Units"]?.Index &&
                 prgView.CurrentCell.IsInEditMode)
             {
-                var currentValue = (UnitsEnum)prgView.CurrentCell.Value;
+                var currentValue = (Units)prgView.CurrentCell.Value;
                 switch (e.KeyCode)
                 {
                     case Keys.Up:

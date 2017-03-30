@@ -18,7 +18,7 @@
             foreach (var variable in prg.Variables)
             {
                 //Bit to bit compatible supported only for current version
-                if (prg.FileVersion == FileVersionEnum.Current)
+                if (prg.FileVersion == FileVersion.Current)
                 {
                     //Additional check for Value
                     var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units);
@@ -46,7 +46,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             if (prg.Variables.Count > 0)
             {
                 prg = Prg.Load(temp);
-                prg.Variables[0].Value = new VariableVariant("9998.8999", UnitsEnum.DegreesC);
+                prg.Variables[0].Value = new VariableVariant("9998.8999", Units.DegreesC);
                 prg.Save(temp);
                 FileAssert.AreNotEqual(path, temp);
             }
@@ -55,12 +55,12 @@ Value.ToFromToString(): {tempValue.ToString()}
             //Only updating the file without changing the format is available.
             /*
             //Additional check for upgrade to current
-            if (prg.FileVersion != FileVersionEnum.Current)
+            if (prg.FileVersion != FileVersion.Current)
             {
                 prg.Upgrade();
                 prg.Save(temp);
                 prg = Prg.Load(temp);
-                Assert.AreEqual(FileVersionEnum.Current, prg.FileVersion);
+                Assert.AreEqual(FileVersion.Current, prg.FileVersion);
             }
             */
         }
@@ -121,26 +121,26 @@ Value.ToFromToString(): {tempValue.ToString()}
             var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription    ", variable1.Description);
             Assert.AreEqual("FirstLabe", variable1.Label);
-            Assert.AreEqual(new VariableVariant(5.0, UnitsEnum.DegreesC), variable1.Value);
-            Assert.AreEqual(AutoManualEnum.Automatic, variable1.AutoManual);
-            Assert.AreEqual(DigitalAnalogEnum.Analog, variable1.DigitalAnalog);
-            Assert.AreEqual(ControlEnum.Off, variable1.Control);
+            Assert.AreEqual(new VariableVariant(5.0, Units.DegreesC), variable1.Value);
+            Assert.AreEqual(AutoManual.Automatic, variable1.AutoManual);
+            Assert.AreEqual(DigitalAnalog.Analog, variable1.DigitalAnalog);
+            Assert.AreEqual(Control.Off, variable1.Control);
 
             var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription   ", variable2.Description);
             Assert.AreEqual("SecondLab", variable2.Label);
-            ObjectAssert.AreEqual(new VariableVariant("On", UnitsEnum.OffOn).Value, variable2.Value.Value);
-            Assert.AreEqual(AutoManualEnum.Manual, variable2.AutoManual);
-            Assert.AreEqual(DigitalAnalogEnum.Digital, variable2.DigitalAnalog);
-            Assert.AreEqual(ControlEnum.Off, variable2.Control);
+            ObjectAssert.AreEqual(new VariableVariant("On", Units.OffOn).Value, variable2.Value.Value);
+            Assert.AreEqual(AutoManual.Manual, variable2.AutoManual);
+            Assert.AreEqual(DigitalAnalog.Digital, variable2.DigitalAnalog);
+            Assert.AreEqual(Control.Off, variable2.Control);
 
             var variable3 = prg.Variables[2];
             Assert.AreEqual("ThirdDescription    ", variable3.Description);
             Assert.AreEqual("ThirdLabe", variable3.Label);
-            Assert.AreEqual(new VariableVariant(new TimeSpan(0, 22, 22, 22, 0), UnitsEnum.Time), variable3.Value);
-            Assert.AreEqual(AutoManualEnum.Automatic, variable3.AutoManual);
-            Assert.AreEqual(DigitalAnalogEnum.Analog, variable3.DigitalAnalog);
-            Assert.AreEqual(ControlEnum.Off, variable3.Control);
+            Assert.AreEqual(new VariableVariant(new TimeSpan(0, 22, 22, 22, 0), Units.Time), variable3.Value);
+            Assert.AreEqual(AutoManual.Automatic, variable3.AutoManual);
+            Assert.AreEqual(DigitalAnalog.Analog, variable3.DigitalAnalog);
+            Assert.AreEqual(Control.Off, variable3.Control);
         }
     }
 }

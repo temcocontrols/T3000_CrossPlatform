@@ -13,7 +13,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 1 byte
         /// </summary>
-        public PanelsEnum Type { get; set; }
+        public Panels Type { get; set; }
 
         /// <summary>
         /// Size: 1 byte

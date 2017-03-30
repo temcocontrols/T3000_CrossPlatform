@@ -1,6 +1,6 @@
 ﻿namespace PRGReaderLibrary
 {
-    public enum ControlEnum
+    public enum Control
     {
         Off,
         On

@@ -11,7 +11,7 @@ namespace PRGReaderLibrary
         private VariableVariant _value;
         public VariableVariant Value {
             get {
-                _value = _value ?? new VariableVariant(ValueRaw, (UnitsEnum)UnitsRaw);
+                _value = _value ?? new VariableVariant(ValueRaw, (Units)UnitsRaw);
                 return _value;
             }
             set {
@@ -21,22 +21,22 @@ namespace PRGReaderLibrary
             }
         }
 
-        public AutoManualEnum AutoManual {
-            get { return AutoManualRaw ? AutoManualEnum.Manual : AutoManualEnum.Automatic; }
-            set { AutoManualRaw = value == AutoManualEnum.Manual; }
+        public AutoManual AutoManual {
+            get { return AutoManualRaw ? AutoManual.Manual : AutoManual.Automatic; }
+            set { AutoManualRaw = value == AutoManual.Manual; }
         }
 
-        public DigitalAnalogEnum DigitalAnalog {
-            get { return DigitalAnalogRaw ? DigitalAnalogEnum.Analog : DigitalAnalogEnum.Digital; }
-            set { DigitalAnalogRaw = value == DigitalAnalogEnum.Analog; }
+        public DigitalAnalog DigitalAnalog {
+            get { return DigitalAnalogRaw ? DigitalAnalog.Analog : DigitalAnalog.Digital; }
+            set { DigitalAnalogRaw = value == DigitalAnalog.Analog; }
         }
 
-        public ControlEnum Control {
-            get { return ControlRaw ? ControlEnum.On : ControlEnum.Off; }
-            set { ControlRaw = value == ControlEnum.On; }
+        public Control Control {
+            get { return ControlRaw ? Control.On : Control.Off; }
+            set { ControlRaw = value == Control.On; }
         }
 
-        public StrVariablePoint(string description = "", string label = "", FileVersionEnum version = FileVersionEnum.Current)
+        public StrVariablePoint(string description = "", string label = "", FileVersion version = PRGReaderLibrary.FileVersion.Current)
             : base(description, label, version) { }
 
         #region Binary data
@@ -71,12 +71,12 @@ namespace PRGReaderLibrary
         /// </summary>
         protected byte UnitsRaw { get; set; }
 
-        public StrVariablePoint(byte[] bytes, int offset = 0, FileVersionEnum version = FileVersionEnum.Current)
+        public StrVariablePoint(byte[] bytes, int offset = 0, FileVersion version = PRGReaderLibrary.FileVersion.Current)
             : base(bytes, offset, version)
         {
             switch (FileVersion)
             {
-                case FileVersionEnum.Dos:
+                case PRGReaderLibrary.FileVersion.Dos:
                     ValueRaw = bytes.ToUInt32(30 + offset);
                     AutoManualRaw = bytes.GetBit(0, 34 + offset);
                     DigitalAnalogRaw = bytes.GetBit(1, 34 + offset);
@@ -84,7 +84,7 @@ namespace PRGReaderLibrary
                     UnitsRaw = bytes[35 + offset];
                     break;
 
-                case FileVersionEnum.Current:
+                case PRGReaderLibrary.FileVersion.Current:
                     ValueRaw = bytes.ToUInt32(30 + offset);
                     AutoManualRaw = bytes.ToBoolean(34 + offset);
                     DigitalAnalogRaw = bytes.ToBoolean(35 + offset);
@@ -106,14 +106,14 @@ namespace PRGReaderLibrary
 
             switch (FileVersion)
             {
-                case FileVersionEnum.Dos:
+                case PRGReaderLibrary.FileVersion.Dos:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(ValueRaw.ToBytes());
                     bytes.Add(new[] { AutoManualRaw, DigitalAnalogRaw, ControlRaw }.ToBits());
                     bytes.Add(UnitsRaw);
                     break;
 
-                case FileVersionEnum.Current:
+                case PRGReaderLibrary.FileVersion.Current:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(ValueRaw.ToBytes());
                     bytes.Add(AutoManualRaw.ToByte());

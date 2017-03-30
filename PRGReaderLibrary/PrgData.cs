@@ -48,25 +48,25 @@
             {
                 var type = new PrgType();
                 type.Size = 1;
-                var typeFromData = (TypesEnum)(bytes[index + j]);
+                var typeFromData = (Types)(bytes[index + j]);
                 switch (typeFromData)
                 {
-                    case TypesEnum.FLOAT_TYPE:
-                    case TypesEnum.LONG_TYPE:
+                    case PRGReaderLibrary.Types.FLOAT_TYPE:
+                    case PRGReaderLibrary.Types.LONG_TYPE:
                         type.Size = 4;
                         break;
-                    case TypesEnum.INTEGER_TYPE:
+                    case PRGReaderLibrary.Types.INTEGER_TYPE:
                         type.Size = 2;
                         break;
                     default:
                     {
                         switch (typeFromData)
                         {
-                            case TypesEnum.FLOAT_TYPE_ARRAY:
-                            case TypesEnum.LONG_TYPE_ARRAY:
+                            case PRGReaderLibrary.Types.FLOAT_TYPE_ARRAY:
+                            case PRGReaderLibrary.Types.LONG_TYPE_ARRAY:
                                 type.Size = 4;
                                 break;
-                            case TypesEnum.INTEGER_TYPE_ARRAY:
+                            case PRGReaderLibrary.Types.INTEGER_TYPE_ARRAY:
                                 type.Size = 2;
                                 break;
                         }

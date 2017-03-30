@@ -13,6 +13,6 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 4 bytes
         /// </summary>
-        public UnitsEnum Unit { get; set; }
+        public Units Unit { get; set; }
     }
 }

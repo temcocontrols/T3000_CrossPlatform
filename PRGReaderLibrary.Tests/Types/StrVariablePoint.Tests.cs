@@ -6,7 +6,7 @@
     [TestFixture]
     public class StrVariablePoint_Tests
     {
-        public void BaseTest(byte[] bytes, StrVariablePoint expected, FileVersionEnum version)
+        public void BaseTest(byte[] bytes, StrVariablePoint expected, FileVersion version)
         {
             var actual = new StrVariablePoint(bytes, 0, version);
             ObjectAssert.AreEqual(expected, actual);
@@ -20,17 +20,17 @@
             var list = new List<byte>();
             list.AddRange("Description".ToBytes(21));
             list.AddRange("Label".ToBytes(9));
-            list.AddRange(((uint)5000).ToBytes());
-            list.Add(new [] {true,true,true}.ToBits());
-            list.Add((byte)UnitsEnum.DegreesC);
+            list.AddRange(((uint)5000).ToBytes());//Value
+            list.Add(new [] {true,true,true}.ToBits()); //AutoManual DigitalAnalog Control
+            list.Add((byte)Units.DegreesC);//Units
 
-            var expected = new StrVariablePoint("Description", "Label", FileVersionEnum.Dos);
-            expected.Value = new VariableVariant("5.000", UnitsEnum.DegreesC);
-            expected.AutoManual = AutoManualEnum.Manual;
-            expected.DigitalAnalog = DigitalAnalogEnum.Analog;
-            expected.Control = ControlEnum.On;
+            var expected = new StrVariablePoint("Description", "Label", FileVersion.Dos);
+            expected.Value = new VariableVariant("5.000", Units.DegreesC);
+            expected.AutoManual = AutoManual.Manual;
+            expected.DigitalAnalog = DigitalAnalog.Analog;
+            expected.Control = Control.On;
 
-            BaseTest(list.ToArray(), expected, FileVersionEnum.Dos);
+            BaseTest(list.ToArray(), expected, FileVersion.Dos);
         }
 
         [Test]
@@ -46,12 +46,12 @@
             list.Add(1);//Units
 
             var expected = new StrVariablePoint("START TEST FLAG", "INIT");
-            expected.Value = new VariableVariant("Off", UnitsEnum.OffOn);
-            expected.AutoManual = AutoManualEnum.Automatic;
-            expected.DigitalAnalog = DigitalAnalogEnum.Digital;
-            expected.Control = ControlEnum.Off;
+            expected.Value = new VariableVariant("Off", Units.OffOn);
+            expected.AutoManual = AutoManual.Automatic;
+            expected.DigitalAnalog = DigitalAnalog.Digital;
+            expected.Control = Control.Off;
 
-            BaseTest(list.ToArray(), expected, FileVersionEnum.Current);
+            BaseTest(list.ToArray(), expected, FileVersion.Current);
         }
 
         [Test]
@@ -67,12 +67,12 @@
             list.Add(22);//Units
 
             var expected = new StrVariablePoint("PUMP SPEED", "PMPSPEED");
-            expected.Value = new VariableVariant("40.000", UnitsEnum.Percents);
-            expected.AutoManual = AutoManualEnum.Automatic;
-            expected.DigitalAnalog = DigitalAnalogEnum.Analog;
-            expected.Control = ControlEnum.Off;
+            expected.Value = new VariableVariant("40.000", Units.Percents);
+            expected.AutoManual = AutoManual.Automatic;
+            expected.DigitalAnalog = DigitalAnalog.Analog;
+            expected.Control = Control.Off;
 
-            BaseTest(list.ToArray(), expected, FileVersionEnum.Current);
+            BaseTest(list.ToArray(), expected, FileVersion.Current);
         }
 
         [Test]
@@ -88,12 +88,12 @@
             list.Add(20);//Units
 
             var expected = new StrVariablePoint("TEST RUN TIMER", "TESTTIM");
-            expected.Value = new VariableVariant("03:45:09", UnitsEnum.Time);
-            expected.AutoManual = AutoManualEnum.Automatic;
-            expected.DigitalAnalog = DigitalAnalogEnum.Analog;
-            expected.Control = ControlEnum.On;
+            expected.Value = new VariableVariant("03:45:09", Units.Time);
+            expected.AutoManual = AutoManual.Automatic;
+            expected.DigitalAnalog = DigitalAnalog.Analog;
+            expected.Control = Control.On;
 
-            BaseTest(list.ToArray(), expected, FileVersionEnum.Current);
+            BaseTest(list.ToArray(), expected, FileVersion.Current);
         }
     }
 }
