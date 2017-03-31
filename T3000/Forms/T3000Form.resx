@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AllFiles" xml:space="preserve">
-    <value>All files</value>
-  </data>
-  <data name="CurrentFile" xml:space="preserve">
-    <value>Current file: {0}</value>
-  </data>
-  <data name="Exception" xml:space="preserve">
-    <value>Exception: {0}{1}</value>
-  </data>
-  <data name="FileIsNotOpen" xml:space="preserve">
-    <value>.PRG file is not opened. Please, open a file with Ctrl-O or File -&gt; Open .PRG</value>
-  </data>
-  <data name="PRGFiles" xml:space="preserve">
-    <value>.PRG files</value>
-  </data>
-  <data name="Saved" xml:space="preserve">
-    <value>Saved: {0}</value>
-  </data>
-  <data name="SelectPRGFile" xml:space="preserve">
-    <value>Please select an .PRG file</value>
-  </data>
-  <data name="ExceptionTitle" xml:space="preserve">
-    <value>Exception:</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning: {0}</value>
-  </data>
-  <data name="WarningTitle" xml:space="preserve">
-    <value>Warning:</value>
-  </data>
-  <data name="SavePRGFile" xml:space="preserve">
-    <value>Please enter name of the .PRG file</value>
-  </data>
-  <data name="SaveBeforeExit" xml:space="preserve">
-    <value>Do you want to save the .PRG file?</value>
-  </data>
-  <data name="SaveBeforeExitTitle" xml:space="preserve">
-    <value>Do you want to save the .PRG file?</value>
-  </data>
+  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>132, 17</value>
+  </metadata>
 </root>

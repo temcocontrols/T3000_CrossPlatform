@@ -88,20 +88,20 @@ namespace T3000.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File isn&apos;t open.
+        ///   Looks up a localized string similar to Exception:.
         /// </summary>
-        internal static string FileIsNotOpen {
+        internal static string ExceptionTitle {
             get {
-                return ResourceManager.GetString("FileIsNotOpen", resourceCulture);
+                return ResourceManager.GetString("ExceptionTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please open a file.
+        ///   Looks up a localized string similar to .PRG file is not opened. Please, open a file with Ctrl-O or File -&gt; Open .PRG.
         /// </summary>
-        internal static string PleaseOpenFile {
+        internal static string FileIsNotOpen {
             get {
-                return ResourceManager.GetString("PleaseOpenFile", resourceCulture);
+                return ResourceManager.GetString("FileIsNotOpen", resourceCulture);
             }
         }
         
@@ -115,6 +115,24 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to save the .PRG file?.
+        /// </summary>
+        internal static string SaveBeforeExit {
+            get {
+                return ResourceManager.GetString("SaveBeforeExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save the .PRG file?.
+        /// </summary>
+        internal static string SaveBeforeExitTitle {
+            get {
+                return ResourceManager.GetString("SaveBeforeExitTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saved: {0}.
         /// </summary>
         internal static string Saved {
@@ -124,11 +142,38 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter name of the .PRG file.
+        /// </summary>
+        internal static string SavePRGFile {
+            get {
+                return ResourceManager.GetString("SavePRGFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select an .PRG file.
         /// </summary>
         internal static string SelectPRGFile {
             get {
                 return ResourceManager.GetString("SelectPRGFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: {0}.
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning:.
+        /// </summary>
+        internal static string WarningTitle {
+            get {
+                return ResourceManager.GetString("WarningTitle", resourceCulture);
             }
         }
     }

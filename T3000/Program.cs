@@ -2,6 +2,7 @@
 {
     using System;
     using System.Windows.Forms;
+    using Forms;
 
     static class Program
     {
@@ -13,7 +14,7 @@
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new VariablesForm());
+            Application.Run(new T3000Form());
         }
     }
 }

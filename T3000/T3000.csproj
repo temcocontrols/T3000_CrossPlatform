@@ -35,14 +35,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\VariablesForm.cs">
+    <Compile Include="Forms\T3000Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm.Designer.cs">
+    <Compile Include="Forms\T3000Form.Designer.cs">
+      <DependentUpon>T3000Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\SelectUnits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\SelectUnits.Designer.cs">
+      <DependentUpon>SelectUnits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\VariablesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\VariablesForm.Designer.cs">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -57,14 +70,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
-    <EmbeddedResource Include="Forms\VariablesForm.de-DE.resx">
+    <EmbeddedResource Include="Forms\T3000Form.resx">
+      <DependentUpon>T3000Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VariablesForm\SelectUnits.resx">
+      <DependentUpon>SelectUnits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.de-DE.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm.resx">
+    <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm.zh-Hant.resx">
+    <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.zh-Hant.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
