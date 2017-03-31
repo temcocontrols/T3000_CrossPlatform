@@ -87,7 +87,7 @@
         {
             DateTime = bytes.GetString(0, 26);
             Signature = bytes.GetString(26, 4);
-            if (!Signature.Equals(Constants.Signature, StringComparison.Ordinal))
+            if (!Signature.Equals(DosConstants.Signature, StringComparison.Ordinal))
             {
                 throw new Exception($"Data is corrupted. {this.PropertiesText()}");
             }

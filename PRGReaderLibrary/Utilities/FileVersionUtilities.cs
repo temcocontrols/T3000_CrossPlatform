@@ -5,7 +5,7 @@
     public static class FileVersionUtilities
     {
         public static bool IsDosVersion(byte[] bytes) =>
-            bytes.GetString(26, 4).Equals(Constants.Signature, StringComparison.Ordinal);
+            bytes.GetString(26, 4).Equals(DosConstants.Signature, StringComparison.Ordinal);
 
         public static bool IsCurrentVersion(byte[] bytes, int revision = CurrentVersionConstants.FileRevision) =>
             bytes.ToByte(0) == 0x55 &&

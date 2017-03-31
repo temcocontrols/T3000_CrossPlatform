@@ -38,6 +38,8 @@
   <ItemGroup>
     <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
+    <Compile Include="Constants\Types\UnitsNameItem.cs" />
+    <Compile Include="Constants\UnitsNamesConstants.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />
     <Compile Include="Enums\CommandRequest.cs" />
     <Compile Include="Enums\FileVersion.cs" />
@@ -46,10 +48,11 @@
     <Compile Include="Enums\AutoManual.cs" />
     <Compile Include="Enums\Types.cs" />
     <Compile Include="Enums\PointTypes.cs" />
-    <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Constants\DosConstants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
+    <Compile Include="Extensions\UnitsExtensions.cs" />
     <Compile Include="PrgWriter.cs" />
     <Compile Include="Types\AdditionalTypes\Description.cs" />
     <Compile Include="Types\AdditionalTypes\VariableVariant.cs" />

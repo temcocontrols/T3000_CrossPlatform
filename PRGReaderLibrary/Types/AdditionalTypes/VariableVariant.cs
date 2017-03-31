@@ -19,9 +19,6 @@
             get { return ToString(Object, Units); }
         }
 
-        public static bool IsAnalogUnits(Units units) =>
-            units < Units.OffOn;
-
         public static int FromTimeSpan(TimeSpan time) =>
                 ((time.Days * 60 * 60 * 24 +
                     time.Hours * 60 * 60 +
@@ -46,7 +43,7 @@
                     return ToTimeSpan((int)value);
 
                 default:
-                    return IsAnalogUnits(units)
+                    return units.IsAnalog()
                         ? Convert.ToDouble(value) / 1000.0
                         : (object)Convert.ToBoolean(value);
             }
@@ -71,7 +68,7 @@ Supporting values: On, Off");
                     return value.Equals("On", StringComparison.OrdinalIgnoreCase);
 
                 default:
-                    return IsAnalogUnits(units)
+                    return units.IsAnalog()
                         ? (object)Convert.ToDouble(value)
                         : Convert.ToBoolean(value);
             }
@@ -113,7 +110,7 @@ Supported types: bool, float, TimeSpan");
             var type = value.GetType();
             if (type == typeof(bool))
             {
-                if (IsAnalogUnits(units))
+                if (units.IsAnalog())
                 {
                     throw new ArgumentException($"Please select digital units for boolean value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
@@ -130,7 +127,7 @@ Supported types: bool, float, TimeSpan");
             }
             else if (type == typeof(TimeSpan))
             {
-                if (!IsAnalogUnits(units))
+                if (!units.IsAnalog())
                 {
                     throw new ArgumentException($"Please select time units for TimeSpan value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
@@ -140,14 +137,12 @@ Supported types: bool, float, TimeSpan");
             }
             else if (type == typeof(double))
             {
-                if (!IsAnalogUnits(units))
+                if (!units.IsAnalog())
                 {
                     throw new ArgumentException($"Please select analog units for float value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
                 }
-                return IsAnalogUnits(units)
-                    ? Convert.ToUInt32((Convert.ToDouble(value)) * 1000.0)
-                    : Convert.ToUInt32(value);
+                return Convert.ToUInt32((Convert.ToDouble(value)) * 1000.0);
             }
             else
             {

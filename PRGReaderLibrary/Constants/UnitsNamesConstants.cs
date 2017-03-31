@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// To Resource for localization
-    /// </summary>
     public static class UnitsNamesConstants
     {
         public static string GetName(Units units)
@@ -17,7 +14,10 @@
 
                 case Units.DegreesF:
                     return "°F";
-                    
+
+                case Units.Percents:
+                    return "%";
+
                 case Units.OffOn:
                     return "Off/On";
 
