@@ -5,14 +5,17 @@ namespace PRGReaderLibrary
 
     public class VariablePoint : BasePoint
     {
+        public List<UnitsElement> CustomUnits { get; set; }
+
         private VariableVariant _value;
         public VariableVariant Value {
             get {
-                _value = _value ?? new VariableVariant(ValueRaw, (Units)UnitsRaw);
+                _value = _value ?? new VariableVariant(ValueRaw, (Units)UnitsRaw, CustomUnits);
                 return _value;
             }
             set {
                 _value = value;
+                _value.CustomUnits = CustomUnits;
                 ValueRaw = value.Value;
                 UnitsRaw = (byte)value.Units;
             }
@@ -33,8 +36,13 @@ namespace PRGReaderLibrary
             set { ControlRaw = value == Control.On; }
         }
 
-        public VariablePoint(string description = "", string label = "", FileVersion version = FileVersion.Current)
-            : base(description, label, version) { }
+        public VariablePoint(string description = "", string label = "", 
+            FileVersion version = FileVersion.Current,
+            List<UnitsElement> customUnits = null)
+            : base(description, label, version)
+        {
+            CustomUnits = customUnits;
+        }
 
         public bool IsEmpty =>
             string.IsNullOrWhiteSpace(Description) &&
@@ -75,9 +83,12 @@ namespace PRGReaderLibrary
         /// </summary>
         protected byte UnitsRaw { get; set; }
 
-        public VariablePoint(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
+        public VariablePoint(byte[] bytes, int offset = 0, 
+            FileVersion version = FileVersion.Current,
+            List<UnitsElement> customUnits = null)
             : base(bytes, offset, version)
         {
+            CustomUnits = customUnits;
             switch (FileVersion)
             {
                 case FileVersion.Dos:

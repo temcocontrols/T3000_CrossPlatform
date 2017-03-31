@@ -16,7 +16,7 @@
         {
             InitializeComponent();
 
-            Units.DataSource = UnitsNamesConstants.GetNames();
+            Units.DataSource = UnitsNamesConstants.GetOffOnNames();
             Units.DisplayMember = "Text";
             Units.ValueMember = "Value";
 
@@ -32,6 +32,7 @@
             Prg = Prg.Load(path);
 
             prgView.Rows.Clear();
+            Units.DataSource = UnitsNamesConstants.GetOffOnNames(Prg.Units);
             var i = 0;
             foreach (var variable in Prg.Variables)
             {
@@ -60,7 +61,7 @@
                 var variable = Prg.Variables[i];
                 variable.Description = (string)row.Cells["Description"].Value;
                 variable.Label = (string)row.Cells["Label"].Value;
-                variable.Value = new VariableVariant((string)row.Cells["Value"].Value, (Units)row.Cells["Units"].Value);
+                variable.Value = new VariableVariant((string)row.Cells["Value"].Value, (Units)row.Cells["Units"].Value, Prg.Units);
                 variable.AutoManual = (AutoManual)row.Cells["AutoManual"].Value;
                 ++i;
             }
@@ -114,12 +115,18 @@
 
         private void prgView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            //Set AutoManual to Manual, if user changed units
-            if (e.ColumnIndex == prgView.Columns["Units"]?.Index &&
-                e.RowIndex >= 0 && e.RowIndex < prgView.RowCount)
+            try
             {
-                var row = prgView.Rows[e.RowIndex];
-                row.Cells["AutoManual"].Value = PRGReaderLibrary.AutoManual.Manual;
+                //Set AutoManual to Manual, if user changed units
+                if (e.ColumnIndex == prgView.Columns["Units"]?.Index)
+                {
+                    var row = prgView.Rows[e.RowIndex];
+                    row.Cells["AutoManual"].Value = PRGReaderLibrary.AutoManual.Manual;
+                }
+            }
+            catch (Exception exception)
+            {
+                ShowException(exception);
             }
         }
 
@@ -154,6 +161,26 @@
         private void prgView_CellContextMenuStripChanged(object sender, DataGridViewCellEventArgs e)
         {
             //MessageBox.Show("prgView_CellContextMenuStripChanged");
+        }
+
+        private void prgView_CellStateChanged(object sender, DataGridViewCellStateChangedEventArgs e)
+        {
+            try
+            {
+                //Convert value when units changed
+                if (e.Cell.ColumnIndex == prgView.Columns["Units"]?.Index)
+                {
+                    var row = prgView.Rows[e.Cell.RowIndex];
+                    row.Cells["Value"].Value = UnitsUtilities.ConvertValue(
+                        (string) row.Cells["Value"].Value,
+                        (Units) row.Cells["Units"].Value,
+                        (Units) row.Cells["Units"].Value);
+                }
+            }
+            catch (Exception exception)
+            {
+                ShowException(exception);
+            }
         }
     }
 }

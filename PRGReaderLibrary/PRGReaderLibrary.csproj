@@ -39,6 +39,7 @@
     <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Constants\Types\UnitsNameItem.cs" />
+    <Compile Include="Constants\Types\UnitsNames.cs" />
     <Compile Include="Constants\UnitsNamesConstants.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />
     <Compile Include="Enums\CommandRequest.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Types\WrOneDay.cs" />
     <Compile Include="Utilities\FileVersionUtilities.cs" />
+    <Compile Include="Utilities\UnitsUtilities.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

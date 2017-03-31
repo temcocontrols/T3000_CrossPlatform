@@ -1,11 +1,13 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
+    using System.Collections.Generic;
 
     public class VariableVariant
     {
         public uint Value { get; set; }
         public Units Units { get; set; }
+        public List<UnitsElement> CustomUnits { get; set; }
 
         public object Object {
             get { return ToObject(Value, Units); }
@@ -16,7 +18,7 @@
         }
 
         public string Text {
-            get { return ToString(Object, Units); }
+            get { return ToString(Object, Units, CustomUnits); }
         }
 
         public static int FromTimeSpan(TimeSpan time) =>
@@ -49,45 +51,33 @@
             }
         }
 
-        public static object ToObject(string value, Units units)
+        public static object ToObject(string value, Units units, List<UnitsElement> customUnits)
         {
             switch (units)
             {
                 case Units.Time:
                     return TimeSpan.Parse(value);
 
-                case Units.OffOn:
-                    if (!value.Equals("On", StringComparison.OrdinalIgnoreCase) &&
-                        !value.Equals("Off", StringComparison.OrdinalIgnoreCase))
-                    {
-                        throw new ArgumentException($@"Value not valid.
-Value: {value}, Units: {units}.
-Supporting values: On, Off");
-                    }
-
-                    return value.Equals("On", StringComparison.OrdinalIgnoreCase);
-
                 default:
                     return units.IsAnalog()
                         ? (object)Convert.ToDouble(value)
-                        : Convert.ToBoolean(value);
+                        : UnitsUtilities.DigitalValueToBoolean(value, units, customUnits);
             }
         }
 
-        public static string ToString(object value, Units units)
+        public static string ToString(object value, Units units, List<UnitsElement> customUnits)
         {
             var type = value.GetType();
             if (type == typeof(bool))
             {
                 var boolean = Convert.ToBoolean(value);
-                switch (units)
+                if (!units.IsDigital())
                 {
-                    case Units.OffOn:
-                        return boolean ? "On" : "Off";
-
-                    default:
-                        return $"{boolean}";
+                    throw new ArgumentException($@"Bool value acceptably onle for digital units.
+Value: {boolean}, Units: {units}");
                 }
+
+                return UnitsUtilities.BooleanToDigitalValue(boolean, units, customUnits);
             }
             else if (type == typeof(TimeSpan))
             {
@@ -152,18 +142,19 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public VariableVariant(uint value, Units units)
+        public VariableVariant(uint value, Units units, List<UnitsElement> customUnits = null)
         {
             Value = value;
             Units = units;
+            CustomUnits = customUnits;
         }
 
-        public VariableVariant(object value, Units units)
-            : this(ToUInt(value, units), units)
+        public VariableVariant(object value, Units units, List<UnitsElement> customUnits = null)
+            : this(ToUInt(value, units), units, customUnits)
         { }
 
-        public VariableVariant(string value, Units units)
-            : this(ToObject(value, units), units)
+        public VariableVariant(string value, Units units, List<UnitsElement> customUnits = null)
+            : this(ToObject(value, units, customUnits), units, customUnits)
         { }
 
         public override int GetHashCode() =>
@@ -182,6 +173,6 @@ Supported types: bool, float, TimeSpan");
 
         public object ToObject() => ToObject(Value, Units);
 
-        public override string ToString() => ToString(ToObject(), Units);
+        public override string ToString() => ToString(ToObject(), Units, CustomUnits);
     }
 }

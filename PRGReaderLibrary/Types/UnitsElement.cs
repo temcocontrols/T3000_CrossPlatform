@@ -17,6 +17,10 @@ namespace PRGReaderLibrary
             set { DigitalUnitsOnRaw = value.AddBinarySymvols(9); }
         }
 
+        public bool IsEmpty =>
+            string.IsNullOrWhiteSpace(DigitalUnitsOff) &&
+            string.IsNullOrWhiteSpace(DigitalUnitsOn);
+
         public UnitsElement(bool direct = false, 
             string digitalUnitsOff = "", 
             string digitalUnitsOn = "", 

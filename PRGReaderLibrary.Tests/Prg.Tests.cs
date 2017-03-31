@@ -22,7 +22,7 @@
                 if (prg.FileVersion == FileVersion.Current)
                 {
                     //Additional check for Value
-                    var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units);
+                    var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units, variable.CustomUnits);
                     ObjectAssert.AreEqual(variable.Value, tempValue,
                         $@"Variable value toFrom string test failed.
 Value.ToString(): {variable.Value.ToString()}

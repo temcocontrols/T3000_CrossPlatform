@@ -386,6 +386,17 @@ Offset: {offset}, Length: {bytes.Length}");
             }
 
             RawData = bytes;
+
+            UpdateCustomUnits();
+        }
+
+        public void UpdateCustomUnits()
+        {
+            //Set CustomUnits for variables
+            foreach (var variable in Variables)
+            {
+                variable.CustomUnits = Units;
+            }
         }
 
         public Prg(byte[] bytes)
@@ -491,6 +502,9 @@ Offset: {offset}, Length: {bytes.Length}");
 
         public byte[] ToCurrentFormat()
         {
+            //Update if Units changed
+            UpdateCustomUnits();
+
             var bytes = new List<byte>();
 
             bytes.AddRange(RawData.ToBytes(0, 3));
