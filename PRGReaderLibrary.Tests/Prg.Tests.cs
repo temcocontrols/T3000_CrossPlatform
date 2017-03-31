@@ -15,6 +15,7 @@
             var temp = Path.GetTempFileName();
 
             //Test variables binary load/save compatible
+
             foreach (var variable in prg.Variables)
             {
                 //Bit to bit compatible supported only for current version
@@ -38,6 +39,13 @@ Value.ToFromToString(): {tempValue.ToString()}
                 variable.Label = variable.Label;
                 ObjectAssert.AreEqual(tempVariable, variable, "Variable GetSet test failed.");
                 BytesAssert.AreEqual(tempVariable.ToBytes(), variable.ToBytes(), "Variable GetSet ToBytes test failed.");
+            }
+
+            foreach (var unit in prg.Units)
+            {
+                unit.Direct = unit.Direct;
+                unit.DigitalUnitsOff = unit.DigitalUnitsOff;
+                unit.DigitalUnitsOn = unit.DigitalUnitsOn;
             }
 
             prg.Save(temp);
@@ -78,15 +86,15 @@ Value.ToFromToString(): {tempValue.ToString()}
 
         public void PrintVariables(Prg prg)
         {
-            foreach (var var in prg.Variables)
+            foreach (var variable in prg.Variables)
             {
-                if (string.IsNullOrWhiteSpace(var.Description))
+                if (variable.IsEmpty)
                 {
                     continue;
                 }
 
                 Console.WriteLine("---------------------------");
-                Console.Write(var.PropertiesText());
+                Console.Write(variable.PropertiesText());
                 Console.WriteLine("---------------------------");
                 Console.WriteLine(string.Empty);
             }

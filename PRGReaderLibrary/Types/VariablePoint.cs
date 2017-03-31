@@ -3,9 +3,6 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Size: 30 + 4 + 1 + 1 = 36
-    /// </summary>
     public class VariablePoint : BasePoint
     {
         private VariableVariant _value;
@@ -39,6 +36,13 @@ namespace PRGReaderLibrary
         public VariablePoint(string description = "", string label = "", FileVersion version = FileVersion.Current)
             : base(description, label, version) { }
 
+        public bool IsEmpty =>
+            string.IsNullOrWhiteSpace(Description) &&
+            string.IsNullOrWhiteSpace(Label);
+
+        /// <summary>
+        /// Size: 30 + 4 + 5 = 39
+        /// </summary>
         #region Binary data
 
         /// <summary>
@@ -47,22 +51,22 @@ namespace PRGReaderLibrary
         protected uint ValueRaw { get; set; }
 
         /// <summary>
-        /// Size: 1 bit
+        /// Size: 1 byte
         /// </summary>
         protected bool AutoManualRaw { get; set; }
 
         /// <summary>
-        /// Size: 1 bit
+        /// Size: 1 byte
         /// </summary>
         protected bool DigitalAnalogRaw { get; set; }
 
         /// <summary>
-        /// Size: 1 bit
+        /// Size: 1 byte
         /// </summary>
         protected bool ControlRaw { get; set; }
 
         /// <summary>
-        /// Size: 5 bit
+        /// Size: 1 byte
         /// </summary>
         protected byte UnusedRaw { get; set; } = 2; //TODO: WTF
 
