@@ -45,11 +45,17 @@
     <Compile Include="Forms\T3000Form.Designer.cs">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomUnits.cs">
+    <Compile Include="Forms\VariablesForm\EditCustomUnitsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomUnits.Designer.cs">
-      <DependentUpon>EditCustomUnits.cs</DependentUpon>
+    <Compile Include="Forms\VariablesForm\EditCustomUnitsForm.Designer.cs">
+      <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\SelectAutoManualForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\SelectAutoManualForm.Designer.cs">
+      <DependentUpon>SelectAutoManualForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VariablesForm\SelectUnitsForm.cs">
       <SubType>Form</SubType>
@@ -81,8 +87,11 @@
     <EmbeddedResource Include="Forms\T3000Form.resx">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnits.resx">
-      <DependentUpon>EditCustomUnits.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnitsForm.resx">
+      <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VariablesForm\SelectAutoManualForm.resx">
+      <DependentUpon>SelectAutoManualForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\SelectUnitsForm.resx">
       <DependentUpon>SelectUnitsForm.cs</DependentUpon>

@@ -32,9 +32,6 @@ namespace T3000.Forms
             InitializeComponent();
 
             Prg = prg;
-
-            AutoManualColumn.ValueType = typeof(AutoManual);
-            AutoManualColumn.DataSource = Enum.GetValues(typeof(AutoManual));
         }
 
         public void CheckRow(int row)
@@ -175,11 +172,11 @@ namespace T3000.Forms
             {
                 try
                 {
-                    //TODO: Add FromCustomUnits and ToCustomUnits in ConvertValue
-                    var form = new SelectUnitsForm(Units.OffOn, Prg.Units);
+                    var row = prgView.CurrentRow;
+                    var currentUnits = UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units);
+                    var form = new SelectUnitsForm(currentUnits, Prg.Units);
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        var row = prgView.CurrentRow;
                         var convertedValue = UnitsUtilities.ConvertValue(
                             (string)row.Cells["ValueColumn"].Value,
                             UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units),
@@ -192,6 +189,28 @@ namespace T3000.Forms
                         row.Cells["ValueColumn"].Value = convertedValue;
                         prgView.EndEdit();
                         CheckRow(e.RowIndex);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBoxUtilities.ShowException(exception);
+                }
+            }
+
+            //AutoManualColumn button click
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0 && e.RowIndex < prgView.RowCount &&
+                prgView.CurrentCell.ColumnIndex == AutoManualColumn.Index)
+            {
+                try
+                {
+                    var row = prgView.CurrentRow;
+                    var current = (AutoManual)row.Cells["AutoManualColumn"].Value;
+                    var form = new SelectAutoManualForm(current);
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        row.Cells["AutoManualColumn"].Value = form.Selected;
+                        prgView.EndEdit();
                     }
                 }
                 catch (Exception exception)

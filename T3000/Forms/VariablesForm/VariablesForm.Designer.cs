@@ -35,7 +35,7 @@
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AutoManualColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -143,7 +143,7 @@
         private System.Windows.Forms.Button clearSelectedRowButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn AutoManualColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
