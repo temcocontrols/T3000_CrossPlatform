@@ -140,7 +140,7 @@
                         offset += 2;
                         for (var j = 0; j < count; ++j)
                         {
-                            var data = bytes.ToBytes(offset, size);
+                            //var data = bytes.ToBytes(offset, size);
                             offset += size;
                             //Alarms.Add(data);
                         }
