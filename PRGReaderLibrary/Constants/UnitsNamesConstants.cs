@@ -20,7 +20,7 @@
 
             var unit = customUnits[index];
             return unit.IsEmpty
-                ? new UnitsNames(defaultOnOff)
+                ? new UnitsNames(defaultOnOff, bool.FalseString, bool.TrueString)
                 : new UnitsNames($"{unit.DigitalUnitsOff}/{unit.DigitalUnitsOn}", 
                 unit.DigitalUnitsOff, unit.DigitalUnitsOn);
         }
@@ -43,6 +43,9 @@
                     return new UnitsNames("Kg");
 
                 //Digital part
+                case Units.DigitalUnused:
+                    return new UnitsNames("DigitalUnused", bool.FalseString, bool.TrueString);
+
                 case Units.OffOn:
                     return new UnitsNames("Off/On", "Off", "On");
 
@@ -62,7 +65,7 @@
                     return new UnitsNames("Normal/High", "Normal", "High");
 
                 case Units.NormalLow:
-                    return new UnitsNames("Normal/High", "Normal", "Low");
+                    return new UnitsNames("Normal/Low", "Normal", "Low");
 
                 case Units.NoYes:
                     return new UnitsNames("No/Yes", "No", "Yes");
@@ -73,8 +76,41 @@
                 case Units.UnoccupiedOccupied:
                     return new UnitsNames("Unoccupied/Occupied", "Unoccupied", "Occupied");
 
+                case Units.OnOff:
+                    return new UnitsNames("On/Off", "On", "Off");
+
+                case Units.OpenClosed:
+                    return new UnitsNames("Open/Closed", "Open", "Closed");
+
+                case Units.StartStop:
+                    return new UnitsNames("Start/Stop", "Start", "Stop");
+
+                case Units.EnabledDisabled:
+                    return new UnitsNames("Enabled/Disabled", "Enabled", "Disabled");
+
+                case Units.AlarmNormal:
+                    return new UnitsNames("Alarm/Normal", "Alarm", "Normal");
+
+                case Units.HighNormal:
+                    return new UnitsNames("High/Normal", "High", "Normal");
+
                 case Units.LowHigh:
                     return new UnitsNames("Low/High", "Low", "High");
+
+                case Units.LowNormal:
+                    return new UnitsNames("Low/Normal", "Low", "Normal");
+
+                case Units.YesNo:
+                    return new UnitsNames("Yes/No", "Yes", "No");
+
+                case Units.HeatCool:
+                    return new UnitsNames("Heat/Cool", "Heat", "Cool");
+
+                case Units.OccupiedUnoccupied:
+                    return new UnitsNames("Occupied/Unoccupied", "Occupied", "Unoccupied");
+
+                case Units.HighLow:
+                    return new UnitsNames("High/Low", "High", "Low");
 
                 case Units.CustomDigital1:
                 case Units.CustomDigital2:
