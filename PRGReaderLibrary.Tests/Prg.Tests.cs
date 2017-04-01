@@ -1,4 +1,6 @@
-﻿namespace PRGReaderLibrary.Tests
+﻿using System.Linq;
+
+namespace PRGReaderLibrary.Tests
 {
     using NUnit.Framework;
     using System;
@@ -15,6 +17,31 @@
             var temp = Path.GetTempFileName();
 
             //Test variables binary load/save compatible
+
+            foreach (var input in prg.Inputs)
+            {
+                //Bit to bit compatible supported only for current version
+                if (prg.FileVersion == FileVersion.Current)
+                {
+                    //Additional check for Value
+                    var tempValue = new VariableVariant(input.Value.ToString(), input.Value.Units, input.CustomUnits);
+                    ObjectAssert.AreEqual(input.Value, tempValue,
+                        $@"Variable value toFrom string test failed.
+Value.ToString(): {input.Value.ToString()}
+Value.ToFromToString(): {tempValue.ToString()}
+");
+                }
+
+                var tempVariable = input;
+                input.AutoManual = input.AutoManual;
+                input.DigitalAnalog = input.DigitalAnalog;
+                input.Control = input.Control;
+                input.Value = input.Value;
+                input.Description = input.Description;
+                input.Label = input.Label;
+                ObjectAssert.AreEqual(tempVariable, input, "Variable GetSet test failed.");
+                BytesAssert.AreEqual(tempVariable.ToBytes(), input.ToBytes(), "Variable GetSet ToBytes test failed.");
+            }
 
             foreach (var variable in prg.Variables)
             {
