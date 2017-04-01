@@ -180,12 +180,14 @@ namespace T3000.Forms
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         var row = prgView.CurrentRow;
-                        Prg.Units = form.CustomUnits;
                         var convertedValue = UnitsUtilities.ConvertValue(
-                            (string) row.Cells["ValueColumn"].Value,
-                            UnitsNamesConstants.UnitsFromName((string) row.Cells["UnitsColumn"].Value, Prg.Units),
+                            (string)row.Cells["ValueColumn"].Value,
+                            UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units),
                             form.SelectedUnits,
-                            form.CustomUnits);
+                            Prg.Units,
+                            form.CustomUnits
+                            );
+                        Prg.Units = form.CustomUnits;
                         row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(Prg.Units);
                         row.Cells["ValueColumn"].Value = convertedValue;
                         prgView.EndEdit();

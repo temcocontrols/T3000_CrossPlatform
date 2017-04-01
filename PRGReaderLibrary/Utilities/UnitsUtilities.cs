@@ -24,14 +24,14 @@ CustomUnits: {customUnits}");
             return value.Equals(onName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string ConvertValue(string value, Units fromUnits, Units toUnits, List<UnitsElement> customUnits = null)
+        public static string ConvertValue(string value, Units fromUnits, Units toUnits, List<UnitsElement> fromCustomUnits = null, List<UnitsElement> toCustomUnits = null)
         {
             if (fromUnits.IsDigital())
             {
-                var boolean = DigitalValueToBoolean(value, fromUnits, customUnits);
+                var boolean = DigitalValueToBoolean(value, fromUnits, fromCustomUnits);
 
                 return toUnits.IsDigital()
-                    ? BooleanToDigitalValue(boolean, toUnits, customUnits)
+                    ? BooleanToDigitalValue(boolean, toUnits, toCustomUnits)
                     : boolean.ToByte().ToString();
             }
 
@@ -40,10 +40,10 @@ CustomUnits: {customUnits}");
                 double doubleValue;
                 if (!double.TryParse(value, out doubleValue))
                 {
-                    BooleanToDigitalValue(true, toUnits, customUnits);
+                    BooleanToDigitalValue(true, toUnits, toCustomUnits);
                 }
 
-                return BooleanToDigitalValue(doubleValue != 0.0, toUnits, customUnits);
+                return BooleanToDigitalValue(doubleValue != 0.0, toUnits, toCustomUnits);
             }
 
             return value;
