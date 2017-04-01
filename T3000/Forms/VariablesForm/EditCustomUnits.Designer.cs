@@ -1,6 +1,6 @@
 ﻿namespace T3000.Forms
 {
-    partial class ChangeCustomUnitsForm
+    partial class EditCustomUnitsForm
     {
         /// <summary>
         /// Required designer variable.

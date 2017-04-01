@@ -38,7 +38,6 @@
   <ItemGroup>
     <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
-    <Compile Include="Types\AdditionalTypes\UnitsNameItem.cs" />
     <Compile Include="Types\AdditionalTypes\UnitsNames.cs" />
     <Compile Include="Constants\UnitsNamesConstants.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />

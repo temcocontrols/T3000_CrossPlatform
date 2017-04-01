@@ -8,16 +8,19 @@
     using System.Windows.Forms;
     using System.Collections.Generic;
 
-    public partial class ChangeCustomUnitsForm : Form
+    public partial class EditCustomUnitsForm : Form
     {
         public static string Separator { get; } = "/";
 
-        public List<UnitsNames> Names { get; private set; } = new List<UnitsNames>();
-        public bool IsValidated { get; private set; } = false;
+        public List<UnitsElement> CustomUnits { get; private set; }
+        public bool IsValidated { get; private set; } = true;
 
-        public ChangeCustomUnitsForm()
+        public EditCustomUnitsForm(List<UnitsElement> customUnits)
         {
             InitializeComponent();
+
+            CustomUnits = customUnits;
+            customUnitsTextBox.Text = ToText(CustomUnits);
         }
 
         private void Preview(string text)
@@ -47,7 +50,7 @@
                     continue;
                 }
 
-                names.Add(new UnitsNames(line));
+                names.Add(new UnitsNames(line, Separator));
             }
 
             return names;
@@ -77,12 +80,36 @@
             Preview(text);
         }
 
+        public static string ToText(List<UnitsElement> customUnits)
+        {
+            if (customUnits == null)
+            {
+                return string.Empty;
+            }
+
+            var text = string.Empty;
+            foreach (var unit in customUnits)
+            {
+                text += $"{unit.DigitalUnitsOff}{Separator}{unit.DigitalUnitsOn}{Environment.NewLine}";
+            }
+
+            return text;
+        }
+
         private void Save(object sender, EventArgs e)
         {
             if (!IsValidated)
             {
-                MessageBoxUtilities.ShowWarning(Resources.ChangeCustomUnitsNotValid);
+                MessageBoxUtilities.ShowWarning(Resources.ChangeCustomUnitsFormNotValid);
                 return;
+            }
+
+            CustomUnits = new List<UnitsElement>();
+            var text = customUnitsTextBox.Text;
+            var names = GetNames(text);
+            foreach (var name in names)
+            {
+                CustomUnits.Add(new UnitsElement(false, name.OffName, name.OnName));
             }
 
             Close();

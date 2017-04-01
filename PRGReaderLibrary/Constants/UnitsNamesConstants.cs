@@ -5,28 +5,9 @@
 
     public static class UnitsNamesConstants
     {
-        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<UnitsElement> customUnits = null)
-        {
-            var names = new Dictionary<Units, UnitsNames>();
-            foreach (Units units in Enum.GetValues(typeof(Units)))
-            {
-                names.Add(units, GetNameCollection(units, customUnits));
-            }
-
-            return names;
-        }
-
-        public static Dictionary<Units, UnitsNames> BaseDictionary { get; } = GetFilledDictionary();
-
-        public static Dictionary<Units, UnitsNames> GetNames(List<UnitsElement> customUnits = null)
-        {
-            if (customUnits == null)
-            {
-                return BaseDictionary;
-            }
-
-            return GetFilledDictionary(customUnits);
-        }
+        private static Dictionary<Units, UnitsNames> BaseDictionary { get; } = GetFilledDictionary();
+        private static Dictionary<Units, UnitsNames> BaseAnalogDictionary { get; } = GetFilledAnalogDictionary();
+        private static Dictionary<Units, UnitsNames> BaseDigitalDictionary { get; } = GetFilledDigitalDictionary();
 
         private static UnitsNames GetCustomName(int index, List<UnitsElement> customUnits = null, string defaultOnOff = "")
         {
@@ -34,7 +15,7 @@
                 index < 0 ||
                 index >= customUnits.Count)
             {
-                return UnitsNames.TrueFalseUnitsNames;
+                return new UnitsNames(defaultOnOff);
             }
 
             var unit = customUnits[index];
@@ -110,15 +91,35 @@
             }
         }
 
-        public static IList<UnitsNameItem> GetOffOnNames(List<UnitsElement> customUnits = null)
+        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<UnitsElement> customUnits = null, Func<Units, bool> predicate = null)
         {
-            var names = new List<UnitsNameItem>();
+            var names = new Dictionary<Units, UnitsNames>();
             foreach (Units units in Enum.GetValues(typeof(Units)))
             {
-                names.Add(new UnitsNameItem(units, units.GetOffOnName(customUnits)));
+                if (predicate != null && !predicate(units))
+                {
+                    continue;
+                }
+
+                names.Add(units, GetNameCollection(units, customUnits));
             }
 
             return names;
         }
+
+        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(List<UnitsElement> customUnits = null) =>
+            GetFilledDictionary(customUnits, units => units.IsAnalog());
+
+        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(List<UnitsElement> customUnits = null) =>
+            GetFilledDictionary(customUnits, units => units.IsDigital());
+
+        public static Dictionary<Units, UnitsNames> GetNames(List<UnitsElement> customUnits = null) =>
+            customUnits == null ? BaseDictionary : GetFilledDictionary(customUnits);
+
+        public static Dictionary<Units, UnitsNames> GetAnalogNames(List<UnitsElement> customUnits = null) =>
+            customUnits == null ? BaseAnalogDictionary : GetFilledAnalogDictionary(customUnits);
+
+        public static Dictionary<Units, UnitsNames> GetDigitalNames(List<UnitsElement> customUnits = null) =>
+            customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
     }
 }

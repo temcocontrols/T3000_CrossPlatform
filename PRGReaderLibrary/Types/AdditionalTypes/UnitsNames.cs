@@ -65,8 +65,5 @@ Separator: {separator}");
         }
 
         public object Clone() => new UnitsNames(OffOnName, OffName, OnName);
-
-        public static UnitsNames TrueFalseUnitsNames { get; } = new UnitsNames(
-            $"{bool.FalseString}/{bool.TrueString}", bool.FalseString, bool.TrueString);
     }
 }

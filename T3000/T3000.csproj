@@ -45,18 +45,19 @@
     <Compile Include="Forms\T3000Form.Designer.cs">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\ChangeCustomUnits.cs">
+    <Compile Include="Forms\VariablesForm\EditCustomUnits.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\ChangeCustomUnits.Designer.cs">
-      <DependentUpon>ChangeCustomUnits.cs</DependentUpon>
+    <Compile Include="Forms\VariablesForm\EditCustomUnits.Designer.cs">
+      <DependentUpon>EditCustomUnits.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\SelectUnits.cs">
+    <Compile Include="Forms\VariablesForm\SelectUnitsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\SelectUnits.Designer.cs">
-      <DependentUpon>SelectUnits.cs</DependentUpon>
+    <Compile Include="Forms\VariablesForm\SelectUnitsForm.Designer.cs">
+      <DependentUpon>SelectUnitsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\VariablesForm\UnitsNameItem.cs" />
     <Compile Include="Forms\VariablesForm\VariablesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,11 +81,11 @@
     <EmbeddedResource Include="Forms\T3000Form.resx">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\ChangeCustomUnits.resx">
-      <DependentUpon>ChangeCustomUnits.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnits.resx">
+      <DependentUpon>EditCustomUnits.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\SelectUnits.resx">
-      <DependentUpon>SelectUnits.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\VariablesForm\SelectUnitsForm.resx">
+      <DependentUpon>SelectUnitsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.de-DE.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>

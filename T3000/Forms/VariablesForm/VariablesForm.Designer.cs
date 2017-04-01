@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.prgView = new System.Windows.Forms.DataGridView();
             this.saveButton = new System.Windows.Forms.Button();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -89,6 +90,8 @@
             // 
             // ValueColumn
             // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Red;
+            this.ValueColumn.DefaultCellStyle = dataGridViewCellStyle1;
             resources.ApplyResources(this.ValueColumn, "ValueColumn");
             this.ValueColumn.Name = "ValueColumn";
             // 

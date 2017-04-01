@@ -1,12 +1,24 @@
 ﻿namespace T3000
 {
+    using PRGReaderLibrary;
     using System;
     using System.Windows.Forms;
-    using PRGReaderLibrary;
+    using System.Collections.Generic;
 
     public partial class VariablesForm : Form
     {
         public Prg Prg { get; private set; }
+
+        public static IList<UnitsNameItem> GetOffOnNames(List<UnitsElement> customUnits = null)
+        {
+            var names = new List<UnitsNameItem>();
+            foreach (Units units in Enum.GetValues(typeof(Units)))
+            {
+                names.Add(new UnitsNameItem(units, units.GetOffOnName(customUnits)));
+            }
+
+            return names;
+        }
 
         public VariablesForm(Prg prg)
         {
@@ -19,7 +31,7 @@
 
             Prg = prg;
 
-            UnitsColumn.DataSource = UnitsNamesConstants.GetOffOnNames(prg.Units);
+            UnitsColumn.DataSource = GetOffOnNames(prg.Units);
             UnitsColumn.DisplayMember = "Text";
             UnitsColumn.ValueMember = "Value";
 

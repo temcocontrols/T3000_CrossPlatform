@@ -72,9 +72,9 @@ namespace T3000.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Custom units is not valid. Please fix it before saving..
         /// </summary>
-        internal static string ChangeCustomUnitsNotValid {
+        internal static string ChangeCustomUnitsFormNotValid {
             get {
-                return ResourceManager.GetString("ChangeCustomUnitsNotValid", resourceCulture);
+                return ResourceManager.GetString("ChangeCustomUnitsFormNotValid", resourceCulture);
             }
         }
         
@@ -165,6 +165,24 @@ namespace T3000.Properties {
         internal static string SelectPRGFile {
             get {
                 return ResourceManager.GetString("SelectPRGFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected units not valid. Please select valid item..
+        /// </summary>
+        internal static string SelectUnitsFormNotValid {
+            get {
+                return ResourceManager.GetString("SelectUnitsFormNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected units: {0}.
+        /// </summary>
+        internal static string SelectUnitsFormSelectedUnits {
+            get {
+                return ResourceManager.GetString("SelectUnitsFormSelectedUnits", resourceCulture);
             }
         }
         
