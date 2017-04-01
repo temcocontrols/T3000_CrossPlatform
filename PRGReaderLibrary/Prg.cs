@@ -176,6 +176,10 @@
                                 Variables.Add(new VariablePoint(data, 0, FileVersion));
                                 break;
 
+                            case PointTypes.UNIT:
+                                Units.Add(new UnitsElement(data, 0, FileVersion));
+                                break;
+
                             default:
                                 //Unknown.Add(data);
                                 break;
@@ -484,6 +488,10 @@ Offset: {offset}, Length: {bytes.Length}");
                         {
                             case PointTypes.VAR:
                                 bytes.AddRange(Variables[j].ToBytes());
+                                break;
+
+                            case PointTypes.UNIT:
+                                bytes.AddRange(Units[j].ToBytes());
                                 break;
 
                             default:
