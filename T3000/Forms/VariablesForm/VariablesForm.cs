@@ -159,9 +159,9 @@ namespace T3000.Forms
 
             row.Cells["DescriptionColumn"].Value = string.Empty;
             row.Cells["LabelColumn"].Value = string.Empty;
-            row.Cells["ValueColumn"].Value = "0";
             row.Cells["UnitsColumn"].Value = Units.Unused.GetOffOnName();
             row.Cells["AutoManualColumn"].Value = AutoManual.Automatic;
+            row.Cells["ValueColumn"].Value = "0";
         }
 
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -181,13 +181,13 @@ namespace T3000.Forms
                     {
                         var row = prgView.CurrentRow;
                         Prg.Units = form.CustomUnits;
-                        row.Cells["ValueColumn"].Value = UnitsUtilities.ConvertValue(
-                            (string)row.Cells["ValueColumn"].Value,
-                            UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units),
+                        var convertedValue = UnitsUtilities.ConvertValue(
+                            (string) row.Cells["ValueColumn"].Value,
+                            UnitsNamesConstants.UnitsFromName((string) row.Cells["UnitsColumn"].Value, Prg.Units),
                             form.SelectedUnits,
                             form.CustomUnits);
-                        row.Cells["ValueColumn"].Style.BackColor = Color.MistyRose;
                         row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(Prg.Units);
+                        row.Cells["ValueColumn"].Value = convertedValue;
                         prgView.EndEdit();
                         CheckRow(e.RowIndex);
                     }
