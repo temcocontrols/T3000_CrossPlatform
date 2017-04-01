@@ -37,9 +37,13 @@ CustomUnits: {customUnits}");
 
             if (toUnits.IsDigital())
             {
-                var boolean = double.Parse(value) != 0.0;
+                double doubleValue;
+                if (!double.TryParse(value, out doubleValue))
+                {
+                    BooleanToDigitalValue(true, toUnits, customUnits);
+                }
 
-                return BooleanToDigitalValue(boolean, toUnits, customUnits);
+                return BooleanToDigitalValue(doubleValue != 0.0, toUnits, customUnits);
             }
 
             return value;

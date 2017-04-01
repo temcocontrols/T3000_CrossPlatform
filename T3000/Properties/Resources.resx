@@ -156,7 +156,7 @@
   <data name="SaveBeforeExitTitle" xml:space="preserve">
     <value>Do you want to save the .PRG file?</value>
   </data>
-  <data name="ChangeCustomUnitsFormNotValid" xml:space="preserve">
+  <data name="EditCustomUnitsFormNotValid" xml:space="preserve">
     <value>Custom units is not valid. Please fix it before saving.</value>
   </data>
   <data name="SelectUnitsFormSelectedUnits" xml:space="preserve">

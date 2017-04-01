@@ -144,8 +144,10 @@
             // 
             // SelectUnitsForm
             // 
+            this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(708, 411);
             this.Controls.Add(this.digitalUnitsLabel);
             this.Controls.Add(this.analogUnitsLabel);

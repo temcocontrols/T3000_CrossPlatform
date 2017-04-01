@@ -22,24 +22,26 @@
             UpdateUnits();
         }
 
+        private int ToNumber(Units units) =>
+            (int)(units + 1);
+
+        private Units ToUnits(int units) =>
+            (Units)(units - 1);
+
         public void UpdateUnits()
         {
             try
             {
                 analogUnitsListBox.Items.Clear();
-                var i = 0;
                 foreach (var name in UnitsNamesConstants.GetAnalogNames(CustomUnits))
                 {
-                    analogUnitsListBox.Items.Add($"{i + 1}. {name.Value.OffOnName}");
-                    ++i;
+                    analogUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
 
                 digitalUnitsListBox.Items.Clear();
-                i = 0;
                 foreach (var name in UnitsNamesConstants.GetDigitalNames(CustomUnits))
                 {
-                    digitalUnitsListBox.Items.Add($"{i + (int)Units.DigitalUnused + 1}. {name.Value.OffOnName}");
-                    ++i;
+                    digitalUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
 
                 ShowSelectedItem();
@@ -62,9 +64,11 @@
             if (!IsValidated)
             {
                 MessageBoxUtilities.ShowWarning(Resources.SelectUnitsFormNotValid);
+                DialogResult = DialogResult.None;
                 return;
             }
 
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -94,7 +98,7 @@
 
         private void ShowSelectedItem()
         {
-            numberTextBox.Text = ((int)SelectedUnits + 1).ToString();
+            numberTextBox.Text = ToNumber(SelectedUnits).ToString();
             messageLabel.Text = string.Format(Resources.SelectUnitsFormSelectedUnits, SelectedUnits.GetOffOnName(CustomUnits));
             if (SelectedUnits.IsAnalog())
             {
@@ -165,7 +169,7 @@
                 //Valid only for correct values with name
                 try
                 {
-                    var units = (Units) (number - 1);
+                    var units = ToUnits(number);
                     units.GetOffOnName(CustomUnits);
                     SelectedUnits = units;
                     ShowSelectedItem();

@@ -3,7 +3,6 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
-    using System.Linq;
     using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
@@ -21,12 +20,17 @@
 
             CustomUnits = customUnits;
             customUnitsTextBox.Text = ToText(CustomUnits);
+
+            Validate(this, EventArgs.Empty);
         }
 
         private void Preview(string text)
         {
             previewListBox.Items.Clear();
-            previewListBox.Items.AddRange(GetNames(text).Select(i => i.OffOnName).ToArray());
+            foreach (var name in ToUnitsNames(text))
+            {
+                previewListBox.Items.Add(name.OffOnName);
+            }
         }
 
         private static string[] ToLines(string text) => 
@@ -37,7 +41,7 @@
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        private static List<UnitsNames> GetNames(string text)
+        private static List<UnitsNames> ToUnitsNames(string text)
         {
             var names = new List<UnitsNames>();
 
@@ -56,30 +60,6 @@
             return names;
         }
 
-        private void Validate(object sender, EventArgs e)
-        {
-            IsValidated = true;
-
-            var text = customUnitsTextBox.Text;
-            var lines = ToLines(text);
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-                
-                if (!UnitsNames.ValidateSeparatoredString(line, Separator))
-                {
-                    IsValidated = false;
-                    break;
-                }
-            }
-
-            customUnitsTextBox.BackColor = IsValidated ? Color.LightGreen : Color.MistyRose;
-            Preview(text);
-        }
-
         public static string ToText(List<UnitsElement> customUnits)
         {
             if (customUnits == null)
@@ -90,28 +70,69 @@
             var text = string.Empty;
             foreach (var unit in customUnits)
             {
+                if (unit.IsEmpty)
+                {
+                    continue;
+                }
+
                 text += $"{unit.DigitalUnitsOff}{Separator}{unit.DigitalUnitsOn}{Environment.NewLine}";
             }
 
             return text;
         }
 
+        public static List<UnitsElement> ToCustomUnits(string text)
+        {
+            var units = new List<UnitsElement>();
+            var names = ToUnitsNames(text);
+            foreach (var name in names)
+            {
+                units.Add(new UnitsElement(false, name.OffName, name.OnName));
+            }
+
+            return units;
+        }
+
+        public static bool IsValid(string text)
+        {
+            var lines = ToLines(text);
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                if (!UnitsNames.ValidateSeparatoredString(line, Separator))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void Validate(object sender, EventArgs e)
+        {
+            var text = customUnitsTextBox.Text;
+            IsValidated = IsValid(text);
+            customUnitsTextBox.BackColor = IsValidated ? Color.LightGreen : Color.MistyRose;
+            Preview(text);
+        }
+
         private void Save(object sender, EventArgs e)
         {
             if (!IsValidated)
             {
-                MessageBoxUtilities.ShowWarning(Resources.ChangeCustomUnitsFormNotValid);
+                MessageBoxUtilities.ShowWarning(Resources.EditCustomUnitsFormNotValid);
+                DialogResult = DialogResult.None;
                 return;
             }
 
-            CustomUnits = new List<UnitsElement>();
             var text = customUnitsTextBox.Text;
-            var names = GetNames(text);
-            foreach (var name in names)
-            {
-                CustomUnits.Add(new UnitsElement(false, name.OffName, name.OnName));
-            }
+            CustomUnits = ToCustomUnits(text);
 
+            DialogResult = DialogResult.OK;
             Close();
         }
 

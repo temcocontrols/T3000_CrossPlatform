@@ -9,18 +9,6 @@
         public Units Units { get; set; }
         public List<UnitsElement> CustomUnits { get; set; }
 
-        public object Object {
-            get { return ToObject(Value, Units); }
-        }
-
-        public Type Type {
-            get { return Object.GetType(); }
-        }
-
-        public string Text {
-            get { return ToString(Object, Units, CustomUnits); }
-        }
-
         public static int FromTimeSpan(TimeSpan time) =>
                 ((time.Days * 60 * 60 * 24 +
                     time.Hours * 60 * 60 +

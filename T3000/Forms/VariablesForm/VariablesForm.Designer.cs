@@ -1,4 +1,4 @@
-﻿namespace T3000
+﻿namespace T3000.Forms
 {
     partial class VariablesForm
     {
@@ -29,14 +29,15 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.prgView = new System.Windows.Forms.DataGridView();
             this.saveButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitsColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
             this.SuspendLayout();
@@ -57,10 +58,9 @@
             this.LabelColumn});
             this.prgView.MultiSelect = false;
             this.prgView.Name = "prgView";
-            this.prgView.CellContextMenuStripChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContextMenuStripChanged);
-            this.prgView.CellStateChanged += new System.Windows.Forms.DataGridViewCellStateChangedEventHandler(this.prgView_CellStateChanged);
+            this.prgView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContentClick);
+            this.prgView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.prgView_CellValidating);
             this.prgView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
-            this.prgView.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.prgView_PreviewKeyDown);
             // 
             // saveButton
             // 
@@ -68,6 +68,21 @@
             this.saveButton.Name = "saveButton";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.Save);
+            // 
+            // cancelButton
+            // 
+            resources.ApplyResources(this.cancelButton, "cancelButton");
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.Cancel);
+            // 
+            // clearSelectedRowButton
+            // 
+            resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
+            this.clearSelectedRowButton.Name = "clearSelectedRowButton";
+            this.clearSelectedRowButton.UseVisualStyleBackColor = true;
+            this.clearSelectedRowButton.Click += new System.EventHandler(this.clearSelectedRowButton_Click);
             // 
             // NumberColumn
             // 
@@ -90,8 +105,6 @@
             // 
             // ValueColumn
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Red;
-            this.ValueColumn.DefaultCellStyle = dataGridViewCellStyle1;
             resources.ApplyResources(this.ValueColumn, "ValueColumn");
             this.ValueColumn.Name = "ValueColumn";
             // 
@@ -99,6 +112,7 @@
             // 
             resources.ApplyResources(this.UnitsColumn, "UnitsColumn");
             this.UnitsColumn.Name = "UnitsColumn";
+            this.UnitsColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // LabelColumn
             // 
@@ -107,8 +121,12 @@
             // 
             // VariablesForm
             // 
+            this.AcceptButton = this.saveButton;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
+            this.Controls.Add(this.clearSelectedRowButton);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.prgView);
             this.Name = "VariablesForm";
@@ -121,11 +139,13 @@
 
         private System.Windows.Forms.DataGridView prgView;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button clearSelectedRowButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn UnitsColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
 }

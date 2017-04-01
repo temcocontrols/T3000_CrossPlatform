@@ -1,4 +1,6 @@
-﻿namespace T3000
+﻿using System.Drawing;
+
+namespace T3000.Forms
 {
     using PRGReaderLibrary;
     using System;
@@ -31,12 +33,31 @@
 
             Prg = prg;
 
-            UnitsColumn.DataSource = GetOffOnNames(prg.Units);
-            UnitsColumn.DisplayMember = "Text";
-            UnitsColumn.ValueMember = "Value";
-
             AutoManualColumn.ValueType = typeof(AutoManual);
             AutoManualColumn.DataSource = Enum.GetValues(typeof(AutoManual));
+        }
+
+        public void CheckRow(int row)
+        {
+            var cell = prgView.Rows[row].Cells["ValueColumn"];
+            var isValidated = true;
+            cell.ToolTipText = string.Empty;
+            cell.ErrorText = string.Empty;
+            try
+            {
+                var unitsCell = prgView.Rows[row].Cells["UnitsColumn"];
+                var units = UnitsNamesConstants.UnitsFromName((string)unitsCell.Value, Prg.Units);
+                new VariableVariant((string) cell.Value, units, Prg.Units);
+            }
+            catch (Exception exception)
+            {
+                cell.ToolTipText = exception.Message;
+                cell.ErrorText = exception.Message;
+                isValidated = false;
+            }
+
+            cell.Style.BackColor = isValidated ? Color.LightGreen : Color.MistyRose;
+
         }
 
         public new void Show()
@@ -49,11 +70,9 @@
             {
                 prgView.Rows.Add(new object[] {
                     i + 1, variable.Description, variable.AutoManual,
-                    variable.Value.ToString(), variable.Value.Units, variable.Label
+                    variable.Value.ToString(), variable.Value.Units.GetOffOnName(variable.Value.CustomUnits), variable.Label
                 });
-                //or set manual if editing
-                prgView.Rows[prgView.RowCount - 1].Cells["ValueColumn"].ReadOnly = 
-                    variable.AutoManual == AutoManual.Automatic;
+                CheckRow(prgView.RowCount - 1);
                 ++i;
             }
 
@@ -64,24 +83,34 @@
         {
             var prg = Prg;
 
-            var i = 0;
-            foreach (DataGridViewRow row in prgView.Rows)
+            try
             {
-                if (i >= prg.Variables.Count)
+                var i = 0;
+                foreach (DataGridViewRow row in prgView.Rows)
                 {
-                    break;
-                }
+                    if (i >= prg.Variables.Count)
+                    {
+                        break;
+                    }
 
-                var variable = prg.Variables[i];
-                variable.Description = (string)row.Cells["DescriptionColumn"].Value;
-                variable.Label = (string)row.Cells["LabelColumn"].Value;
-                variable.Value = new VariableVariant(
-                    (string)row.Cells["ValueColumn"].Value, 
-                    (Units)row.Cells["UnitsColumn"].Value, prg.Units);
-                variable.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
-                ++i;
+                    var variable = prg.Variables[i];
+                    variable.Description = (string)row.Cells["DescriptionColumn"].Value;
+                    variable.Label = (string)row.Cells["LabelColumn"].Value;
+                    variable.Value = new VariableVariant(
+                        (string)row.Cells["ValueColumn"].Value,
+                        UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units), prg.Units);
+                    variable.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
+                    ++i;
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+                DialogResult = DialogResult.None;
+                return;
             }
 
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -89,10 +118,22 @@
         {
             try
             {
-                //Set AutoManual to Manual, if user changed units
-                if (e.ColumnIndex == prgView.Columns["UnitsColumn"]?.Index)
+                if (e.RowIndex >= prgView.RowCount ||
+                    e.RowIndex < 0)
                 {
-                    var row = prgView.Rows[e.RowIndex];
+                    return;
+                }
+
+                var row = prgView.Rows[e.RowIndex];
+                //Set AutoManual to Manual, if user changed units
+                if (e.ColumnIndex == UnitsColumn.Index)
+                {
+                    row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
+                }
+
+                if (e.ColumnIndex == ValueColumn.Index)
+                {
+                    CheckRow(e.RowIndex);
                     row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
                 }
             }
@@ -102,48 +143,65 @@
             }
         }
 
-        private void prgView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        private void Cancel(object sender, EventArgs e)
         {
-            if (prgView.CurrentCell.ColumnIndex == prgView.Columns["UnitsColumn"]?.Index &&
-                prgView.CurrentCell.IsInEditMode)
-            {
-                var currentValue = (Units)prgView.CurrentCell.Value;
-                switch (e.KeyCode)
-                {
-                    case Keys.Up:
-                        prgView.CurrentCell.Value = currentValue + 1;
-                        break;
+            Close();
+        }
 
-                    case Keys.Down:
-                        prgView.CurrentCell.Value = currentValue - 1;
-                        break;
+        private void clearSelectedRowButton_Click(object sender, EventArgs e)
+        {
+            var row = prgView.CurrentRow;
+
+            if (row == null)
+            {
+                return;
+            }
+
+            row.Cells["DescriptionColumn"].Value = string.Empty;
+            row.Cells["LabelColumn"].Value = string.Empty;
+            row.Cells["ValueColumn"].Value = "0";
+            row.Cells["UnitsColumn"].Value = Units.Unused.GetOffOnName();
+            row.Cells["AutoManualColumn"].Value = AutoManual.Automatic;
+        }
+
+        private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            //UnitsColumn button click
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0 && e.RowIndex < prgView.RowCount &&
+                prgView.CurrentCell.ColumnIndex == UnitsColumn.Index)
+            {
+                try
+                {
+                    //TODO: Add FromCustomUnits and ToCustomUnits in ConvertValue
+                    var form = new SelectUnitsForm(Units.OffOn, Prg.Units);
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        var row = prgView.CurrentRow;
+                        Prg.Units = form.CustomUnits;
+                        row.Cells["ValueColumn"].Value = UnitsUtilities.ConvertValue(
+                            (string)row.Cells["ValueColumn"].Value,
+                            UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units),
+                            form.SelectedUnits,
+                            form.CustomUnits);
+                        row.Cells["ValueColumn"].Style.BackColor = Color.MistyRose;
+                        row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(Prg.Units);
+                        prgView.EndEdit();
+                        CheckRow(e.RowIndex);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBoxUtilities.ShowException(exception);
                 }
             }
         }
 
-        private void prgView_CellContextMenuStripChanged(object sender, DataGridViewCellEventArgs e)
+        private void prgView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            //MessageBox.Show("prgView_CellContextMenuStripChanged");
-        }
-
-        private void prgView_CellStateChanged(object sender, DataGridViewCellStateChangedEventArgs e)
-        {
-            try
-            {
-                //Convert value when units changed
-                if (e.Cell.ColumnIndex == prgView.Columns["UnitsColumn"]?.Index)
-                {
-                    var row = prgView.Rows[e.Cell.RowIndex];
-                    row.Cells["ValueColumn"].Value = UnitsUtilities.ConvertValue(
-                        (string) row.Cells["ValueColumn"].Value,
-                        (Units) row.Cells["UnitsColumn"].Value,
-                        (Units) row.Cells["UnitsColumn"].Value);
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
+            CheckRow(e.RowIndex);
         }
     }
 }

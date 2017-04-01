@@ -121,5 +121,21 @@
 
         public static Dictionary<Units, UnitsNames> GetDigitalNames(List<UnitsElement> customUnits = null) =>
             customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
+
+        public static Units UnitsFromName(string name, List<UnitsElement> customUnits = null)
+        {
+            var names = GetNames(customUnits);
+            foreach (var pair in names)
+            {
+                if (name.Equals(pair.Value.OffOnName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return pair.Key;
+                }
+            }
+
+            throw new NotImplementedException($@"This name not implemented.
+Name: {name}
+CustomUnits.Count: {customUnits?.Count}");
+        }
     }
 }

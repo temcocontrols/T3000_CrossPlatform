@@ -99,17 +99,19 @@
             this.previewListBox.Size = new System.Drawing.Size(170, 251);
             this.previewListBox.TabIndex = 4;
             // 
-            // ChangeCustomUnitsForm
+            // EditCustomUnitsForm
             // 
+            this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(458, 291);
             this.Controls.Add(this.previewListBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.customUnitsTextBox);
-            this.Name = "ChangeCustomUnitsForm";
+            this.Name = "EditCustomUnitsForm";
             this.Text = "Change custom units:";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
