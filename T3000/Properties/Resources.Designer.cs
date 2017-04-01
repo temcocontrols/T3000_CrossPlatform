@@ -70,6 +70,15 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom units is not valid. Please fix it before saving..
+        /// </summary>
+        internal static string ChangeCustomUnitsNotValid {
+            get {
+                return ResourceManager.GetString("ChangeCustomUnitsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current file: {0}.
         /// </summary>
         internal static string CurrentFile {

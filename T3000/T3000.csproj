@@ -35,7 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
@@ -45,6 +44,12 @@
     </Compile>
     <Compile Include="Forms\T3000Form.Designer.cs">
       <DependentUpon>T3000Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\ChangeCustomUnits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VariablesForm\ChangeCustomUnits.Designer.cs">
+      <DependentUpon>ChangeCustomUnits.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VariablesForm\SelectUnits.cs">
       <SubType>Form</SubType>
@@ -74,6 +79,9 @@
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Forms\T3000Form.resx">
       <DependentUpon>T3000Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VariablesForm\ChangeCustomUnits.resx">
+      <DependentUpon>ChangeCustomUnits.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\SelectUnits.resx">
       <DependentUpon>SelectUnits.cs</DependentUpon>
