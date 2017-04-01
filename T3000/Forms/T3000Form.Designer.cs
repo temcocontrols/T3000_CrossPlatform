@@ -36,6 +36,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.controlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.variablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.germanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,6 +107,7 @@
             // controlToolStripMenuItem
             // 
             this.controlToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputsMenuItem,
             this.variablesToolStripMenuItem});
             this.controlToolStripMenuItem.Name = "controlToolStripMenuItem";
             this.controlToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
@@ -120,6 +122,15 @@
             this.variablesToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.variablesToolStripMenuItem.Text = "Variables";
             this.variablesToolStripMenuItem.Click += new System.EventHandler(this.ShowVariables);
+            // 
+            // inputsMenuItem
+            // 
+            this.inputsMenuItem.Enabled = false;
+            this.inputsMenuItem.Name = "inputsMenuItem";
+            this.inputsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.I)));
+            this.inputsMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.inputsMenuItem.Text = "Inputs";
+            this.inputsMenuItem.Click += new System.EventHandler(this.ShowInputs);
             // 
             // languageMenuItem
             // 
@@ -203,5 +214,6 @@
         private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem germanToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chineseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputsMenuItem;
     }
 }

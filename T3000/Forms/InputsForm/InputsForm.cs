@@ -1,17 +1,14 @@
-﻿using System.Drawing;
-
-namespace T3000.Forms
+﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
     using System;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
-    public partial class VariablesForm : Form
+    public partial class InputsForm : Form
     {
         public Prg Prg { get; private set; }
 
-        public VariablesForm(Prg prg)
+        public InputsForm(Prg prg)
         {
             if (prg == null)
             {
@@ -23,41 +20,19 @@ namespace T3000.Forms
             Prg = prg;
         }
 
-        public static void CheckRow(DataGridViewRow row, Prg prg)
-        {
-            var cell = row.Cells["ValueColumn"];
-            var isValidated = true;
-            cell.ToolTipText = string.Empty;
-            cell.ErrorText = string.Empty;
-            try
-            {
-                var unitsCell = row.Cells["UnitsColumn"];
-                var units = UnitsNamesConstants.UnitsFromName((string)unitsCell.Value, prg.Units);
-                new VariableVariant((string) cell.Value, units, prg.Units);
-            }
-            catch (Exception exception)
-            {
-                cell.ToolTipText = exception.Message;
-                cell.ErrorText = exception.Message;
-                isValidated = false;
-            }
-
-            cell.Style.BackColor = isValidated ? Color.LightGreen : Color.MistyRose;
-        }
-
         public new void Show()
         {
             var prg = Prg;
 
             prgView.Rows.Clear();
             var i = 0;
-            foreach (var variable in prg.Variables)
+            foreach (var input in prg.Inputs)
             {
                 prgView.Rows.Add(new object[] {
-                    i + 1, variable.Description, variable.AutoManual,
-                    variable.Value.ToString(), variable.Value.Units.GetOffOnName(variable.Value.CustomUnits), variable.Label
+                    i + 1, input.Description, input.AutoManual,
+                    input.Value.ToString(), input.Value.Units.GetOffOnName(input.Value.CustomUnits), input.Label
                 });
-                CheckRow(prgView.Rows[prgView.RowCount - 1], prg);
+                VariablesForm.CheckRow(prgView.Rows[prgView.RowCount - 1], prg);
                 ++i;
             }
 
@@ -78,13 +53,13 @@ namespace T3000.Forms
                         break;
                     }
 
-                    var variable = prg.Variables[i];
-                    variable.Description = (string)row.Cells["DescriptionColumn"].Value;
-                    variable.Label = (string)row.Cells["LabelColumn"].Value;
-                    variable.Value = new VariableVariant(
+                    var input = prg.Inputs[i];
+                    input.Description = (string)row.Cells["DescriptionColumn"].Value;
+                    input.Label = (string)row.Cells["LabelColumn"].Value;
+                    input.Value = new VariableVariant(
                         (string)row.Cells["ValueColumn"].Value,
                         UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units), prg.Units);
-                    variable.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
+                    input.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
                     ++i;
                 }
             }
@@ -118,7 +93,7 @@ namespace T3000.Forms
 
                 if (e.ColumnIndex == ValueColumn.Index)
                 {
-                    CheckRow(row, Prg);
+                    VariablesForm.CheckRow(row, Prg);
                     row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
                 }
             }
@@ -176,7 +151,7 @@ namespace T3000.Forms
                         row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(Prg.Units);
                         row.Cells["ValueColumn"].Value = convertedValue;
                         prgView.EndEdit();
-                        CheckRow(row, Prg);
+                        VariablesForm.CheckRow(row, Prg);
                     }
                 }
                 catch (Exception exception)
@@ -216,7 +191,7 @@ namespace T3000.Forms
                 return;
             }
 
-            CheckRow(prgView.Rows[e.RowIndex], Prg);
+            VariablesForm.CheckRow(prgView.Rows[e.RowIndex], Prg);
         }
     }
 }

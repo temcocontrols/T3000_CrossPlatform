@@ -39,6 +39,7 @@
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
                 savePRGToolStripMenuItem.Enabled = true;
                 saveAsToolStripMenuItem.Enabled = true;
+                inputsMenuItem.Enabled = true;
                 variablesToolStripMenuItem.Enabled = true;
             }
             catch (Exception exception)
@@ -119,6 +120,25 @@
         #endregion
 
         #region Control
+
+        private void ShowInputs(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!IsOpened)
+                {
+                    MessageBoxUtilities.ShowWarning(Resources.FileIsNotOpen);
+                    return;
+                }
+
+                var form = new InputsForm(Prg);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
 
         private void ShowVariables(object sender, EventArgs e)
         {
