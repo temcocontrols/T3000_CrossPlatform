@@ -14,7 +14,7 @@
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SelectUnitsForm());
+            Application.Run(new T3000Form());
         }
     }
 }
