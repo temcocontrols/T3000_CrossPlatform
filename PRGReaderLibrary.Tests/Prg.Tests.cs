@@ -1,14 +1,23 @@
-﻿using System.Linq;
-
-namespace PRGReaderLibrary.Tests
+﻿namespace PRGReaderLibrary.Tests
 {
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     [TestFixture]
     public class PrgReader_Tests
     {
+        public void VariableVariantToFromTest(VariableVariant value, List<UnitsElement> customUnits)
+        {
+            var tempValue = new VariableVariant(value.ToString(), value.Units, customUnits);
+            ObjectAssert.AreEqual(value, tempValue,
+                $@"Variable value toFrom string test failed.
+Value.ToString(): {value.ToString()}
+Value.ToFromToString(): {tempValue.ToString()}
+");
+        }
+
         public void BaseTest(string name)
         {
             var path = TestUtilities.GetFullPathForTestFile(name);
@@ -18,86 +27,54 @@ namespace PRGReaderLibrary.Tests
 
             //Test variables binary load/save compatible
 
-            foreach (var input in prg.Inputs)
+            //Bit to bit compatible supported only for current version
+            if (prg.FileVersion == FileVersion.Current)
             {
-                //Bit to bit compatible supported only for current version
-                if (prg.FileVersion == FileVersion.Current)
+                foreach (var input in prg.Inputs)
                 {
-                    //Additional check for Value
-                    var tempValue = new VariableVariant(input.Value.ToString(), input.Value.Units, prg.Units);
-                    ObjectAssert.AreEqual(input.Value, tempValue,
-                        $@"Variable value toFrom string test failed.
-Value.ToString(): {input.Value.ToString()}
-Value.ToFromToString(): {tempValue.ToString()}
-");
+                    VariableVariantToFromTest(input.Value, prg.Units);
+
+                    var bytes = input.ToBytes();
+                    var tempVariable = new InputPoint(bytes);
+                    ObjectAssert.AreEqual(input, tempVariable,
+                        "Input ToFromBytes test failed.");
+                    BytesAssert.AreEqual(tempVariable.ToBytes(), input.ToBytes(),
+                        "Input ToFromBytes ToBytes test failed.");
                 }
 
-                var tempVariable = input;
-                input.AutoManual = input.AutoManual;
-                input.DigitalAnalog = input.DigitalAnalog;
-                input.Control = input.Control;
-                input.Value = input.Value;
-                input.Description = input.Description;
-                input.Label = input.Label;
-                ObjectAssert.AreEqual(tempVariable, input, "Variable GetSet test failed.");
-                BytesAssert.AreEqual(tempVariable.ToBytes(), input.ToBytes(), "Variable GetSet ToBytes test failed.");
-            }
-
-            foreach (var output in prg.Outputs)
-            {
-                //Bit to bit compatible supported only for current version
-                if (prg.FileVersion == FileVersion.Current)
+                foreach (var output in prg.Outputs)
                 {
-                    //Additional check for Value
-                    var tempValue = new VariableVariant(output.Value.ToString(), output.Value.Units, prg.Units);
-                    ObjectAssert.AreEqual(output.Value, tempValue,
-                        $@"Variable value toFrom string test failed.
-Value.ToString(): {output.Value.ToString()}
-Value.ToFromToString(): {tempValue.ToString()}
-");
+                    VariableVariantToFromTest(output.Value, prg.Units);
+
+                    var bytes = output.ToBytes();
+                    var tempVariable = new OutputPoint(bytes);
+                    ObjectAssert.AreEqual(output, tempVariable,
+                        "Output ToFromBytes test failed.");
+                    BytesAssert.AreEqual(tempVariable.ToBytes(), output.ToBytes(),
+                        "Output ToFromBytes ToBytes test failed.");
                 }
 
-                var tempVariable = output;
-                output.AutoManual = output.AutoManual;
-                output.DigitalAnalog = output.DigitalAnalog;
-                output.Control = output.Control;
-                output.Value = output.Value;
-                output.Description = output.Description;
-                output.Label = output.Label;
-                ObjectAssert.AreEqual(tempVariable, output, "Variable GetSet test failed.");
-                BytesAssert.AreEqual(tempVariable.ToBytes(), output.ToBytes(), "Variable GetSet ToBytes test failed.");
-            }
-
-            foreach (var variable in prg.Variables)
-            {
-                //Bit to bit compatible supported only for current version
-                if (prg.FileVersion == FileVersion.Current)
+                foreach (var variable in prg.Variables)
                 {
-                    //Additional check for Value
-                    var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units, prg.Units);
-                    ObjectAssert.AreEqual(variable.Value, tempValue,
-                        $@"Variable value toFrom string test failed.
-Value.ToString(): {variable.Value.ToString()}
-Value.ToFromToString(): {tempValue.ToString()}
-");
+                    VariableVariantToFromTest(variable.Value, prg.Units);
+
+                    var bytes = variable.ToBytes();
+                    var tempVariable = new VariablePoint(bytes);
+                    ObjectAssert.AreEqual(variable, tempVariable,
+                        "Variable ToFromBytes test failed.");
+                    BytesAssert.AreEqual(tempVariable.ToBytes(), variable.ToBytes(),
+                        "Variable ToFromBytes ToBytes test failed.");
                 }
 
-                var tempVariable = variable;
-                variable.AutoManual = variable.AutoManual;
-                variable.DigitalAnalog = variable.DigitalAnalog;
-                variable.Control = variable.Control;
-                variable.Value = variable.Value;
-                variable.Description = variable.Description;
-                variable.Label = variable.Label;
-                ObjectAssert.AreEqual(tempVariable, variable, "Variable GetSet test failed.");
-                BytesAssert.AreEqual(tempVariable.ToBytes(), variable.ToBytes(), "Variable GetSet ToBytes test failed.");
-            }
-
-            foreach (var unit in prg.Units)
-            {
-                unit.Direct = unit.Direct;
-                unit.DigitalUnitsOff = unit.DigitalUnitsOff;
-                unit.DigitalUnitsOn = unit.DigitalUnitsOn;
+                foreach (var unit in prg.Units)
+                {
+                    var bytes = unit.ToBytes();
+                    var tempVariable = new UnitsElement(bytes);
+                    ObjectAssert.AreEqual(unit, tempVariable,
+                        "Unit ToFromBytes test failed.");
+                    BytesAssert.AreEqual(tempVariable.ToBytes(), unit.ToBytes(),
+                        "Unit ToFromBytes ToBytes test failed.");
+                }
             }
 
             prg.Save(temp);
