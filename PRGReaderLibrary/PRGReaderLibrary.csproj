@@ -39,6 +39,7 @@
     <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Enums\Sign.cs" />
+    <Compile Include="Enums\SwitchStatus.cs" />
     <Compile Include="Types\AdditionalTypes\UnitsPoint.cs" />
     <Compile Include="Types\AdditionalTypes\UnitsNames.cs" />
     <Compile Include="Constants\UnitsNamesConstants.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Types\InputPoint.cs" />
     <Compile Include="Types\StrMonitorPoint.cs" />
     <Compile Include="Types\StrMonitorWorkData.cs" />
-    <Compile Include="Types\StrOutPoint.cs" />
+    <Compile Include="Types\OutputPoint.cs" />
     <Compile Include="Types\StrProgramPoint.cs" />
     <Compile Include="Types\StrTblPoint.cs" />
     <Compile Include="Types\VariablePoint.cs" />

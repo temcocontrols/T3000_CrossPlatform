@@ -43,6 +43,31 @@ Value.ToFromToString(): {tempValue.ToString()}
                 BytesAssert.AreEqual(tempVariable.ToBytes(), input.ToBytes(), "Variable GetSet ToBytes test failed.");
             }
 
+            foreach (var output in prg.Outputs)
+            {
+                //Bit to bit compatible supported only for current version
+                if (prg.FileVersion == FileVersion.Current)
+                {
+                    //Additional check for Value
+                    var tempValue = new VariableVariant(output.Value.ToString(), output.Value.Units, prg.Units);
+                    ObjectAssert.AreEqual(output.Value, tempValue,
+                        $@"Variable value toFrom string test failed.
+Value.ToString(): {output.Value.ToString()}
+Value.ToFromToString(): {tempValue.ToString()}
+");
+                }
+
+                var tempVariable = output;
+                output.AutoManual = output.AutoManual;
+                output.DigitalAnalog = output.DigitalAnalog;
+                output.Control = output.Control;
+                output.Value = output.Value;
+                output.Description = output.Description;
+                output.Label = output.Label;
+                ObjectAssert.AreEqual(tempVariable, output, "Variable GetSet test failed.");
+                BytesAssert.AreEqual(tempVariable.ToBytes(), output.ToBytes(), "Variable GetSet ToBytes test failed.");
+            }
+
             foreach (var variable in prg.Variables)
             {
                 //Bit to bit compatible supported only for current version

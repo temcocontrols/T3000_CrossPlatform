@@ -23,8 +23,8 @@
         #region Main data
 
         public List<InfoTable> Info { get; set; } = new List<InfoTable>();
-        public List<StrOutPoint> Outputs { get; set; } = new List<StrOutPoint>();
         public List<InputPoint> Inputs { get; set; } = new List<InputPoint>();
+        public List<OutputPoint> Outputs { get; set; } = new List<OutputPoint>();
         public List<VariablePoint> Variables { get; set; } = new List<VariablePoint>();
         public List<StrProgramPoint> Programs { get; set; } = new List<StrProgramPoint>();
         public List<StrControllerPoint> Controllers { get; set; } = new List<StrControllerPoint>();
@@ -307,7 +307,7 @@
             Outputs.AddRange(GetArray(bytes,
                 Rev6Constants.OutputCount,
                 Rev6Constants.OutputSize, ref offset)
-                .Select(i => new StrOutPoint()));
+                .Select(i => new OutputPoint(i, 0, FileVersion)));
 
             //Get all variables
             Variables.AddRange(GetArray(bytes,
@@ -400,6 +400,12 @@ Offset: {offset}, Length: {bytes.Length}");
             foreach (var input in Inputs)
             {
                 input.Value.CustomUnits = Units;
+            }
+
+            //Set CustomUnits for inputs
+            foreach (var output in Outputs)
+            {
+                output.Value.CustomUnits = Units;
             }
 
             //Set CustomUnits for variables
@@ -531,7 +537,11 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.OutputCount * Rev6Constants.OutputSize));
+            for (var i = 0; i < Rev6Constants.OutputCount; ++i)
+            {
+                var obj = i < Outputs.Count ? Outputs[i] : new OutputPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
 
             for (var i = 0; i < Rev6Constants.VariableCount; ++i)
             {

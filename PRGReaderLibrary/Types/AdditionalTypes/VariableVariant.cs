@@ -102,6 +102,9 @@ Supported types: bool, float, TimeSpan");
                     case Units.OnOff:
                         return Convert.ToUInt32(value) * 1000;
 
+                    case Units.OffOn:
+                        return Convert.ToUInt32(value) * 1000;
+
                     default:
                         return Convert.ToUInt32(value);
                 }
