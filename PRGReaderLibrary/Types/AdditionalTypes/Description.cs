@@ -1,16 +1,10 @@
 namespace PRGReaderLibrary
 {
     using System.Collections.Generic;
-
-    /// <summary>
-    /// Size: 21 bytes
-    /// </summary>
+    
     public class DescriptionPoint : Version
     {
-        public string Description {
-            get { return DescriptionRaw.ClearBinarySymvols(); }
-            set { DescriptionRaw = value.AddBinarySymvols(21); }
-        }
+        public string Description { get; set; }
 
         public DescriptionPoint(string description = "", FileVersion version = FileVersion.Current)
             : base(version)
@@ -20,21 +14,16 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
-        /// <summary>
-        /// Size: 21 bytes
-        /// </summary>
-        protected string DescriptionRaw { get; set; }
-
         public DescriptionPoint(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
             : base(version)
         {
-            DescriptionRaw = bytes.GetString(0 + offset, 21);
+            Description = bytes.GetString(0 + offset, 21).ClearBinarySymvols();
         }
 
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.AddRange(DescriptionRaw.ToBytes(21));
+            bytes.AddRange(Description.AddBinarySymvols(21).ToBytes(21));
 
             return bytes.ToArray();
         }

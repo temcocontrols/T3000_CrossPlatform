@@ -20,20 +20,9 @@ namespace PRGReaderLibrary
             }
         }
 
-        public AutoManual AutoManual {
-            get { return AutoManualRaw ? AutoManual.Manual : AutoManual.Automatic; }
-            set { AutoManualRaw = value == AutoManual.Manual; }
-        }
-
-        public DigitalAnalog DigitalAnalog {
-            get { return DigitalAnalogRaw ? DigitalAnalog.Analog : DigitalAnalog.Digital; }
-            set { DigitalAnalogRaw = value == DigitalAnalog.Analog; }
-        }
-
-        public Control Control {
-            get { return ControlRaw ? Control.On : Control.Off; }
-            set { ControlRaw = value == Control.On; }
-        }
+        public AutoManual AutoManual { get; set; }
+        public DigitalAnalog DigitalAnalog { get; set; }
+        public Control Control { get; set; }
 
         public UnitsPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current,
@@ -47,30 +36,12 @@ namespace PRGReaderLibrary
             string.IsNullOrWhiteSpace(Description) &&
             string.IsNullOrWhiteSpace(Label);
 
-        /// <summary>
-        /// Size: 30 + 4 + 4 = 38
-        /// </summary>
         #region Binary data
 
         /// <summary>
         /// Size: 4 bytes
         /// </summary>
         protected uint ValueRaw { get; set; }
-
-        /// <summary>
-        /// Size: 1 byte
-        /// </summary>
-        protected bool AutoManualRaw { get; set; }
-
-        /// <summary>
-        /// Size: 1 byte
-        /// </summary>
-        protected bool DigitalAnalogRaw { get; set; }
-
-        /// <summary>
-        /// Size: 1 byte
-        /// </summary>
-        protected bool ControlRaw { get; set; }
 
         /// <summary>
         /// Size: 1 byte
@@ -83,15 +54,6 @@ namespace PRGReaderLibrary
             : base(bytes, offset, version)
         {
             CustomUnits = customUnits;
-        }
-
-        public new byte[] ToBytes()
-        {
-            var bytes = new List<byte>();
-
-            bytes.AddRange(base.ToBytes());
-
-            return bytes.ToArray();
         }
         #endregion
     }

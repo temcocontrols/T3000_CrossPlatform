@@ -1,11 +1,9 @@
-﻿using System.Drawing;
-
-namespace T3000.Forms
+﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
     using System;
+    using System.Drawing;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
     public partial class VariablesForm : Form
     {
