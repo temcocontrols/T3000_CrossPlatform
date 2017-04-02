@@ -40,6 +40,7 @@
     <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Enums\Sign.cs" />
     <Compile Include="Enums\SwitchStatus.cs" />
+    <Compile Include="Types\AdditionalTypes\InoutPoint.cs" />
     <Compile Include="Types\AdditionalTypes\UnitsPoint.cs" />
     <Compile Include="Types\AdditionalTypes\UnitsNames.cs" />
     <Compile Include="Constants\UnitsNamesConstants.cs" />

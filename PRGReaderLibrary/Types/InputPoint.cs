@@ -3,14 +3,10 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class InputPoint : UnitsPoint
+    public class InputPoint : InoutPoint
     {
         public int Filter { get; set; }
-        public int Decommissioned { get; set; }
-        public bool SubId { get; set; }
-        public bool SubProduct { get; set; }
         public Sign CalibrationSign { get; set; }
-        public double SubNumber { get; set; }
         public double CalibrationH { get; set; }
         public double CalibrationL { get; set; }
 
@@ -30,7 +26,6 @@ namespace PRGReaderLibrary
 
             byte filterRaw;
             bool calibrationSignRaw;
-            bool subNumberRaw;
             byte calibrationHRaw;
             byte calibrationLRaw;
 
@@ -46,7 +41,7 @@ namespace PRGReaderLibrary
                     AutoManual = AutoManualFromByte(bytes.ToByte(39 + offset));
                     DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(40 + offset));
                     calibrationSignRaw = bytes.ToBoolean(41 + offset);
-                    subNumberRaw = bytes.ToBoolean(42 + offset);
+                    SubNumber = SubNumberFromByte(bytes.ToByte(42 + offset));
                     calibrationHRaw = bytes.ToByte(43 + offset);
                     calibrationLRaw = bytes.ToByte(44 + offset);
                     units = UnitsFromByte(bytes.ToByte(45 + offset), DigitalAnalog);
@@ -60,7 +55,6 @@ namespace PRGReaderLibrary
 
             Filter = (int)Math.Pow(2, filterRaw);
             CalibrationSign = calibrationSignRaw ? Sign.Negative : Sign.Positive;
-            SubNumber = subNumberRaw ? 1.0 : 0.1;
             CalibrationH = calibrationHRaw / 10.0;
             CalibrationL = calibrationLRaw / 10.0;
         }
@@ -70,7 +64,6 @@ namespace PRGReaderLibrary
             var bytes = new List<byte>();
 
             var calibrationSignRaw = CalibrationSign == Sign.Negative;
-            var subNumberRaw = SubNumber == 1.0;
             var calibrationHRaw = Convert.ToByte(CalibrationH * 10.0);
             var calibrationLRaw = Convert.ToByte(CalibrationL * 10.0);
 
@@ -87,7 +80,7 @@ namespace PRGReaderLibrary
                     bytes.Add(ToByte(AutoManual));
                     bytes.Add(ToByte(DigitalAnalog));
                     bytes.Add(calibrationSignRaw.ToByte());
-                    bytes.Add(subNumberRaw.ToByte());
+                    bytes.Add(SubNumberToByte(SubNumber));
                     bytes.Add(calibrationHRaw);
                     bytes.Add(calibrationLRaw);
                     bytes.Add(ToByte(Value.Units, DigitalAnalog));

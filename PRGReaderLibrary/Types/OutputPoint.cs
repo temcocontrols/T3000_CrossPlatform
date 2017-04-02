@@ -3,16 +3,12 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class OutputPoint : UnitsPoint
+    public class OutputPoint : InoutPoint
     {
         public int LowVoltage { get; set; }
         public int HighVoltage { get; set; }
         public SwitchStatus HwSwitchStatus { get; set; }
         public Control DigitalControl { get; set; }
-        public int Decommissioned { get; set; }
-        public bool SubId { get; set; }
-        public bool SubProduct { get; set; }
-        public double SubNumber { get; set; }
         public int PwmPeriod { get; set; }
 
         public OutputPoint(string description = "", string label = "",
@@ -21,6 +17,36 @@ namespace PRGReaderLibrary
         { }
 
         #region Binary data
+        
+        public static byte ToByte(SwitchStatus value)
+        {
+            switch (value)
+            {
+                case SwitchStatus.Hand:
+                    return 2;
+
+                case SwitchStatus.Auto:
+                    return 1;
+
+                default:
+                    return 0;
+            }
+        }
+
+        public static SwitchStatus SwitchStatusFromByte(byte value)
+        {
+            switch (value)
+            {
+                case 2:
+                    return SwitchStatus.Hand;
+
+                case 1:
+                    return SwitchStatus.Auto;
+
+                default:
+                    return SwitchStatus.Off;
+            }
+        }
 
         public OutputPoint(byte[] bytes, int offset = 0,
             FileVersion version = FileVersion.Current)
@@ -57,42 +83,6 @@ namespace PRGReaderLibrary
 
             Value = new VariableVariant(valueRaw, units);
         }
-
-        public static SwitchStatus SwitchStatusFromByte(byte value)
-        {
-            switch (value)
-            {
-                case 2:
-                    return SwitchStatus.Hand;
-
-                case 1:
-                    return SwitchStatus.Auto;
-
-                default:
-                    return SwitchStatus.Off;
-            }
-        }
-
-        public static byte ToByte(SwitchStatus value)
-        {
-            switch (value)
-            {
-                case SwitchStatus.Hand:
-                    return 2;
-
-                case SwitchStatus.Auto:
-                    return 1;
-
-                default:
-                    return 0;
-            }
-        }
-
-        public static double SubNumberFromByte(byte value) =>
-            value.ToBoolean() ? 1.0 : 0.1;
-
-        public static byte SubNumberToByte(double value) =>
-            (value == 1.0).ToByte();
 
         public new byte[] ToBytes()
         {
