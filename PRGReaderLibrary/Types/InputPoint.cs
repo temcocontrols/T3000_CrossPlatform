@@ -25,11 +25,8 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
-            bool autoManualRaw;
-            bool digitalAnalogRaw;
-            bool controlRaw;
             uint valueRaw;
-            byte unitsRaw;
+            Units units;
 
             byte filterRaw;
             bool calibrationSignRaw;
@@ -45,26 +42,21 @@ namespace PRGReaderLibrary
                     Decommissioned = bytes.ToByte(35 + offset);
                     SubId = bytes.ToBoolean(36 + offset);
                     SubProduct = bytes.ToBoolean(37 + offset);
-                    controlRaw = bytes.ToBoolean(38 + offset);
-                    autoManualRaw = bytes.ToBoolean(39 + offset);
-                    digitalAnalogRaw = bytes.ToBoolean(40 + offset);
+                    Control = ControlFromByte(bytes.ToByte(38 + offset));
+                    AutoManual = AutoManualFromByte(bytes.ToByte(39 + offset));
+                    DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(40 + offset));
                     calibrationSignRaw = bytes.ToBoolean(41 + offset);
                     subNumberRaw = bytes.ToBoolean(42 + offset);
                     calibrationHRaw = bytes.ToByte(43 + offset);
                     calibrationLRaw = bytes.ToByte(44 + offset);
-                    unitsRaw = digitalAnalogRaw
-                        ? bytes[45 + offset]
-                        : (byte)(bytes[45 + offset] + 100);
+                    units = UnitsFromByte(bytes.ToByte(45 + offset), DigitalAnalog);
                     break;
 
                 default:
                     throw new NotImplementedException("File version is not implemented");
             }
-
-            AutoManual = autoManualRaw ? AutoManual.Manual : AutoManual.Automatic;
-            DigitalAnalog = digitalAnalogRaw ? DigitalAnalog.Analog : DigitalAnalog.Digital;
-            Control = controlRaw ? Control.On : Control.Off;
-            Value = new VariableVariant(valueRaw, (Units)unitsRaw);
+            
+            Value = new VariableVariant(valueRaw, units);
 
             Filter = (int)Math.Pow(2, filterRaw);
             CalibrationSign = calibrationSignRaw ? Sign.Negative : Sign.Positive;
@@ -76,11 +68,6 @@ namespace PRGReaderLibrary
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();
-
-            var autoManualRaw = AutoManual == AutoManual.Manual;
-            var digitalAnalogRaw = DigitalAnalog == DigitalAnalog.Analog;
-            var controlRaw = Control == Control.On;
-            var unitsRaw = (byte)Value.Units;
 
             var calibrationSignRaw = CalibrationSign == Sign.Negative;
             var subNumberRaw = SubNumber == 1.0;
@@ -96,14 +83,14 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)Decommissioned);
                     bytes.Add(SubId.ToByte());
                     bytes.Add(SubProduct.ToByte());
-                    bytes.Add(controlRaw.ToByte());
-                    bytes.Add(autoManualRaw.ToByte());
-                    bytes.Add(digitalAnalogRaw.ToByte());
+                    bytes.Add(ToByte(Control));
+                    bytes.Add(ToByte(AutoManual));
+                    bytes.Add(ToByte(DigitalAnalog));
                     bytes.Add(calibrationSignRaw.ToByte());
                     bytes.Add(subNumberRaw.ToByte());
                     bytes.Add(calibrationHRaw);
                     bytes.Add(calibrationLRaw);
-                    bytes.Add(digitalAnalogRaw ? unitsRaw : (byte)(unitsRaw - 100));
+                    bytes.Add(ToByte(Value.Units, DigitalAnalog));
                     break;
 
                 default:

@@ -24,7 +24,7 @@ namespace PRGReaderLibrary
         {
             var bytes = new List<byte>();
             bytes.AddRange(base.ToBytes());
-            bytes.AddRange(Label.AddBinarySymvols(9).ToBytes(9));
+            bytes.AddRange(Label.ToBytes(9));
 
             return bytes.ToArray();
         }

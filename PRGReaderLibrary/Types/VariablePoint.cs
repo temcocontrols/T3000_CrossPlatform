@@ -16,70 +16,59 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
-            bool autoManualRaw;
-            bool digitalAnalogRaw;
-            bool controlRaw;
             uint valueRaw;
-            byte unitsRaw;
+            Units units;
 
             switch (FileVersion)
             {
                 case FileVersion.Dos:
                     valueRaw = bytes.ToUInt32(30 + offset);
-                    autoManualRaw = bytes.GetBit(0, 34 + offset);
-                    digitalAnalogRaw = bytes.GetBit(1, 34 + offset);
-                    controlRaw = bytes.GetBit(2, 34 + offset);
-                    unitsRaw = bytes[35 + offset];
+                    AutoManual = AutoManualFromByte(bytes.GetBit(0, 34 + offset).ToByte());
+                    DigitalAnalog = DigitalAnalogFromByte(bytes.GetBit(1, 34 + offset).ToByte());
+                    Control = ControlFromByte(bytes.GetBit(2, 34 + offset).ToByte());
+                    units = (Units)bytes.ToByte(35 + offset);
                     break;
 
                 case FileVersion.Current:
                     valueRaw = bytes.ToUInt32(30 + offset);
-                    autoManualRaw = bytes.ToBoolean(34 + offset);
-                    digitalAnalogRaw = bytes.ToBoolean(35 + offset);
-                    controlRaw = bytes.ToBoolean(36 + offset);
+                    AutoManual = AutoManualFromByte(bytes.ToByte(34 + offset));
+                    DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(35 + offset));
+                    Control = ControlFromByte(bytes.ToByte(36 + offset));
                     //37 byte is unused
-                    unitsRaw = digitalAnalogRaw
-                        ? bytes[38 + offset]
-                        : (byte)(bytes[38 + offset] + 100);
+                    units = UnitsFromByte(bytes.ToByte(38 + offset), DigitalAnalog);
                     break;
 
                 default:
                     throw new NotImplementedException("File version is not implemented");
             }
 
-            AutoManual = autoManualRaw ? AutoManual.Manual : AutoManual.Automatic;
-            DigitalAnalog = digitalAnalogRaw ? DigitalAnalog.Analog : DigitalAnalog.Digital;
-            Control = controlRaw ? Control.On : Control.Off;
-            Value = new VariableVariant(valueRaw, (Units)unitsRaw);
+            Value = new VariableVariant(valueRaw, units);
         }
 
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();
 
-            var autoManualRaw = AutoManual == AutoManual.Manual;
-            var digitalAnalogRaw = DigitalAnalog == DigitalAnalog.Analog;
-            var controlRaw = Control == Control.On;
-            var valueRaw = Value.Value;
-            var unitsRaw = (byte)Value.Units;
-
             switch (FileVersion)
             {
                 case FileVersion.Dos:
                     bytes.AddRange(base.ToBytes());
-                    bytes.AddRange(valueRaw.ToBytes());
-                    bytes.Add(new[] { autoManualRaw, digitalAnalogRaw, controlRaw }.ToBits());
-                    bytes.Add(unitsRaw);
+                    bytes.AddRange(Value.Value.ToBytes());
+                    bytes.Add(new[] {
+                        ToByte(AutoManual).ToBoolean(),
+                        ToByte(DigitalAnalog).ToBoolean(),
+                        ToByte(Control).ToBoolean() }.ToBits());
+                    bytes.Add((byte)Value.Units);
                     break;
 
                 case FileVersion.Current:
                     bytes.AddRange(base.ToBytes());
-                    bytes.AddRange(valueRaw.ToBytes());
-                    bytes.Add(autoManualRaw.ToByte());
-                    bytes.Add(digitalAnalogRaw.ToByte());
-                    bytes.Add(controlRaw.ToByte());
+                    bytes.AddRange(Value.Value.ToBytes());
+                    bytes.Add(ToByte(AutoManual));
+                    bytes.Add(ToByte(DigitalAnalog));
+                    bytes.Add(ToByte(Control));
                     bytes.Add(2); //TODO: WTF (it equals 2)??
-                    bytes.Add(digitalAnalogRaw ? unitsRaw : (byte)(unitsRaw - 100));
+                    bytes.Add(ToByte(Value.Units, DigitalAnalog));
                     break;
 
                 default:

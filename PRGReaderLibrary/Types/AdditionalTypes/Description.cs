@@ -23,7 +23,7 @@ namespace PRGReaderLibrary
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.AddRange(Description.AddBinarySymvols(21).ToBytes(21));
+            bytes.AddRange(Description.ToBytes(21));
 
             return bytes.ToArray();
         }
