@@ -42,9 +42,9 @@
         public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
         public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
         public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
-        public List<UnitsElement> Units { get; set; } = new List<UnitsElement>();
+        public List<CustomUnit> CustomUnits { get; set; } = new List<CustomUnit>();
 
-        public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
+        //public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
 
         /// <summary>
         /// Size: 8 bytes
@@ -177,7 +177,7 @@
                                 break;
 
                             case PointTypes.UNIT:
-                                Units.Add(new UnitsElement(data, 0, FileVersion));
+                                CustomUnits.Add(new CustomUnit(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -344,10 +344,10 @@
                 Rev6Constants.UserLoginCount,
                 Rev6Constants.UserLoginSize, ref offset);
 
-            Units.AddRange(GetArray(bytes,
+            CustomUnits.AddRange(GetArray(bytes,
                 Rev6Constants.CustomerUnitsCount,
                 Rev6Constants.CustomerUnitsSize, ref offset)
-                .Select(i => new UnitsElement(i, 0, FileVersion)));
+                .Select(i => new CustomUnit(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.AnalogCustomerRangeTableCount,
@@ -399,19 +399,19 @@ Offset: {offset}, Length: {bytes.Length}");
             //Set CustomUnits for inputs
             foreach (var input in Inputs)
             {
-                input.Value.CustomUnits = Units;
+                input.Value.CustomUnits = CustomUnits;
             }
 
             //Set CustomUnits for inputs
             foreach (var output in Outputs)
             {
-                output.Value.CustomUnits = Units;
+                output.Value.CustomUnits = CustomUnits;
             }
 
             //Set CustomUnits for variables
             foreach (var variable in Variables)
             {
-                variable.Value.CustomUnits = Units;
+                variable.Value.CustomUnits = CustomUnits;
             }
         }
 
@@ -503,7 +503,7 @@ Offset: {offset}, Length: {bytes.Length}");
                                 break;
 
                             case PointTypes.UNIT:
-                                bytes.AddRange(Units[j].ToBytes());
+                                bytes.AddRange(CustomUnits[j].ToBytes());
                                 break;
 
                             default:
@@ -557,7 +557,7 @@ Offset: {offset}, Length: {bytes.Length}");
 
             for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
             {
-                var obj = i < Units.Count ? Units[i] : new UnitsElement();
+                var obj = i < CustomUnits.Count ? CustomUnits[i] : new CustomUnit();
                 bytes.AddRange(obj.ToBytes());
             }
 

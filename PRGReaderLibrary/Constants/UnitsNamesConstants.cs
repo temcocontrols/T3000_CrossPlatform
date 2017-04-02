@@ -9,7 +9,7 @@
         private static Dictionary<Units, UnitsNames> BaseAnalogDictionary { get; } = GetFilledAnalogDictionary();
         private static Dictionary<Units, UnitsNames> BaseDigitalDictionary { get; } = GetFilledDigitalDictionary();
 
-        private static UnitsNames GetCustomName(int index, List<UnitsElement> customUnits = null, string defaultOnOff = "")
+        private static UnitsNames GetCustomName(int index, List<CustomUnit> customUnits = null, string defaultOnOff = "")
         {
             if (customUnits == null ||
                 index < 0 ||
@@ -25,7 +25,7 @@
                 unit.DigitalUnitsOff, unit.DigitalUnitsOn);
         }
 
-        private static UnitsNames GetNameCollection(Units units, List<UnitsElement> customUnits = null)
+        private static UnitsNames GetNameCollection(Units units, List<CustomUnit> customUnits = null)
         {
             switch (units)
             {
@@ -127,7 +127,7 @@
             }
         }
 
-        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<UnitsElement> customUnits = null, Func<Units, bool> predicate = null)
+        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<CustomUnit> customUnits = null, Func<Units, bool> predicate = null)
         {
             var names = new Dictionary<Units, UnitsNames>();
             foreach (Units units in Enum.GetValues(typeof(Units)))
@@ -143,22 +143,22 @@
             return names;
         }
 
-        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(List<UnitsElement> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(List<CustomUnit> customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsAnalog());
 
-        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(List<UnitsElement> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(List<CustomUnit> customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsDigital());
 
-        public static Dictionary<Units, UnitsNames> GetNames(List<UnitsElement> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetNames(List<CustomUnit> customUnits = null) =>
             customUnits == null ? BaseDictionary : GetFilledDictionary(customUnits);
 
-        public static Dictionary<Units, UnitsNames> GetAnalogNames(List<UnitsElement> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetAnalogNames(List<CustomUnit> customUnits = null) =>
             customUnits == null ? BaseAnalogDictionary : GetFilledAnalogDictionary(customUnits);
 
-        public static Dictionary<Units, UnitsNames> GetDigitalNames(List<UnitsElement> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetDigitalNames(List<CustomUnit> customUnits = null) =>
             customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
 
-        public static Units UnitsFromName(string name, List<UnitsElement> customUnits = null)
+        public static Units UnitsFromName(string name, List<CustomUnit> customUnits = null)
         {
             var names = GetNames(customUnits);
             foreach (var pair in names)

@@ -8,7 +8,7 @@
     [TestFixture]
     public class PrgReader_Tests
     {
-        public void VariableVariantToFromTest(VariableVariant value, List<UnitsElement> customUnits)
+        public void VariableVariantToFromTest(VariableVariant value, List<CustomUnit> customUnits)
         {
             var tempValue = new VariableVariant(value.ToString(), value.Units, customUnits);
             ObjectAssert.AreEqual(value, tempValue,
@@ -32,7 +32,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             {
                 foreach (var input in prg.Inputs)
                 {
-                    VariableVariantToFromTest(input.Value, prg.Units);
+                    VariableVariantToFromTest(input.Value, prg.CustomUnits);
 
                     var bytes = input.ToBytes();
                     var tempVariable = new InputPoint(bytes);
@@ -44,7 +44,7 @@ Value.ToFromToString(): {tempValue.ToString()}
 
                 foreach (var output in prg.Outputs)
                 {
-                    VariableVariantToFromTest(output.Value, prg.Units);
+                    VariableVariantToFromTest(output.Value, prg.CustomUnits);
 
                     var bytes = output.ToBytes();
                     var tempVariable = new OutputPoint(bytes);
@@ -56,7 +56,7 @@ Value.ToFromToString(): {tempValue.ToString()}
 
                 foreach (var variable in prg.Variables)
                 {
-                    VariableVariantToFromTest(variable.Value, prg.Units);
+                    VariableVariantToFromTest(variable.Value, prg.CustomUnits);
 
                     var bytes = variable.ToBytes();
                     var tempVariable = new VariablePoint(bytes);
@@ -66,10 +66,10 @@ Value.ToFromToString(): {tempValue.ToString()}
                         "Variable ToFromBytes ToBytes test failed.");
                 }
 
-                foreach (var unit in prg.Units)
+                foreach (var unit in prg.CustomUnits)
                 {
                     var bytes = unit.ToBytes();
-                    var tempVariable = new UnitsElement(bytes);
+                    var tempVariable = new CustomUnit(bytes);
                     ObjectAssert.AreEqual(unit, tempVariable,
                         "Unit ToFromBytes test failed.");
                     BytesAssert.AreEqual(tempVariable.ToBytes(), unit.ToBytes(),
@@ -135,7 +135,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             var path = TestUtilities.GetFullPathForTestFile("BTUMeter.prg");
             var prg = Prg.Load(path);
 
-            ObjectAssert.AreEqual(new UnitsElement(false, "TANK1", "TANK2"), prg.Units[0]);
+            ObjectAssert.AreEqual(new CustomUnit(false, "TANK1", "TANK2"), prg.CustomUnits[0]);
         }
 
         [Test]

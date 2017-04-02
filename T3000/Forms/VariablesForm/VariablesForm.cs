@@ -30,8 +30,9 @@
             try
             {
                 var unitsCell = row.Cells["UnitsColumn"];
-                var units = UnitsNamesConstants.UnitsFromName((string)unitsCell.Value, prg.Units);
-                new VariableVariant((string) cell.Value, units, prg.Units);
+                var units = UnitsNamesConstants.UnitsFromName(
+                    (string)unitsCell.Value, prg.CustomUnits);
+                new VariableVariant((string) cell.Value, units, prg.CustomUnits);
             }
             catch (Exception exception)
             {
@@ -81,7 +82,9 @@
                     variable.Label = (string)row.Cells["LabelColumn"].Value;
                     variable.Value = new VariableVariant(
                         (string)row.Cells["ValueColumn"].Value,
-                        UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units), prg.Units);
+                        UnitsNamesConstants.UnitsFromName(
+                            (string)row.Cells["UnitsColumn"].Value, Prg.CustomUnits), 
+                        prg.CustomUnits);
                     variable.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
                     ++i;
                 }
@@ -159,19 +162,22 @@
                 try
                 {
                     var row = prgView.CurrentRow;
-                    var currentUnits = UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units);
-                    var form = new SelectUnitsForm(currentUnits, Prg.Units);
+                    var currentUnits = UnitsNamesConstants.UnitsFromName(
+                        (string)row.Cells["UnitsColumn"].Value, Prg.CustomUnits);
+                    var form = new SelectUnitsForm(currentUnits, Prg.CustomUnits);
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         var convertedValue = UnitsUtilities.ConvertValue(
                             (string)row.Cells["ValueColumn"].Value,
-                            UnitsNamesConstants.UnitsFromName((string)row.Cells["UnitsColumn"].Value, Prg.Units),
+                            UnitsNamesConstants.UnitsFromName(
+                                (string)row.Cells["UnitsColumn"].Value, Prg.CustomUnits),
                             form.SelectedUnits,
-                            Prg.Units,
+                            Prg.CustomUnits,
                             form.CustomUnits
                             );
-                        Prg.Units = form.CustomUnits;
-                        row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(Prg.Units);
+                        Prg.CustomUnits = form.CustomUnits;
+                        row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(
+                            Prg.CustomUnits);
                         row.Cells["ValueColumn"].Value = convertedValue;
                         prgView.EndEdit();
                         CheckRow(row, Prg);

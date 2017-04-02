@@ -7,7 +7,7 @@
     {
         public uint Value { get; set; }
         public Units Units { get; set; }
-        public List<UnitsElement> CustomUnits { get; set; }
+        public List<CustomUnit> CustomUnits { get; set; }
 
         public static int FromTimeSpan(TimeSpan time) =>
                 ((time.Days * 60 * 60 * 24 +
@@ -39,7 +39,7 @@
             }
         }
 
-        public static object ToObject(string value, Units units, List<UnitsElement> customUnits)
+        public static object ToObject(string value, Units units, List<CustomUnit> customUnits)
         {
             switch (units)
             {
@@ -53,7 +53,7 @@
             }
         }
 
-        public static string ToString(object value, Units units, List<UnitsElement> customUnits)
+        public static string ToString(object value, Units units, List<CustomUnit> customUnits)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -136,18 +136,18 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public VariableVariant(uint value, Units units, List<UnitsElement> customUnits = null)
+        public VariableVariant(uint value, Units units, List<CustomUnit> customUnits = null)
         {
             Value = value;
             Units = units;
             CustomUnits = customUnits;
         }
 
-        public VariableVariant(object value, Units units, List<UnitsElement> customUnits = null)
+        public VariableVariant(object value, Units units, List<CustomUnit> customUnits = null)
             : this(ToUInt(value, units), units, customUnits)
         { }
 
-        public VariableVariant(string value, Units units, List<UnitsElement> customUnits = null)
+        public VariableVariant(string value, Units units, List<CustomUnit> customUnits = null)
             : this(ToObject(value, units, customUnits), units, customUnits)
         { }
 

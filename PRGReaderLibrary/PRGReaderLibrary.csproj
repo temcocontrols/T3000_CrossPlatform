@@ -95,7 +95,7 @@
     <Compile Include="PrgType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\TblPoint.cs" />
-    <Compile Include="Types\UnitsElement.cs" />
+    <Compile Include="Types\CustomUnit.cs" />
     <Compile Include="Types\AdditionalTypes\Version.cs" />
     <Compile Include="Types\View.cs" />
     <Compile Include="Extensions\BytesExtensions.cs" />

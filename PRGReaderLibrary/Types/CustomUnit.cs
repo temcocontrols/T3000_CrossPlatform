@@ -2,7 +2,7 @@ namespace PRGReaderLibrary
 {
     using System.Collections.Generic;
 
-    public class UnitsElement
+    public class CustomUnit
     {
         public bool Direct { get; set; }
         public string DigitalUnitsOff { get; set; }
@@ -12,7 +12,7 @@ namespace PRGReaderLibrary
             string.IsNullOrWhiteSpace(DigitalUnitsOff) &&
             string.IsNullOrWhiteSpace(DigitalUnitsOn);
 
-        public UnitsElement(bool direct = false, 
+        public CustomUnit(bool direct = false, 
             string digitalUnitsOff = "", 
             string digitalUnitsOn = "", 
             FileVersion version = FileVersion.Current)
@@ -24,7 +24,7 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
-        public UnitsElement(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
+        public CustomUnit(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
         {
             Direct = bytes.ToByte(0 + offset).ToBoolean();
             DigitalUnitsOff = bytes.GetString(1 + offset, 12).ClearBinarySymvols();
