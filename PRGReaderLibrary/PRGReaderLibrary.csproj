@@ -38,10 +38,11 @@
   <ItemGroup>
     <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
+    <Compile Include="Enums\NormalCom.cs" />
     <Compile Include="Enums\Sign.cs" />
     <Compile Include="Enums\SwitchStatus.cs" />
     <Compile Include="Types\AdditionalTypes\InoutPoint.cs" />
-    <Compile Include="Types\AdditionalTypes\UnitsPoint.cs" />
+    <Compile Include="Types\AdditionalTypes\ValuedPoint.cs" />
     <Compile Include="Types\AdditionalTypes\UnitsNames.cs" />
     <Compile Include="Constants\UnitsNamesConstants.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Types\StrMonitorPoint.cs" />
     <Compile Include="Types\StrMonitorWorkData.cs" />
     <Compile Include="Types\OutputPoint.cs" />
-    <Compile Include="Types\StrProgramPoint.cs" />
+    <Compile Include="Types\ProgramPoint.cs" />
     <Compile Include="Types\StrTblPoint.cs" />
     <Compile Include="Types\VariablePoint.cs" />
     <Compile Include="Types\StrWeeklyRoutinePoint.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Types\WrOneDay.cs" />
     <Compile Include="Utilities\FileVersionUtilities.cs" />
+    <Compile Include="Utilities\DebugUtilities.cs" />
     <Compile Include="Utilities\UnitsUtilities.cs" />
   </ItemGroup>
   <ItemGroup />

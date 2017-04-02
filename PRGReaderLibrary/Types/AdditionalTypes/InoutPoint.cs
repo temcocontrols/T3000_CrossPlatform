@@ -1,9 +1,6 @@
 ﻿namespace PRGReaderLibrary
 {
-    using System;
-    using System.Collections.Generic;
-
-    public class InoutPoint : UnitsPoint
+    public class InoutPoint : ValuedPoint
     {
         public int Decommissioned { get; set; }
         public bool SubId { get; set; }

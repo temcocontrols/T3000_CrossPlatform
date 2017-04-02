@@ -12,6 +12,10 @@ namespace PRGReaderLibrary
             Label = label;
         }
 
+        public bool IsEmpty =>
+            string.IsNullOrWhiteSpace(Description) &&
+            string.IsNullOrWhiteSpace(Label);
+
         #region Binary data
 
         public BasePoint(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)

@@ -1,6 +1,5 @@
 ﻿namespace PRGReaderLibrary.Tests
 {
-    using System;
     using System.IO;
     using System.Reflection;
 
@@ -16,16 +15,5 @@
                     )
                 ),
                 "TestFiles", filename);
-
-        public static string GetTextPresentationForBytesArrays(byte[] bytes1, byte[] bytes2)
-        {
-            var text = string.Empty;
-            for (var i = 0; i < Math.Min(bytes1.Length, bytes2.Length); ++i)
-            {
-                text += $"{i}:\t{bytes1[i]}\t{bytes2[i]}{Environment.NewLine}";
-            }
-
-            return text;
-        }
     }
 }

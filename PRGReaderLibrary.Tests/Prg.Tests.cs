@@ -66,6 +66,16 @@ Value.ToFromToString(): {tempValue.ToString()}
                         "Variable ToFromBytes ToBytes test failed.");
                 }
 
+                foreach (var program in prg.Programs)
+                {
+                    var bytes = program.ToBytes();
+                    var tempVariable = new ProgramPoint(bytes);
+                    ObjectAssert.AreEqual(program, tempVariable,
+                        "Unit ToFromBytes test failed.");
+                    BytesAssert.AreEqual(tempVariable.ToBytes(), program.ToBytes(),
+                        "Unit ToFromBytes ToBytes test failed.");
+                }
+
                 foreach (var unit in prg.CustomUnits)
                 {
                     var bytes = unit.ToBytes();

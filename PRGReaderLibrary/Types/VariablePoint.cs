@@ -3,7 +3,7 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class VariablePoint : UnitsPoint
+    public class VariablePoint : ValuedPoint
     {
         public VariablePoint(string description = "", string label = "", 
             FileVersion version = FileVersion.Current)

@@ -26,7 +26,7 @@
         public List<InputPoint> Inputs { get; set; } = new List<InputPoint>();
         public List<OutputPoint> Outputs { get; set; } = new List<OutputPoint>();
         public List<VariablePoint> Variables { get; set; } = new List<VariablePoint>();
-        public List<StrProgramPoint> Programs { get; set; } = new List<StrProgramPoint>();
+        public List<ProgramPoint> Programs { get; set; } = new List<ProgramPoint>();
         public List<StrControllerPoint> Controllers { get; set; } = new List<StrControllerPoint>();
         public List<ControlGroupPoint> Screens { get; set; } = new List<ControlGroupPoint>();
         public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
@@ -319,7 +319,7 @@
             Programs.AddRange(GetArray(bytes,
                 Rev6Constants.ProgramCount,
                 Rev6Constants.ProgramSize, ref offset)
-                .Select(i => new StrProgramPoint()));
+                .Select(i => new ProgramPoint(i, 0, FileVersion)));
 
             //Get all controllers
             Controllers.AddRange(GetArray(bytes,
@@ -549,7 +549,12 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ProgramCount * Rev6Constants.ProgramSize));
+            for (var i = 0; i < Rev6Constants.ProgramCount; ++i)
+            {
+                var obj = i < Programs.Count ? Programs[i] : new ProgramPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ControllerCount * Rev6Constants.ControllerSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ScreenCount * Rev6Constants.ScreenSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.GraphicLabelCount * Rev6Constants.GraphicLabelSize));
