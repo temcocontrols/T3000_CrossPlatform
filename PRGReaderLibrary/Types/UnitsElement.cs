@@ -4,18 +4,9 @@ namespace PRGReaderLibrary
 
     public class UnitsElement
     {
-        public bool Direct {
-            get { return DirectRaw.ToBoolean(); }
-            set { DirectRaw = value.ToByte(); }
-        }
-        public string DigitalUnitsOff {
-            get { return DigitalUnitsOffRaw.ClearBinarySymvols(); }
-            set { DigitalUnitsOffRaw = value.AddBinarySymvols(12); }
-        }
-        public string DigitalUnitsOn {
-            get { return DigitalUnitsOnRaw.ClearBinarySymvols(); }
-            set { DigitalUnitsOnRaw = value.AddBinarySymvols(9); }
-        }
+        public bool Direct { get; set; }
+        public string DigitalUnitsOff { get; set; }
+        public string DigitalUnitsOn { get; set; }
 
         public bool IsEmpty =>
             string.IsNullOrWhiteSpace(DigitalUnitsOff) &&
@@ -31,40 +22,21 @@ namespace PRGReaderLibrary
             DigitalUnitsOn = digitalUnitsOn;
         }
 
-        /// <summary>
-        /// Size: 1 + 12 + 12 = 25 bytes
-        /// </summary>
-
         #region Binary data
-
-        /// <summary>
-        /// Size: 1 byte
-        /// </summary>
-        protected byte DirectRaw { get; set; }
-
-        /// <summary>
-        /// Size: 12 bytes
-        /// </summary>
-        protected string DigitalUnitsOffRaw { get; set; }
-
-        /// <summary>
-        /// Size: 12 bytes
-        /// </summary>
-        protected string DigitalUnitsOnRaw { get; set; }
 
         public UnitsElement(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
         {
-            DirectRaw = bytes.ToByte(0 + offset);
-            DigitalUnitsOffRaw = bytes.GetString(1 + offset, 12);
-            DigitalUnitsOnRaw = bytes.GetString(13 + offset, 12);
+            Direct = bytes.ToByte(0 + offset).ToBoolean();
+            DigitalUnitsOff = bytes.GetString(1 + offset, 12).ClearBinarySymvols();
+            DigitalUnitsOn = bytes.GetString(13 + offset, 12).ClearBinarySymvols();
         }
 
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.AddRange(DirectRaw.ToBytes());
-            bytes.AddRange(DigitalUnitsOffRaw.ToBytes(12));
-            bytes.AddRange(DigitalUnitsOnRaw.ToBytes(12));
+            bytes.Add(Direct.ToByte());
+            bytes.AddRange(DigitalUnitsOff.ToBytes(12));
+            bytes.AddRange(DigitalUnitsOn.ToBytes(12));
 
             return bytes.ToArray();
         }
