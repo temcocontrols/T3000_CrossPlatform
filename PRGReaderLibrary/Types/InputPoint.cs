@@ -6,9 +6,8 @@ namespace PRGReaderLibrary
     public class InputPoint : UnitsPoint
     {
         public InputPoint(string description = "", string label = "",
-            FileVersion version = FileVersion.Current,
-            List<UnitsElement> customUnits = null)
-            : base(description, label, version, customUnits)
+            FileVersion version = FileVersion.Current)
+            : base(description, label, version)
         { }
 
         /// <summary>
@@ -57,17 +56,19 @@ namespace PRGReaderLibrary
         protected byte CalibrationLRaw { get; set; }
 
         public InputPoint(byte[] bytes, int offset = 0,
-            FileVersion version = FileVersion.Current,
-            List<UnitsElement> customUnits = null)
-            : base(bytes, offset, version, customUnits)
+            FileVersion version = FileVersion.Current)
+            : base(bytes, offset, version)
         {
             bool autoManualRaw;
             bool digitalAnalogRaw;
             bool controlRaw;
+            uint valueRaw;
+            byte unitsRaw;
+
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    ValueRaw = bytes.ToUInt32(30 + offset);
+                    valueRaw = bytes.ToUInt32(30 + offset);
                     FilterRaw = bytes.ToByte(34 + offset);
                     DecommissionedRaw = bytes.ToByte(35 + offset);
                     SubIdRaw = bytes.ToBoolean(36 + offset);
@@ -79,7 +80,7 @@ namespace PRGReaderLibrary
                     SubNumberRaw = bytes.ToBoolean(42 + offset);
                     CalibrationHRaw = bytes.ToByte(43 + offset);
                     CalibrationLRaw = bytes.ToByte(44 + offset);
-                    UnitsRaw = digitalAnalogRaw
+                    unitsRaw = digitalAnalogRaw
                         ? bytes[45 + offset]
                         : (byte)(bytes[45 + offset] + 100);
                     break;
@@ -91,6 +92,7 @@ namespace PRGReaderLibrary
             AutoManual = autoManualRaw ? AutoManual.Manual : AutoManual.Automatic;
             DigitalAnalog = digitalAnalogRaw ? DigitalAnalog.Analog : DigitalAnalog.Digital;
             Control = controlRaw ? Control.On : Control.Off;
+            Value = new VariableVariant(valueRaw, (Units)unitsRaw);
         }
 
         public new byte[] ToBytes()
@@ -100,11 +102,14 @@ namespace PRGReaderLibrary
             var autoManualRaw = AutoManual == AutoManual.Manual;
             var digitalAnalogRaw = DigitalAnalog == DigitalAnalog.Analog;
             var controlRaw = Control == Control.On;
+            var valueRaw = Value.Value;
+            var unitsRaw = (byte)Value.Units;
+
             switch (FileVersion)
             {
                 case FileVersion.Current:
                     bytes.AddRange(base.ToBytes());
-                    bytes.AddRange(ValueRaw.ToBytes());
+                    bytes.AddRange(valueRaw.ToBytes());
                     bytes.Add(FilterRaw);
                     bytes.Add(DecommissionedRaw);
                     bytes.Add(SubIdRaw.ToByte());
@@ -116,7 +121,7 @@ namespace PRGReaderLibrary
                     bytes.Add(SubNumberRaw.ToByte());
                     bytes.Add(CalibrationHRaw);
                     bytes.Add(CalibrationLRaw);
-                    bytes.Add(digitalAnalogRaw ? UnitsRaw : (byte)(UnitsRaw - 100));
+                    bytes.Add(digitalAnalogRaw ? unitsRaw : (byte)(unitsRaw - 100));
                     break;
 
                 default:

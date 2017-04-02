@@ -24,7 +24,7 @@ namespace PRGReaderLibrary.Tests
                 if (prg.FileVersion == FileVersion.Current)
                 {
                     //Additional check for Value
-                    var tempValue = new VariableVariant(input.Value.ToString(), input.Value.Units, input.CustomUnits);
+                    var tempValue = new VariableVariant(input.Value.ToString(), input.Value.Units, prg.Units);
                     ObjectAssert.AreEqual(input.Value, tempValue,
                         $@"Variable value toFrom string test failed.
 Value.ToString(): {input.Value.ToString()}
@@ -49,7 +49,7 @@ Value.ToFromToString(): {tempValue.ToString()}
                 if (prg.FileVersion == FileVersion.Current)
                 {
                     //Additional check for Value
-                    var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units, variable.CustomUnits);
+                    var tempValue = new VariableVariant(variable.Value.ToString(), variable.Value.Units, prg.Units);
                     ObjectAssert.AreEqual(variable.Value, tempValue,
                         $@"Variable value toFrom string test failed.
 Value.ToString(): {variable.Value.ToString()}

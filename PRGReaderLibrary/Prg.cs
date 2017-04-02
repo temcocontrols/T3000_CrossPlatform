@@ -399,13 +399,13 @@ Offset: {offset}, Length: {bytes.Length}");
             //Set CustomUnits for inputs
             foreach (var input in Inputs)
             {
-                input.CustomUnits = Units;
+                input.Value.CustomUnits = Units;
             }
 
             //Set CustomUnits for variables
             foreach (var variable in Variables)
             {
-                variable.CustomUnits = Units;
+                variable.Value.CustomUnits = Units;
             }
         }
 
