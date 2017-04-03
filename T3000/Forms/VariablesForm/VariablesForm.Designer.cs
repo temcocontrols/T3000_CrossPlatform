@@ -118,7 +118,7 @@
             resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
             this.clearSelectedRowButton.Name = "clearSelectedRowButton";
             this.clearSelectedRowButton.UseVisualStyleBackColor = true;
-            this.clearSelectedRowButton.Click += new System.EventHandler(this.clearSelectedRowButton_Click);
+            this.clearSelectedRowButton.Click += new System.EventHandler(this.ClearSelectedRow);
             // 
             // VariablesForm
             // 

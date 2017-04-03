@@ -21,7 +21,27 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
+
+            //Show points
+            prgView.Rows.Clear();
+            var i = 0;
+            foreach (var point in Points)
+            {
+                prgView.Rows.Add(new object[] {
+                    i + 1, point.Description, point.AutoManual,
+                    point.Value.ToString(),
+                    point.Value.Units.GetOffOnName(point.Value.CustomUnits),
+                    point.Label
+                });
+                CheckRow(prgView.Rows[prgView.RowCount - 1], CustomUnits);
+                ++i;
+            }
         }
+
+        #region Utilities
+
+        private bool RowIndexIsValid(int index) =>
+            index >= 0 && index < prgView.RowCount;
 
         public static void CheckRow(DataGridViewRow row, List<CustomUnit> customUnits = null)
         {
@@ -46,21 +66,24 @@
             cell.Style.BackColor = isValidated ? Color.LightGreen : Color.MistyRose;
         }
 
-        public new void Show()
+        #endregion
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e)
         {
-            prgView.Rows.Clear();
-            var i = 0;
-            foreach (var point in Points)
+            var row = prgView.CurrentRow;
+
+            if (row == null)
             {
-                prgView.Rows.Add(new object[] {
-                    i + 1, point.Description, point.AutoManual,
-                    point.Value.ToString(), point.Value.Units.GetOffOnName(point.Value.CustomUnits), point.Label
-                });
-                CheckRow(prgView.Rows[prgView.RowCount - 1], CustomUnits);
-                ++i;
+                return;
             }
 
-            base.Show();
+            row.Cells["DescriptionColumn"].Value = string.Empty;
+            row.Cells["LabelColumn"].Value = string.Empty;
+            row.Cells["UnitsColumn"].Value = Units.Unused.GetOffOnName();
+            row.Cells["AutoManualColumn"].Value = AutoManual.Automatic;
+            row.Cells["ValueColumn"].Value = "0";
         }
 
         private void Save(object sender, EventArgs e)
@@ -81,7 +104,7 @@
                     point.Value = new VariableVariant(
                         (string)row.Cells["ValueColumn"].Value,
                         UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells["UnitsColumn"].Value, CustomUnits), 
+                            (string)row.Cells["UnitsColumn"].Value, CustomUnits),
                         CustomUnits);
                     point.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
                     ++i;
@@ -97,6 +120,14 @@
             DialogResult = DialogResult.OK;
             Close();
         }
+        private void Cancel(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #endregion
+
+        #region Callbacks
 
         private void prgView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -124,27 +155,6 @@
             {
                 MessageBoxUtilities.ShowException(exception);
             }
-        }
-
-        private void Cancel(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void clearSelectedRowButton_Click(object sender, EventArgs e)
-        {
-            var row = prgView.CurrentRow;
-
-            if (row == null)
-            {
-                return;
-            }
-
-            row.Cells["DescriptionColumn"].Value = string.Empty;
-            row.Cells["LabelColumn"].Value = string.Empty;
-            row.Cells["UnitsColumn"].Value = Units.Unused.GetOffOnName();
-            row.Cells["AutoManualColumn"].Value = AutoManual.Automatic;
-            row.Cells["ValueColumn"].Value = "0";
         }
 
         private void EditUnitsColumn(object sender, EventArgs e)
@@ -208,8 +218,6 @@
             return false;
         }
 
-        private bool RowIndexIsValid(int index) =>
-            index >= 0 && index < prgView.RowCount;
 
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -248,5 +256,8 @@
                     break;
             }
         }
+
+        #endregion
+
     }
 }
