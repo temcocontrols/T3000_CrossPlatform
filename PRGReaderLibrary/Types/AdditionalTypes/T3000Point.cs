@@ -30,6 +30,12 @@ namespace PRGReaderLibrary
         public static byte ToByte(PanelType value) => (byte)value;
         public static PanelType PanelTypeFromByte(byte value) => (PanelType) value;
 
+        /// <summary>
+        /// Need 3 bytes array
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <param name="version"></param>
         public T3000Point(byte[] bytes, int offset = 0,
             FileVersion version = FileVersion.Current)
             : base(version)

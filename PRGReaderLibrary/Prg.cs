@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using CustomUnitPoint = DescriptionPoint;
 
     public class Prg
     {
@@ -29,10 +28,11 @@
         public List<ControllerPoint> Controllers { get; set; } = new List<ControllerPoint>();
         public List<ScreenPoint> Screens { get; set; } = new List<ScreenPoint>();
 
+        public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
+
         public List<InfoTable> Info { get; set; } = new List<InfoTable>();
         public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
         public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
-        public List<StrWeeklyRoutinePoint> WeeklyRoutines { get; set; } = new List<StrWeeklyRoutinePoint>();
         public List<List<WrOneDay>> WrTimes { get; set; } = new List<List<WrOneDay>>();
         public List<StrAnnualRoutinePoint> AnnualRoutines { get; set; } = new List<StrAnnualRoutinePoint>();
         public byte[] ProgramCodes { get; set; }
@@ -348,7 +348,7 @@
             CustomUnits.AddRange(GetArray(bytes,
                 Rev6Constants.CustomerUnitsCount,
                 Rev6Constants.CustomerUnitsSize, ref offset)
-                .Select(i => new PRGReaderLibrary.CustomUnitPoint(i, 0, FileVersion)));
+                .Select(i => new CustomUnitPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.AnalogCustomerRangeTableCount,
@@ -356,9 +356,10 @@
 
             GetObject(bytes, Rev6Constants.SettingSize, ref offset);
 
-            GetArray(bytes,
+            Schedules.AddRange(GetArray(bytes,
                 Rev6Constants.ScheduleCount,
-                Rev6Constants.ScheduleSize, ref offset);
+                Rev6Constants.ScheduleSize, ref offset)
+                .Select(i => new SchedulePoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.HolidayCount,
@@ -573,13 +574,19 @@ Offset: {offset}, Length: {bytes.Length}");
 
             for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
             {
-                var obj = i < CustomUnits.Count ? CustomUnits[i] : new PRGReaderLibrary.CustomUnitPoint();
+                var obj = i < CustomUnits.Count ? CustomUnits[i] : new CustomUnitPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnalogCustomerRangeTableCount * Rev6Constants.AnalogCustomerRangeTableSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.SettingSize));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ScheduleCount * Rev6Constants.ScheduleSize));
+
+            for (var i = 0; i < Rev6Constants.ScheduleCount; ++i)
+            {
+                var obj = Schedules.ElementAtOrDefault(i) ?? new SchedulePoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.HolidayCount * Rev6Constants.HolidaySize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.MonitorCount * Rev6Constants.MonitorSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.WeeklyRoutinesCount * Rev6Constants.WeeklyRoutinesSize));

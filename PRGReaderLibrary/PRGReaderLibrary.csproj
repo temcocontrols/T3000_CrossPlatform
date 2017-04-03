@@ -90,7 +90,7 @@
     <Compile Include="Types\ProgramPoint.cs" />
     <Compile Include="Types\AdditionalTypes\StrTblPoint.cs" />
     <Compile Include="Types\VariablePoint.cs" />
-    <Compile Include="Types\AdditionalTypes\StrWeeklyRoutinePoint.cs" />
+    <Compile Include="Types\SchedulePoint.cs" />
     <Compile Include="Types\AdditionalTypes\T3000Point.cs" />
     <Compile Include="Enums\Units.cs" />
     <Compile Include="Types\AdditionalTypes\PanelInfo1.cs" />
