@@ -3,7 +3,7 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class SchedulePoint : BasePoint
+    public class SchedulePoint : BasePoint, IBinaryObject
     {
         public Control Control { get; set; }
         public AutoManual AutoManual { get; set; }
@@ -22,7 +22,7 @@ namespace PRGReaderLibrary
         #region Binary data
 
         /// <summary>
-        /// FileVersion.Current - 42 bytes
+        /// FileVersion.Current - need 42 bytes
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="offset"></param>
