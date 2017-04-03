@@ -11,9 +11,9 @@
     {
         public Units SelectedUnits { get; private set; } = Units.Unused;
         public bool IsValidated { get; private set; } = true;
-        public List<CustomUnit> CustomUnits { get; set; } = null;
+        public List<CustomUnitPoint> CustomUnits { get; set; } = null;
 
-        public SelectUnitsForm(Units selectedUnits = Units.Unused, List<CustomUnit> customUnits = null)
+        public SelectUnitsForm(Units selectedUnits = Units.Unused, List<CustomUnitPoint> customUnits = null)
         {
             InitializeComponent();
 

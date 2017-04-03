@@ -9,9 +9,9 @@
     public partial class VariablesForm : Form
     {
         public List<ValuedPoint> Points { get; set; }
-        public List<CustomUnit> CustomUnits { get; private set; }
+        public List<CustomUnitPoint> CustomUnits { get; private set; }
 
-        public VariablesForm(List<ValuedPoint> points, List<CustomUnit> customUnits = null)
+        public VariablesForm(List<ValuedPoint> points, List<CustomUnitPoint> customUnits = null)
         {
             if (points == null)
             {
@@ -43,7 +43,7 @@
         private bool RowIndexIsValid(int index) =>
             index >= 0 && index < prgView.RowCount;
 
-        public static void CheckRow(DataGridViewRow row, List<CustomUnit> customUnits = null)
+        public static void CheckRow(DataGridViewRow row, List<CustomUnitPoint> customUnits = null)
         {
             var cell = row.Cells["ValueColumn"];
             var isValidated = true;

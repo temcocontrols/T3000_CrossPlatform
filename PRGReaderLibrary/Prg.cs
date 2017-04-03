@@ -27,9 +27,9 @@
         public List<VariablePoint> Variables { get; set; } = new List<VariablePoint>();
         public List<ProgramPoint> Programs { get; set; } = new List<ProgramPoint>();
         public List<ControllerPoint> Controllers { get; set; } = new List<ControllerPoint>();
+        public List<ScreenPoint> Screens { get; set; } = new List<ScreenPoint>();
 
         public List<InfoTable> Info { get; set; } = new List<InfoTable>();
-        public List<ControlGroupPoint> Screens { get; set; } = new List<ControlGroupPoint>();
         public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
         public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
         public List<StrWeeklyRoutinePoint> WeeklyRoutines { get; set; } = new List<StrWeeklyRoutinePoint>();
@@ -43,7 +43,7 @@
         public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
         public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
         public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
-        public List<CustomUnit> CustomUnits { get; set; } = new List<CustomUnit>();
+        public List<PRGReaderLibrary.CustomUnitPoint> CustomUnits { get; set; } = new List<PRGReaderLibrary.CustomUnitPoint>();
 
         //public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
 
@@ -178,7 +178,7 @@
                                 break;
 
                             case PointType.UNIT:
-                                CustomUnits.Add(new CustomUnit(data, 0, FileVersion));
+                                CustomUnits.Add(new PRGReaderLibrary.CustomUnitPoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -332,7 +332,7 @@
             Screens.AddRange(GetArray(bytes,
                 Rev6Constants.ScreenCount,
                 Rev6Constants.ScreenSize, ref offset)
-                .Select(i => new ControlGroupPoint()));
+                .Select(i => new ScreenPoint(i, 0, FileVersion)));
 
             //Get all graphic labels
             //Labels.AddRange(
@@ -348,7 +348,7 @@
             CustomUnits.AddRange(GetArray(bytes,
                 Rev6Constants.CustomerUnitsCount,
                 Rev6Constants.CustomerUnitsSize, ref offset)
-                .Select(i => new CustomUnit(i, 0, FileVersion)));
+                .Select(i => new PRGReaderLibrary.CustomUnitPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.AnalogCustomerRangeTableCount,
@@ -562,13 +562,18 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ScreenCount * Rev6Constants.ScreenSize));
+            for (var i = 0; i < Rev6Constants.ScreenCount; ++i)
+            {
+                var obj = Screens.ElementAtOrDefault(i) ?? new ScreenPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.GraphicLabelCount * Rev6Constants.GraphicLabelSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.UserLoginCount * Rev6Constants.UserLoginSize));
 
             for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
             {
-                var obj = i < CustomUnits.Count ? CustomUnits[i] : new CustomUnit();
+                var obj = i < CustomUnits.Count ? CustomUnits[i] : new PRGReaderLibrary.CustomUnitPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
