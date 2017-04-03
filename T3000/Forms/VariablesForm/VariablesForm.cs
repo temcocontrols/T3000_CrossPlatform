@@ -184,9 +184,7 @@
             {
                 var row = prgView.CurrentRow;
                 var current = (AutoManual)row.Cells["AutoManualColumn"].Value;
-                row.Cells["AutoManualColumn"].Value = current == AutoManual.Manual
-                    ? AutoManual.Automatic
-                    : AutoManual.Manual;
+                row.Cells["AutoManualColumn"].Value = EnumUtilities.NextValue(current);
                 prgView.EndEdit();
             }
             catch (Exception exception)

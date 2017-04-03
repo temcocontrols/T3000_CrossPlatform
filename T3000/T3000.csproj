@@ -80,6 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\EnumUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Forms\T3000Form.resx">
