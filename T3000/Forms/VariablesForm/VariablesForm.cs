@@ -29,12 +29,15 @@
             foreach (var point in Points)
             {
                 prgView.Rows.Add(new object[] {
-                    i + 1, point.Description, point.AutoManual,
+                    i + 1,
+                    point.Description,
+                    point.AutoManual,
                     point.Value.ToString(),
                     point.Value.Units.GetOffOnName(point.Value.CustomUnits),
                     point.Label
                 });
-                CheckRowValue(prgView.Rows[prgView.RowCount - 1], CustomUnits);
+                CheckRowValue(prgView.Rows[prgView.RowCount - 1],
+                    ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 ++i;
             }
         }
@@ -44,15 +47,17 @@
         public static bool RowIndexIsValid(int index, DataGridView view) =>
             index >= 0 && index < view.RowCount;
 
-        public static void CheckRowValue(DataGridViewRow row, List<CustomUnitPoint> customUnits = null)
+        public static void CheckRowValue(DataGridViewRow row,
+            string valueColumn, string unitsColumn,
+            List<CustomUnitPoint> customUnits = null)
         {
-            var cell = row.Cells["ValueColumn"];
+            var cell = row.Cells[valueColumn];
             var isValidated = true;
             cell.ToolTipText = string.Empty;
             cell.ErrorText = string.Empty;
             try
             {
-                var unitsCell = row.Cells["UnitsColumn"];
+                var unitsCell = row.Cells[unitsColumn];
                 var units = UnitsNamesConstants.UnitsFromName(
                     (string)unitsCell.Value, customUnits);
                 new VariableVariant((string) cell.Value, units, customUnits);
@@ -80,11 +85,11 @@
                 return;
             }
 
-            row.Cells["DescriptionColumn"].Value = string.Empty;
-            row.Cells["LabelColumn"].Value = string.Empty;
-            row.Cells["UnitsColumn"].Value = Units.Unused.GetOffOnName();
-            row.Cells["AutoManualColumn"].Value = AutoManual.Automatic;
-            row.Cells["ValueColumn"].Value = "0";
+            row.Cells[DescriptionColumn.Name].Value = string.Empty;
+            row.Cells[LabelColumn.Name].Value = string.Empty;
+            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
+            row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
+            row.Cells[ValueColumn.Name].Value = "0";
         }
 
         private void Save(object sender, EventArgs e)
@@ -100,14 +105,14 @@
                     }
 
                     var point = Points[i];
-                    point.Description = (string)row.Cells["DescriptionColumn"].Value;
-                    point.Label = (string)row.Cells["LabelColumn"].Value;
+                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
+                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
                     point.Value = new VariableVariant(
-                        (string)row.Cells["ValueColumn"].Value,
+                        (string)row.Cells[ValueColumn.Name].Value,
                         UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells["UnitsColumn"].Value, CustomUnits),
+                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
                         CustomUnits);
-                    point.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
+                    point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
                     ++i;
                 }
             }
@@ -143,13 +148,13 @@
                 //Set AutoManual to Manual, if user changed units
                 if (e.ColumnIndex == UnitsColumn.Index)
                 {
-                    row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
+                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
                 }
 
                 if (e.ColumnIndex == ValueColumn.Index)
                 {
-                    CheckRowValue(row, CustomUnits);
-                    row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
+                    CheckRowValue(row, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
                 }
             }
             catch (Exception exception)
@@ -164,22 +169,22 @@
             {
                 var row = prgView.CurrentRow;
                 var currentUnits = UnitsNamesConstants.UnitsFromName(
-                    (string)row.Cells["UnitsColumn"].Value, CustomUnits);
+                    (string)row.Cells[UnitsColumn.Name].Value, CustomUnits);
                 var form = new SelectUnitsForm(currentUnits, CustomUnits);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     var convertedValue = UnitsUtilities.ConvertValue(
-                        (string)row.Cells["ValueColumn"].Value,
+                        (string)row.Cells[ValueColumn.Name].Value,
                         UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells["UnitsColumn"].Value, CustomUnits),
+                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
                         form.SelectedUnits,
                         CustomUnits, form.CustomUnits);
                     CustomUnits = form.CustomUnits;
-                    row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(
+                    row.Cells[UnitsColumn.Name].Value = form.SelectedUnits.GetOffOnName(
                         CustomUnits);
-                    row.Cells["ValueColumn"].Value = convertedValue;
+                    row.Cells[ValueColumn.Name].Value = convertedValue;
                     prgView.EndEdit();
-                    CheckRowValue(row, CustomUnits);
+                    CheckRowValue(row, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 }
             }
             catch (Exception exception)
@@ -193,8 +198,8 @@
             try
             {
                 var row = prgView.CurrentRow;
-                var current = (AutoManual)row.Cells["AutoManualColumn"].Value;
-                row.Cells["AutoManualColumn"].Value = EnumUtilities.NextValue(current);
+                var current = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
+                row.Cells[AutoManualColumn.Name].Value = EnumUtilities.NextValue(current);
                 prgView.EndEdit();
             }
             catch (Exception exception)
@@ -238,7 +243,7 @@
                 return;
             }
 
-            CheckRowValue(prgView.Rows[e.RowIndex], CustomUnits);
+            CheckRowValue(prgView.Rows[e.RowIndex], ValueColumn.Name, UnitsColumn.Name, CustomUnits);
         }
 
         private void prgView_KeyDown(object sender, KeyEventArgs e)
