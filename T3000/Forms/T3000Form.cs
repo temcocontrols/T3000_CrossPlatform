@@ -4,6 +4,7 @@
     using Properties;
     using Utilities;
     using System;
+    using System.Linq;
     using System.Windows.Forms;
 
     public partial class T3000Form : Form
@@ -40,7 +41,8 @@
                 savePRGToolStripMenuItem.Enabled = true;
                 saveAsToolStripMenuItem.Enabled = true;
                 inputsMenuItem.Enabled = true;
-                variablesToolStripMenuItem.Enabled = true;
+                outputsMenuItem.Enabled = true;
+                variablesMenuItem.Enabled = true;
             }
             catch (Exception exception)
             {
@@ -131,7 +133,30 @@
                     return;
                 }
 
-                var form = new InputsForm(Prg);
+                var form = new VariablesForm(
+                    Prg.Inputs.Cast<ValuedPoint>().ToList(), 
+                    Prg.CustomUnits);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        private void ShowOutputs(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!IsOpened)
+                {
+                    MessageBoxUtilities.ShowWarning(Resources.FileIsNotOpen);
+                    return;
+                }
+
+                var form = new VariablesForm(
+                    Prg.Outputs.Cast<ValuedPoint>().ToList(),
+                    Prg.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -150,7 +175,9 @@
                     return;
                 }
 
-                var form = new VariablesForm(Prg);
+                var form = new VariablesForm(
+                    Prg.Variables.Cast<ValuedPoint>().ToList(),
+                    Prg.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)

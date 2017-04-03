@@ -39,12 +39,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\InputsForm\InputsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\InputsForm\InputsForm.Designer.cs">
-      <DependentUpon>InputsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\T3000Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,15 +84,6 @@
     </Compile>
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
-    <EmbeddedResource Include="Forms\InputsForm\InputsForm.de-DE.resx">
-      <DependentUpon>InputsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InputsForm\InputsForm.resx">
-      <DependentUpon>InputsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InputsForm\InputsForm.zh-Hant.resx">
-      <DependentUpon>InputsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\T3000Form.resx">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Constants\" />
+    <Folder Include="Forms\InputsForm\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

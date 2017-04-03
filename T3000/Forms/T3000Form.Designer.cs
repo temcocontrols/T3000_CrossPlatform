@@ -35,14 +35,15 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.controlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.variablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.variablesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.germanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.outputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -108,20 +109,12 @@
             // 
             this.controlToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputsMenuItem,
-            this.variablesToolStripMenuItem});
+            this.outputsMenuItem,
+            this.variablesMenuItem});
             this.controlToolStripMenuItem.Name = "controlToolStripMenuItem";
             this.controlToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.controlToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.controlToolStripMenuItem.Text = "Control";
-            // 
-            // variablesToolStripMenuItem
-            // 
-            this.variablesToolStripMenuItem.Enabled = false;
-            this.variablesToolStripMenuItem.Name = "variablesToolStripMenuItem";
-            this.variablesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.V)));
-            this.variablesToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.variablesToolStripMenuItem.Text = "Variables";
-            this.variablesToolStripMenuItem.Click += new System.EventHandler(this.ShowVariables);
             // 
             // inputsMenuItem
             // 
@@ -131,6 +124,15 @@
             this.inputsMenuItem.Size = new System.Drawing.Size(157, 22);
             this.inputsMenuItem.Text = "Inputs";
             this.inputsMenuItem.Click += new System.EventHandler(this.ShowInputs);
+            // 
+            // variablesMenuItem
+            // 
+            this.variablesMenuItem.Enabled = false;
+            this.variablesMenuItem.Name = "variablesMenuItem";
+            this.variablesMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.V)));
+            this.variablesMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.variablesMenuItem.Text = "Variables";
+            this.variablesMenuItem.Click += new System.EventHandler(this.ShowVariables);
             // 
             // languageMenuItem
             // 
@@ -179,6 +181,15 @@
             this.statusLabel.Size = new System.Drawing.Size(274, 17);
             this.statusLabel.Text = "Please, open a file with Ctrl-O or File -> Open .PRG";
             // 
+            // outputsMenuItem
+            // 
+            this.outputsMenuItem.Enabled = false;
+            this.outputsMenuItem.Name = "outputsMenuItem";
+            this.outputsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
+            this.outputsMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.outputsMenuItem.Text = "Outputs";
+            this.outputsMenuItem.Click += new System.EventHandler(this.ShowOutputs);
+            // 
             // T3000Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -206,7 +217,7 @@
         private System.Windows.Forms.ToolStripMenuItem savePRGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem controlToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem variablesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem variablesMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
@@ -215,5 +226,6 @@
         private System.Windows.Forms.ToolStripMenuItem germanToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chineseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem outputsMenuItem;
     }
 }

@@ -4,24 +4,26 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
+    using System.Collections.Generic;
 
     public partial class VariablesForm : Form
     {
-        public Prg Prg { get; private set; }
+        public List<ValuedPoint> Points { get; set; }
+        public List<CustomUnit> CustomUnits { get; private set; }
 
-        public VariablesForm(Prg prg)
+        public VariablesForm(List<ValuedPoint> points, List<CustomUnit> customUnits = null)
         {
-            if (prg == null)
+            if (points == null)
             {
-                throw new ArgumentNullException(nameof(prg));
+                throw new ArgumentNullException(nameof(points));
             }
+            Points = points;
+            CustomUnits = customUnits;
 
             InitializeComponent();
-
-            Prg = prg;
         }
 
-        public static void CheckRow(DataGridViewRow row, Prg prg)
+        public static void CheckRow(DataGridViewRow row, List<CustomUnit> customUnits = null)
         {
             var cell = row.Cells["ValueColumn"];
             var isValidated = true;
@@ -31,8 +33,8 @@
             {
                 var unitsCell = row.Cells["UnitsColumn"];
                 var units = UnitsNamesConstants.UnitsFromName(
-                    (string)unitsCell.Value, prg.CustomUnits);
-                new VariableVariant((string) cell.Value, units, prg.CustomUnits);
+                    (string)unitsCell.Value, customUnits);
+                new VariableVariant((string) cell.Value, units, customUnits);
             }
             catch (Exception exception)
             {
@@ -46,17 +48,15 @@
 
         public new void Show()
         {
-            var prg = Prg;
-
             prgView.Rows.Clear();
             var i = 0;
-            foreach (var variable in prg.Variables)
+            foreach (var point in Points)
             {
                 prgView.Rows.Add(new object[] {
-                    i + 1, variable.Description, variable.AutoManual,
-                    variable.Value.ToString(), variable.Value.Units.GetOffOnName(variable.Value.CustomUnits), variable.Label
+                    i + 1, point.Description, point.AutoManual,
+                    point.Value.ToString(), point.Value.Units.GetOffOnName(point.Value.CustomUnits), point.Label
                 });
-                CheckRow(prgView.Rows[prgView.RowCount - 1], prg);
+                CheckRow(prgView.Rows[prgView.RowCount - 1], CustomUnits);
                 ++i;
             }
 
@@ -65,27 +65,25 @@
 
         private void Save(object sender, EventArgs e)
         {
-            var prg = Prg;
-
             try
             {
                 var i = 0;
                 foreach (DataGridViewRow row in prgView.Rows)
                 {
-                    if (i >= prg.Variables.Count)
+                    if (i >= Points.Count)
                     {
                         break;
                     }
 
-                    var variable = prg.Variables[i];
-                    variable.Description = (string)row.Cells["DescriptionColumn"].Value;
-                    variable.Label = (string)row.Cells["LabelColumn"].Value;
-                    variable.Value = new VariableVariant(
+                    var point = Points[i];
+                    point.Description = (string)row.Cells["DescriptionColumn"].Value;
+                    point.Label = (string)row.Cells["LabelColumn"].Value;
+                    point.Value = new VariableVariant(
                         (string)row.Cells["ValueColumn"].Value,
                         UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells["UnitsColumn"].Value, Prg.CustomUnits), 
-                        prg.CustomUnits);
-                    variable.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
+                            (string)row.Cells["UnitsColumn"].Value, CustomUnits), 
+                        CustomUnits);
+                    point.AutoManual = (AutoManual)row.Cells["AutoManualColumn"].Value;
                     ++i;
                 }
             }
@@ -119,7 +117,7 @@
 
                 if (e.ColumnIndex == ValueColumn.Index)
                 {
-                    CheckRow(row, Prg);
+                    CheckRow(row, CustomUnits);
                     row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
                 }
             }
@@ -163,24 +161,22 @@
                 {
                     var row = prgView.CurrentRow;
                     var currentUnits = UnitsNamesConstants.UnitsFromName(
-                        (string)row.Cells["UnitsColumn"].Value, Prg.CustomUnits);
-                    var form = new SelectUnitsForm(currentUnits, Prg.CustomUnits);
+                        (string)row.Cells["UnitsColumn"].Value, CustomUnits);
+                    var form = new SelectUnitsForm(currentUnits, CustomUnits);
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         var convertedValue = UnitsUtilities.ConvertValue(
                             (string)row.Cells["ValueColumn"].Value,
                             UnitsNamesConstants.UnitsFromName(
-                                (string)row.Cells["UnitsColumn"].Value, Prg.CustomUnits),
+                                (string)row.Cells["UnitsColumn"].Value, CustomUnits),
                             form.SelectedUnits,
-                            Prg.CustomUnits,
-                            form.CustomUnits
-                            );
-                        Prg.CustomUnits = form.CustomUnits;
+                            CustomUnits, form.CustomUnits);
+                        CustomUnits = form.CustomUnits;
                         row.Cells["UnitsColumn"].Value = form.SelectedUnits.GetOffOnName(
-                            Prg.CustomUnits);
+                            CustomUnits);
                         row.Cells["ValueColumn"].Value = convertedValue;
                         prgView.EndEdit();
-                        CheckRow(row, Prg);
+                        CheckRow(row, CustomUnits);
                     }
                 }
                 catch (Exception exception)
@@ -220,7 +216,7 @@
                 return;
             }
 
-            CheckRow(prgView.Rows[e.RowIndex], Prg);
+            CheckRow(prgView.Rows[e.RowIndex], CustomUnits);
         }
     }
 }
