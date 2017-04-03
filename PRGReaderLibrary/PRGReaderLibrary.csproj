@@ -79,7 +79,7 @@
     <Compile Include="Types\AdditionalTypes\PasswordStruct.cs" />
     <Compile Include="Types\AdditionalTypes\PointInfo.cs" />
     <Compile Include="Types\AdditionalTypes\StationPoint.cs" />
-    <Compile Include="Types\AdditionalTypes\StrAnnualRoutinePoint.cs" />
+    <Compile Include="Types\HolidayPoint.cs" />
     <Compile Include="Types\AdditionalTypes\StrArrayPoint.cs" />
     <Compile Include="Types\ControllerPoint.cs" />
     <Compile Include="Types\AdditionalTypes\StrGrpElement.cs" />

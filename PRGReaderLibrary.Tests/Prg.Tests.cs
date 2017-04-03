@@ -78,6 +78,12 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(schedule)} ToFromBytes test failed.");
                 }
 
+                foreach (var holiday in prg.Holidays)
+                {
+                    ObjectAssert.AreEqual(holiday, new HolidayPoint(holiday.ToBytes()),
+                        $"{nameof(holiday)} ToFromBytes test failed.");
+                }
+
                 foreach (var unit in prg.CustomUnits)
                 {
                     ObjectAssert.AreEqual(unit, new CustomUnitPoint(unit.ToBytes()),

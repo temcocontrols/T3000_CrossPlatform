@@ -29,12 +29,12 @@
         public List<ScreenPoint> Screens { get; set; } = new List<ScreenPoint>();
 
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
+        public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
 
         public List<InfoTable> Info { get; set; } = new List<InfoTable>();
         public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
         public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
         public List<List<WrOneDay>> WrTimes { get; set; } = new List<List<WrOneDay>>();
-        public List<StrAnnualRoutinePoint> AnnualRoutines { get; set; } = new List<StrAnnualRoutinePoint>();
         public byte[] ProgramCodes { get; set; }
         public List<ControlGroupElements> ControlGroupElements { get; set; } = new List<ControlGroupElements>();
         public List<StationPoint> LocalStations { get; set; } = new List<StationPoint>();
@@ -43,7 +43,7 @@
         public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
         public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
         public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
-        public List<PRGReaderLibrary.CustomUnitPoint> CustomUnits { get; set; } = new List<PRGReaderLibrary.CustomUnitPoint>();
+        public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
 
         //public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
 
@@ -361,9 +361,10 @@
                 Rev6Constants.ScheduleSize, ref offset)
                 .Select(i => new SchedulePoint(i, 0, FileVersion)));
 
-            GetArray(bytes,
+            Holidays.AddRange(GetArray(bytes,
                 Rev6Constants.HolidayCount,
-                Rev6Constants.HolidaySize, ref offset);
+                Rev6Constants.HolidaySize, ref offset)
+                .Select(i => new HolidayPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.MonitorCount,
@@ -535,31 +536,31 @@ Offset: {offset}, Length: {bytes.Length}");
 
             for (var i = 0; i < Rev6Constants.InputCount; ++i)
             {
-                var obj = i < Inputs.Count ? Inputs[i] : new InputPoint();
+                var obj = Inputs.ElementAtOrDefault(i) ?? new InputPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
             for (var i = 0; i < Rev6Constants.OutputCount; ++i)
             {
-                var obj = i < Outputs.Count ? Outputs[i] : new OutputPoint();
+                var obj = Outputs.ElementAtOrDefault(i) ?? new OutputPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
             for (var i = 0; i < Rev6Constants.VariableCount; ++i)
             {
-                var obj = i < Variables.Count ? Variables[i] : new VariablePoint();
+                var obj = Variables.ElementAtOrDefault(i) ?? new VariablePoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
             for (var i = 0; i < Rev6Constants.ProgramCount; ++i)
             {
-                var obj = i < Programs.Count ? Programs[i] : new ProgramPoint();
+                var obj = Programs.ElementAtOrDefault(i) ?? new ProgramPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
             for (var i = 0; i < Rev6Constants.ControllerCount; ++i)
             {
-                var obj = i < Controllers.Count ? Controllers[i] : new ControllerPoint();
+                var obj = Controllers.ElementAtOrDefault(i) ?? new ControllerPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
@@ -574,7 +575,7 @@ Offset: {offset}, Length: {bytes.Length}");
 
             for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
             {
-                var obj = i < CustomUnits.Count ? CustomUnits[i] : new CustomUnitPoint();
+                var obj = CustomUnits.ElementAtOrDefault(i) ?? new CustomUnitPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
@@ -587,7 +588,12 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.HolidayCount * Rev6Constants.HolidaySize));
+            for (var i = 0; i < Rev6Constants.HolidayCount; ++i)
+            {
+                var obj = Holidays.ElementAtOrDefault(i) ?? new HolidayPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.MonitorCount * Rev6Constants.MonitorSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.WeeklyRoutinesCount * Rev6Constants.WeeklyRoutinesSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnnualRoutinesCount * Rev6Constants.AnnualRoutinesSize));
