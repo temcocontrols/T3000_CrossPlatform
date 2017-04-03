@@ -102,8 +102,7 @@
         {
             try
             {
-                if (e.RowIndex >= prgView.RowCount ||
-                    e.RowIndex < 0)
+                if (!RowIndexIsValid(e.RowIndex))
                 {
                     return;
                 }
@@ -209,10 +208,13 @@
             return false;
         }
 
+        private bool RowIndexIsValid(int index) =>
+            index >= 0 && index < prgView.RowCount;
+
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (!(((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn) ||
-                e.RowIndex < 0 || e.RowIndex >= prgView.RowCount)
+                !RowIndexIsValid(e.RowIndex))
             {
                 return;
             }
@@ -222,8 +224,7 @@
 
         private void prgView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (e.RowIndex < 0 ||
-                e.RowIndex >= prgView.RowCount)
+            if (!RowIndexIsValid(e.RowIndex))
             {
                 return;
             }
