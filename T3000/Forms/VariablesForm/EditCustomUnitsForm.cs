@@ -27,9 +27,11 @@
         private void Preview(string text)
         {
             previewListBox.Items.Clear();
+            var i = 0;
             foreach (var name in ToUnitsNames(text))
             {
-                previewListBox.Items.Add(name.OffOnName);
+                previewListBox.Items.Add($"{i + 1}. {name.OffOnName}");
+                ++i;
             }
         }
 
