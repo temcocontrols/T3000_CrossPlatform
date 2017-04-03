@@ -20,18 +20,10 @@ namespace PRGReaderLibrary
             Panel = panel;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
+        public override int GetHashCode() =>
+            Number.GetHashCode() ^ Type.GetHashCode() ^ Panel.GetHashCode();
 
-            var point = (T3000Point) obj;
-            return Number == point.Number &&
-                Type == point.Type &&
-                Panel == point.Panel;
-        }
+        public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
 
         #region Binary data
 

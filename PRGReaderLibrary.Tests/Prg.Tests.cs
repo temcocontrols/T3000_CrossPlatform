@@ -109,22 +109,6 @@ Value.ToFromToString(): {tempValue.ToString()}
             Console.WriteLine(exception.Message);
         }
 
-        public void PrintVariables(Prg prg)
-        {
-            foreach (var variable in prg.Variables)
-            {
-                if (variable.IsEmpty)
-                {
-                    continue;
-                }
-
-                Console.WriteLine("---------------------------");
-                Console.Write(variable.PropertiesText());
-                Console.WriteLine("---------------------------");
-                Console.WriteLine(string.Empty);
-            }
-        }
-
         [Test]
         public void Prg_BTUMeter()
         {

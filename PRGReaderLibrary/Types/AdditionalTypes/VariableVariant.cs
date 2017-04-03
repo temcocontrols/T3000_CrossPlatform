@@ -151,22 +151,11 @@ Supported types: bool, float, TimeSpan");
             : this(ToObject(value, units, customUnits), units, customUnits)
         { }
 
-        public override int GetHashCode() =>
-            Value.GetHashCode() ^ Units.GetHashCode();
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || obj.GetType() != typeof(VariableVariant))
-                return false;
-
-            var objVariant = (VariableVariant)obj;
-            return
-                Value == objVariant.Value &&
-                Units == objVariant.Units;
-        }
-
         public object ToObject() => ToObject(Value, Units);
 
+        public override int GetHashCode() => Value.GetHashCode() ^ Units.GetHashCode();
+        public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
         public override string ToString() => ToString(ToObject(), Units, CustomUnits);
+
     }
 }
