@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-
-namespace T3000.Utilities
+﻿namespace T3000.Utilities
 {
+    using System;
+    using System.Drawing;
     using System.Windows.Forms;
     using System.Globalization;
     using System.Threading;
@@ -47,14 +45,14 @@ namespace T3000.Utilities
 
         private static void ApplyResourceToControl(ComponentResourceManager manager, Control control, CultureInfo info)
         {  
-            // See if this is a menuStrip
+            // See if this is a MenuStrip
             if (control.GetType() == typeof(MenuStrip))
             {
                 var strip = (MenuStrip)control;
                 ApplyResourceToToolStripItemCollection(strip.Items, manager, info);
             }
 
-            // See if this is a menuStrip
+            // See if this is a DataGridViewColumn
             if (control.GetType() == typeof(DataGridView))
             {
                 var view = (DataGridView)control;
