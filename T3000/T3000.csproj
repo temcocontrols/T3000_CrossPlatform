@@ -39,6 +39,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\ScreensForm\ScreensForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScreensForm\ScreensForm.Designer.cs">
+      <DependentUpon>ScreensForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\T3000Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +89,15 @@
     <Compile Include="Utilities\EnumUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
+    <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.de-DE.resx">
+      <DependentUpon>ScreensForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.resx">
+      <DependentUpon>ScreensForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.zh-Hant.resx">
+      <DependentUpon>ScreensForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\T3000Form.resx">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </EmbeddedResource>

@@ -117,61 +117,59 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AllFiles" xml:space="preserve">
-    <value>All files</value>
+  <data name="addButton.Text" xml:space="preserve">
+    <value>添加</value>
   </data>
-  <data name="CurrentFile" xml:space="preserve">
-    <value>Current file: {0}</value>
+  <data name="deleteButton.Text" xml:space="preserve">
+    <value>刪除</value>
   </data>
-  <data name="Exception" xml:space="preserve">
-    <value>Exception: {0}{1}</value>
+  <data name="openButton.Text" xml:space="preserve">
+    <value>打開.PRG文件</value>
   </data>
-  <data name="FileIsNotOpen" xml:space="preserve">
-    <value>.PRG file is not opened. Please, open a file with Ctrl-O or File -&gt; Open .PRG</value>
+  <data name="saveButton.Text" xml:space="preserve">
+    <value>保留</value>
   </data>
-  <data name="PrgFiles" xml:space="preserve">
-    <value>.PRG files</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="languageMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
   </data>
-  <data name="Saved" xml:space="preserve">
-    <value>Saved: {0}</value>
+  <data name="languageMenuItem.Text" xml:space="preserve">
+    <value>語言</value>
   </data>
-  <data name="SelectPrgFile" xml:space="preserve">
-    <value>Please select an .PRG file</value>
+  <data name="englishToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 22</value>
   </data>
-  <data name="ExceptionTitle" xml:space="preserve">
-    <value>Exception:</value>
+  <data name="englishToolStripMenuItem.Text" xml:space="preserve">
+    <value>英語</value>
   </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning: {0}</value>
+  <data name="germanToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 22</value>
   </data>
-  <data name="WarningTitle" xml:space="preserve">
-    <value>Warning:</value>
+  <data name="germanToolStripMenuItem.Text" xml:space="preserve">
+    <value>德國</value>
   </data>
-  <data name="SavePrgFile" xml:space="preserve">
-    <value>Please enter name of the .PRG file</value>
+  <data name="chineseToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 22</value>
   </data>
-  <data name="SaveBeforeExit" xml:space="preserve">
-    <value>Do you want to save the .PRG file?</value>
+  <data name="chineseToolStripMenuItem.Text" xml:space="preserve">
+    <value>中國</value>
   </data>
-  <data name="SaveBeforeExitTitle" xml:space="preserve">
-    <value>Do you want to save the .PRG file?</value>
+  <data name="Number.HeaderText" xml:space="preserve">
+    <value>數</value>
   </data>
-  <data name="EditCustomUnitsFormNotValid" xml:space="preserve">
-    <value>Custom units is not valid. Please fix it before saving.</value>
+  <data name="Description.HeaderText" xml:space="preserve">
+    <value>描述</value>
   </data>
-  <data name="SelectUnitsFormSelectedUnits" xml:space="preserve">
-    <value>Selected units: {0}</value>
+  <data name="AutoManual.HeaderText" xml:space="preserve">
+    <value>手動</value>
   </data>
-  <data name="SelectUnitsFormNotValid" xml:space="preserve">
-    <value>Selected units not valid. Please select valid item.</value>
+  <data name="Units.HeaderText" xml:space="preserve">
+    <value>單位</value>
   </data>
-  <data name="JpegFiles" xml:space="preserve">
-    <value>.JPEG files</value>
+  <data name="Label.HeaderText" xml:space="preserve">
+    <value>標籤</value>
   </data>
-  <data name="PngFiles" xml:space="preserve">
-    <value>.PNG files</value>
-  </data>
-  <data name="SelectImageFile" xml:space="preserve">
-    <value>Please select an image(.PNG or .JPEG) file</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>變量</value>
   </data>
 </root>

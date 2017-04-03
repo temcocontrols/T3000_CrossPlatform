@@ -23,8 +23,8 @@
         private void LoadPrg(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog();
-            dialog.Filter = $"{Resources.PRGFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
-            dialog.Title = Resources.SelectPRGFile;
+            dialog.Filter = $"{Resources.PrgFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Title = Resources.SelectPrgFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -43,6 +43,7 @@
                 inputsMenuItem.Enabled = true;
                 outputsMenuItem.Enabled = true;
                 variablesMenuItem.Enabled = true;
+                screensMenuItem.Enabled = true;
             }
             catch (Exception exception)
             {
@@ -80,8 +81,8 @@
             }
 
             var dialog = new SaveFileDialog();
-            dialog.Filter = $"{Resources.PRGFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
-            dialog.Title = Resources.SavePRGFile;
+            dialog.Filter = $"{Resources.PrgFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Title = Resources.SavePrgFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -123,13 +124,23 @@
 
         #region Control
 
+        private bool CheckIsOpened()
+        {
+            if (!IsOpened)
+            {
+                MessageBoxUtilities.ShowWarning(Resources.FileIsNotOpen);
+                return false;
+            }
+
+            return true;
+        }
+
         private void ShowInputs(object sender, EventArgs e)
         {
             try
             {
-                if (!IsOpened)
+                if (!CheckIsOpened())
                 {
-                    MessageBoxUtilities.ShowWarning(Resources.FileIsNotOpen);
                     return;
                 }
 
@@ -148,9 +159,8 @@
         {
             try
             {
-                if (!IsOpened)
+                if (!CheckIsOpened())
                 {
-                    MessageBoxUtilities.ShowWarning(Resources.FileIsNotOpen);
                     return;
                 }
 
@@ -169,15 +179,32 @@
         {
             try
             {
-                if (!IsOpened)
+                if (!CheckIsOpened())
                 {
-                    MessageBoxUtilities.ShowWarning(Resources.FileIsNotOpen);
                     return;
                 }
 
                 var form = new VariablesForm(
                     Prg.Variables.Cast<ValuedPoint>().ToList(),
                     Prg.CustomUnits);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        private void ShowScreens(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckIsOpened())
+                {
+                    return;
+                }
+
+                var form = new ScreensForm(Prg.Screens);
                 form.Show();
             }
             catch (Exception exception)

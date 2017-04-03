@@ -17,6 +17,7 @@
             {
                 throw new ArgumentNullException(nameof(points));
             }
+
             Points = points;
             CustomUnits = customUnits;
 
@@ -33,17 +34,17 @@
                     point.Value.Units.GetOffOnName(point.Value.CustomUnits),
                     point.Label
                 });
-                CheckRow(prgView.Rows[prgView.RowCount - 1], CustomUnits);
+                CheckRowValue(prgView.Rows[prgView.RowCount - 1], CustomUnits);
                 ++i;
             }
         }
 
         #region Utilities
 
-        private bool RowIndexIsValid(int index) =>
-            index >= 0 && index < prgView.RowCount;
+        public static bool RowIndexIsValid(int index, DataGridView view) =>
+            index >= 0 && index < view.RowCount;
 
-        public static void CheckRow(DataGridViewRow row, List<CustomUnitPoint> customUnits = null)
+        public static void CheckRowValue(DataGridViewRow row, List<CustomUnitPoint> customUnits = null)
         {
             var cell = row.Cells["ValueColumn"];
             var isValidated = true;
@@ -133,7 +134,7 @@
         {
             try
             {
-                if (!RowIndexIsValid(e.RowIndex))
+                if (!RowIndexIsValid(e.RowIndex, prgView))
                 {
                     return;
                 }
@@ -147,7 +148,7 @@
 
                 if (e.ColumnIndex == ValueColumn.Index)
                 {
-                    CheckRow(row, CustomUnits);
+                    CheckRowValue(row, CustomUnits);
                     row.Cells["AutoManualColumn"].Value = AutoManual.Manual;
                 }
             }
@@ -178,7 +179,7 @@
                         CustomUnits);
                     row.Cells["ValueColumn"].Value = convertedValue;
                     prgView.EndEdit();
-                    CheckRow(row, CustomUnits);
+                    CheckRowValue(row, CustomUnits);
                 }
             }
             catch (Exception exception)
@@ -222,7 +223,7 @@
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (!(((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn) ||
-                !RowIndexIsValid(e.RowIndex))
+                !RowIndexIsValid(e.RowIndex, prgView))
             {
                 return;
             }
@@ -232,12 +233,12 @@
 
         private void prgView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (!RowIndexIsValid(e.RowIndex))
+            if (!RowIndexIsValid(e.RowIndex, prgView))
             {
                 return;
             }
 
-            CheckRow(prgView.Rows[e.RowIndex], CustomUnits);
+            CheckRowValue(prgView.Rows[e.RowIndex], CustomUnits);
         }
 
         private void prgView_KeyDown(object sender, KeyEventArgs e)

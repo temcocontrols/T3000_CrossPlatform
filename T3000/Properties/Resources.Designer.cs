@@ -115,11 +115,29 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .JPEG files.
+        /// </summary>
+        internal static string JpegFiles {
+            get {
+                return ResourceManager.GetString("JpegFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .PNG files.
+        /// </summary>
+        internal static string PngFiles {
+            get {
+                return ResourceManager.GetString("PngFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .PRG files.
         /// </summary>
-        internal static string PRGFiles {
+        internal static string PrgFiles {
             get {
-                return ResourceManager.GetString("PRGFiles", resourceCulture);
+                return ResourceManager.GetString("PrgFiles", resourceCulture);
             }
         }
         
@@ -153,18 +171,27 @@ namespace T3000.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Please enter name of the .PRG file.
         /// </summary>
-        internal static string SavePRGFile {
+        internal static string SavePrgFile {
             get {
-                return ResourceManager.GetString("SavePRGFile", resourceCulture);
+                return ResourceManager.GetString("SavePrgFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select an image(.PNG or .JPEG) file.
+        /// </summary>
+        internal static string SelectImageFile {
+            get {
+                return ResourceManager.GetString("SelectImageFile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Please select an .PRG file.
         /// </summary>
-        internal static string SelectPRGFile {
+        internal static string SelectPrgFile {
             get {
-                return ResourceManager.GetString("SelectPRGFile", resourceCulture);
+                return ResourceManager.GetString("SelectPrgFile", resourceCulture);
             }
         }
         

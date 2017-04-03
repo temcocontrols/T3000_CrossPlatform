@@ -36,6 +36,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.controlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.variablesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,7 +44,7 @@
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.outputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.screensMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -110,7 +111,8 @@
             this.controlToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputsMenuItem,
             this.outputsMenuItem,
-            this.variablesMenuItem});
+            this.variablesMenuItem,
+            this.screensMenuItem});
             this.controlToolStripMenuItem.Name = "controlToolStripMenuItem";
             this.controlToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.controlToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
@@ -124,6 +126,15 @@
             this.inputsMenuItem.Size = new System.Drawing.Size(157, 22);
             this.inputsMenuItem.Text = "Inputs";
             this.inputsMenuItem.Click += new System.EventHandler(this.ShowInputs);
+            // 
+            // outputsMenuItem
+            // 
+            this.outputsMenuItem.Enabled = false;
+            this.outputsMenuItem.Name = "outputsMenuItem";
+            this.outputsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
+            this.outputsMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.outputsMenuItem.Text = "Outputs";
+            this.outputsMenuItem.Click += new System.EventHandler(this.ShowOutputs);
             // 
             // variablesMenuItem
             // 
@@ -181,14 +192,14 @@
             this.statusLabel.Size = new System.Drawing.Size(274, 17);
             this.statusLabel.Text = "Please, open a file with Ctrl-O or File -> Open .PRG";
             // 
-            // outputsMenuItem
+            // screensMenuItem
             // 
-            this.outputsMenuItem.Enabled = false;
-            this.outputsMenuItem.Name = "outputsMenuItem";
-            this.outputsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
-            this.outputsMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.outputsMenuItem.Text = "Outputs";
-            this.outputsMenuItem.Click += new System.EventHandler(this.ShowOutputs);
+            this.screensMenuItem.Enabled = false;
+            this.screensMenuItem.Name = "screensMenuItem";
+            this.screensMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.screensMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.screensMenuItem.Text = "Screens";
+            this.screensMenuItem.Click += new System.EventHandler(this.ShowScreens);
             // 
             // T3000Form
             // 
@@ -227,5 +238,6 @@
         private System.Windows.Forms.ToolStripMenuItem chineseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inputsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem outputsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem screensMenuItem;
     }
 }
