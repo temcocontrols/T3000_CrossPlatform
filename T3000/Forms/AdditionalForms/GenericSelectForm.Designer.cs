@@ -1,6 +1,7 @@
 ﻿namespace T3000.Forms
 {
-    partial class SelectAutoManualForm
+    /*
+    partial class GenericSelectForm<T>
     {
         /// <summary>
         /// Required designer variable.
@@ -71,7 +72,7 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
-            // SelectAutoManualForm
+            // GenericSelectForm
             // 
             this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -81,8 +82,8 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.listBox);
-            this.Name = "SelectAutoManualForm";
-            this.Text = "Select Auto/Manual:";
+            this.Name = "GenericSelectForm";
+            this.Text = "Select:";
             this.ResumeLayout(false);
 
         }
@@ -92,4 +93,5 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
     }
+    */
 }

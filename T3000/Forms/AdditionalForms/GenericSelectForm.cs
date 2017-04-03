@@ -1,17 +1,17 @@
 ﻿namespace T3000.Forms
 {
-    using PRGReaderLibrary;
+    /*
     using System;
     using System.Windows.Forms;
 
     /// <summary>
     /// This form need for Unix(Combobox not worked correctly on Unix)
     /// </summary>
-    public partial class SelectAutoManualForm : Form
+    public partial class GenericSelectForm<T> : Form
     {
-        public AutoManual Selected { get; private set; }
+        public T Selected { get; private set; }
 
-        public SelectAutoManualForm(AutoManual selected = AutoManual.Automatic)
+        public SelectForm(T selected = default(T))
         {
             InitializeComponent();
 
@@ -20,7 +20,7 @@
             {
                 listBox.Items.Clear();
                 var i = 0;
-                foreach (var name in Enum.GetNames(typeof(AutoManual)))
+                foreach (var name in Enum.GetNames(typeof(T)))
                 {
                     listBox.Items.Add($"{i + 1}. {name}");
                     ++i;
@@ -64,7 +64,7 @@
             try
             {
                 var selectedIndex = listBox.SelectedIndex;
-                Selected = (AutoManual)selectedIndex;
+                Selected = (T)selectedIndex;
             }
             catch (Exception exception)
             {
@@ -72,4 +72,5 @@
             }
         }
     }
+    */
 }

@@ -151,6 +151,7 @@
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
+            var row = prgView.CurrentRow;
 
             //UnitsColumn button click
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
@@ -159,7 +160,6 @@
             {
                 try
                 {
-                    var row = prgView.CurrentRow;
                     var currentUnits = UnitsNamesConstants.UnitsFromName(
                         (string)row.Cells["UnitsColumn"].Value, CustomUnits);
                     var form = new SelectUnitsForm(currentUnits, CustomUnits);
@@ -192,14 +192,11 @@
             {
                 try
                 {
-                    var row = prgView.CurrentRow;
                     var current = (AutoManual)row.Cells["AutoManualColumn"].Value;
-                    var form = new SelectAutoManualForm(current);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        row.Cells["AutoManualColumn"].Value = form.Selected;
-                        prgView.EndEdit();
-                    }
+                    row.Cells["AutoManualColumn"].Value = current == AutoManual.Manual
+                        ? AutoManual.Automatic
+                        : AutoManual.Manual;
+                    prgView.EndEdit();
                 }
                 catch (Exception exception)
                 {

@@ -51,11 +51,9 @@
     <Compile Include="Forms\VariablesForm\EditCustomUnitsForm.Designer.cs">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\SelectAutoManualForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\VariablesForm\SelectAutoManualForm.Designer.cs">
-      <DependentUpon>SelectAutoManualForm.cs</DependentUpon>
+    <Compile Include="Forms\AdditionalForms\GenericSelectForm.cs" />
+    <Compile Include="Forms\AdditionalForms\GenericSelectForm.Designer.cs">
+      <DependentUpon>GenericSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VariablesForm\SelectUnitsForm.cs">
       <SubType>Form</SubType>
@@ -90,8 +88,8 @@
     <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnitsForm.resx">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\SelectAutoManualForm.resx">
-      <DependentUpon>SelectAutoManualForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AdditionalForms\GenericSelectForm.resx">
+      <DependentUpon>GenericSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\SelectUnitsForm.resx">
       <DependentUpon>SelectUnitsForm.cs</DependentUpon>
