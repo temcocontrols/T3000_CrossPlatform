@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
-            this.prgView = new System.Windows.Forms.DataGridView();
+            this.view = new System.Windows.Forms.DataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -39,29 +39,29 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
-            // prgView
+            // view
             // 
-            this.prgView.AllowUserToAddRows = false;
-            this.prgView.AllowUserToDeleteRows = false;
-            resources.ApplyResources(this.prgView, "prgView");
-            this.prgView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.prgView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.prgView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.view.AllowUserToAddRows = false;
+            this.view.AllowUserToDeleteRows = false;
+            resources.ApplyResources(this.view, "view");
+            this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NumberColumn,
             this.DescriptionColumn,
             this.AutoManualColumn,
             this.ValueColumn,
             this.UnitsColumn,
             this.LabelColumn});
-            this.prgView.MultiSelect = false;
-            this.prgView.Name = "prgView";
-            this.prgView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContentClick);
-            this.prgView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.prgView_CellValidating);
-            this.prgView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
-            this.prgView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.prgView_KeyDown);
+            this.view.MultiSelect = false;
+            this.view.Name = "view";
+            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContentClick);
+            this.view.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.prgView_CellValidating);
+            this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
+            this.view.KeyDown += new System.Windows.Forms.KeyEventHandler(this.prgView_KeyDown);
             // 
             // NumberColumn
             // 
@@ -129,16 +129,16 @@
             this.Controls.Add(this.clearSelectedRowButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.prgView);
+            this.Controls.Add(this.view);
             this.Name = "VariablesForm";
-            ((System.ComponentModel.ISupportInitialize)(this.prgView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView prgView;
+        private System.Windows.Forms.DataGridView view;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;

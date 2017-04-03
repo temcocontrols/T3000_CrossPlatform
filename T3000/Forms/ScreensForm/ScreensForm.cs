@@ -102,7 +102,7 @@
         {
             try
             {
-                if (!VariablesForm.RowIndexIsValid(e.RowIndex, view))
+                if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
                 {
                     return;
                 }
@@ -177,7 +177,7 @@
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (!(((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn) ||
-                !VariablesForm.RowIndexIsValid(e.RowIndex, view))
+                !FormUtilities.RowIndexIsValid(e.RowIndex, view))
             {
                 return;
             }
@@ -187,7 +187,7 @@
 
         private void prgView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (!VariablesForm.RowIndexIsValid(e.RowIndex, view))
+            if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
             {
                 return;
             }

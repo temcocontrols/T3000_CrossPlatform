@@ -24,11 +24,11 @@
             InitializeComponent();
 
             //Show points
-            prgView.Rows.Clear();
+            view.Rows.Clear();
             var i = 0;
             foreach (var point in Points)
             {
-                prgView.Rows.Add(new object[] {
+                view.Rows.Add(new object[] {
                     i + 1,
                     point.Description,
                     point.AutoManual,
@@ -36,16 +36,13 @@
                     point.Value.Units.GetOffOnName(point.Value.CustomUnits),
                     point.Label
                 });
-                CheckRowValue(prgView.Rows[prgView.RowCount - 1],
+                CheckRowValue(view.Rows[view.RowCount - 1],
                     ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 ++i;
             }
         }
 
         #region Utilities
-
-        public static bool RowIndexIsValid(int index, DataGridView view) =>
-            index >= 0 && index < view.RowCount;
 
         public static void CheckRowValue(DataGridViewRow row,
             string valueColumn, string unitsColumn,
@@ -78,7 +75,7 @@
 
         private void ClearSelectedRow(object sender, EventArgs e)
         {
-            var row = prgView.CurrentRow;
+            var row = view.CurrentRow;
 
             if (row == null)
             {
@@ -97,7 +94,7 @@
             try
             {
                 var i = 0;
-                foreach (DataGridViewRow row in prgView.Rows)
+                foreach (DataGridViewRow row in view.Rows)
                 {
                     if (i >= Points.Count)
                     {
@@ -139,12 +136,12 @@
         {
             try
             {
-                if (!RowIndexIsValid(e.RowIndex, prgView))
+                if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
                 {
                     return;
                 }
 
-                var row = prgView.Rows[e.RowIndex];
+                var row = view.Rows[e.RowIndex];
                 //Set AutoManual to Manual, if user changed units
                 if (e.ColumnIndex == UnitsColumn.Index)
                 {
@@ -167,7 +164,7 @@
         {
             try
             {
-                var row = prgView.CurrentRow;
+                var row = view.CurrentRow;
                 var currentUnits = UnitsNamesConstants.UnitsFromName(
                     (string)row.Cells[UnitsColumn.Name].Value, CustomUnits);
                 var form = new SelectUnitsForm(currentUnits, CustomUnits);
@@ -183,7 +180,7 @@
                     row.Cells[UnitsColumn.Name].Value = form.SelectedUnits.GetOffOnName(
                         CustomUnits);
                     row.Cells[ValueColumn.Name].Value = convertedValue;
-                    prgView.EndEdit();
+                    view.EndEdit();
                     CheckRowValue(row, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 }
             }
@@ -197,10 +194,10 @@
         {
             try
             {
-                var row = prgView.CurrentRow;
+                var row = view.CurrentRow;
                 var current = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
                 row.Cells[AutoManualColumn.Name].Value = EnumUtilities.NextValue(current);
-                prgView.EndEdit();
+                view.EndEdit();
             }
             catch (Exception exception)
             {
@@ -210,12 +207,12 @@
 
         private bool ButtonEdit(object sender, EventArgs e)
         {
-            if (prgView.CurrentCell.ColumnIndex == UnitsColumn.Index)
+            if (view.CurrentCell.ColumnIndex == UnitsColumn.Index)
             {
                 EditUnitsColumn(sender, e);
                 return true;
             }
-            else if (prgView.CurrentCell.ColumnIndex == AutoManualColumn.Index)
+            else if (view.CurrentCell.ColumnIndex == AutoManualColumn.Index)
             {
                 EditAutoManualColumn(sender, e);
                 return true;
@@ -228,7 +225,7 @@
         private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (!(((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn) ||
-                !RowIndexIsValid(e.RowIndex, prgView))
+                !FormUtilities.RowIndexIsValid(e.RowIndex, view))
             {
                 return;
             }
@@ -238,12 +235,12 @@
 
         private void prgView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (!RowIndexIsValid(e.RowIndex, prgView))
+            if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
             {
                 return;
             }
 
-            CheckRowValue(prgView.Rows[e.RowIndex], ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            CheckRowValue(view.Rows[e.RowIndex], ValueColumn.Name, UnitsColumn.Name, CustomUnits);
         }
 
         private void prgView_KeyDown(object sender, KeyEventArgs e)
@@ -251,12 +248,12 @@
             switch (e.KeyCode)
             {
                 case Keys.Enter:
-                    if (prgView.CurrentCell != null)
+                    if (view.CurrentCell != null)
                     {
                         e.Handled = true;
                         if (!ButtonEdit(sender, e))
                         {
-                            prgView.BeginEdit(true);
+                            view.BeginEdit(true);
                         }
                     }
                     break;

@@ -87,6 +87,7 @@
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\EnumUtilities.cs" />
+    <Compile Include="Utilities\FormUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.de-DE.resx">
