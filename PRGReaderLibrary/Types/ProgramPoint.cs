@@ -3,7 +3,7 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class ProgramPoint : BasePoint
+    public class ProgramPoint : BasePoint, IBinaryObject
     {
         public int Length { get; set; }
         public Control Control { get; set; }

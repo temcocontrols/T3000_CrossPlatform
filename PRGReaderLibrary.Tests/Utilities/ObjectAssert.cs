@@ -24,6 +24,18 @@ Actual properties: {actual.PropertiesText()}");
 
 
             }
+
+
+        }
+
+        public static void AreEqual(IBinaryObject expected, IBinaryObject actual, string message = "")
+        {
+            //Compare object properties
+            AreEqual((object)expected, actual, message);
+
+            BytesAssert.AreEqual(expected.ToBytes(), actual.ToBytes(),
+                $@"{nameof(ObjectAssert)}.{nameof(AreEqual)} ToBytes test failed.
+{message}");
         }
     }
 }

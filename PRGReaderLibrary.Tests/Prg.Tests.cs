@@ -34,56 +34,42 @@ Value.ToFromToString(): {tempValue.ToString()}
                 {
                     VariableVariantToFromTest(input.Value, prg.CustomUnits);
 
-                    var bytes = input.ToBytes();
-                    var tempVariable = new InputPoint(bytes);
-                    ObjectAssert.AreEqual(input, tempVariable,
-                        "Input ToFromBytes test failed.");
-                    BytesAssert.AreEqual(tempVariable.ToBytes(), input.ToBytes(),
-                        "Input ToFromBytes ToBytes test failed.");
+                    ObjectAssert.AreEqual(input, new InputPoint(input.ToBytes()),
+                            $"{nameof(input)} ToFromBytes test failed.");
                 }
 
                 foreach (var output in prg.Outputs)
                 {
                     VariableVariantToFromTest(output.Value, prg.CustomUnits);
 
-                    var bytes = output.ToBytes();
-                    var tempVariable = new OutputPoint(bytes);
-                    ObjectAssert.AreEqual(output, tempVariable,
-                        "Output ToFromBytes test failed.");
-                    BytesAssert.AreEqual(tempVariable.ToBytes(), output.ToBytes(),
-                        "Output ToFromBytes ToBytes test failed.");
+                    ObjectAssert.AreEqual(output, new OutputPoint(output.ToBytes()),
+                        $"{nameof(output)} ToFromBytes test failed.");
                 }
 
                 foreach (var variable in prg.Variables)
                 {
                     VariableVariantToFromTest(variable.Value, prg.CustomUnits);
 
-                    var bytes = variable.ToBytes();
-                    var tempVariable = new VariablePoint(bytes);
-                    ObjectAssert.AreEqual(variable, tempVariable,
-                        "Variable ToFromBytes test failed.");
-                    BytesAssert.AreEqual(tempVariable.ToBytes(), variable.ToBytes(),
-                        "Variable ToFromBytes ToBytes test failed.");
+                    ObjectAssert.AreEqual(variable, new VariablePoint(variable.ToBytes()),
+                        $"{nameof(variable)} ToFromBytes test failed.");
                 }
 
                 foreach (var program in prg.Programs)
                 {
-                    var bytes = program.ToBytes();
-                    var tempVariable = new ProgramPoint(bytes);
-                    ObjectAssert.AreEqual(program, tempVariable,
-                        "Unit ToFromBytes test failed.");
-                    BytesAssert.AreEqual(tempVariable.ToBytes(), program.ToBytes(),
-                        "Unit ToFromBytes ToBytes test failed.");
+                    ObjectAssert.AreEqual(program, new ProgramPoint(program.ToBytes()),
+                        $"{nameof(program)} ToFromBytes test failed.");
+                }
+
+                foreach (var controller in prg.Controllers)
+                {
+                    ObjectAssert.AreEqual(controller, new ControllerPoint(controller.ToBytes()),
+                        $"{nameof(controller)} ToFromBytes test failed.");
                 }
 
                 foreach (var unit in prg.CustomUnits)
                 {
-                    var bytes = unit.ToBytes();
-                    var tempVariable = new CustomUnit(bytes);
-                    ObjectAssert.AreEqual(unit, tempVariable,
-                        "Unit ToFromBytes test failed.");
-                    BytesAssert.AreEqual(tempVariable.ToBytes(), unit.ToBytes(),
-                        "Unit ToFromBytes ToBytes test failed.");
+                    ObjectAssert.AreEqual(unit, new CustomUnit(unit.ToBytes()),
+                        $"{nameof(unit)} ToFromBytes test failed.");
                 }
             }
 

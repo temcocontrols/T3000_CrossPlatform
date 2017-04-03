@@ -1,8 +1,9 @@
 namespace PRGReaderLibrary
 {
+    using System;
     using System.Collections.Generic;
 
-    public class CustomUnit
+    public class CustomUnit : Version, IBinaryObject
     {
         public bool Direct { get; set; }
         public string DigitalUnitsOff { get; set; }
@@ -12,10 +13,11 @@ namespace PRGReaderLibrary
             string.IsNullOrWhiteSpace(DigitalUnitsOff) &&
             string.IsNullOrWhiteSpace(DigitalUnitsOn);
 
-        public CustomUnit(bool direct = false, 
-            string digitalUnitsOff = "", 
-            string digitalUnitsOn = "", 
+        public CustomUnit(bool direct = false,
+            string digitalUnitsOff = "",
+            string digitalUnitsOn = "",
             FileVersion version = FileVersion.Current)
+            : base(version)
         {
             Direct = direct;
             DigitalUnitsOff = digitalUnitsOff;
@@ -25,18 +27,38 @@ namespace PRGReaderLibrary
         #region Binary data
 
         public CustomUnit(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
+            : base(version)
         {
-            Direct = bytes.ToByte(0 + offset).ToBoolean();
-            DigitalUnitsOff = bytes.GetString(1 + offset, 12).ClearBinarySymvols();
-            DigitalUnitsOn = bytes.GetString(13 + offset, 12).ClearBinarySymvols();
+            switch (FileVersion)
+            {
+                case FileVersion.Dos:
+                case FileVersion.Current:
+                    Direct = bytes.ToByte(0 + offset).ToBoolean();
+                    DigitalUnitsOff = bytes.GetString(1 + offset, 12).ClearBinarySymvols();
+                    DigitalUnitsOn = bytes.GetString(13 + offset, 12).ClearBinarySymvols();
+                    break;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
         }
 
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.Add(Direct.ToByte());
-            bytes.AddRange(DigitalUnitsOff.ToBytes(12));
-            bytes.AddRange(DigitalUnitsOn.ToBytes(12));
+
+            switch (FileVersion)
+            {
+                case FileVersion.Dos:
+                case FileVersion.Current:
+                    bytes.Add(Direct.ToByte());
+                    bytes.AddRange(DigitalUnitsOff.ToBytes(12));
+                    bytes.AddRange(DigitalUnitsOn.ToBytes(12));
+                    break;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
 
             return bytes.ToArray();
         }

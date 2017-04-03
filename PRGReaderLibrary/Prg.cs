@@ -22,12 +22,13 @@
 
         #region Main data
 
-        public List<InfoTable> Info { get; set; } = new List<InfoTable>();
         public List<InputPoint> Inputs { get; set; } = new List<InputPoint>();
         public List<OutputPoint> Outputs { get; set; } = new List<OutputPoint>();
         public List<VariablePoint> Variables { get; set; } = new List<VariablePoint>();
         public List<ProgramPoint> Programs { get; set; } = new List<ProgramPoint>();
-        public List<StrControllerPoint> Controllers { get; set; } = new List<StrControllerPoint>();
+        public List<ControllerPoint> Controllers { get; set; } = new List<ControllerPoint>();
+
+        public List<InfoTable> Info { get; set; } = new List<InfoTable>();
         public List<ControlGroupPoint> Screens { get; set; } = new List<ControlGroupPoint>();
         public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
         public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
@@ -325,7 +326,7 @@
             Controllers.AddRange(GetArray(bytes,
                 Rev6Constants.ControllerCount,
                 Rev6Constants.ControllerSize, ref offset)
-                .Select(i => new StrControllerPoint()));
+                .Select(i => new ControllerPoint(i, 0, FileVersion)));
 
             //Get all screens
             Screens.AddRange(GetArray(bytes,
@@ -555,7 +556,12 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ControllerCount * Rev6Constants.ControllerSize));
+            for (var i = 0; i < Rev6Constants.ControllerCount; ++i)
+            {
+                var obj = i < Controllers.Count ? Controllers[i] : new ControllerPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ScreenCount * Rev6Constants.ScreenSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.GraphicLabelCount * Rev6Constants.GraphicLabelSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.UserLoginCount * Rev6Constants.UserLoginSize));

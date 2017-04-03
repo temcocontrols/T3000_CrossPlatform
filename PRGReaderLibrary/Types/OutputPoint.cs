@@ -3,7 +3,7 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class OutputPoint : InoutPoint
+    public class OutputPoint : InoutPoint, IBinaryObject
     {
         public int LowVoltage { get; set; }
         public int HighVoltage { get; set; }
@@ -60,8 +60,8 @@ namespace PRGReaderLibrary
             {
                 case FileVersion.Current:
                     Description = bytes.GetString(0 + offset, 19).ClearBinarySymvols();
-                    LowVoltage = bytes.ToInt32(19);
-                    HighVoltage = bytes.ToInt32(20);
+                    LowVoltage = bytes.ToByte(19 + offset);
+                    HighVoltage = bytes.ToByte(20 + offset);
                     Label = bytes.GetString(21 + offset, 9).ClearBinarySymvols();
                     valueRaw = bytes.ToUInt32(30 + offset);
                     AutoManual = AutoManualFromByte(bytes.ToByte(34 + offset));

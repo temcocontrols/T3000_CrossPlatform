@@ -3,7 +3,7 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
-    public class InputPoint : InoutPoint
+    public class InputPoint : InoutPoint, IBinaryObject
     {
         public int Filter { get; set; }
         public Sign CalibrationSign { get; set; }

@@ -6,15 +6,13 @@
     {
         /// <summary>
         /// Debug binary objects. Example:
-        /// Console.WriteLine(DebugUtilities.GetTextPresentationForBytesArrays(
-        ///                bytes,
-        ///                ToBytes()));
-        /// after switch
+        /// Console.WriteLine(DebugUtilities.CompareBytes(bytes, ToBytes()));
+        /// in constructor after switch
         /// </summary>
         /// <param name="bytes1"></param>
         /// <param name="bytes2"></param>
         /// <returns></returns>
-        public static string GetTextPresentationForBytesArrays(byte[] bytes1, byte[] bytes2)
+        public static string CompareBytes(byte[] bytes1, byte[] bytes2)
         {
             var text = string.Empty;
             for (var i = 0; i < Math.Min(bytes1.Length, bytes2.Length); ++i)

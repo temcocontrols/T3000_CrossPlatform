@@ -38,6 +38,8 @@
   <ItemGroup>
     <Compile Include="Constants\Rev6Constants.cs" />
     <Compile Include="Constants\CurrentVersionConstants.cs" />
+    <Compile Include="Enums\Periodicity.cs" />
+    <Compile Include="Enums\DirectReverse.cs" />
     <Compile Include="Enums\NormalCom.cs" />
     <Compile Include="Enums\Sign.cs" />
     <Compile Include="Enums\SwitchStatus.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Types\ControlGroupElements.cs" />
     <Compile Include="Types\ControlGroupPoint.cs" />
     <Compile Include="Types\InfoTable.cs" />
+    <Compile Include="Types\Interfaces\IBinaryObject.cs" />
     <Compile Include="Types\NetPoint.cs" />
     <Compile Include="Enums\PanelType.cs" />
     <Compile Include="Constants\SizeConstants.cs" />
@@ -77,7 +80,7 @@
     <Compile Include="Types\StationPoint.cs" />
     <Compile Include="Types\StrAnnualRoutinePoint.cs" />
     <Compile Include="Types\StrArrayPoint.cs" />
-    <Compile Include="Types\StrControllerPoint.cs" />
+    <Compile Include="Types\ControllerPoint.cs" />
     <Compile Include="Types\StrGrpElement.cs" />
     <Compile Include="Types\InputPoint.cs" />
     <Compile Include="Types\StrMonitorPoint.cs" />
