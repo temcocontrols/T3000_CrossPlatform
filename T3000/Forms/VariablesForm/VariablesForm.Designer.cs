@@ -30,15 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
             this.prgView = new System.Windows.Forms.DataGridView();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.clearSelectedRowButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.prgView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,28 +61,7 @@
             this.prgView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContentClick);
             this.prgView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.prgView_CellValidating);
             this.prgView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
-            // 
-            // saveButton
-            // 
-            resources.ApplyResources(this.saveButton, "saveButton");
-            this.saveButton.Name = "saveButton";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.Save);
-            // 
-            // cancelButton
-            // 
-            resources.ApplyResources(this.cancelButton, "cancelButton");
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.Cancel);
-            // 
-            // clearSelectedRowButton
-            // 
-            resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
-            this.clearSelectedRowButton.Name = "clearSelectedRowButton";
-            this.clearSelectedRowButton.UseVisualStyleBackColor = true;
-            this.clearSelectedRowButton.Click += new System.EventHandler(this.clearSelectedRowButton_Click);
+            this.prgView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.prgView_KeyDown);
             // 
             // NumberColumn
             // 
@@ -118,6 +97,28 @@
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
+            // 
+            // saveButton
+            // 
+            resources.ApplyResources(this.saveButton, "saveButton");
+            this.saveButton.Name = "saveButton";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.Save);
+            // 
+            // cancelButton
+            // 
+            resources.ApplyResources(this.cancelButton, "cancelButton");
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.Cancel);
+            // 
+            // clearSelectedRowButton
+            // 
+            resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
+            this.clearSelectedRowButton.Name = "clearSelectedRowButton";
+            this.clearSelectedRowButton.UseVisualStyleBackColor = true;
+            this.clearSelectedRowButton.Click += new System.EventHandler(this.clearSelectedRowButton_Click);
             // 
             // VariablesForm
             // 
