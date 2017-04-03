@@ -51,8 +51,8 @@
     <Compile Include="Enums\Control.cs" />
     <Compile Include="Enums\DigitalAnalog.cs" />
     <Compile Include="Enums\AutoManual.cs" />
-    <Compile Include="Enums\Types.cs" />
-    <Compile Include="Enums\PointTypes.cs" />
+    <Compile Include="Enums\VariableType.cs" />
+    <Compile Include="Enums\PointType.cs" />
     <Compile Include="Constants\DosConstants.cs" />
     <Compile Include="Constants\MaxConstants.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Types\ControlGroupPoint.cs" />
     <Compile Include="Types\InfoTable.cs" />
     <Compile Include="Types\NetPoint.cs" />
-    <Compile Include="Enums\Panels.cs" />
+    <Compile Include="Enums\PanelType.cs" />
     <Compile Include="Constants\SizeConstants.cs" />
     <Compile Include="Types\PasswordPoint.cs" />
     <Compile Include="Types\PasswordStruct.cs" />

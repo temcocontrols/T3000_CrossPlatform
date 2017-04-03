@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum PointTypes
+    public enum PointType
     {
         OUT = 0, // 0-17
         IN,

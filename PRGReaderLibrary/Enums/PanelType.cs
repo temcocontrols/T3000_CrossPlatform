@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum Panels
+    public enum PanelType
     {
         T3000,
         MINI_T3000,

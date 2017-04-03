@@ -38,7 +38,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 1 byte
         /// </summary>
-        public Panels PanelType { get; set; }
+        public PanelType PanelType { get; set; }
 
         /// <summary>
         /// Size: 4 bytes

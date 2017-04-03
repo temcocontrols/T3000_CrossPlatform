@@ -113,14 +113,14 @@
             var maxPrg = 0;
             var maxGrp = 0;
 
-            for (var i = PointTypes.OUT; i <= PointTypes.UNIT; ++i)
+            for (var i = PointType.OUT; i <= PointType.UNIT; ++i)
             {
-                if (i == PointTypes.TZ)
+                if (i == PointType.TZ)
                 {
                     continue;
                 }
 
-                if (i == PointTypes.AMON)
+                if (i == PointType.AMON)
                 {
                     if (Version < 230 && MiniVersion >= 230)
                     {
@@ -130,7 +130,7 @@
                         continue;
                 }
 
-                if (i == PointTypes.ALARMM)
+                if (i == PointType.ALARMM)
                 {
                     if (Version < 216)
                     {
@@ -154,11 +154,11 @@
                     var size = bytes.ToUInt16(offset);
                     offset += 2;
 
-                    if (i == PointTypes.PRG)
+                    if (i == PointType.PRG)
                     {
                         maxPrg = count;
                     }
-                    if (i == PointTypes.GRP)
+                    if (i == PointType.GRP)
                     {
                         maxGrp = count;
                     }
@@ -172,11 +172,11 @@
                         offset += size;
                         switch (i)
                         {
-                            case PointTypes.VAR:
+                            case PointType.VAR:
                                 Variables.Add(new VariablePoint(data, 0, FileVersion));
                                 break;
 
-                            case PointTypes.UNIT:
+                            case PointType.UNIT:
                                 CustomUnits.Add(new CustomUnit(data, 0, FileVersion));
                                 break;
 
@@ -452,20 +452,20 @@ Offset: {offset}, Length: {bytes.Length}");
             bytes.AddRange(Reserved);
 
             var offset = bytes.Count;
-            for (var i = PointTypes.OUT; i <= PointTypes.UNIT; ++i)
+            for (var i = PointType.OUT; i <= PointType.UNIT; ++i)
             {
-                if (i == PointTypes.TZ)
+                if (i == PointType.TZ)
                 {
                     continue;
                 }
 
-                if (i == PointTypes.AMON)
+                if (i == PointType.AMON)
                 {
                     if (Version >= 230 && MiniVersion > 0)
                         continue;
                 }
 
-                if (i == PointTypes.ALARMM)
+                if (i == PointType.ALARMM)
                 {
                     if (Version < 216)
                     {
@@ -498,11 +498,11 @@ Offset: {offset}, Length: {bytes.Length}");
                         offset += size;
                         switch (i)
                         {
-                            case PointTypes.VAR:
+                            case PointType.VAR:
                                 bytes.AddRange(Variables[j].ToBytes());
                                 break;
 
-                            case PointTypes.UNIT:
+                            case PointType.UNIT:
                                 bytes.AddRange(CustomUnits[j].ToBytes());
                                 break;
 

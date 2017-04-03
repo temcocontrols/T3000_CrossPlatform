@@ -48,25 +48,25 @@
             {
                 var type = new PrgType();
                 type.Size = 1;
-                var typeFromData = (VariableTypes)(bytes[index + j]);
+                var typeFromData = (VariableType)(bytes[index + j]);
                 switch (typeFromData)
                 {
-                    case VariableTypes.FLOAT_TYPE:
-                    case VariableTypes.LONG_TYPE:
+                    case VariableType.FLOAT_TYPE:
+                    case VariableType.LONG_TYPE:
                         type.Size = 4;
                         break;
-                    case VariableTypes.INTEGER_TYPE:
+                    case VariableType.INTEGER_TYPE:
                         type.Size = 2;
                         break;
                     default:
                     {
                         switch (typeFromData)
                         {
-                            case VariableTypes.FLOAT_TYPE_ARRAY:
-                            case VariableTypes.LONG_TYPE_ARRAY:
+                            case VariableType.FLOAT_TYPE_ARRAY:
+                            case VariableType.LONG_TYPE_ARRAY:
                                 type.Size = 4;
                                 break;
-                            case VariableTypes.INTEGER_TYPE_ARRAY:
+                            case VariableType.INTEGER_TYPE_ARRAY:
                                 type.Size = 2;
                                 break;
                         }

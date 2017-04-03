@@ -2,7 +2,7 @@
 {
     public enum CommandRequest
     {
-        ReadOutputs = PointTypes.OUT + 1,
+        ReadOutputs = PointType.OUT + 1,
         ReadInputs,
         ReadVariables,
         ReadControllers,
@@ -18,7 +18,7 @@
         ReadUnits,
         ReadUserNames,
         //ReadAlarmSet,
-        ReadTimeSchedule = PointTypes.WR_TIME + 1,
+        ReadTimeSchedule = PointType.WR_TIME + 1,
         ReadAnnualSchedule,
 
         ReadProgramCode = 16,
@@ -37,7 +37,7 @@
         ReadExtIO = 37,
         ReadRemotePoint = 40,
 
-        WriteOutputs = 100 + PointTypes.OUT + 1,
+        WriteOutputs = 100 + PointType.OUT + 1,
         WriteInputs,
         WriteVariables,
         /// <summary>

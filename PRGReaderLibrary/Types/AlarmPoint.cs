@@ -78,12 +78,12 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Size: 4 bits
         /// </summary>
-        public Panels PanelType { get; set; }
+        public PanelType PanelType { get; set; }
 
         /// <summary>
         /// Size: 4 bits
         /// </summary>
-        public Panels DestPanelType { get; set; }
+        public PanelType DestPanelType { get; set; }
 
         /// <summary>
         /// Size: 4 bytes
