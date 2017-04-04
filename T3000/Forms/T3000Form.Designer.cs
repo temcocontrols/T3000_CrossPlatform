@@ -62,6 +62,7 @@
             this.languageMenuItem});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
             // fileToolStripMenuItem
             // 

@@ -84,7 +84,9 @@
                     ApplyResourceToToolStripItemCollection(menuitem.DropDownItems, manager, info);
                 }
 
+                var enabled = item.Enabled;
                 manager.ApplyResources(item, item.Name, info);
+                item.Enabled = enabled;
             }
         }
     }
