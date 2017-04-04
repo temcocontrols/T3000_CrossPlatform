@@ -36,7 +36,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\CurrentVersionConstants.cs" />
     <Compile Include="Enums\Periodicity.cs" />
     <Compile Include="Enums\DirectReverse.cs" />
     <Compile Include="Enums\NormalCom.cs" />
@@ -58,8 +57,6 @@
     <Compile Include="Enums\AutoManual.cs" />
     <Compile Include="Enums\VariableType.cs" />
     <Compile Include="Enums\PointType.cs" />
-    <Compile Include="Constants\DosConstants.cs" />
-    <Compile Include="Constants\MaxConstants.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\UnitsExtensions.cs" />
@@ -84,7 +81,6 @@
     <Compile Include="Types\Interfaces\IBinaryObject.cs" />
     <Compile Include="Types\AdditionalTypes\NetPoint.cs" />
     <Compile Include="Enums\PanelType.cs" />
-    <Compile Include="Constants\SizeConstants.cs" />
     <Compile Include="Types\AdditionalTypes\PasswordPoint.cs" />
     <Compile Include="Types\AdditionalTypes\PasswordStruct.cs" />
     <Compile Include="Types\AdditionalTypes\PointInfo.cs" />

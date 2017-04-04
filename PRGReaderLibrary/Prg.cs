@@ -52,11 +52,6 @@
         {
             DateTime = bytes.GetString(0, 26);
             Signature = bytes.GetString(26, 4);
-            if (!Signature.Equals(DosConstants.Signature, StringComparison.Ordinal))
-            {
-                throw new Exception($"Data is corrupted. {this.PropertiesText()}");
-            }
-
             PanelNumber = bytes.ToUInt16(30);
             NetworkNumber = bytes.ToUInt16(32);
             Version = bytes.ToUInt16(34);
@@ -164,30 +159,21 @@
                 //var data = 
                 bytes.ToBytes(offset, size);
                 offset += size;
-
-                //var prgData = PRGData.FromBytes(data);
-                //if (!prgData.IsEmpty)
-                {
-                    //prg.PrgDatas.Add(prgData);
-                }
             }
-
-            //foreach (var data in PrgDatas)
-            //{
-                //Console.WriteLine(data.PropertiesText());
-            //}
 
             {
                 var size = bytes.ToUInt16(offset);
                 offset += 2;
                 //prg.WrTimes = reader.ReadBytes(size);
-                for (var j = 0; j < size; j += SizeConstants.WR_ONE_DAY_SIZE * MaxConstants.MAX_WR)
+                var schedulesCount = SchedulePoint.GetCount(FileVersion);
+                var schedulesSize = SchedulePoint.GetSize(FileVersion);
+                for (var j = 0; j < size; j += schedulesCount * schedulesCount)
                 {
                     var list = new List<WrOneDay>();
-                    for (var k = 0; k < SizeConstants.WR_ONE_DAY_SIZE; ++k)
+                    for (var k = 0; k < schedulesCount; ++k)
                     {
-                        var data = bytes.ToBytes(offset, MaxConstants.MAX_WR);
-                        offset += MaxConstants.MAX_WR;
+                        var data = bytes.ToBytes(offset, schedulesCount);
+                        offset += schedulesCount;
                         list.Add(WrOneDay.FromBytes(data));
                     }
 
@@ -198,10 +184,11 @@
             {
                 var size = bytes.ToUInt16(offset);
                 offset += 2;
-                for (var j = 0; j < size; j += SizeConstants.AR_DATES_SIZE)
+                var holidaySize = HolidayPoint.GetSize(FileVersion);
+                for (var j = 0; j < size; j += holidaySize)
                 {
-                    var data = bytes.ToBytes(offset, SizeConstants.AR_DATES_SIZE);
-                    offset += SizeConstants.AR_DATES_SIZE;
+                    var data = bytes.ToBytes(offset, holidaySize);
+                    offset += holidaySize;
                     //ArDates.Add(data);
                 }
             }
@@ -226,10 +213,10 @@
                 //var size = bytes.ToUInt16(offset);
                 offset += 2;
 
-                for (var j = 0; j < MaxConstants.MAX_ICON_NAME_TABLE; ++j)
+                //for (var j = 0; j < MaxConstants.MAX_ICON_NAME_TABLE; ++j)
                 {
                     //var data = bytes.ToBytes(offset, SizeConstants.ICON_NAME_TABLE_SIZE);
-                    offset += SizeConstants.ICON_NAME_TABLE_SIZE;
+                    //offset += SizeConstants.ICON_NAME_TABLE_SIZE;
                     //prg.IconNameTable.Add(data);
                 }
             }

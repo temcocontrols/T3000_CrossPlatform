@@ -35,6 +35,9 @@ namespace PRGReaderLibrary
                 case FileVersion.Current:
                     return 33;
 
+                case FileVersion.Dos:
+                    return 46;
+
                 default:
                     throw new NotImplementedException("File version is not implemented");
             }

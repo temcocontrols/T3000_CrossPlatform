@@ -18,7 +18,7 @@
                 FileVersionUtilities.IsDosVersion(GetBytesFromName(name)),
                 $"{nameof(FileVersionUtilities.IsDosVersion)}: {name}");
 
-        public void IsCurrentVersion(string name, bool expected, int revision = CurrentVersionConstants.FileRevision) =>
+        public void IsCurrentVersion(string name, bool expected, int revision = FileVersionUtilities.CurrentFileRevision) =>
             Assert.AreEqual(expected,
                 FileVersionUtilities.IsCurrentVersion(GetBytesFromName(name), revision),
                 $"{nameof(FileVersionUtilities.IsCurrentVersion)}: {name}. Rev: {revision}");
