@@ -64,8 +64,6 @@ namespace PRGReaderLibrary
                 default:
                     throw new NotImplementedException("File version is not implemented");
             }
-
-            Console.WriteLine(DebugUtilities.CompareBytes(bytes, ToBytes()));
         }
 
         /// <summary>

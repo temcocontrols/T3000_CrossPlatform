@@ -11,7 +11,7 @@
         public static readonly int GraphicCount = 240;
         public static readonly int UserCount = 8;
         public static readonly int DigitalCustomUnitsCount = 8;
-        public static readonly int AnalogCustomRangeTableCount = 5;
+        public static readonly int TableCount = 5;
         public static readonly int ScheduleCount = 8;
         public static readonly int HolidayCount = 4;
         public static readonly int MonitorCount = 12;
@@ -29,7 +29,7 @@
         public static readonly int GraphicSize = 70;
         public static readonly int UserSize = 48;
         public static readonly int DigitalCustomUnitsSize = 25;
-        public static readonly int AnalogCustomRangeTableSize = 105;
+        public static readonly int TableSize = 105;
         public static readonly int SettingSize = 400;
         public static readonly int ScheduleSize = 42;
         public static readonly int HolidaySize = 33;

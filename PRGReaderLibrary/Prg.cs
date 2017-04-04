@@ -29,6 +29,7 @@
         public List<ScreenPoint> Screens { get; set; } = new List<ScreenPoint>();
         public List<GraphicPoint> Graphics { get; set; } = new List<GraphicPoint>();
         public List<UserPoint> Users { get; set; } = new List<UserPoint>();
+        public List<TablePoint> Tables { get; set; } = new List<TablePoint>();
 
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
@@ -356,9 +357,10 @@
                 Rev6Constants.DigitalCustomUnitsSize, ref offset)
                 .Select(i => new DigitalCustomUnitsPoint(i, 0, FileVersion)));
 
-            GetArray(bytes,
-                Rev6Constants.AnalogCustomRangeTableCount,
-                Rev6Constants.AnalogCustomRangeTableSize, ref offset);
+            Tables.AddRange(GetArray(bytes,
+                Rev6Constants.TableCount,
+                Rev6Constants.TableSize, ref offset)
+                .Select(i => new TablePoint(i, 0, FileVersion)));
 
             GetObject(bytes, Rev6Constants.SettingSize, ref offset);
 
@@ -596,7 +598,12 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnalogCustomRangeTableCount * Rev6Constants.AnalogCustomRangeTableSize));
+            for (var i = 0; i < Rev6Constants.TableCount; ++i)
+            {
+                var obj = Tables.ElementAtOrDefault(i) ?? new TablePoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.SettingSize));
 
             for (var i = 0; i < Rev6Constants.ScheduleCount; ++i)

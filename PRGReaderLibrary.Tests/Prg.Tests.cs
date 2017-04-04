@@ -84,6 +84,18 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(user)} ToFromBytes test failed.");
                 }
 
+                foreach (var unit in prg.CustomUnits)
+                {
+                    ObjectAssert.AreEqual(unit, new DigitalCustomUnitsPoint(unit.ToBytes()),
+                        $"{nameof(unit)} ToFromBytes test failed.");
+                }
+
+                foreach (var table in prg.Tables)
+                {
+                    ObjectAssert.AreEqual(table, new TablePoint(table.ToBytes()),
+                        $"{nameof(table)} ToFromBytes test failed.");
+                }
+
                 foreach (var schedule in prg.Schedules)
                 {
                     ObjectAssert.AreEqual(schedule, new SchedulePoint(schedule.ToBytes()),
@@ -94,12 +106,6 @@ Value.ToFromToString(): {tempValue.ToString()}
                 {
                     ObjectAssert.AreEqual(holiday, new HolidayPoint(holiday.ToBytes()),
                         $"{nameof(holiday)} ToFromBytes test failed.");
-                }
-
-                foreach (var unit in prg.CustomUnits)
-                {
-                    ObjectAssert.AreEqual(unit, new DigitalCustomUnitsPoint(unit.ToBytes()),
-                        $"{nameof(unit)} ToFromBytes test failed.");
                 }
 
                 foreach (var code in prg.ProgramCodes)

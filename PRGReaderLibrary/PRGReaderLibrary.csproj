@@ -45,6 +45,7 @@
     <Compile Include="Enums\SwitchStatus.cs" />
     <Compile Include="Enums\TextGraphic.cs" />
     <Compile Include="Types\AnalogCustomUnitsPoint.cs" />
+    <Compile Include="Types\HelpTypes\TableValue.cs" />
     <Compile Include="Types\HelpTypes\InoutPoint.cs" />
     <Compile Include="Types\HelpTypes\ValuedPoint.cs" />
     <Compile Include="Types\HelpTypes\UnitsNames.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Types\AdditionalTypes\ControlGroupElements.cs" />
     <Compile Include="Types\ProgramCode.cs" />
     <Compile Include="Types\GraphicPoint.cs" />
+    <Compile Include="Types\TablePoint.cs" />
     <Compile Include="Types\UserPoint.cs" />
     <Compile Include="Types\ScreenPoint.cs" />
     <Compile Include="Types\AdditionalTypes\InfoTable.cs" />
