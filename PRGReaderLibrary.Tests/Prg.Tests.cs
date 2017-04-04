@@ -89,6 +89,12 @@ Value.ToFromToString(): {tempValue.ToString()}
                     ObjectAssert.AreEqual(unit, new CustomUnitPoint(unit.ToBytes()),
                         $"{nameof(unit)} ToFromBytes test failed.");
                 }
+
+                foreach (var code in prg.ProgramCodes)
+                {
+                    ObjectAssert.AreEqual(code, new ProgramCode(code.ToBytes(), 0),
+                        $"{nameof(code)} ToFromBytes test failed.");
+                }
             }
 
             prg.Save(temp);

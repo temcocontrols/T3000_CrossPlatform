@@ -31,11 +31,12 @@
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
 
+        public List<ProgramCode> ProgramCodes { get; set; } = new List<ProgramCode>();
+
         public List<InfoTable> Info { get; set; } = new List<InfoTable>();
         public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
         public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
         public List<List<WrOneDay>> WrTimes { get; set; } = new List<List<WrOneDay>>();
-        public byte[] ProgramCodes { get; set; }
         public List<ControlGroupElements> ControlGroupElements { get; set; } = new List<ControlGroupElements>();
         public List<StationPoint> LocalStations { get; set; } = new List<StationPoint>();
         public PasswordStruct Passwords { get; set; } = new PasswordStruct();
@@ -378,9 +379,10 @@
                 Rev6Constants.AnnualRoutinesCount,
                 Rev6Constants.AnnualRoutinesSize, ref offset);
 
-            GetArray(bytes,
+            ProgramCodes.AddRange(GetArray(bytes,
                 Rev6Constants.ProgramCodeCount,
-                Rev6Constants.ProgramCodeSize, ref offset);
+                Rev6Constants.ProgramCodeSize, ref offset)
+                .Select(i => new ProgramCode(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.VariableCustomUnitCount,
@@ -597,7 +599,13 @@ Offset: {offset}, Length: {bytes.Length}");
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.MonitorCount * Rev6Constants.MonitorSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.WeeklyRoutinesCount * Rev6Constants.WeeklyRoutinesSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnnualRoutinesCount * Rev6Constants.AnnualRoutinesSize));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.ProgramCodeCount * Rev6Constants.ProgramCodeSize));
+            
+            for (var i = 0; i < Rev6Constants.ProgramCodeCount; ++i)
+            {
+                var obj = ProgramCodes.ElementAtOrDefault(i) ?? new ProgramCode();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.VariableCustomUnitCount * Rev6Constants.VariableCustomUnitSize));
 
             if (RawData.Length != bytes.Count)
