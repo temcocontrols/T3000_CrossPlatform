@@ -96,6 +96,12 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(table)} ToFromBytes test failed.");
                 }
 
+                {
+                    var settings = prg.Settings;
+                    ObjectAssert.AreEqual(settings, new Settings(settings.ToBytes()),
+                        $"{nameof(settings)} ToFromBytes test failed.");
+                }
+
                 foreach (var schedule in prg.Schedules)
                 {
                     ObjectAssert.AreEqual(schedule, new SchedulePoint(schedule.ToBytes()),

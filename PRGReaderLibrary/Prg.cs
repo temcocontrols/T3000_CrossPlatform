@@ -30,7 +30,7 @@
         public List<GraphicPoint> Graphics { get; set; } = new List<GraphicPoint>();
         public List<UserPoint> Users { get; set; } = new List<UserPoint>();
         public List<TablePoint> Tables { get; set; } = new List<TablePoint>();
-
+        public Settings Settings { get; set; }
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
 
@@ -362,7 +362,8 @@
                 Rev6Constants.TableSize, ref offset)
                 .Select(i => new TablePoint(i, 0, FileVersion)));
 
-            GetObject(bytes, Rev6Constants.SettingSize, ref offset);
+            Settings = new Settings(
+                GetObject(bytes, Rev6Constants.SettingSize, ref offset), 0, FileVersion);
 
             Schedules.AddRange(GetArray(bytes,
                 Rev6Constants.ScheduleCount,
@@ -604,7 +605,10 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.SettingSize));
+            {
+                var settings = Settings ?? new Settings(FileVersion);
+                bytes.AddRange(settings.ToBytes());
+            }
 
             for (var i = 0; i < Rev6Constants.ScheduleCount; ++i)
             {

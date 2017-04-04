@@ -73,6 +73,7 @@
     <Compile Include="Types\AdditionalTypes\ControlGroupElements.cs" />
     <Compile Include="Types\ProgramCode.cs" />
     <Compile Include="Types\GraphicPoint.cs" />
+    <Compile Include="Types\Settings.cs" />
     <Compile Include="Types\TablePoint.cs" />
     <Compile Include="Types\UserPoint.cs" />
     <Compile Include="Types\ScreenPoint.cs" />
