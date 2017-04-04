@@ -175,7 +175,6 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "T3000Form";
-            this.Icon = global::T3000.Properties.Resources.MainHouseIcon;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
