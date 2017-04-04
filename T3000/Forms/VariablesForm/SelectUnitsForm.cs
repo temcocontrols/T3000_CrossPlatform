@@ -90,13 +90,31 @@
 
         private void numberTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            switch (e.KeyCode)
             {
-                Save(sender, e);
+                case Keys.Enter:
+                    Save(sender, e);
+                    break;
+
+                case Keys.W:
+                case Keys.Up:
+                case Keys.PageUp:
+                case Keys.VolumeUp:
+                    SelectedUnits = EnumUtilities.PrevValue(SelectedUnits);
+                    ShowSelectedItem();
+                    break;
+
+                case Keys.S:
+                case Keys.Down:
+                case Keys.PageDown:
+                case Keys.VolumeDown:
+                    SelectedUnits = EnumUtilities.NextValue(SelectedUnits);
+                    ShowSelectedItem();
+                    break;
             }
         }
 
-        private void ShowSelectedItem()
+        public void ShowSelectedItem()
         {
             numberTextBox.Text = ToNumber(SelectedUnits).ToString();
             messageLabel.Text = string.Format(Resources.SelectUnitsFormSelectedUnits, SelectedUnits.GetOffOnName(CustomUnits));
