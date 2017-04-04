@@ -34,7 +34,8 @@
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
         public List<MonitorPoint> Monitors { get; set; } = new List<MonitorPoint>();
-
+        public List<ScheduleCode> ScheduleCodes { get; set; } = new List<ScheduleCode>();
+        public List<HolidayCode> HolidayCodes { get; set; } = new List<HolidayCode>();
         public List<ProgramCode> ProgramCodes { get; set; } = new List<ProgramCode>();
 
         public List<InfoTable> Info { get; set; } = new List<InfoTable>();
@@ -381,13 +382,15 @@
                 Rev6Constants.MonitorSize, ref offset)
                 .Select(i => new MonitorPoint(i, 0, FileVersion)));
 
-            GetArray(bytes,
-                Rev6Constants.WeeklyRoutinesCount,
-                Rev6Constants.WeeklyRoutinesSize, ref offset);
+            ScheduleCodes.AddRange(GetArray(bytes,
+                Rev6Constants.ScheduleCodeCount,
+                Rev6Constants.ScheduleCodeSize, ref offset)
+                .Select(i => new ScheduleCode(i, 0, FileVersion)));
 
-            GetArray(bytes,
-                Rev6Constants.AnnualRoutinesCount,
-                Rev6Constants.AnnualRoutinesSize, ref offset);
+            HolidayCodes.AddRange(GetArray(bytes,
+                Rev6Constants.HolidayCodeCount,
+                Rev6Constants.HolidayCodeSize, ref offset)
+                .Select(i => new HolidayCode(i, 0, FileVersion)));
 
             ProgramCodes.AddRange(GetArray(bytes,
                 Rev6Constants.ProgramCodeCount,
@@ -630,9 +633,18 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.WeeklyRoutinesCount * Rev6Constants.WeeklyRoutinesSize));
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnnualRoutinesCount * Rev6Constants.AnnualRoutinesSize));
-            
+            for (var i = 0; i < Rev6Constants.ScheduleCodeCount; ++i)
+            {
+                var obj = ScheduleCodes.ElementAtOrDefault(i) ?? new ScheduleCode();
+                bytes.AddRange(obj.ToBytes());
+            }
+
+            for (var i = 0; i < Rev6Constants.HolidayCodeCount; ++i)
+            {
+                var obj = HolidayCodes.ElementAtOrDefault(i) ?? new HolidayCode();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             for (var i = 0; i < Rev6Constants.ProgramCodeCount; ++i)
             {
                 var obj = ProgramCodes.ElementAtOrDefault(i) ?? new ProgramCode();

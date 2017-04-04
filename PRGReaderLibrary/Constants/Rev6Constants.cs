@@ -15,8 +15,8 @@
         public static readonly int ScheduleCount = 8;
         public static readonly int HolidayCount = 4;
         public static readonly int MonitorCount = 12;
-        public static readonly int WeeklyRoutinesCount = 8;
-        public static readonly int AnnualRoutinesCount = 4;
+        public static readonly int ScheduleCodeCount = 8;
+        public static readonly int HolidayCodeCount = 4;
         public static readonly int ProgramCodeCount = 16;
         public static readonly int AnalogCustomUnitsCount = 5;
 
@@ -34,8 +34,8 @@
         public static readonly int ScheduleSize = 42;
         public static readonly int HolidaySize = 33;
         public static readonly int MonitorSize = 104;
-        public static readonly int WeeklyRoutinesSize = 144;
-        public static readonly int AnnualRoutinesSize = 46;
+        public static readonly int ScheduleCodeSize = 144;
+        public static readonly int HolidayCodeSize = 46;
         public static readonly int ProgramCodeSize = 2000;
         public static readonly int AnalogCustomUnitsSize = 20;
     }
