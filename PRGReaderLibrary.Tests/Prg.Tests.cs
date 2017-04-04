@@ -78,6 +78,12 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(graphic)} ToFromBytes test failed.");
                 }
 
+                foreach (var user in prg.Users)
+                {
+                    ObjectAssert.AreEqual(user, new UserPoint(user.ToBytes()),
+                        $"{nameof(user)} ToFromBytes test failed.");
+                }
+
                 foreach (var schedule in prg.Schedules)
                 {
                     ObjectAssert.AreEqual(schedule, new SchedulePoint(schedule.ToBytes()),

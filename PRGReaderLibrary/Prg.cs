@@ -28,6 +28,7 @@
         public List<ControllerPoint> Controllers { get; set; } = new List<ControllerPoint>();
         public List<ScreenPoint> Screens { get; set; } = new List<ScreenPoint>();
         public List<GraphicPoint> Graphics { get; set; } = new List<GraphicPoint>();
+        public List<UserPoint> Users { get; set; } = new List<UserPoint>();
 
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
@@ -345,9 +346,10 @@
                 Rev6Constants.GraphicSize, ref offset)
                 .Select(i => new GraphicPoint(i, 0, FileVersion)));
 
-            GetArray(bytes,
-                Rev6Constants.UserLoginCount,
-                Rev6Constants.UserLoginSize, ref offset);
+            Users.AddRange(GetArray(bytes,
+                Rev6Constants.UserCount,
+                Rev6Constants.UserSize, ref offset)
+                .Select(i => new UserPoint(i, 0, FileVersion)));
 
             CustomUnits.AddRange(GetArray(bytes,
                 Rev6Constants.DigitalCustomUnitsCount,
@@ -582,7 +584,11 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.UserLoginCount * Rev6Constants.UserLoginSize));
+            for (var i = 0; i < Rev6Constants.UserCount; ++i)
+            {
+                var obj = Users.ElementAtOrDefault(i) ?? new UserPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
 
             for (var i = 0; i < Rev6Constants.DigitalCustomUnitsCount; ++i)
             {
