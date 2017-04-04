@@ -44,7 +44,8 @@
         public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
         public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
         public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
-        public List<DigitalCustomUnitPoint> CustomUnits { get; set; } = new List<DigitalCustomUnitPoint>();
+        public List<DigitalCustomUnitsPoint> CustomUnits { get; set; } = new List<DigitalCustomUnitsPoint>();
+        public List<AnalogCustomUnitsPoint> AnalogCustomUnits { get; set; } = new List<AnalogCustomUnitsPoint>();
 
 
         /// <summary>
@@ -178,7 +179,7 @@
                                 break;
 
                             case PointType.UNIT:
-                                CustomUnits.Add(new PRGReaderLibrary.DigitalCustomUnitPoint(data, 0, FileVersion));
+                                CustomUnits.Add(new PRGReaderLibrary.DigitalCustomUnitsPoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -346,13 +347,13 @@
                 Rev6Constants.UserLoginSize, ref offset);
 
             CustomUnits.AddRange(GetArray(bytes,
-                Rev6Constants.CustomerUnitsCount,
-                Rev6Constants.CustomerUnitsSize, ref offset)
-                .Select(i => new DigitalCustomUnitPoint(i, 0, FileVersion)));
+                Rev6Constants.DigitalCustomUnitsCount,
+                Rev6Constants.DigitalCustomUnitsSize, ref offset)
+                .Select(i => new DigitalCustomUnitsPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
-                Rev6Constants.AnalogCustomerRangeTableCount,
-                Rev6Constants.AnalogCustomerRangeTableSize, ref offset);
+                Rev6Constants.AnalogCustomRangeTableCount,
+                Rev6Constants.AnalogCustomRangeTableSize, ref offset);
 
             GetObject(bytes, Rev6Constants.SettingSize, ref offset);
 
@@ -383,9 +384,10 @@
                 Rev6Constants.ProgramCodeSize, ref offset)
                 .Select(i => new ProgramCode(i, 0, FileVersion)));
 
-            GetArray(bytes,
-                Rev6Constants.VariableCustomUnitCount,
-                Rev6Constants.VariableCustomUnitSize, ref offset);
+            AnalogCustomUnits.AddRange(GetArray(bytes,
+                Rev6Constants.AnalogCustomUnitsCount,
+                Rev6Constants.AnalogCustomUnitsSize, ref offset)
+                .Select(i => new AnalogCustomUnitsPoint(i, 0, FileVersion)));
 
             if (offset != bytes.Length)
             {
@@ -574,13 +576,13 @@ Offset: {offset}, Length: {bytes.Length}");
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.GraphicLabelCount * Rev6Constants.GraphicLabelSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.UserLoginCount * Rev6Constants.UserLoginSize));
 
-            for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
+            for (var i = 0; i < Rev6Constants.DigitalCustomUnitsCount; ++i)
             {
-                var obj = CustomUnits.ElementAtOrDefault(i) ?? new DigitalCustomUnitPoint();
+                var obj = CustomUnits.ElementAtOrDefault(i) ?? new DigitalCustomUnitsPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnalogCustomerRangeTableCount * Rev6Constants.AnalogCustomerRangeTableSize));
+            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnalogCustomRangeTableCount * Rev6Constants.AnalogCustomRangeTableSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.SettingSize));
 
             for (var i = 0; i < Rev6Constants.ScheduleCount; ++i)
@@ -605,7 +607,11 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.VariableCustomUnitCount * Rev6Constants.VariableCustomUnitSize));
+            for (var i = 0; i < Rev6Constants.AnalogCustomUnitsCount; ++i)
+            {
+                var obj = AnalogCustomUnits.ElementAtOrDefault(i) ?? new AnalogCustomUnitsPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
 
             if (RawData.Length != bytes.Count)
             {

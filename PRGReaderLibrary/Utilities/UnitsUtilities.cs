@@ -5,10 +5,10 @@
 
     public static class UnitsUtilities
     {
-        public static string BooleanToDigitalValue(bool value, Units units, List<DigitalCustomUnitPoint> customUnits = null) =>
+        public static string BooleanToDigitalValue(bool value, Units units, List<DigitalCustomUnitsPoint> customUnits = null) =>
             value ? units.GetOnName(customUnits) : units.GetOffName(customUnits);
 
-        public static bool DigitalValueToBoolean(string value, Units units, List<DigitalCustomUnitPoint> customUnits = null)
+        public static bool DigitalValueToBoolean(string value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
         {
             var onName = units.GetOnName(customUnits);
             var offName = units.GetOffName(customUnits);
@@ -24,7 +24,7 @@ CustomUnits: {customUnits}");
             return value.Equals(onName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string ConvertValue(string value, Units fromUnits, Units toUnits, List<DigitalCustomUnitPoint> fromCustomUnits = null, List<DigitalCustomUnitPoint> toCustomUnits = null)
+        public static string ConvertValue(string value, Units fromUnits, Units toUnits, List<DigitalCustomUnitsPoint> fromCustomUnits = null, List<DigitalCustomUnitsPoint> toCustomUnits = null)
         {
             if (fromUnits.IsDigital())
             {

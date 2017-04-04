@@ -44,6 +44,7 @@
     <Compile Include="Enums\Sign.cs" />
     <Compile Include="Enums\SwitchStatus.cs" />
     <Compile Include="Enums\TextGraphic.cs" />
+    <Compile Include="Types\AnalogCustomUnitsPoint.cs" />
     <Compile Include="Types\HelpTypes\InoutPoint.cs" />
     <Compile Include="Types\HelpTypes\ValuedPoint.cs" />
     <Compile Include="Types\HelpTypes\UnitsNames.cs" />
@@ -101,7 +102,7 @@
     <Compile Include="PrgType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\AdditionalTypes\TblPoint.cs" />
-    <Compile Include="Types\DigitalCustomUnitPoint.cs" />
+    <Compile Include="Types\DigitalCustomUnitsPoint.cs" />
     <Compile Include="Types\HelpTypes\Version.cs" />
     <Compile Include="Types\AdditionalTypes\View.cs" />
     <Compile Include="Extensions\BytesExtensions.cs" />
