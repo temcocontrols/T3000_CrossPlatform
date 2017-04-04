@@ -44,9 +44,8 @@
         public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
         public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
         public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
-        public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
+        public List<DigitalCustomUnitPoint> CustomUnits { get; set; } = new List<DigitalCustomUnitPoint>();
 
-        //public List<CustomUnitPoint> CustomUnits { get; set; } = new List<CustomUnitPoint>();
 
         /// <summary>
         /// Size: 8 bytes
@@ -179,7 +178,7 @@
                                 break;
 
                             case PointType.UNIT:
-                                CustomUnits.Add(new PRGReaderLibrary.CustomUnitPoint(data, 0, FileVersion));
+                                CustomUnits.Add(new PRGReaderLibrary.DigitalCustomUnitPoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -349,7 +348,7 @@
             CustomUnits.AddRange(GetArray(bytes,
                 Rev6Constants.CustomerUnitsCount,
                 Rev6Constants.CustomerUnitsSize, ref offset)
-                .Select(i => new CustomUnitPoint(i, 0, FileVersion)));
+                .Select(i => new DigitalCustomUnitPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.AnalogCustomerRangeTableCount,
@@ -577,7 +576,7 @@ Offset: {offset}, Length: {bytes.Length}");
 
             for (var i = 0; i < Rev6Constants.CustomerUnitsCount; ++i)
             {
-                var obj = CustomUnits.ElementAtOrDefault(i) ?? new CustomUnitPoint();
+                var obj = CustomUnits.ElementAtOrDefault(i) ?? new DigitalCustomUnitPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 

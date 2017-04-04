@@ -8,7 +8,7 @@
     [TestFixture]
     public class PrgReader_Tests
     {
-        public void VariableVariantToFromTest(VariableVariant value, List<CustomUnitPoint> customUnits)
+        public void VariableVariantToFromTest(VariableVariant value, List<DigitalCustomUnitPoint> customUnits)
         {
             var tempValue = new VariableVariant(value.ToString(), value.Units, customUnits);
             ObjectAssert.AreEqual(value, tempValue,
@@ -86,7 +86,7 @@ Value.ToFromToString(): {tempValue.ToString()}
 
                 foreach (var unit in prg.CustomUnits)
                 {
-                    ObjectAssert.AreEqual(unit, new CustomUnitPoint(unit.ToBytes()),
+                    ObjectAssert.AreEqual(unit, new DigitalCustomUnitPoint(unit.ToBytes()),
                         $"{nameof(unit)} ToFromBytes test failed.");
                 }
 
@@ -139,7 +139,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             var path = TestUtilities.GetFullPathForTestFile("BTUMeter.prg");
             var prg = Prg.Load(path);
 
-            ObjectAssert.AreEqual(new CustomUnitPoint(false, "TANK1", "TANK2"), prg.CustomUnits[0]);
+            ObjectAssert.AreEqual(new DigitalCustomUnitPoint(false, "TANK1", "TANK2"), prg.CustomUnits[0]);
         }
 
         [Test]
