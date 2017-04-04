@@ -46,12 +46,16 @@
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
+            this.variablesButton = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.buttonsToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.controlToolStripMenuItem,
@@ -167,10 +171,27 @@
             this.statusLabel.Name = "statusLabel";
             resources.ApplyResources(this.statusLabel, "statusLabel");
             // 
+            // buttonsToolStrip
+            // 
+            this.buttonsToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.buttonsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.variablesButton});
+            resources.ApplyResources(this.buttonsToolStrip, "buttonsToolStrip");
+            this.buttonsToolStrip.Name = "buttonsToolStrip";
+            // 
+            // variablesButton
+            // 
+            this.variablesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.variablesButton, "variablesButton");
+            this.variablesButton.Image = global::T3000.Properties.Resources.VariablesImage;
+            this.variablesButton.Name = "variablesButton";
+            this.variablesButton.Click += new System.EventHandler(this.ShowVariables);
+            // 
             // T3000Form
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonsToolStrip);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -179,6 +200,8 @@
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.buttonsToolStrip.ResumeLayout(false);
+            this.buttonsToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,5 +226,7 @@
         private System.Windows.Forms.ToolStripMenuItem inputsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem outputsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem screensMenuItem;
+        private System.Windows.Forms.ToolStrip buttonsToolStrip;
+        private System.Windows.Forms.ToolStripButton variablesButton;
     }
 }

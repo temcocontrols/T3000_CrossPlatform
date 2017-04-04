@@ -44,6 +44,8 @@
                 outputsMenuItem.Enabled = true;
                 variablesMenuItem.Enabled = true;
                 screensMenuItem.Enabled = true;
+
+                variablesButton.Enabled = true;
             }
             catch (Exception exception)
             {
