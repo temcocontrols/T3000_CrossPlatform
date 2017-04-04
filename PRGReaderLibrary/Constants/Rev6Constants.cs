@@ -8,7 +8,7 @@
         public static readonly int ProgramCount = 16;
         public static readonly int ControllerCount = 16;
         public static readonly int ScreenCount = 16;
-        public static readonly int GraphicLabelCount = 240;
+        public static readonly int GraphicCount = 240;
         public static readonly int UserLoginCount = 8;
         public static readonly int DigitalCustomUnitsCount = 8;
         public static readonly int AnalogCustomRangeTableCount = 5;
@@ -26,7 +26,7 @@
         public static readonly int ProgramSize = 37;
         public static readonly int ControllerSize = 28;
         public static readonly int ScreenSize = 46;
-        public static readonly int GraphicLabelSize = 70;
+        public static readonly int GraphicSize = 70;
         public static readonly int UserLoginSize = 48;
         public static readonly int DigitalCustomUnitsSize = 25;
         public static readonly int AnalogCustomRangeTableSize = 105;

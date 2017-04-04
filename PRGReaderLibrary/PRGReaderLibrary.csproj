@@ -71,6 +71,7 @@
     <Compile Include="Types\HelpTypes\BasePoint.cs" />
     <Compile Include="Types\AdditionalTypes\ControlGroupElements.cs" />
     <Compile Include="Types\ProgramCode.cs" />
+    <Compile Include="Types\GraphicPoint.cs" />
     <Compile Include="Types\ScreenPoint.cs" />
     <Compile Include="Types\AdditionalTypes\InfoTable.cs" />
     <Compile Include="Types\Interfaces\IBinaryObject.cs" />

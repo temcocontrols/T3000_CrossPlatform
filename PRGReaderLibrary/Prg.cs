@@ -27,6 +27,7 @@
         public List<ProgramPoint> Programs { get; set; } = new List<ProgramPoint>();
         public List<ControllerPoint> Controllers { get; set; } = new List<ControllerPoint>();
         public List<ScreenPoint> Screens { get; set; } = new List<ScreenPoint>();
+        public List<GraphicPoint> Graphics { get; set; } = new List<GraphicPoint>();
 
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
@@ -335,12 +336,14 @@
                 Rev6Constants.ScreenSize, ref offset)
                 .Select(i => new ScreenPoint(i, 0, FileVersion)));
 
-            //Get all graphic labels
-            //Labels.AddRange(
-            GetArray(bytes,
-                Rev6Constants.GraphicLabelCount,
-                Rev6Constants.GraphicLabelSize, ref offset);
-            //    .Select(i => new Str_label_point()));
+            //Get all graphics
+
+            //TODO: Constants to object static Size(FileVersion) Count(FileVersion)
+
+            Graphics.AddRange(GetArray(bytes,
+                Rev6Constants.GraphicCount,
+                Rev6Constants.GraphicSize, ref offset)
+                .Select(i => new GraphicPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.UserLoginCount,
@@ -573,7 +576,12 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.GraphicLabelCount * Rev6Constants.GraphicLabelSize));
+            for (var i = 0; i < Rev6Constants.GraphicCount; ++i)
+            {
+                var obj = Graphics.ElementAtOrDefault(i) ?? new GraphicPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.UserLoginCount * Rev6Constants.UserLoginSize));
 
             for (var i = 0; i < Rev6Constants.DigitalCustomUnitsCount; ++i)

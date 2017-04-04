@@ -18,6 +18,12 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
+        /// <summary>
+        /// FileVersion.Current - Need 46 bytes
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <param name="version"></param>
         public ScreenPoint(byte[] bytes, int offset = 0,
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
@@ -37,6 +43,10 @@ namespace PRGReaderLibrary
             }
         }
 
+        /// <summary>
+        /// FileVersion.Current - 46 bytes
+        /// </summary>
+        /// <returns></returns>
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();

@@ -9,7 +9,7 @@
         {
             var buffer = bytes.ToBytes(offset, length);
 
-            return Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+            return Encoding.UTF7.GetString(buffer, 0, buffer.Length);
         }
 
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
