@@ -1,5 +1,7 @@
 ﻿namespace PRGReaderLibrary
 {
+    using System;
+
     public class ProgramCode : BaseCode, IBinaryObject
     {
         public ProgramCode(byte[] code = null, FileVersion version = FileVersion.Current)
@@ -9,6 +11,30 @@
         }
 
         #region Binary data
+
+        public static int GetCount(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 16;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
+        public static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 2000;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
 
         /// <summary>
         /// FileVersion.Current - need 2000 bytes

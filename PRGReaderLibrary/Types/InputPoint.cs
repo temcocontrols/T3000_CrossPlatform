@@ -17,6 +17,36 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
+        public static int GetCount(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                 case FileVersion.Current:
+                    return 64;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
+        public static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 46;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
+        /// <summary>
+        /// FileVersion.Current - Need 46 bytes
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <param name="version"></param>
         public InputPoint(byte[] bytes, int offset = 0,
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
@@ -59,6 +89,10 @@ namespace PRGReaderLibrary
             CalibrationL = calibrationLRaw / 10.0;
         }
 
+        /// <summary>
+        /// FileVersion.Current - 46 bytes
+        /// </summary>
+        /// <returns></returns>
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();

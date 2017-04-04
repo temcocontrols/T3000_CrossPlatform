@@ -264,39 +264,39 @@
             var offset = 3;
 
             //Get all inputs
-            Inputs.AddRange(GetArray(bytes, 
-                Rev6Constants.InputCount,
-                Rev6Constants.InputSize, ref offset)
+            Inputs.AddRange(GetArray(bytes,
+                InputPoint.GetCount(FileVersion),
+                InputPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new InputPoint(i, 0, FileVersion)));
 
             //Get all outputs
             Outputs.AddRange(GetArray(bytes,
-                Rev6Constants.OutputCount,
-                Rev6Constants.OutputSize, ref offset)
+                OutputPoint.GetCount(FileVersion),
+                OutputPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new OutputPoint(i, 0, FileVersion)));
 
             //Get all variables
             Variables.AddRange(GetArray(bytes,
-                Rev6Constants.VariableCount,
-                Rev6Constants.VariableSize, ref offset)
+                VariablePoint.GetCount(FileVersion),
+                VariablePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new VariablePoint(i, 0, FileVersion)));
 
             //Get all programs
             Programs.AddRange(GetArray(bytes,
-                Rev6Constants.ProgramCount,
-                Rev6Constants.ProgramSize, ref offset)
+                ProgramPoint.GetCount(FileVersion),
+                ProgramPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new ProgramPoint(i, 0, FileVersion)));
 
             //Get all controllers
             Controllers.AddRange(GetArray(bytes,
-                Rev6Constants.ControllerCount,
-                Rev6Constants.ControllerSize, ref offset)
+                ControllerPoint.GetCount(FileVersion),
+                ControllerPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new ControllerPoint(i, 0, FileVersion)));
 
             //Get all screens
             Screens.AddRange(GetArray(bytes,
-                Rev6Constants.ScreenCount,
-                Rev6Constants.ScreenSize, ref offset)
+                ScreenPoint.GetCount(FileVersion),
+                ScreenPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new ScreenPoint(i, 0, FileVersion)));
 
             //Get all graphics
@@ -304,61 +304,61 @@
             //TODO: Constants to object static Size(FileVersion) Count(FileVersion)
 
             Graphics.AddRange(GetArray(bytes,
-                Rev6Constants.GraphicCount,
-                Rev6Constants.GraphicSize, ref offset)
+                GraphicPoint.GetCount(FileVersion),
+                GraphicPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new GraphicPoint(i, 0, FileVersion)));
 
             Users.AddRange(GetArray(bytes,
-                Rev6Constants.UserCount,
-                Rev6Constants.UserSize, ref offset)
+                UserPoint.GetCount(FileVersion),
+                UserPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new UserPoint(i, 0, FileVersion)));
 
             CustomUnits.AddRange(GetArray(bytes,
-                Rev6Constants.DigitalCustomUnitsCount,
-                Rev6Constants.DigitalCustomUnitsSize, ref offset)
+                DigitalCustomUnitsPoint.GetCount(FileVersion),
+                DigitalCustomUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new DigitalCustomUnitsPoint(i, 0, FileVersion)));
 
             Tables.AddRange(GetArray(bytes,
-                Rev6Constants.TableCount,
-                Rev6Constants.TableSize, ref offset)
+                TablePoint.GetCount(FileVersion),
+                TablePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new TablePoint(i, 0, FileVersion)));
 
             Settings = new Settings(
-                GetObject(bytes, Rev6Constants.SettingSize, ref offset), 0, FileVersion);
+                GetObject(bytes, Settings.GetSize(FileVersion), ref offset), 0, FileVersion);
 
             Schedules.AddRange(GetArray(bytes,
-                Rev6Constants.ScheduleCount,
-                Rev6Constants.ScheduleSize, ref offset)
+                SchedulePoint.GetCount(FileVersion),
+                SchedulePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new SchedulePoint(i, 0, FileVersion)));
 
             Holidays.AddRange(GetArray(bytes,
-                Rev6Constants.HolidayCount,
-                Rev6Constants.HolidaySize, ref offset)
+                HolidayPoint.GetCount(FileVersion),
+                HolidayPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new HolidayPoint(i, 0, FileVersion)));
 
             Monitors.AddRange(GetArray(bytes,
-                Rev6Constants.MonitorCount,
-                Rev6Constants.MonitorSize, ref offset)
+                MonitorPoint.GetCount(FileVersion),
+                MonitorPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new MonitorPoint(i, 0, FileVersion)));
 
             ScheduleCodes.AddRange(GetArray(bytes,
-                Rev6Constants.ScheduleCodeCount,
-                Rev6Constants.ScheduleCodeSize, ref offset)
+                ScheduleCode.GetCount(FileVersion),
+                ScheduleCode.GetSize(FileVersion), ref offset)
                 .Select(i => new ScheduleCode(i, 0, FileVersion)));
 
             HolidayCodes.AddRange(GetArray(bytes,
-                Rev6Constants.HolidayCodeCount,
-                Rev6Constants.HolidayCodeSize, ref offset)
+                HolidayCode.GetCount(FileVersion),
+                HolidayCode.GetSize(FileVersion), ref offset)
                 .Select(i => new HolidayCode(i, 0, FileVersion)));
 
             ProgramCodes.AddRange(GetArray(bytes,
-                Rev6Constants.ProgramCodeCount,
-                Rev6Constants.ProgramCodeSize, ref offset)
+                ProgramCode.GetCount(FileVersion),
+                ProgramCode.GetSize(FileVersion), ref offset)
                 .Select(i => new ProgramCode(i, 0, FileVersion)));
 
             AnalogCustomUnits.AddRange(GetArray(bytes,
-                Rev6Constants.AnalogCustomUnitsCount,
-                Rev6Constants.AnalogCustomUnitsSize, ref offset)
+                AnalogCustomUnitsPoint.GetCount(FileVersion),
+                AnalogCustomUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new AnalogCustomUnitsPoint(i, 0, FileVersion)));
 
             if (offset != bytes.Length)
@@ -510,61 +510,62 @@ Offset: {offset}, Length: {bytes.Length}");
 
             //'for' instead 'foreach' for upgrade support
 
-            for (var i = 0; i < Rev6Constants.InputCount; ++i)
+            for (var i = 0; i < InputPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Inputs.ElementAtOrDefault(i) ?? new InputPoint();
+                obj.FileVersion = FileVersion;
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.OutputCount; ++i)
+            for (var i = 0; i < OutputPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Outputs.ElementAtOrDefault(i) ?? new OutputPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.VariableCount; ++i)
+            for (var i = 0; i < VariablePoint.GetCount(FileVersion); ++i)
             {
                 var obj = Variables.ElementAtOrDefault(i) ?? new VariablePoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.ProgramCount; ++i)
+            for (var i = 0; i < ProgramPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Programs.ElementAtOrDefault(i) ?? new ProgramPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.ControllerCount; ++i)
+            for (var i = 0; i < ControllerPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Controllers.ElementAtOrDefault(i) ?? new ControllerPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.ScreenCount; ++i)
+            for (var i = 0; i < ScreenPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Screens.ElementAtOrDefault(i) ?? new ScreenPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.GraphicCount; ++i)
+            for (var i = 0; i < GraphicPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Graphics.ElementAtOrDefault(i) ?? new GraphicPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.UserCount; ++i)
+            for (var i = 0; i < UserPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Users.ElementAtOrDefault(i) ?? new UserPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.DigitalCustomUnitsCount; ++i)
+            for (var i = 0; i < DigitalCustomUnitsPoint.GetCount(FileVersion); ++i)
             {
                 var obj = CustomUnits.ElementAtOrDefault(i) ?? new DigitalCustomUnitsPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.TableCount; ++i)
+            for (var i = 0; i < TablePoint.GetCount(FileVersion); ++i)
             {
                 var obj = Tables.ElementAtOrDefault(i) ?? new TablePoint();
                 bytes.AddRange(obj.ToBytes());
@@ -575,43 +576,43 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(settings.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.ScheduleCount; ++i)
+            for (var i = 0; i < SchedulePoint.GetCount(FileVersion); ++i)
             {
                 var obj = Schedules.ElementAtOrDefault(i) ?? new SchedulePoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.HolidayCount; ++i)
+            for (var i = 0; i < HolidayPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Holidays.ElementAtOrDefault(i) ?? new HolidayPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.MonitorCount; ++i)
+            for (var i = 0; i < MonitorPoint.GetCount(FileVersion); ++i)
             {
                 var obj = Monitors.ElementAtOrDefault(i) ?? new MonitorPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.ScheduleCodeCount; ++i)
+            for (var i = 0; i < ScheduleCode.GetCount(FileVersion); ++i)
             {
                 var obj = ScheduleCodes.ElementAtOrDefault(i) ?? new ScheduleCode();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.HolidayCodeCount; ++i)
+            for (var i = 0; i < HolidayCode.GetCount(FileVersion); ++i)
             {
                 var obj = HolidayCodes.ElementAtOrDefault(i) ?? new HolidayCode();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.ProgramCodeCount; ++i)
+            for (var i = 0; i < ProgramCode.GetCount(FileVersion); ++i)
             {
                 var obj = ProgramCodes.ElementAtOrDefault(i) ?? new ProgramCode();
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < Rev6Constants.AnalogCustomUnitsCount; ++i)
+            for (var i = 0; i < AnalogCustomUnitsPoint.GetCount(FileVersion); ++i)
             {
                 var obj = AnalogCustomUnits.ElementAtOrDefault(i) ?? new AnalogCustomUnitsPoint();
                 bytes.AddRange(obj.ToBytes());

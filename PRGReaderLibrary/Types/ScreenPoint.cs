@@ -18,6 +18,30 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
+        public static int GetCount(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 16;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
+        public static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 46;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
         /// <summary>
         /// FileVersion.Current - Need 46 bytes
         /// </summary>

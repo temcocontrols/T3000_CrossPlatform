@@ -17,37 +17,37 @@ namespace PRGReaderLibrary
         { }
 
         #region Binary data
-        
-        public static byte ToByte(SwitchStatus value)
-        {
-            switch (value)
-            {
-                case SwitchStatus.Hand:
-                    return 2;
 
-                case SwitchStatus.Auto:
-                    return 1;
+        public static int GetCount(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 64;
 
                 default:
-                    return 0;
+                    throw new NotImplementedException("File version is not implemented");
             }
         }
 
-        public static SwitchStatus SwitchStatusFromByte(byte value)
+        public static int GetSize(FileVersion version = FileVersion.Current)
         {
-            switch (value)
+            switch (version)
             {
-                case 2:
-                    return SwitchStatus.Hand;
-
-                case 1:
-                    return SwitchStatus.Auto;
+                case FileVersion.Current:
+                    return 45;
 
                 default:
-                    return SwitchStatus.Off;
+                    throw new NotImplementedException("File version is not implemented");
             }
         }
 
+        /// <summary>
+        /// FileVersion.Current - Need 45 bytes
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <param name="version"></param>
         public OutputPoint(byte[] bytes, int offset = 0,
             FileVersion version = FileVersion.Current)
         {
@@ -66,7 +66,7 @@ namespace PRGReaderLibrary
                     valueRaw = bytes.ToUInt32(30 + offset);
                     AutoManual = AutoManualFromByte(bytes.ToByte(34 + offset));
                     DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(35 + offset));
-                    HwSwitchStatus = SwitchStatusFromByte(bytes.ToByte(36 + offset));
+                    HwSwitchStatus = (SwitchStatus)bytes.ToByte(36 + offset);
                     Control = ControlFromByte(bytes.ToByte(37 + offset));
                     DigitalControl = ControlFromByte(bytes.ToByte(38 + offset));
                     Decommissioned = bytes.ToByte(39 + offset);
@@ -84,6 +84,10 @@ namespace PRGReaderLibrary
             Value = new VariableVariant(valueRaw, units);
         }
 
+        /// <summary>
+        /// FileVersion.Current - 45 bytes
+        /// </summary>
+        /// <returns></returns>
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();
@@ -98,7 +102,7 @@ namespace PRGReaderLibrary
                     bytes.AddRange(Value.Value.ToBytes());
                     bytes.Add(ToByte(AutoManual));
                     bytes.Add(ToByte(DigitalAnalog));
-                    bytes.Add(ToByte(HwSwitchStatus));
+                    bytes.Add((byte)HwSwitchStatus);
                     bytes.Add(ToByte(Control));
                     bytes.Add(ToByte(DigitalControl));
                     bytes.Add((byte)Decommissioned);

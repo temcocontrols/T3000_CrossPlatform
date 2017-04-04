@@ -19,11 +19,36 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
-        public static byte ToByte(NormalCom value) =>
-            (value == NormalCom.Com).ToByte();
-        public static NormalCom NormalComFromByte(byte value) =>
-            value.ToBoolean() ? NormalCom.Com : NormalCom.Normal;
+        public static int GetCount(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 16;
 
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
+        public static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 37;
+
+                default:
+                    throw new NotImplementedException("File version is not implemented");
+            }
+        }
+
+        /// <summary>
+        /// FileVersion.Current - Need 37 bytes
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="offset"></param>
+        /// <param name="version"></param>
         public ProgramPoint(byte[] bytes, int offset = 0,
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
@@ -34,7 +59,7 @@ namespace PRGReaderLibrary
                     Length = bytes.ToUInt16(30 + offset);
                     Control = ValuedPoint.ControlFromByte(bytes.ToByte(32 + offset));
                     AutoManual = ValuedPoint.AutoManualFromByte(bytes.ToByte(33 + offset));
-                    NormalCom = NormalComFromByte(bytes.ToByte(34 + offset));
+                    NormalCom = (NormalCom)bytes.ToByte(34 + offset);
                     ErrorCode = bytes.ToByte(35 + offset);
                     Unused = bytes.ToByte(36 + offset);
                     break;
@@ -44,6 +69,10 @@ namespace PRGReaderLibrary
             }
         }
 
+        /// <summary>
+        /// FileVersion.Current - 37 bytes
+        /// </summary>
+        /// <returns></returns>
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();
@@ -55,7 +84,7 @@ namespace PRGReaderLibrary
                     bytes.AddRange(((ushort)Length).ToBytes());
                     bytes.Add(ValuedPoint.ToByte(Control));
                     bytes.Add(ValuedPoint.ToByte(AutoManual));
-                    bytes.Add(ToByte(NormalCom));
+                    bytes.Add((byte)NormalCom);
                     bytes.Add((byte)ErrorCode);
                     bytes.Add((byte)Unused);
                     break;
