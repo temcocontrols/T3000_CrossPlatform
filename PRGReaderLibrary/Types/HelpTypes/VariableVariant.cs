@@ -69,7 +69,10 @@ Value: {boolean}, Units: {units}");
             }
             else if (type == typeof(TimeSpan))
             {
-                return ((TimeSpan)value).ToString(@"hh\:mm\:ss\.fff");
+                var span = (TimeSpan) value;
+                return span.ToString(span.Milliseconds == 0
+                    ? @"hh\:mm\:ss"
+                    : @"hh\:mm\:ss\.fff");
             }
             else if (type == typeof(double))
             {

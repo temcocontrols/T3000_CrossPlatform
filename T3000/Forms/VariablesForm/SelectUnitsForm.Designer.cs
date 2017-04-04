@@ -30,7 +30,7 @@
         {
             this.digitalUnitsListBox = new System.Windows.Forms.ListBox();
             this.analogUnitsListBox = new System.Windows.Forms.ListBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.messageLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.numberTextBox = new System.Windows.Forms.TextBox();
             this.saveButton = new System.Windows.Forms.Button();
@@ -38,7 +38,7 @@
             this.editButton = new System.Windows.Forms.Button();
             this.analogUnitsLabel = new System.Windows.Forms.Label();
             this.digitalUnitsLabel = new System.Windows.Forms.Label();
-            this.statusStrip1.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // digitalUnitsListBox
@@ -67,15 +67,14 @@
             this.analogUnitsListBox.DoubleClick += new System.EventHandler(this.Save);
             this.analogUnitsListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.unitsListBox_KeyDown);
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.messageLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 389);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(708, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip.Location = new System.Drawing.Point(0, 389);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(708, 22);
+            this.statusStrip.TabIndex = 2;
             // 
             // messageLabel
             // 
@@ -155,13 +154,13 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.numberTextBox);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.analogUnitsListBox);
             this.Controls.Add(this.digitalUnitsListBox);
             this.Name = "SelectUnitsForm";
             this.Text = "Select units:";
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,7 +170,7 @@
 
         private System.Windows.Forms.ListBox digitalUnitsListBox;
         private System.Windows.Forms.ListBox analogUnitsListBox;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel messageLabel;
         private System.Windows.Forms.TextBox numberTextBox;
         private System.Windows.Forms.Button saveButton;

@@ -67,7 +67,6 @@
     <Compile Include="Forms\VariablesForm\SelectUnitsForm.Designer.cs">
       <DependentUpon>SelectUnitsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\UnitsNameItem.cs" />
     <Compile Include="Forms\VariablesForm\VariablesForm.cs">
       <SubType>Form</SubType>
     </Compile>
