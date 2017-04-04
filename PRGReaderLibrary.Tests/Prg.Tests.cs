@@ -114,6 +114,12 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(holiday)} ToFromBytes test failed.");
                 }
 
+                foreach (var monitor in prg.Monitors)
+                {
+                    ObjectAssert.AreEqual(monitor, new MonitorPoint(monitor.ToBytes()),
+                        $"{nameof(monitor)} ToFromBytes test failed.");
+                }
+
                 foreach (var code in prg.ProgramCodes)
                 {
                     ObjectAssert.AreEqual(code, new ProgramCode(code.ToBytes(), 0),

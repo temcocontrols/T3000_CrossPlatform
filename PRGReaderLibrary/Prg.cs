@@ -33,6 +33,7 @@
         public Settings Settings { get; set; }
         public List<SchedulePoint> Schedules { get; set; } = new List<SchedulePoint>();
         public List<HolidayPoint> Holidays { get; set; } = new List<HolidayPoint>();
+        public List<MonitorPoint> Monitors { get; set; } = new List<MonitorPoint>();
 
         public List<ProgramCode> ProgramCodes { get; set; } = new List<ProgramCode>();
 
@@ -375,9 +376,10 @@
                 Rev6Constants.HolidaySize, ref offset)
                 .Select(i => new HolidayPoint(i, 0, FileVersion)));
 
-            GetArray(bytes,
+            Monitors.AddRange(GetArray(bytes,
                 Rev6Constants.MonitorCount,
-                Rev6Constants.MonitorSize, ref offset);
+                Rev6Constants.MonitorSize, ref offset)
+                .Select(i => new MonitorPoint(i, 0, FileVersion)));
 
             GetArray(bytes,
                 Rev6Constants.WeeklyRoutinesCount,
@@ -622,7 +624,12 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.MonitorCount * Rev6Constants.MonitorSize));
+            for (var i = 0; i < Rev6Constants.MonitorCount; ++i)
+            {
+                var obj = Monitors.ElementAtOrDefault(i) ?? new MonitorPoint();
+                bytes.AddRange(obj.ToBytes());
+            }
+
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.WeeklyRoutinesCount * Rev6Constants.WeeklyRoutinesSize));
             bytes.AddRange(RawData.ToBytes(bytes.Count, Rev6Constants.AnnualRoutinesCount * Rev6Constants.AnnualRoutinesSize));
             
