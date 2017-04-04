@@ -16,8 +16,6 @@
         public byte[] Reserved { get; set; }
         public long Length { get; set; }
         public long Coef { get; set; }
-        public IList<PrgData> PrgDatas { get; set; } = new List<PrgData>();
-        public IList<byte[]> GrpDatas { get; set; } = new List<byte[]>();
 
         #region Main data
 
@@ -38,55 +36,15 @@
         public List<HolidayCode> HolidayCodes { get; set; } = new List<HolidayCode>();
         public List<ProgramCode> ProgramCodes { get; set; } = new List<ProgramCode>();
 
-        public List<InfoTable> Info { get; set; } = new List<InfoTable>();
-        public List<StrMonitorPoint> AnalogMonitors { get; set; } = new List<StrMonitorPoint>();
-        public List<StrMonitorWorkData> MonitorWorkData { get; set; } = new List<StrMonitorWorkData>();
-        public List<List<WrOneDay>> WrTimes { get; set; } = new List<List<WrOneDay>>();
-        public List<ControlGroupElements> ControlGroupElements { get; set; } = new List<ControlGroupElements>();
-        public List<StationPoint> LocalStations { get; set; } = new List<StationPoint>();
-        public PasswordStruct Passwords { get; set; } = new PasswordStruct();
-        public List<AlarmPoint> Alarms { get; set; } = new List<AlarmPoint>();
-        public List<AlarmSetPoint> AlarmsSet { get; set; } = new List<AlarmSetPoint>();
-        public List<StrArrayPoint> Arrays { get; set; } = new List<StrArrayPoint>();
-        public List<StrTblPoint> CustomTab { get; set; } = new List<StrTblPoint>();
         public List<DigitalCustomUnitsPoint> CustomUnits { get; set; } = new List<DigitalCustomUnitsPoint>();
         public List<AnalogCustomUnitsPoint> AnalogCustomUnits { get; set; } = new List<AnalogCustomUnitsPoint>();
-
-
-        /// <summary>
-        /// Size: 8 bytes
-        /// </summary>
-        public ulong IndexHeapGrp { get; set; }
-
-        /// <summary>
-        /// Size: 4 bytes. Modified. Initially ptr(4)
-        /// </summary>
-        public IList<StrGrpElement> GrpElements { get; set; }
-
-        /// <summary>
-        /// Size: MaxConstants.MAX_ICON_NAME_TABLE(16) * 
-        /// SizeConstants.ICON_NAME_TABLE_SIZE(14) = 224 bytes
-        /// </summary>
-        public IList<byte[]> IconNameTable { get; set; } = new List<byte[]>();
-
-        /// <summary>
-        /// Size: 1 byte
-        /// </summary>
-        public byte JustLoad { get; set; } = 1;
-
-        /// <summary>
-        /// Size: 4 bytes
-        /// </summary>
-        public int PixVar { get; set; }
-
-        /// <summary>
-        /// Size: MaxConstants.MAX_AR(8) * SizeConstants.AR_DATES_SIZE(46) = 368 bytes
-        /// </summary>
-        public IList<byte[]> ArDates { get; set; } = new List<byte[]>();
 
         #endregion
 
         #region Binary data
+
+        public byte[] InitialData { get; protected set; }
+        public int RawDataLength { get; protected set; }
 
         public byte[] RawData { get; protected set; }
 
@@ -214,10 +172,10 @@
                 }
             }
 
-            foreach (var data in PrgDatas)
-            {
+            //foreach (var data in PrgDatas)
+            //{
                 //Console.WriteLine(data.PropertiesText());
-            }
+            //}
 
             {
                 var size = bytes.ToUInt16(offset);
@@ -233,7 +191,7 @@
                         list.Add(WrOneDay.FromBytes(data));
                     }
 
-                    WrTimes.Add(list);
+                    //WrTimes.Add(list);
                 }
             }
 
@@ -244,7 +202,7 @@
                 {
                     var data = bytes.ToBytes(offset, SizeConstants.AR_DATES_SIZE);
                     offset += SizeConstants.AR_DATES_SIZE;
-                    ArDates.Add(data);
+                    //ArDates.Add(data);
                 }
             }
 
@@ -261,7 +219,7 @@
                 var data = bytes.ToBytes(offset, size);
                 offset += size;
 
-                GrpDatas.Add(data);
+                //GrpDatas.Add(data);
             }
 
             {
@@ -300,7 +258,8 @@
 
         private void FromCurrentFormat(byte[] bytes)
         {
-            Version = bytes.ToByte(3);
+            InitialData = bytes.ToBytes(0, 2);
+            Version = bytes.ToByte(2);
 
             var offset = 3;
 
@@ -408,7 +367,7 @@
 Offset: {offset}, Length: {bytes.Length}");
             }
 
-            RawData = bytes;
+            RawDataLength = offset;
 
             UpdateCustomUnits();
         }
@@ -546,7 +505,8 @@ Offset: {offset}, Length: {bytes.Length}");
 
             var bytes = new List<byte>();
 
-            bytes.AddRange(RawData.ToBytes(0, 3));
+            bytes.AddRange(InitialData.ToBytes(0, 2));
+            bytes.Add((byte)Version);
 
             //'for' instead 'foreach' for upgrade support
 
@@ -657,10 +617,10 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            if (RawData.Length != bytes.Count)
+            if (RawDataLength != bytes.Count)
             {
                 throw new ArgumentException($@"Bytes lenght != RawData.Length after writing.
-Offset: {RawData.Length}, Length: {bytes.Count}");
+Offset: {RawDataLength}, Length: {bytes.Count}");
             }
 
             return bytes.ToArray();
