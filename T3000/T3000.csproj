@@ -99,8 +99,12 @@
     <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.zh-Hant.resx">
       <DependentUpon>ScreensForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\T3000Form.de-DE.resx">
+      <DependentUpon>T3000Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\T3000Form.resx">
       <DependentUpon>T3000Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnitsForm.resx">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
@@ -116,6 +120,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.zh-Hant.resx">
       <DependentUpon>VariablesForm.cs</DependentUpon>
@@ -164,6 +169,30 @@
   <ItemGroup>
     <Folder Include="Constants\" />
     <Folder Include="Forms\InputsForm\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Default\Variables.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Default\Variables.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Default\MainHouse.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Icons\Default\Alarms.ico" />
+    <Content Include="Properties\Icons\Default\BluDiscover.ico" />
+    <Content Include="Properties\Icons\Default\Buildings.ico" />
+    <Content Include="Properties\Icons\Default\Configuration.ico" />
+    <Content Include="Properties\Icons\Default\Graphics.ico" />
+    <Content Include="Properties\Icons\Default\Holidays.ico" />
+    <Content Include="Properties\Icons\Default\Inputs.ico" />
+    <Content Include="Properties\Icons\Default\Outputs.ico" />
+    <Content Include="Properties\Icons\Default\PIDs.ico" />
+    <Content Include="Properties\Icons\Default\Programs.ico" />
+    <Content Include="Properties\Icons\Default\RemotePoints.ico" />
+    <Content Include="Properties\Icons\Default\Schedules.ico" />
+    <Content Include="Properties\Icons\Default\TrendLogs.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

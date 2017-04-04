@@ -130,6 +130,7 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
             this.Name = "ScreensForm";
+            this.Icon = global::T3000.Properties.Resources.GraphicsIcon;
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 

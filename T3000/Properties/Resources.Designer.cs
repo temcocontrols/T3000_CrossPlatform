@@ -61,11 +61,51 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon AlarmsIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlarmsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All files.
         /// </summary>
         internal static string AllFiles {
             get {
                 return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon BluDiscoverIcon {
+            get {
+                object obj = ResourceManager.GetObject("BluDiscoverIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon BuildingsIcon {
+            get {
+                object obj = ResourceManager.GetObject("BuildingsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ConfigurationIcon {
+            get {
+                object obj = ResourceManager.GetObject("ConfigurationIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -115,11 +155,71 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon GraphicsIcon {
+            get {
+                object obj = ResourceManager.GetObject("GraphicsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon HolidaysIcon {
+            get {
+                object obj = ResourceManager.GetObject("HolidaysIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon InputsIcon {
+            get {
+                object obj = ResourceManager.GetObject("InputsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .JPEG files.
         /// </summary>
         internal static string JpegFiles {
             get {
                 return ResourceManager.GetString("JpegFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon MainHouseIcon {
+            get {
+                object obj = ResourceManager.GetObject("MainHouseIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon OutputsIcon {
+            get {
+                object obj = ResourceManager.GetObject("OutputsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon PIDsIcon {
+            get {
+                object obj = ResourceManager.GetObject("PIDsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -138,6 +238,26 @@ namespace T3000.Properties {
         internal static string PrgFiles {
             get {
                 return ResourceManager.GetString("PrgFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ProgramsIcon {
+            get {
+                object obj = ResourceManager.GetObject("ProgramsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon RemotePointsIcon {
+            get {
+                object obj = ResourceManager.GetObject("RemotePointsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -178,6 +298,16 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon SchedulesIcon {
+            get {
+                object obj = ResourceManager.GetObject("SchedulesIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select an image(.PNG or .JPEG) file.
         /// </summary>
         internal static string SelectImageFile {
@@ -210,6 +340,36 @@ namespace T3000.Properties {
         internal static string SelectUnitsFormSelectedUnits {
             get {
                 return ResourceManager.GetString("SelectUnitsFormSelectedUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon TrendLogsIcon {
+            get {
+                object obj = ResourceManager.GetObject("TrendLogsIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon VariablesIcon {
+            get {
+                object obj = ResourceManager.GetObject("VariablesIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VariablesImage {
+            get {
+                object obj = ResourceManager.GetObject("VariablesImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

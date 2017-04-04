@@ -131,6 +131,7 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
             this.Name = "VariablesForm";
+            this.Icon = global::T3000.Properties.Resources.VariablesIcon;
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 
