@@ -198,7 +198,7 @@
                 }
             }
 
-            numberTextBox.BackColor = IsValidated ? Color.LightGreen : Color.MistyRose;
+            numberTextBox.BackColor = ColorConstants.GetValidationColor(IsValidated);
         }
     }
 }

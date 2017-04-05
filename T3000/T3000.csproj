@@ -39,6 +39,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ColorConstants.cs" />
     <Compile Include="Forms\ScreensForm\ScreensForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,7 +167,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Constants\" />
     <Folder Include="Forms\InputsForm\" />
   </ItemGroup>
   <ItemGroup>

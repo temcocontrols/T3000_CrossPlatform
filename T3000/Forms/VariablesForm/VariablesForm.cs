@@ -66,7 +66,7 @@
                 isValidated = false;
             }
 
-            cell.Style.BackColor = isValidated ? Color.LightGreen : Color.MistyRose;
+            cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
         }
 
         #endregion

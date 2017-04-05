@@ -118,7 +118,7 @@
         {
             var text = customUnitsTextBox.Text;
             IsValidated = IsValid(text);
-            customUnitsTextBox.BackColor = IsValidated ? Color.LightGreen : Color.MistyRose;
+            customUnitsTextBox.BackColor = ColorConstants.GetValidationColor(IsValidated);
             Preview(text);
         }
 
