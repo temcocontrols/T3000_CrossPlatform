@@ -43,6 +43,8 @@
     <Compile Include="Enums\Sign.cs" />
     <Compile Include="Enums\SwitchStatus.cs" />
     <Compile Include="Enums\TextGraphic.cs" />
+    <Compile Include="Types\AdditionalTypes\UNTime.cs" />
+    <Compile Include="Types\AdditionalTypes\ProInfo.cs" />
     <Compile Include="Types\AnalogCustomUnitsPoint.cs" />
     <Compile Include="Types\HelpTypes\BaseCode.cs" />
     <Compile Include="Types\HelpTypes\TableValue.cs" />

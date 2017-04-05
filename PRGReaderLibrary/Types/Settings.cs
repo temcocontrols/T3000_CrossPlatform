@@ -12,7 +12,7 @@ namespace PRGReaderLibrary
         public TcpType TcpType { get; set; }
         public int MiniType { get; set; }
         public int Debug { get; set; }
-        public byte[] ProInfo { get; set; }
+        public ProInfo ProInfo { get; set; }
         public int Com0Config { get; set; }
         public int Com1Config { get; set; }
         public int Com2Config { get; set; }
@@ -42,7 +42,7 @@ namespace PRGReaderLibrary
         public NoDisableEnable SntpMode { get; set; }
         public int TimeZone { get; set; }
         public long SerialNumber { get; set; }
-        public byte[] UpdateDynDNS { get; set; }
+        public UNTime UpdateDynDNS { get; set; }
         public int MstpNetworkNumber { get; set; }
         public int BBMDEn { get; set; }
         public int SdExist { get; set; } // 1 -no    2- yes
@@ -104,7 +104,7 @@ namespace PRGReaderLibrary
                     TcpType = (TcpType)bytes.ToByte(18 + offset);
                     MiniType = bytes.ToByte(19 + offset);
                     Debug = bytes.ToByte(20 + offset);
-                    ProInfo = bytes.ToBytes(21 + offset, 17);
+                    ProInfo = new ProInfo(bytes.ToBytes(21 + offset, 17), 0, FileVersion);
                     Com0Config = bytes.ToByte(38 + offset);
                     Com1Config = bytes.ToByte(39 + offset);
                     Com2Config = bytes.ToByte(40 + offset);
@@ -131,7 +131,7 @@ namespace PRGReaderLibrary
                     SntpMode = (NoDisableEnable)bytes.ToByte(174 + offset);
                     TimeZone = bytes.ToInt16(175 + offset);
                     SerialNumber = bytes.ToUInt32(177 + offset);
-                    UpdateDynDNS = bytes.ToBytes(181 + offset, 10);
+                    UpdateDynDNS = new UNTime(bytes.ToBytes(181 + offset, 10), 0, FileVersion);
                     MstpNetworkNumber = bytes.ToUInt16(191 + offset);
                     BBMDEn = bytes.ToByte(193 + offset);
                     SdExist = bytes.ToByte(194 + offset);
@@ -156,6 +156,7 @@ namespace PRGReaderLibrary
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
+            ProInfo.FileVersion = FileVersion;
 
             switch (FileVersion)
             {
@@ -167,7 +168,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)TcpType);
                     bytes.Add((byte)MiniType);
                     bytes.Add((byte)Debug);
-                    bytes.AddRange(ProInfo.ToBytes(0, 17));
+                    bytes.AddRange(ProInfo.ToBytes());
                     bytes.Add((byte)Com0Config);
                     bytes.Add((byte)Com1Config);
                     bytes.Add((byte)Com2Config);
@@ -194,7 +195,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)SntpMode);
                     bytes.AddRange(((short)TimeZone).ToBytes());
                     bytes.AddRange(((uint)SerialNumber).ToBytes());
-                    bytes.AddRange(UpdateDynDNS.ToBytes(0, 10));
+                    bytes.AddRange(UpdateDynDNS.ToBytes());
                     bytes.AddRange(((ushort)MstpNetworkNumber).ToBytes());
                     bytes.Add((byte)BBMDEn);
                     bytes.Add((byte)SdExist);
