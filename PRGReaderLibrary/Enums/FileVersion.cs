@@ -4,6 +4,7 @@
     {
         Unsupported,
         Dos,
-        Current
+        Rev6,
+        Current = Rev6
     }
 }

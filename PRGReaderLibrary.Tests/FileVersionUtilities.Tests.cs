@@ -18,10 +18,10 @@
                 FileVersionUtilities.IsDosVersion(GetBytesFromName(name)),
                 $"{nameof(FileVersionUtilities.IsDosVersion)}: {name}");
 
-        public void IsCurrentVersion(string name, bool expected, int revision = FileVersionUtilities.CurrentFileRevision) =>
+        public void IsRev6Version(string name, bool expected, int revision = FileVersionUtilities.CurrentFileRevision) =>
             Assert.AreEqual(expected,
-                FileVersionUtilities.IsCurrentVersion(GetBytesFromName(name), revision),
-                $"{nameof(FileVersionUtilities.IsCurrentVersion)}: {name}. Rev: {revision}");
+                FileVersionUtilities.IsRev6Version(GetBytesFromName(name), revision),
+                $"{nameof(FileVersionUtilities.IsRev6Version)}: {name}. Rev: {revision}");
 
         public void GetFileVersion(string name, FileVersion expected) =>
             Assert.AreEqual(expected,
@@ -52,32 +52,32 @@
         [Test]
         public void PRGUtilities_IsCurrentVersion()
         {
-            //Current
-            IsCurrentVersion("BTUMeter.prg", true);
+            //Rev6
+            IsRev6Version("BTUMeter.prg", true);
 
             //Dos
-            IsCurrentVersion("asy1.prg", false);
-            IsCurrentVersion("panel1.prg", false);
-            IsCurrentVersion("testvariables.prg", false);
-            IsCurrentVersion("panel11.prg", false);
-            IsCurrentVersion("panel2.prg", false);
-            IsCurrentVersion("temco.prg", false);
+            IsRev6Version("asy1.prg", false);
+            IsRev6Version("panel1.prg", false);
+            IsRev6Version("testvariables.prg", false);
+            IsRev6Version("panel11.prg", false);
+            IsRev6Version("panel2.prg", false);
+            IsRev6Version("temco.prg", false);
 
             //Unsupported
-            IsCurrentVersion("balsam2.prg", false);
-            IsCurrentVersion("90185.prg", false);
+            IsRev6Version("balsam2.prg", false);
+            IsRev6Version("90185.prg", false);
 
             //Past revisions
             //The version number, apparently, was not yet supported
-            IsCurrentVersion("SelfTestRev3.prg", false, 3);
-            IsCurrentVersion("ChamberRev5.prg", false, 5);
+            IsRev6Version("SelfTestRev3.prg", false, 3);
+            IsRev6Version("ChamberRev5.prg", false, 5);
         }
 
         [Test]
         public void PRGUtilities_GetFileVersion()
         {
-            //Current
-            GetFileVersion("BTUMeter.prg", FileVersion.Current);
+            //Rev6
+            GetFileVersion("BTUMeter.prg", FileVersion.Rev6);
 
             //Dos
             GetFileVersion("asy1.prg", FileVersion.Dos);
