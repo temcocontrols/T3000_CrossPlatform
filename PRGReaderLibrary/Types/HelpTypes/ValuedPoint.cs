@@ -2,7 +2,7 @@ namespace PRGReaderLibrary
 {
     public class ValuedPoint : BasePoint
     {
-        public VariableVariant Value { get; set; } = new VariableVariant(0, 0);
+        public VariableValue Value { get; set; } = new VariableValue(0, 0);
         public AutoManual AutoManual { get; set; }
         public DigitalAnalog DigitalAnalog { get; set; }
         public Control Control { get; set; }

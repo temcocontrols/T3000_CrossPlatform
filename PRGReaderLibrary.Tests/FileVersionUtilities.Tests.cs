@@ -41,6 +41,9 @@
 
             //Current
             IsDos("BTUMeter.prg", false);
+            IsDos("CustomAnalogRev6.prg", false);
+            IsDos("TemcoPanelRev6.prg", false);
+            IsDos("T3DemoRev6.prg", false);
 
             //Unsupported
             IsDos("SelfTestRev3.prg", false);
@@ -54,6 +57,9 @@
         {
             //Rev6
             IsRev6Version("BTUMeter.prg", true);
+            IsRev6Version("CustomAnalogRev6.prg", true);
+            IsRev6Version("TemcoPanelRev6.prg", true);
+            IsRev6Version("T3DemoRev6.prg", true);
 
             //Dos
             IsRev6Version("asy1.prg", false);
@@ -78,6 +84,9 @@
         {
             //Rev6
             GetFileVersion("BTUMeter.prg", FileVersion.Rev6);
+            GetFileVersion("CustomAnalogRev6.prg", FileVersion.Rev6);
+            GetFileVersion("TemcoPanelRev6.prg", FileVersion.Rev6);
+            GetFileVersion("T3DemoRev6.prg", FileVersion.Rev6);
 
             //Dos
             GetFileVersion("asy1.prg", FileVersion.Dos);

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class VariableVariant
+    public class VariableValue
     {
         public uint Value { get; set; }
         public Units Units { get; set; }
@@ -140,18 +140,18 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public VariableVariant(uint value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(uint value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
         {
             Value = value;
             Units = units;
             CustomUnits = customUnits;
         }
 
-        public VariableVariant(object value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(object value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
             : this(ToUInt(value, units), units, customUnits)
         { }
 
-        public VariableVariant(string value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(string value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
             : this(ToObject(value, units, customUnits), units, customUnits)
         { }
 

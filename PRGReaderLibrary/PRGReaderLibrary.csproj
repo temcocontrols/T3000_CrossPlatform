@@ -65,7 +65,7 @@
     <Compile Include="Extensions\UnitsExtensions.cs" />
     <Compile Include="PrgWriter.cs" />
     <Compile Include="Types\HelpTypes\Description.cs" />
-    <Compile Include="Types\HelpTypes\VariableVariant.cs" />
+    <Compile Include="Types\HelpTypes\VariableValue.cs" />
     <Compile Include="Types\AdditionalTypes\AlarmPoint.cs" />
     <Compile Include="Types\AdditionalTypes\AlarmSetPoint.cs" />
     <Compile Include="Types\AdditionalTypes\AnRangeForm.cs" />

@@ -21,7 +21,7 @@ Bytes arrays lenghts not equals.");
             }
 
             Assert.IsTrue(isEquals, $@"{message}
-Bytes arrays not equals.");
+Bytes arrays not equals. See console for detail.");
         }
     }
 }

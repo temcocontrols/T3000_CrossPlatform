@@ -81,7 +81,7 @@ namespace PRGReaderLibrary
                     throw new FileVersionNotImplementedException(FileVersion);
             }
             
-            Value = new VariableVariant(valueRaw, units);
+            Value = new VariableValue(valueRaw, units);
 
             Filter = (int)Math.Pow(2, filterRaw);
             CalibrationSign = calibrationSignRaw ? Sign.Negative : Sign.Positive;

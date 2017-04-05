@@ -8,9 +8,9 @@
     [TestFixture]
     public class PrgReader_Tests
     {
-        public void VariableVariantToFromTest(VariableVariant value, List<DigitalCustomUnitsPoint> customUnits)
+        public void VariableVariantToFromTest(VariableValue value, List<DigitalCustomUnitsPoint> customUnits)
         {
-            var tempValue = new VariableVariant(value.ToString(), value.Units, customUnits);
+            var tempValue = new VariableValue(value.ToString(), value.Units, customUnits);
             ObjectAssert.AreEqual(value, tempValue,
                 $@"Variable value toFrom string test failed.
 Value.ToString(): {value.ToString()}
@@ -151,7 +151,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             if (prg.Variables.Count > 0)
             {
                 prg = Prg.Load(temp);
-                prg.Variables[0].Value = new VariableVariant("9998.8999", Units.DegreesC);
+                prg.Variables[0].Value = new VariableValue("9998.8999", Units.DegreesC);
                 prg.Save(temp);
                 FileAssert.AreNotEqual(path, temp);
             }
@@ -218,7 +218,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription    ", variable1.Description);
             Assert.AreEqual("FirstLabe", variable1.Label);
-            Assert.AreEqual(new VariableVariant(5.0, Units.DegreesC), variable1.Value);
+            Assert.AreEqual(new VariableValue(5.0, Units.DegreesC), variable1.Value);
             Assert.AreEqual(AutoManual.Automatic, variable1.AutoManual);
             Assert.AreEqual(DigitalAnalog.Analog, variable1.DigitalAnalog);
             Assert.AreEqual(Control.Off, variable1.Control);
@@ -226,7 +226,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription   ", variable2.Description);
             Assert.AreEqual("SecondLab", variable2.Label);
-            ObjectAssert.AreEqual(new VariableVariant("On", Units.OffOn).Value, variable2.Value.Value);
+            ObjectAssert.AreEqual(new VariableValue("On", Units.OffOn).Value, variable2.Value.Value);
             Assert.AreEqual(AutoManual.Manual, variable2.AutoManual);
             Assert.AreEqual(DigitalAnalog.Digital, variable2.DigitalAnalog);
             Assert.AreEqual(Control.Off, variable2.Control);
@@ -234,7 +234,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             var variable3 = prg.Variables[2];
             Assert.AreEqual("ThirdDescription    ", variable3.Description);
             Assert.AreEqual("ThirdLabe", variable3.Label);
-            Assert.AreEqual(new VariableVariant(new TimeSpan(0, 22, 22, 22, 0), Units.Time), variable3.Value);
+            Assert.AreEqual(new VariableValue(new TimeSpan(0, 22, 22, 22, 0), Units.Time), variable3.Value);
             Assert.AreEqual(AutoManual.Automatic, variable3.AutoManual);
             Assert.AreEqual(DigitalAnalog.Analog, variable3.DigitalAnalog);
             Assert.AreEqual(Control.Off, variable3.Control);

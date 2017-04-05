@@ -57,7 +57,7 @@
                 var unitsCell = row.Cells[unitsColumn];
                 var units = UnitsNamesConstants.UnitsFromName(
                     (string)unitsCell.Value, customUnits);
-                new VariableVariant((string) cell.Value, units, customUnits);
+                new VariableValue((string) cell.Value, units, customUnits);
             }
             catch (Exception exception)
             {
@@ -104,7 +104,7 @@
                     var point = Points[i];
                     point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
                     point.Label = (string)row.Cells[LabelColumn.Name].Value;
-                    point.Value = new VariableVariant(
+                    point.Value = new VariableValue(
                         (string)row.Cells[ValueColumn.Name].Value,
                         UnitsNamesConstants.UnitsFromName(
                             (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),

@@ -76,7 +76,7 @@ namespace PRGReaderLibrary
                     throw new FileVersionNotImplementedException(FileVersion);
             }
 
-            Value = new VariableVariant(valueRaw, units);
+            Value = new VariableValue(valueRaw, units);
         }
 
         /// <summary>
