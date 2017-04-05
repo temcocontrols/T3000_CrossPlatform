@@ -38,14 +38,25 @@
                 Prg = Prg.Load(path);
 
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
+
+                //File menu
                 savePRGToolStripMenuItem.Enabled = true;
                 saveAsToolStripMenuItem.Enabled = true;
+                upgradeMenuItem.Enabled = true;
+
+                //Control menu
                 inputsMenuItem.Enabled = true;
                 outputsMenuItem.Enabled = true;
                 variablesMenuItem.Enabled = true;
                 screensMenuItem.Enabled = true;
 
+                //Buttons tool strip
                 variablesButton.Enabled = true;
+
+                if (Prg.FileVersion != FileVersion.Current)
+                {
+                    upgradeMenuItem.Visible = true;
+                }
             }
             catch (Exception exception)
             {
@@ -95,6 +106,29 @@
             {
                 Prg.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        private void Upgrade(object sender, EventArgs e)
+        {
+            if (!IsOpened)
+            {
+                statusLabel.Text = Resources.FileIsNotOpen;
+                return;
+            }
+
+            try
+            {
+                var path = PrgPath;
+
+                Prg.Upgrade(FileVersion.Current);
+                statusLabel.Text = string.Format(Resources.Upgraded, path);
+
+                upgradeMenuItem.Visible = false;
             }
             catch (Exception exception)
             {

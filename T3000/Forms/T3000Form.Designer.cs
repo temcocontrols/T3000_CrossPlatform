@@ -34,6 +34,7 @@
             this.loadPRGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePRGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.upgradeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.controlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +71,7 @@
             this.loadPRGToolStripMenuItem,
             this.savePRGToolStripMenuItem,
             this.saveAsToolStripMenuItem,
+            this.upgradeMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
@@ -91,6 +93,12 @@
             resources.ApplyResources(this.saveAsToolStripMenuItem, "saveAsToolStripMenuItem");
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsPrg);
+            // 
+            // upgradeMenuItem
+            // 
+            resources.ApplyResources(this.upgradeMenuItem, "upgradeMenuItem");
+            this.upgradeMenuItem.Name = "upgradeMenuItem";
+            this.upgradeMenuItem.Click += new System.EventHandler(this.Upgrade);
             // 
             // exitToolStripMenuItem
             // 
@@ -229,5 +237,6 @@
         private System.Windows.Forms.ToolStripMenuItem screensMenuItem;
         private System.Windows.Forms.ToolStrip buttonsToolStrip;
         private System.Windows.Forms.ToolStripButton variablesButton;
+        private System.Windows.Forms.ToolStripMenuItem upgradeMenuItem;
     }
 }
