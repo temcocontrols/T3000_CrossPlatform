@@ -5,7 +5,7 @@
 
     public class VariableValue
     {
-        public uint Value { get; set; }
+        public int Value { get; set; }
         public Units Units { get; set; }
         public List<DigitalCustomUnitsPoint> CustomUnits { get; set; }
 
@@ -25,12 +25,12 @@
                 value % 1000                 //milliseconds
             );
 
-        public static object ToObject(uint value, Units units)
+        public static object ToObject(int value, Units units)
         {
             switch (units)
             {
                 case Units.Time:
-                    return ToTimeSpan((int)value);
+                    return ToTimeSpan(value);
 
                 default:
                     return units.IsAnalog()
@@ -87,7 +87,7 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public static uint ToUInt(object value, Units units)
+        public static int ToInt(object value, Units units)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -101,16 +101,16 @@ Supported types: bool, float, TimeSpan");
                 switch (units)
                 {
                     case Units.NoYes:
-                        return Convert.ToUInt32(value) * 1000;
+                        return Convert.ToInt32(value) * 1000;
 
                     case Units.OnOff:
-                        return Convert.ToUInt32(value) * 1000;
+                        return Convert.ToInt32(value) * 1000;
 
                     case Units.OffOn:
-                        return Convert.ToUInt32(value) * 1000;
+                        return Convert.ToInt32(value) * 1000;
 
                     default:
-                        return Convert.ToUInt32(value);
+                        return Convert.ToInt32(value);
                 }
             }
             else if (type == typeof(TimeSpan))
@@ -121,7 +121,7 @@ Supported types: bool, float, TimeSpan");
                                                 $"Value: {value}, Units: {units}, Type: {type}");
                 }
 
-                return Convert.ToUInt32(FromTimeSpan((TimeSpan)value));
+                return FromTimeSpan((TimeSpan)value);
             }
             else if (type == typeof(double))
             {
@@ -130,17 +130,15 @@ Supported types: bool, float, TimeSpan");
                     throw new ArgumentException($"Please select analog units for float value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
                 }
-                return Convert.ToUInt32((Convert.ToDouble(value)) * 1000.0);
+                return Convert.ToInt32((Convert.ToDouble(value)) * 1000.0);
             }
-            else
-            {
-                throw new NotImplementedException($@"Type not supported.
+
+            throw new NotImplementedException($@"Type not supported.
 Type: {type}, Value: {value}, Units: {units}
 Supported types: bool, float, TimeSpan");
-            }
         }
 
-        public VariableValue(uint value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(int value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
         {
             Value = value;
             Units = units;
@@ -148,7 +146,7 @@ Supported types: bool, float, TimeSpan");
         }
 
         public VariableValue(object value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
-            : this(ToUInt(value, units), units, customUnits)
+            : this(ToInt(value, units), units, customUnits)
         { }
 
         public VariableValue(string value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)

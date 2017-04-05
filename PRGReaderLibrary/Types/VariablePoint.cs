@@ -50,13 +50,13 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
-            uint valueRaw;
+            int valueRaw;
             Units units;
 
             switch (FileVersion)
             {
                 case FileVersion.Dos:
-                    valueRaw = bytes.ToUInt32(30 + offset);
+                    valueRaw = bytes.ToInt32(30 + offset);
                     AutoManual = AutoManualFromByte(bytes.GetBit(0, 34 + offset).ToByte());
                     DigitalAnalog = DigitalAnalogFromByte(bytes.GetBit(1, 34 + offset).ToByte());
                     Control = ControlFromByte(bytes.GetBit(2, 34 + offset).ToByte());
@@ -64,7 +64,7 @@ namespace PRGReaderLibrary
                     break;
 
                 case FileVersion.Current:
-                    valueRaw = bytes.ToUInt32(30 + offset);
+                    valueRaw = bytes.ToInt32(30 + offset);
                     AutoManual = AutoManualFromByte(bytes.ToByte(34 + offset));
                     DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(35 + offset));
                     Control = ControlFromByte(bytes.ToByte(36 + offset));

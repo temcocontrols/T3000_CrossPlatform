@@ -53,7 +53,7 @@ namespace PRGReaderLibrary
         {
             FileVersion = version;
 
-            uint valueRaw;
+            int valueRaw;
             Units units;
 
             switch (FileVersion)
@@ -63,7 +63,7 @@ namespace PRGReaderLibrary
                     LowVoltage = bytes.ToByte(19 + offset);
                     HighVoltage = bytes.ToByte(20 + offset);
                     Label = bytes.GetString(21 + offset, 9).ClearBinarySymvols();
-                    valueRaw = bytes.ToUInt32(30 + offset);
+                    valueRaw = bytes.ToInt32(30 + offset);
                     AutoManual = AutoManualFromByte(bytes.ToByte(34 + offset));
                     DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(35 + offset));
                     HwSwitchStatus = (SwitchStatus)bytes.ToByte(36 + offset);

@@ -21,7 +21,7 @@
             var list = new List<byte>();
             list.AddRange("Description".ToBytes(21));
             list.AddRange("Label".ToBytes(9));
-            list.AddRange(((uint)5000).ToBytes());//Value
+            list.AddRange(5000.ToBytes());//Value
             list.Add(new [] {true,true,true}.ToBits()); //AutoManual DigitalAnalog Control
             list.Add((byte)Units.DegreesC);//Units
 
@@ -39,7 +39,7 @@
         {
             var list = new List<byte>();
             list.AddRange("START TEST FLAG\0\0\0\0\0\0INIT\0\0\0\0\0".ToBytes());
-            list.AddRange(((uint)0).ToBytes());//Value
+            list.AddRange(0.ToBytes());//Value
             list.Add(0);//AutoManual
             list.Add(0);//DigitalAnalog
             list.Add(0);//Control
@@ -60,7 +60,7 @@
         {
             var list = new List<byte>();
             list.AddRange("PUMP SPEED\0\0\0\0\0\0\0\0\0\0\0PMPSPEED\0".ToBytes());
-            list.AddRange(((uint)40000).ToBytes());//Value
+            list.AddRange(40000.ToBytes());//Value
             list.Add(0);//AutoManual
             list.Add(1);//DigitalAnalog
             list.Add(0);//Control
@@ -81,7 +81,7 @@
         {
             var list = new List<byte>();
             list.AddRange("TEST RUN TIMER\0\0\0\0\0\0\0TESTTIM\0\0".ToBytes());
-            list.AddRange(((uint)13509000).ToBytes());//Value
+            list.AddRange(13509000.ToBytes());//Value
             list.Add(0);//AutoManual
             list.Add(1);//DigitalAnalog
             list.Add(1);//Control
@@ -102,7 +102,7 @@
         {
             var list = new List<byte>();
             list.AddRange("TEST CUS UNITS\0\0\0\0\0\0\0TESTCUS\0\0".ToBytes());
-            list.AddRange(((uint)2000).ToBytes());//Value
+            list.AddRange(2000.ToBytes());//Value
             list.Add(0);//AutoManual
             list.Add(0);//DigitalAnalog
             list.Add(1);//Control

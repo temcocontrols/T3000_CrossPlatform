@@ -10,14 +10,14 @@
         /// <param name="value"></param>
         /// <param name="bit">Can be from 0 to 7</param>
         /// <returns></returns>
-        public static bool GetBit(this byte value, uint bit)
+        public static bool GetBit(this byte value, int bit)
         {
-            if (bit > 7)
+            if (bit < 0 || bit > 7)
             {
                 throw new ArgumentException("The bit can be from 0 to 7", nameof(bit));
             }
 
-            return (value / ((uint)Math.Pow(2, bit))) % 2 == 1;
+            return (value / (Convert.ToInt32(Math.Pow(2, bit)))) % 2 == 1;
         }
 
         public static bool ToBoolean(this byte value) =>

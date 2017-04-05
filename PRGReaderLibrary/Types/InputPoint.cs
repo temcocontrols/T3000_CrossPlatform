@@ -51,7 +51,7 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
-            uint valueRaw;
+            int valueRaw;
             Units units;
 
             byte filterRaw;
@@ -62,7 +62,7 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    valueRaw = bytes.ToUInt32(30 + offset);
+                    valueRaw = bytes.ToInt32(30 + offset);
                     filterRaw = bytes.ToByte(34 + offset);
                     Decommissioned = bytes.ToByte(35 + offset);
                     SubId = bytes.ToBoolean(36 + offset);

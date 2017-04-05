@@ -13,18 +13,18 @@
         public static byte[] ToBytes(this float integer) => BitConverter.GetBytes(integer);
         public static byte[] ToBytes(this double integer) => BitConverter.GetBytes(integer);
         public static byte[] ToBytes(this bool integer) => BitConverter.GetBytes(integer);
-        public static byte ToBit(this bool boolean, uint bit) =>
+        public static byte ToBit(this bool boolean, int bit) =>
             boolean ? (byte)Math.Pow(2, bit) : (byte)0;
         public static byte ToByte(this bool boolean) =>
             boolean ? (byte)1 : (byte)0;
 
-        public static byte ToBits(this bool[] booleans, uint startBit = 0U)
+        public static byte ToBits(this bool[] booleans, int startBit = 0)
         {
             byte bits = 0;
             var bit = 0U;
             foreach (var boolean in booleans)
             {
-                bits += boolean.ToBit(startBit + bit);
+                bits += boolean.ToBit(Convert.ToInt32(startBit + bit));
                 ++bit;
             }
 

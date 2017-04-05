@@ -73,7 +73,7 @@ Offset: {offset}, Length: {length}, bytes.Length: {bytes.Length}");
             return newBytes;
         }
 
-        public static bool GetBit(this byte[] bytes, uint bit, int offset = 0) =>
+        public static bool GetBit(this byte[] bytes, int bit, int offset = 0) =>
             bytes[offset].GetBit(bit);
     }
 }
