@@ -29,7 +29,7 @@
                 $"{nameof(FileVersionUtilities.GetFileVersion)}: {name}");
 
         [Test]
-        public void PRGUtilities_IsDos()
+        public void Utilities_IsDos()
         {
             //Dos
             IsDos("asy1.prg", true);
@@ -53,7 +53,7 @@
         }
 
         [Test]
-        public void PRGUtilities_IsCurrentVersion()
+        public void Utilities_IsCurrentVersion()
         {
             //Rev6
             IsRev6Version("BTUMeter.prg", true);
@@ -80,7 +80,7 @@
         }
 
         [Test]
-        public void PRGUtilities_GetFileVersion()
+        public void Utilities_GetFileVersion()
         {
             //Rev6
             GetFileVersion("BTUMeter.prg", FileVersion.Rev6);

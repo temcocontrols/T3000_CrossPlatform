@@ -35,7 +35,7 @@
         }
 
         [Test]
-        public void VariablePoint_Current_Digital()
+        public void VariablePoint_Rev6_Digital()
         {
             var list = new List<byte>();
             list.AddRange("START TEST FLAG\0\0\0\0\0\0INIT\0\0\0\0\0".ToBytes());
@@ -52,11 +52,11 @@
             expected.DigitalAnalog = DigitalAnalog.Digital;
             expected.Control = Control.Off;
 
-            BaseTest(list.ToArray(), expected, FileVersion.Current);
+            BaseTest(list.ToArray(), expected, FileVersion.Rev6);
         }
 
         [Test]
-        public void VariablePoint_Current_Analog()
+        public void VariablePoint_Rev6_Analog()
         {
             var list = new List<byte>();
             list.AddRange("PUMP SPEED\0\0\0\0\0\0\0\0\0\0\0PMPSPEED\0".ToBytes());
@@ -73,11 +73,11 @@
             expected.DigitalAnalog = DigitalAnalog.Analog;
             expected.Control = Control.Off;
 
-            BaseTest(list.ToArray(), expected, FileVersion.Current);
+            BaseTest(list.ToArray(), expected, FileVersion.Rev6);
         }
 
         [Test]
-        public void VariablePoint_Current_Time()
+        public void VariablePoint_Rev6_Time()
         {
             var list = new List<byte>();
             list.AddRange("TEST RUN TIMER\0\0\0\0\0\0\0TESTTIM\0\0".ToBytes());
@@ -94,11 +94,11 @@
             expected.DigitalAnalog = DigitalAnalog.Analog;
             expected.Control = Control.On;
 
-            BaseTest(list.ToArray(), expected, FileVersion.Current);
+            BaseTest(list.ToArray(), expected, FileVersion.Rev6);
         }
 
         [Test]
-        public void VariablePoint_CustomDigital()
+        public void VariablePoint_Rev6_CustomDigital()
         {
             var list = new List<byte>();
             list.AddRange("TEST CUS UNITS\0\0\0\0\0\0\0TESTCUS\0\0".ToBytes());
@@ -119,7 +119,7 @@
             expected.DigitalAnalog = DigitalAnalog.Digital;
             expected.Control = Control.On;
 
-            //BaseTest(actual, expected, FileVersion.Current, customUnits);
+            //BaseTest(actual, expected, FileVersion.Rev6, customUnits);
         }
     }
 }
