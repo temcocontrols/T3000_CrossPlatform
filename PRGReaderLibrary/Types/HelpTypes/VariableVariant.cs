@@ -70,9 +70,10 @@ Value: {boolean}, Units: {units}");
             else if (type == typeof(TimeSpan))
             {
                 var span = (TimeSpan) value;
-                return span.ToString(span.Milliseconds == 0
-                    ? @"hh\:mm\:ss"
-                    : @"hh\:mm\:ss\.fff");
+                return span.ToString(
+                    $@"{(span.Days == 0 ? string.Empty : @"d\.")}" +
+                    @"hh\:mm\:ss" + 
+                    $@"{(span.Milliseconds == 0 ? string.Empty : @"\.fff")}");
             }
             else if (type == typeof(double))
             {
