@@ -43,8 +43,6 @@
 
         #region Binary data
 
-        public byte[] InitialData { get; protected set; }
-        public int RawDataLength { get; protected set; }
 
         public byte[] RawData { get; protected set; }
 
@@ -243,12 +241,13 @@
             return array;
         }
 
-        private void FromCurrentFormat(byte[] bytes)
+        private void FromCurrentFormat(byte[] bytes, int offset = 0)
         {
-            InitialData = bytes.ToBytes(0, 2);
+            Signature = bytes.GetString(0, 2);
             Version = bytes.ToByte(2);
+            Length = bytes.Length;
 
-            var offset = 3;
+            offset += 3;
 
             //Get all inputs
             Inputs.AddRange(GetArray(bytes,
@@ -348,13 +347,11 @@
                 AnalogCustomUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new AnalogCustomUnitsPoint(i, 0, FileVersion)));
 
-            if (offset != bytes.Length)
+            if (offset != Length)
             {
-                throw new ArgumentException($@"Bytes lenght != offset after reading.
-Offset: {offset}, Length: {bytes.Length}");
+                throw new ArgumentException($@"Offset != Length after reading.
+Offset: {offset}, Length: {Length}");
             }
-
-            RawDataLength = offset;
 
             UpdateCustomUnits();
         }
@@ -492,7 +489,7 @@ Offset: {offset}, Length: {bytes.Length}");
 
             var bytes = new List<byte>();
 
-            bytes.AddRange(InitialData.ToBytes(0, 2));
+            bytes.AddRange(Signature.ToBytes(2));
             bytes.Add((byte)Version);
 
             //'for' instead 'foreach' for upgrade support
@@ -605,10 +602,10 @@ Offset: {offset}, Length: {bytes.Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            if (RawDataLength != bytes.Count)
+            if (bytes.Count != Length)
             {
-                throw new ArgumentException($@"Bytes lenght != RawData.Length after writing.
-Offset: {RawDataLength}, Length: {bytes.Count}");
+                throw new ArgumentException($@"Output lenght != Length after writing.
+Output lenght: {bytes.Count}, Length: {Length}");
             }
 
             return bytes.ToArray();
@@ -634,6 +631,18 @@ Offset: {RawDataLength}, Length: {bytes.Count}");
         public void Upgrade(FileVersion version = FileVersion.Current)
         {
             FileVersion = version;
+            switch (version)
+            {
+                case FileVersion.Current:
+                    Signature = FileVersionUtilities.Rev6Signature;
+                    break;
+
+                case FileVersion.Dos:
+                    Signature = FileVersionUtilities.DosSignature;
+                    break;
+
+            }
+
             foreach (var variable in Variables)
             {
                 variable.FileVersion = version;

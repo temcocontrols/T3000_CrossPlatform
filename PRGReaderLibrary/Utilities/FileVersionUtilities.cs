@@ -5,6 +5,7 @@
     public static class FileVersionUtilities
     {
         public const string DosSignature = "!@#$";
+        public const string Rev6Signature = "Uÿ"; //0x55 0xff
         public const int CurrentFileRevision = 6;
 
         public static bool IsDosVersion(byte[] bytes) =>
