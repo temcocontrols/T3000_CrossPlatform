@@ -65,11 +65,14 @@
     <None Include="TestFiles\balsam2.prg" />
     <None Include="TestFiles\BTUMeter.prg" />
     <None Include="TestFiles\ChamberRev5.prg" />
+    <None Include="TestFiles\CustomAnalogRev6.prg" />
     <None Include="TestFiles\panel1.prg" />
     <None Include="TestFiles\panel11.prg" />
     <None Include="TestFiles\panel2.prg" />
     <None Include="TestFiles\SelfTestRev3.prg" />
+    <None Include="TestFiles\T3DemoRev6.prg" />
     <None Include="TestFiles\temco.prg" />
+    <None Include="TestFiles\TemcoPanelRev6.prg" />
     <None Include="TestFiles\testvariables.prg" />
   </ItemGroup>
   <ItemGroup>

@@ -193,8 +193,11 @@ Value.ToFromToString(): {tempValue.ToString()}
         [Test]
         public void Prg_BaseTests()
         {
-            //Current
+            //Rev6
             BaseTest("BTUMeter.prg");
+            BaseTest("CustomAnalogRev6.prg");
+            BaseTest("TemcoPanelRev6.prg");
+            //BaseTest("T3DemoRev6.prg");
 
             //Dos
             BaseTest("asy1.prg");
