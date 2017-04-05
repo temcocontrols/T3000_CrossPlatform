@@ -35,7 +35,7 @@
                     break;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(FileVersion);
             }
         }
 
@@ -54,7 +54,7 @@
                     break;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(FileVersion);
             }
 
             return bytes.ToArray();

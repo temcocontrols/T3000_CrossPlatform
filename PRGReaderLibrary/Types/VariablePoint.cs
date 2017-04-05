@@ -20,7 +20,7 @@ namespace PRGReaderLibrary
                     return 128;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(version);
             }
         }
 
@@ -35,7 +35,7 @@ namespace PRGReaderLibrary
                     return 36;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(version);
             }
         }
 
@@ -73,7 +73,7 @@ namespace PRGReaderLibrary
                     break;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(FileVersion);
             }
 
             Value = new VariableVariant(valueRaw, units);
@@ -111,7 +111,7 @@ namespace PRGReaderLibrary
                     break;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(FileVersion);
             }
 
             return bytes.ToArray();

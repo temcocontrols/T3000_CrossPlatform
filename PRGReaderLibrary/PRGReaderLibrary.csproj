@@ -115,6 +115,7 @@
     <Compile Include="Extensions\BytesExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Types\AdditionalTypes\WrOneDay.cs" />
+    <Compile Include="Utilities\FileVersionNotImplementedException.cs" />
     <Compile Include="Utilities\FileVersionUtilities.cs" />
     <Compile Include="Utilities\DebugUtilities.cs" />
     <Compile Include="Utilities\UnitsUtilities.cs" />

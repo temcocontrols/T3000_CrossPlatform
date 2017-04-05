@@ -20,7 +20,7 @@
                     return 16;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(version);
             }
         }
 
@@ -32,7 +32,7 @@
                     return 2000;
 
                 default:
-                    throw new NotImplementedException("File version is not implemented");
+                    throw new FileVersionNotImplementedException(version);
             }
         }
 
