@@ -16,6 +16,7 @@
         public byte[] Reserved { get; set; }
         public long Length { get; set; }
         public long Coef { get; set; }
+        public bool IsUpgraded { get; set; } = false;
 
         #region Main data
 
@@ -602,7 +603,7 @@ Offset: {offset}, Length: {Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            if (bytes.Count != Length)
+            if (!IsUpgraded && bytes.Count != Length)
             {
                 throw new ArgumentException($@"Output lenght != Length after writing.
 Output lenght: {bytes.Count}, Length: {Length}");
@@ -630,11 +631,18 @@ Output lenght: {bytes.Count}, Length: {Length}");
 
         public void Upgrade(FileVersion version = FileVersion.Current)
         {
+            if (FileVersion == version)
+            {
+                return;
+            }
+
             FileVersion = version;
+            IsUpgraded = true;
             switch (version)
             {
                 case FileVersion.Current:
                     Signature = FileVersionUtilities.Rev6Signature;
+                    Version = 6;
                     break;
 
                 case FileVersion.Dos:

@@ -12,7 +12,7 @@ namespace PRGReaderLibrary
         public TcpType TcpType { get; set; }
         public int MiniType { get; set; }
         public int Debug { get; set; }
-        public ProInfo ProInfo { get; set; }
+        public ProInfo ProInfo { get; set; } = new ProInfo();
         public int Com0Config { get; set; }
         public int Com1Config { get; set; }
         public int Com2Config { get; set; }
@@ -30,19 +30,19 @@ namespace PRGReaderLibrary
         public UsbMode UsbMode { get; set; }
         public int NetworkNumber { get; set; }
         public int PanelType { get; set; }
-        public string PanelName { get; set; }
+        public string PanelName { get; set; } = string.Empty;
         public NoYes EnablePanelName { get; set; }
         public int PabelNumber { get; set; }
-        public string DynDNSUser { get; set; }
-        public string DynDNSPassword { get; set; }
-        public string DynDNSDomain { get; set; }
+        public string DynDNSUser { get; set; } = string.Empty;
+        public string DynDNSPassword { get; set; } = string.Empty;
+        public string DynDNSDomain { get; set; } = string.Empty;
         public NoDisableEnable DynDNSMode { get; set; }
         public DynDNSProvider DynDNSProvider { get; set; }
         public int DynDNSUpdateTime { get; set; }
         public NoDisableEnable SntpMode { get; set; }
         public int TimeZone { get; set; }
         public long SerialNumber { get; set; }
-        public UNTime UpdateDynDNS { get; set; }
+        public UNTime UpdateDynDNS { get; set; } = new UNTime();
         public int MstpNetworkNumber { get; set; }
         public int BBMDEn { get; set; }
         public int SdExist { get; set; } // 1 -no    2- yes
@@ -51,7 +51,7 @@ namespace PRGReaderLibrary
         public long ObjectInstance { get; set; }
         public long TimeUpdateSince1970 { get; set; }
         public int TimeZoneSummerDaytime { get; set; }
-        public string SntpServer { get; set; }
+        public string SntpServer { get; set; } = string.Empty;
         public int ZegbeeExist { get; set; }
 
         public Settings(FileVersion version = FileVersion.Current)
@@ -157,14 +157,15 @@ namespace PRGReaderLibrary
         {
             var bytes = new List<byte>();
             ProInfo.FileVersion = FileVersion;
+            UpdateDynDNS.FileVersion = FileVersion;
 
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    bytes.AddRange(Ip.ToBytes(0, 4));
-                    bytes.AddRange(SubNet.ToBytes(0, 4));
-                    bytes.AddRange(Gate.ToBytes(0, 4));
-                    bytes.AddRange(Mac.ToBytes(0, 6));
+                    bytes.AddRange(Ip?.ToBytes(0, 4) ?? new byte[4]);
+                    bytes.AddRange(SubNet?.ToBytes(0, 4) ?? new byte[4]);
+                    bytes.AddRange(Gate?.ToBytes(0, 4) ?? new byte[4]);
+                    bytes.AddRange(Mac?.ToBytes(0, 6) ?? new byte[6]);
                     bytes.Add((byte)TcpType);
                     bytes.Add((byte)MiniType);
                     bytes.Add((byte)Debug);

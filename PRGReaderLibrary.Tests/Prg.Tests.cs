@@ -156,18 +156,14 @@ Value.ToFromToString(): {tempValue.ToString()}
                 FileAssert.AreNotEqual(path, temp);
             }
 
-            //Not supported while using RawData. 
-            //Only updating the file without changing the format is available.
-            /*
             //Additional check for upgrade to current
             if (prg.FileVersion != FileVersion.Current)
             {
-                prg.Upgrade();
+                prg.Upgrade(FileVersion.Current);
                 prg.Save(temp);
                 prg = Prg.Load(temp);
                 Assert.AreEqual(FileVersion.Current, prg.FileVersion);
             }
-            */
         }
 
         public void UnsupportedTest(string name)

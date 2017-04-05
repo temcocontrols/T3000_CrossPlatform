@@ -11,8 +11,8 @@ namespace PRGReaderLibrary
         public Control Override2Control { get; set; }
         public int Off { get; set; }
         public int Unused { get; set; }
-        public T3000Point Override1Point { get; set; }
-        public T3000Point Override2Point { get; set; }
+        public T3000Point Override1Point { get; set; } = new T3000Point();
+        public T3000Point Override2Point { get; set; } = new T3000Point();
 
         public SchedulePoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)

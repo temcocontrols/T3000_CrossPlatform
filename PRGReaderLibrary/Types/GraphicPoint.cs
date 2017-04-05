@@ -19,8 +19,8 @@ namespace PRGReaderLibrary
         public int DisplayType { get; set; }
         public int IconSize { get; set; }
         public int IconPlace { get; set; }
-        public string IconName1 { get; set; }
-        public string IconName2 { get; set; }
+        public string IconName1 { get; set; } = string.Empty;
+        public string IconName2 { get; set; } = string.Empty;
         public byte[] Unused { get; set; }
 
         public GraphicPoint(FileVersion version = FileVersion.Current)
@@ -117,7 +117,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)IconPlace);
                     bytes.AddRange(IconName1.ToBytes(20));
                     bytes.AddRange(IconName2.ToBytes(20));
-                    bytes.AddRange(Unused.ToBytes(0, 7));
+                    bytes.AddRange((Unused ?? new byte[7]).ToBytes(0, 7));
                     break;
 
                 default:

@@ -5,7 +5,7 @@ namespace PRGReaderLibrary
 
     public class ScreenPoint : BasePoint, IBinaryObject
     {
-        public string PictureFile { get; set; }
+        public string PictureFile { get; set; } = string.Empty;
         public int RefreshTime { get; set; }
         public TextGraphic GraphicMode { get; set; }
         public int X { get; set; }

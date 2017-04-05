@@ -5,10 +5,10 @@ namespace PRGReaderLibrary
 
     public class ControllerPoint : Version, IBinaryObject
     {
-        public T3000Point Input { get; set; }
+        public T3000Point Input { get; set; } = new T3000Point();
         public int InputValue { get; set; }
         public int Value { get; set; }
-        public T3000Point SetPoint { get; set; }
+        public T3000Point SetPoint { get; set; } = new T3000Point();
         public float SetPointValue { get; set; }
         public Units Units { get; set; }
         public AutoManual AutoManual { get; set; }
@@ -106,13 +106,12 @@ namespace PRGReaderLibrary
         public byte[] ToBytes()
         {
             var bytes = new List<byte>();
+            Input.FileVersion = FileVersion;
+            SetPoint.FileVersion = FileVersion;
 
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Input.FileVersion = FileVersion;
-                    SetPoint.FileVersion = FileVersion;
-
                     bytes.AddRange(Input.ToBytes());
                     bytes.AddRange(InputValue.ToBytes());
                     bytes.AddRange(Value.ToBytes());

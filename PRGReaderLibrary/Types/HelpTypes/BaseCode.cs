@@ -50,7 +50,7 @@
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    bytes.AddRange(Code ?? new byte[Count]);
+                    bytes.AddRange(Code?.ToBytes(0, Count) ?? new byte[Count]);
                     break;
 
                 default:

@@ -91,7 +91,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)Firmware2Rev);
                     bytes.Add((byte)Firmware3Rev);
                     bytes.Add((byte)BootloaderRev);
-                    bytes.AddRange(Unused.ToBytes(0, 10));
+                    bytes.AddRange(Unused?.ToBytes(0, 10) ?? new byte[10]);
                     break;
 
                 default:

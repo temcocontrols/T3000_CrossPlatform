@@ -7,7 +7,7 @@ namespace PRGReaderLibrary
 
     public class MonitorPoint : Version, IBinaryObject
     {
-        public string Label { get; set; }
+        public string Label { get; set; } = string.Empty;
         public List<NetPoint> Inputs { get; set; } = new List<NetPoint>();
         public List<int> Ranges { get; set; } = new List<int>();
         public int Second { get; set; }

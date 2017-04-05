@@ -93,8 +93,8 @@ namespace PRGReaderLibrary
                     bytes.AddRange(((uint)Rights).ToBytes());
                     bytes.Add((byte)DefaultPanel);
                     bytes.Add((byte)DefaultGroup);
-                    bytes.AddRange(ScreenRights);
-                    bytes.AddRange(ProgramRights);
+                    bytes.AddRange(ScreenRights ?? new byte[8]);
+                    bytes.AddRange(ProgramRights ?? new byte[8]);
                     break;
 
                 default:
