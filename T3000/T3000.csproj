@@ -169,9 +169,6 @@
     <Folder Include="Forms\InputsForm\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\Default\Variables.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Icons\Default\Variables.ico" />
   </ItemGroup>
   <ItemGroup>

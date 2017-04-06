@@ -382,16 +382,6 @@ namespace T3000.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap VariablesImage {
-            get {
-                object obj = ResourceManager.GetObject("VariablesImage", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Warning: {0}.
         /// </summary>
         internal static string Warning {
