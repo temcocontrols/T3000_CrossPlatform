@@ -4,8 +4,10 @@
     using System.Windows.Forms;
     using System.Collections.Generic;
 
-    public partial class TDataGridView : DataGridView
+    public class TDataGridView : DataGridView
     {
+        #region User input handles
+
         public Dictionary<string, EventHandler> ColumnHandles = new Dictionary<string, EventHandler>();
 
         protected string ColumnIndexToName(int index) =>
@@ -49,5 +51,8 @@
 
             base.OnCellContentClick(e);
         }
+
+        #endregion
+
     }
 }
