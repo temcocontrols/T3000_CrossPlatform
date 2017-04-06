@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreensForm));
-            this.view = new System.Windows.Forms.DataGridView();
+            this.view = new T3000.Controls.Improved.TDataGridView();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
@@ -58,10 +58,6 @@
             this.RefreshColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContentClick);
-            this.view.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.prgView_CellValidating);
-            this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
-            this.view.KeyDown += new System.Windows.Forms.KeyEventHandler(this.prgView_KeyDown);
             // 
             // saveButton
             // 
@@ -138,7 +134,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView view;
+        private T3000.Controls.Improved.TDataGridView view;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;
