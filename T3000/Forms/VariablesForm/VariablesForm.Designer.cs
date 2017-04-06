@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
-            this.view = new System.Windows.Forms.DataGridView();
+            this.view = new T3000.Controls.Improved.TDataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -58,10 +58,8 @@
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellContentClick);
             this.view.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.view_CellValidating);
             this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
-            this.view.KeyDown += new System.Windows.Forms.KeyEventHandler(this.view_KeyDown);
             // 
             // NumberColumn
             // 
@@ -140,7 +138,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView view;
+        private T3000.Controls.Improved.TDataGridView view;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;

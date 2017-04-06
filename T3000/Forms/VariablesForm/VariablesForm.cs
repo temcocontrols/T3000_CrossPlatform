@@ -22,9 +22,16 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
+            view.ColumnHandles[AutoManualColumn.Name] = 
+                DataGridViewUtilities.EditEnumColumn<AutoManual>;
+            view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
 
             //Show points
             view.Rows.Clear();
+
+            //Fix for auto-filled column exception
+            view.SuspendLayout();
+
             var i = 0;
             foreach (var point in Points)
             {
@@ -38,6 +45,9 @@
                 });
                 ++i;
             }
+
+            //Fix for auto-filled column exception
+            view.ResumeLayout();
 
             ValidateView();
         }
@@ -132,7 +142,6 @@
         private void ClearSelectedRow(object sender, EventArgs e)
         {
             var row = view.CurrentRow;
-
             if (row == null)
             {
                 return;
@@ -201,7 +210,7 @@
         {
             try
             {
-                if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
+                if (!DataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
                 {
                     return;
                 }
@@ -252,52 +261,9 @@
             }
         }
 
-        private void EditAutoManualColumn(object sender, EventArgs e)
-        {
-            try
-            {
-                var row = view.CurrentRow;
-                var current = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
-                row.Cells[AutoManualColumn.Name].Value = EnumUtilities.NextValue(current);
-                view.EndEdit();
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
-        }
-
-        private bool ButtonEdit(object sender, EventArgs e)
-        {
-            if (view.CurrentCell.ColumnIndex == UnitsColumn.Index)
-            {
-                EditUnitsColumn(sender, e);
-                return true;
-            }
-            else if (view.CurrentCell.ColumnIndex == AutoManualColumn.Index)
-            {
-                EditAutoManualColumn(sender, e);
-                return true;
-            }
-
-            return false;
-        }
-
-
-        private void view_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (!(((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn) ||
-                !FormUtilities.RowIndexIsValid(e.RowIndex, view))
-            {
-                return;
-            }
-
-            ButtonEdit(sender, e);
-        }
-
         private void view_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
+            if (!DataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
             {
                 return;
             }
@@ -307,23 +273,6 @@
                 ValidateRow(view.Rows[e.RowIndex]);
             }
             catch(Exception) { }
-        }
-
-        private void view_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Enter:
-                    if (view.CurrentCell != null)
-                    {
-                        e.Handled = true;
-                        if (!ButtonEdit(sender, e))
-                        {
-                            view.BeginEdit(true);
-                        }
-                    }
-                    break;
-            }
         }
 
         #endregion

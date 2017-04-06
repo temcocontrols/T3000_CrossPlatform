@@ -35,11 +35,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ColorConstants.cs" />
+    <Compile Include="Controls\Improved\TDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Improved\TDataGridView.Designer.cs">
+      <DependentUpon>TDataGridView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ScreensForm\ScreensForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,10 +65,6 @@
     </Compile>
     <Compile Include="Forms\VariablesForm\EditCustomUnitsForm.Designer.cs">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AdditionalForms\GenericSelectForm.cs" />
-    <Compile Include="Forms\AdditionalForms\GenericSelectForm.Designer.cs">
-      <DependentUpon>GenericSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VariablesForm\SelectUnitsForm.cs">
       <SubType>Form</SubType>
@@ -87,7 +91,7 @@
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\EnumUtilities.cs" />
-    <Compile Include="Utilities\FormUtilities.cs" />
+    <Compile Include="Utilities\DataGridViewUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.de-DE.resx">
@@ -108,9 +112,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnitsForm.resx">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AdditionalForms\GenericSelectForm.resx">
-      <DependentUpon>GenericSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\SelectUnitsForm.resx">
       <DependentUpon>SelectUnitsForm.cs</DependentUpon>
@@ -167,6 +168,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Forms\HelpForms\" />
     <Folder Include="Forms\InputsForm\" />
   </ItemGroup>
   <ItemGroup>
