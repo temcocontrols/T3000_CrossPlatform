@@ -165,13 +165,13 @@
                 offset += 2;
                 //prg.WrTimes = reader.ReadBytes(size);
                 var schedulesCount = SchedulePoint.GetCount(FileVersion);
-                var schedulesSize = SchedulePoint.GetSize(FileVersion);
+                //var schedulesSize = SchedulePoint.GetSize(FileVersion);
                 for (var j = 0; j < size; j += schedulesCount * schedulesCount)
                 {
                     //var list = new List<WrOneDay>();
                     for (var k = 0; k < schedulesCount; ++k)
                     {
-                        var data = bytes.ToBytes(offset, schedulesCount);
+                        //var data = bytes.ToBytes(offset, schedulesCount);
                         offset += schedulesCount;
                         //list.Add(WrOneDay.FromBytes(data));
                     }
@@ -186,7 +186,7 @@
                 var holidaySize = HolidayPoint.GetSize(FileVersion);
                 for (var j = 0; j < size; j += holidaySize)
                 {
-                    var data = bytes.ToBytes(offset, holidaySize);
+                    //var data = bytes.ToBytes(offset, holidaySize);
                     offset += holidaySize;
                     //ArDates.Add(data);
                 }
@@ -202,7 +202,7 @@
             {
                 var size = bytes.ToUInt16(offset);
                 offset += 2;
-                var data = bytes.ToBytes(offset, size);
+                //var data = bytes.ToBytes(offset, size);
                 offset += size;
 
                 //GrpDatas.Add(data);

@@ -32,3 +32,9 @@ nuget restore T3000_CrossPlatform/T3000_CrossPlatform.sln
 xbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
 T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
+
+# Plan:
+
+1. Fix for Exception explosion
+2. Add support for Units range
+3. Add forms for Inputs, Outputs etc
