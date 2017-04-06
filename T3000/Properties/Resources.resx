@@ -226,4 +226,7 @@
   <data name="Upgraded" xml:space="preserve">
     <value>Upgraded: {0}</value>
   </data>
+  <data name="VariablesFormNotValid" xml:space="preserve">
+    <value>Rows values not valid. Please fix it before saving.</value>
+  </data>
 </root>

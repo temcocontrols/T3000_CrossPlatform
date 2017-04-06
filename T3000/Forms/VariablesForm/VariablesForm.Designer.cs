@@ -101,6 +101,7 @@
             // saveButton
             // 
             resources.ApplyResources(this.saveButton, "saveButton");
+            this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.saveButton.Name = "saveButton";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.Save);
@@ -130,8 +131,8 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
-            this.Name = "VariablesForm";
             this.Icon = global::T3000.Properties.Resources.VariablesIcon;
+            this.Name = "VariablesForm";
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 

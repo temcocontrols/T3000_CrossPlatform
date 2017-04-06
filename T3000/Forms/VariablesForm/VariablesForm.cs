@@ -2,7 +2,7 @@
 {
     using PRGReaderLibrary;
     using System;
-    using System.Drawing;
+    using Properties;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -36,37 +36,93 @@
                     point.Value.Units.GetOffOnName(point.Value.CustomUnits),
                     point.Label
                 });
-                CheckRowValue(view.Rows[view.RowCount - 1],
-                    ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 ++i;
             }
+
+            ValidateView();
         }
 
         #region Utilities
 
-        public static void CheckRowValue(DataGridViewRow row,
+        public static void SetCellErrorMessage(DataGridViewCell cell, bool isValidated, string message)
+        {
+            cell.ToolTipText = isValidated ? string.Empty : message;
+            cell.ErrorText = cell.ToolTipText;
+            cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
+        }
+
+        public static bool ValidateRowValue(DataGridViewRow row,
             string valueColumn, string unitsColumn,
             List<DigitalCustomUnitsPoint> customUnits = null)
         {
             var cell = row.Cells[valueColumn];
             var isValidated = true;
-            cell.ToolTipText = string.Empty;
-            cell.ErrorText = string.Empty;
+            var message = string.Empty;
             try
             {
                 var unitsCell = row.Cells[unitsColumn];
                 var units = UnitsNamesConstants.UnitsFromName(
                     (string)unitsCell.Value, customUnits);
-                new VariableValue((string) cell.Value, units, customUnits);
+                new VariableValue((string)cell.Value, units, customUnits);
             }
             catch (Exception exception)
             {
-                cell.ToolTipText = exception.Message;
-                cell.ErrorText = exception.Message;
+                message = exception.Message;
                 isValidated = false;
             }
 
-            cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
+            SetCellErrorMessage(cell, isValidated, message);
+
+            return isValidated;
+        }
+
+        public static bool ValidateRowColumnString(DataGridViewRow row, 
+            string columnName, int length)
+        {
+            var cell = row.Cells[columnName];
+            var description = (string)cell.Value;
+            var isValidated = description.Length <= length;
+            var message = $"Description too long. Maximum is {length} symbols. " +
+                               $"Current length: {description.Length}. " +
+                               $"Please, delete {description.Length - length} symbols.";
+
+            SetCellErrorMessage(cell, isValidated, message);
+
+            return isValidated;
+        }
+
+        public bool ValidateRow(DataGridViewRow row)
+        {
+            if (!ValidateRowValue(row, ValueColumn.Name,
+                UnitsColumn.Name, CustomUnits))
+            {
+                return false;
+            }
+
+            if (!ValidateRowColumnString(row, DescriptionColumn.Name, 21))
+            {
+                return false;
+            }
+
+            if (!ValidateRowColumnString(row, LabelColumn.Name, 9))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool ValidateView()
+        {
+            foreach (DataGridViewRow row in view.Rows)
+            {
+                if (!ValidateRow(row))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         #endregion
@@ -91,6 +147,13 @@
 
         private void Save(object sender, EventArgs e)
         {
+            if (!ValidateView())
+            {
+                MessageBoxUtilities.ShowWarning(Resources.VariablesFormNotValid);
+                DialogResult = DialogResult.None;
+                return;
+            }
+
             try
             {
                 var i = 0;
@@ -123,8 +186,10 @@
             DialogResult = DialogResult.OK;
             Close();
         }
+
         private void Cancel(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Cancel;
             Close();
         }
 
@@ -147,12 +212,11 @@
                 {
                     row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
                 }
-
-                if (e.ColumnIndex == ValueColumn.Index)
+                else if (e.ColumnIndex == ValueColumn.Index)
                 {
-                    CheckRowValue(row, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                     row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
                 }
+                ValidateRow(row);
             }
             catch (Exception exception)
             {
@@ -181,7 +245,8 @@
                         CustomUnits);
                     row.Cells[ValueColumn.Name].Value = convertedValue;
                     view.EndEdit();
-                    CheckRowValue(row, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+
+                    ValidateRow(row);
                 }
             }
             catch (Exception exception)
@@ -240,7 +305,7 @@
                 return;
             }
 
-            CheckRowValue(view.Rows[e.RowIndex], ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            ValidateRow(view.Rows[e.RowIndex]);
         }
 
         private void prgView_KeyDown(object sender, KeyEventArgs e)

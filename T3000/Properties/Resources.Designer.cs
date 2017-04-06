@@ -363,6 +363,15 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rows values not valid. Please fix it before saving..
+        /// </summary>
+        internal static string VariablesFormNotValid {
+            get {
+                return ResourceManager.GetString("VariablesFormNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon VariablesIcon {
