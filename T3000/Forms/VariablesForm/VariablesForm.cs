@@ -22,7 +22,7 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
-            view.ColumnHandles[AutoManualColumn.Name] = 
+            view.ColumnHandles[AutoManualColumn.Name] =
                 DataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
 
@@ -53,68 +53,21 @@
         }
 
         #region Utilities
-
-        public static void SetCellErrorMessage(DataGridViewCell cell, bool isValidated, string message)
-        {
-            cell.ToolTipText = isValidated ? string.Empty : message;
-            cell.ErrorText = cell.ToolTipText;
-            cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
-        }
-
-        public static bool ValidateRowValue(DataGridViewRow row,
-            string valueColumn, string unitsColumn,
-            List<CustomDigitalUnitsPoint> customUnits = null)
-        {
-            var cell = row.Cells[valueColumn];
-            var isValidated = true;
-            var message = string.Empty;
-            try
-            {
-                var unitsCell = row.Cells[unitsColumn];
-                var units = UnitsNamesConstants.UnitsFromName(
-                    (string)unitsCell.Value, customUnits);
-                new VariableValue((string)cell.Value, units, customUnits);
-            }
-            catch (Exception exception)
-            {
-                message = exception.Message;
-                isValidated = false;
-            }
-
-            SetCellErrorMessage(cell, isValidated, message);
-
-            return isValidated;
-        }
-
-        public static bool ValidateRowColumnString(DataGridViewRow row, 
-            string columnName, int length)
-        {
-            var cell = row.Cells[columnName];
-            var description = (string)cell.Value;
-            var isValidated = description.Length <= length;
-            var message = $"Description too long. Maximum is {length} symbols. " +
-                               $"Current length: {description.Length}. " +
-                               $"Please, delete {description.Length - length} symbols.";
-
-            SetCellErrorMessage(cell, isValidated, message);
-
-            return isValidated;
-        }
-
+        
         public bool ValidateRow(DataGridViewRow row)
         {
-            if (!ValidateRowValue(row, ValueColumn.Name,
+            if (!DataGridViewUtilities.ValidateRowValue(row, ValueColumn.Name,
                 UnitsColumn.Name, CustomUnits))
             {
                 return false;
             }
 
-            if (!ValidateRowColumnString(row, DescriptionColumn.Name, 21))
+            if (!DataGridViewUtilities.ValidateRowColumnString(row, DescriptionColumn.Name, 21))
             {
                 return false;
             }
 
-            if (!ValidateRowColumnString(row, LabelColumn.Name, 9))
+            if (!DataGridViewUtilities.ValidateRowColumnString(row, LabelColumn.Name, 9))
             {
                 return false;
             }
@@ -238,22 +191,23 @@
                 var currentUnits = UnitsNamesConstants.UnitsFromName(
                     (string)row.Cells[UnitsColumn.Name].Value, CustomUnits);
                 var form = new SelectUnitsForm(currentUnits, CustomUnits);
-                if (form.ShowDialog() == DialogResult.OK)
+                if (form.ShowDialog() != DialogResult.OK)
                 {
-                    var convertedValue = UnitsUtilities.ConvertValue(
+                    return;
+                }
+
+                var newValue = UnitsUtilities.ConvertValue(
                         (string)row.Cells[ValueColumn.Name].Value,
                         UnitsNamesConstants.UnitsFromName(
                             (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
                         form.SelectedUnits,
                         CustomUnits, form.CustomUnits);
-                    CustomUnits = form.CustomUnits;
-                    row.Cells[UnitsColumn.Name].Value = form.SelectedUnits.GetOffOnName(
-                        CustomUnits);
-                    row.Cells[ValueColumn.Name].Value = convertedValue;
-                    view.EndEdit();
+                CustomUnits = form.CustomUnits;
+                var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
 
-                    ValidateRow(row);
-                }
+                row.Cells[UnitsColumn.Name].Value = newUnits;
+                row.Cells[ValueColumn.Name].Value = newValue;
+                ValidateRow(row);
             }
             catch (Exception exception)
             {
@@ -272,7 +226,7 @@
             {
                 ValidateRow(view.Rows[e.RowIndex]);
             }
-            catch(Exception) { }
+            catch (Exception) { }
         }
 
         #endregion
