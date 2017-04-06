@@ -221,7 +221,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             Assert.AreEqual(new VariableValue(5.0, Units.DegreesC), variable1.Value);
             Assert.AreEqual(AutoManual.Automatic, variable1.AutoManual);
             Assert.AreEqual(DigitalAnalog.Analog, variable1.DigitalAnalog);
-            Assert.AreEqual(Control.Off, variable1.Control);
+            Assert.AreEqual(OffOn.Off, variable1.Control);
 
             var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription   ", variable2.Description);
@@ -229,7 +229,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             ObjectAssert.AreEqual(new VariableValue("On", Units.OffOn).Value, variable2.Value.Value);
             Assert.AreEqual(AutoManual.Manual, variable2.AutoManual);
             Assert.AreEqual(DigitalAnalog.Digital, variable2.DigitalAnalog);
-            Assert.AreEqual(Control.Off, variable2.Control);
+            Assert.AreEqual(OffOn.Off, variable2.Control);
 
             var variable3 = prg.Variables[2];
             Assert.AreEqual("ThirdDescription    ", variable3.Description);
@@ -237,7 +237,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             Assert.AreEqual(new VariableValue(new TimeSpan(0, 22, 22, 22, 0), Units.Time), variable3.Value);
             Assert.AreEqual(AutoManual.Automatic, variable3.AutoManual);
             Assert.AreEqual(DigitalAnalog.Analog, variable3.DigitalAnalog);
-            Assert.AreEqual(Control.Off, variable3.Control);
+            Assert.AreEqual(OffOn.Off, variable3.Control);
         }
     }
 }

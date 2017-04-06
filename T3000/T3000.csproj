@@ -45,6 +45,12 @@
     <Compile Include="Controls\Improved\TDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\ProgramsForm\ProgramsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgramsForm\ProgramsForm.Designer.cs">
+      <DependentUpon>ProgramsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ScreensForm\ScreensForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,15 @@
     <Compile Include="Utilities\DataGridViewUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
+    <EmbeddedResource Include="Forms\ProgramsForm\ProgramsForm.de-DE.resx">
+      <DependentUpon>ProgramsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProgramsForm\ProgramsForm.resx">
+      <DependentUpon>ProgramsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProgramsForm\ProgramsForm.zh-Hant.resx">
+      <DependentUpon>ProgramsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.de-DE.resx">
       <DependentUpon>ScreensForm.cs</DependentUpon>
     </EmbeddedResource>

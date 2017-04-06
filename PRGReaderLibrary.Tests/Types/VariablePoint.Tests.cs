@@ -29,7 +29,7 @@
             expected.Value = new VariableValue("5.000", Units.DegreesC);
             expected.AutoManual = AutoManual.Manual;
             expected.DigitalAnalog = DigitalAnalog.Analog;
-            expected.Control = Control.On;
+            expected.Control = OffOn.On;
 
             BaseTest(list.ToArray(), expected, FileVersion.Dos);
         }
@@ -50,7 +50,7 @@
             expected.Value = new VariableValue("Off", Units.OffOn);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
-            expected.Control = Control.Off;
+            expected.Control = OffOn.Off;
 
             BaseTest(list.ToArray(), expected, FileVersion.Rev6);
         }
@@ -71,7 +71,7 @@
             expected.Value = new VariableValue("40.000", Units.Percents);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Analog;
-            expected.Control = Control.Off;
+            expected.Control = OffOn.Off;
 
             BaseTest(list.ToArray(), expected, FileVersion.Rev6);
         }
@@ -92,7 +92,7 @@
             expected.Value = new VariableValue("03:45:09", Units.Time);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Analog;
-            expected.Control = Control.On;
+            expected.Control = OffOn.On;
 
             BaseTest(list.ToArray(), expected, FileVersion.Rev6);
         }
@@ -117,7 +117,7 @@
             expected.Value = new VariableValue("TEST2", Units.CustomDigital1, customUnits);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
-            expected.Control = Control.On;
+            expected.Control = OffOn.On;
 
             //BaseTest(actual, expected, FileVersion.Rev6, customUnits);
         }

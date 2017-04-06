@@ -5,7 +5,7 @@ namespace PRGReaderLibrary
 
     public class HolidayPoint : BasePoint, IBinaryObject
     {
-        public Control Control { get; set; }
+        public OffOn Control { get; set; }
         public AutoManual AutoManual { get; set; }
         public int Unused { get; set; }
 
@@ -56,7 +56,7 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Control = (Control)bytes.ToByte(30 + offset);
+                    Control = (OffOn)bytes.ToByte(30 + offset);
                     AutoManual = (AutoManual)bytes.ToByte(31 + offset);
                     Unused = bytes.ToByte(32 + offset);
                     break;

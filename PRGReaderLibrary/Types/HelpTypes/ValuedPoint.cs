@@ -5,7 +5,7 @@ namespace PRGReaderLibrary
         public VariableValue Value { get; set; } = new VariableValue(0, 0);
         public AutoManual AutoManual { get; set; }
         public DigitalAnalog DigitalAnalog { get; set; }
-        public Control Control { get; set; }
+        public OffOn Control { get; set; }
 
         public ValuedPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)
@@ -24,10 +24,10 @@ namespace PRGReaderLibrary
         public static DigitalAnalog DigitalAnalogFromByte(byte value) =>
             value.ToBoolean() ? DigitalAnalog.Analog : DigitalAnalog.Digital;
 
-        public static byte ToByte(Control value) =>
-            (value == Control.On).ToByte();
-        public static Control ControlFromByte(byte value) =>
-            value.ToBoolean() ? Control.On : Control.Off;
+        public static byte ToByte(OffOn value) =>
+            (value == OffOn.On).ToByte();
+        public static OffOn ControlFromByte(byte value) =>
+            value.ToBoolean() ? OffOn.On : OffOn.Off;
 
         public static byte ToByte(Units units, DigitalAnalog digitalAnalog) =>
             digitalAnalog == DigitalAnalog.Analog

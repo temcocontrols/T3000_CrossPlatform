@@ -40,7 +40,11 @@
             this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.variablesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controllersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.screensMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.schedulesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.holidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.germanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,13 +52,9 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
-            this.variablesButton = new System.Windows.Forms.ToolStripButton();
-            this.programsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.controllersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.holidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.schedulesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.outputsButton = new System.Windows.Forms.ToolStripButton();
             this.inputsButton = new System.Windows.Forms.ToolStripButton();
+            this.outputsButton = new System.Windows.Forms.ToolStripButton();
+            this.variablesButton = new System.Windows.Forms.ToolStripButton();
             this.programsButton = new System.Windows.Forms.ToolStripButton();
             this.controllersButton = new System.Windows.Forms.ToolStripButton();
             this.screensButton = new System.Windows.Forms.ToolStripButton();
@@ -134,30 +134,47 @@
             // inputsMenuItem
             // 
             resources.ApplyResources(this.inputsMenuItem, "inputsMenuItem");
-            this.inputsMenuItem.Image = global::T3000.Properties.Resources.InputsIcon.ToBitmap();
             this.inputsMenuItem.Name = "inputsMenuItem";
             this.inputsMenuItem.Click += new System.EventHandler(this.ShowInputs);
             // 
             // outputsMenuItem
             // 
             resources.ApplyResources(this.outputsMenuItem, "outputsMenuItem");
-            this.outputsMenuItem.Image = global::T3000.Properties.Resources.OutputsIcon.ToBitmap();
             this.outputsMenuItem.Name = "outputsMenuItem";
             this.outputsMenuItem.Click += new System.EventHandler(this.ShowOutputs);
             // 
             // variablesMenuItem
             // 
             resources.ApplyResources(this.variablesMenuItem, "variablesMenuItem");
-            this.variablesMenuItem.Image = global::T3000.Properties.Resources.VariablesIcon.ToBitmap();
             this.variablesMenuItem.Name = "variablesMenuItem";
             this.variablesMenuItem.Click += new System.EventHandler(this.ShowVariables);
+            // 
+            // programsMenuItem
+            // 
+            resources.ApplyResources(this.programsMenuItem, "programsMenuItem");
+            this.programsMenuItem.Name = "programsMenuItem";
+            this.programsMenuItem.Click += new System.EventHandler(this.ShowPrograms);
+            // 
+            // controllersMenuItem
+            // 
+            resources.ApplyResources(this.controllersMenuItem, "controllersMenuItem");
+            this.controllersMenuItem.Name = "controllersMenuItem";
             // 
             // screensMenuItem
             // 
             resources.ApplyResources(this.screensMenuItem, "screensMenuItem");
-            this.screensMenuItem.Image = global::T3000.Properties.Resources.GraphicsIcon.ToBitmap();
             this.screensMenuItem.Name = "screensMenuItem";
             this.screensMenuItem.Click += new System.EventHandler(this.ShowScreens);
+            // 
+            // schedulesMenuItem
+            // 
+            resources.ApplyResources(this.schedulesMenuItem, "schedulesMenuItem");
+            this.schedulesMenuItem.Name = "schedulesMenuItem";
+            // 
+            // holidaysMenuItem
+            // 
+            resources.ApplyResources(this.holidaysMenuItem, "holidaysMenuItem");
+            this.holidaysMenuItem.Name = "holidaysMenuItem";
             // 
             // languageMenuItem
             // 
@@ -213,72 +230,43 @@
             this.holidaysButton});
             this.buttonsToolStrip.Name = "buttonsToolStrip";
             // 
-            // variablesButton
-            // 
-            this.variablesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.variablesButton.Image = global::T3000.Properties.Resources.VariablesIcon.ToBitmap();
-            resources.ApplyResources(this.variablesButton, "variablesButton");
-            this.variablesButton.Name = "variablesButton";
-            this.variablesButton.Click += new System.EventHandler(this.ShowVariables);
-            // 
-            // programsMenuItem
-            // 
-            resources.ApplyResources(this.programsMenuItem, "programsMenuItem");
-            this.programsMenuItem.Image = global::T3000.Properties.Resources.ProgramsIcon.ToBitmap();
-            this.programsMenuItem.Name = "programsMenuItem";
-            // 
-            // controllersMenuItem
-            // 
-            resources.ApplyResources(this.controllersMenuItem, "controllersMenuItem");
-            this.controllersMenuItem.Image = global::T3000.Properties.Resources.PIDsIcon.ToBitmap();
-            this.controllersMenuItem.Name = "controllersMenuItem";
-            // 
-            // holidaysMenuItem
-            // 
-            resources.ApplyResources(this.holidaysMenuItem, "holidaysMenuItem");
-            this.holidaysMenuItem.Image = global::T3000.Properties.Resources.HolidaysIcon.ToBitmap();
-            this.holidaysMenuItem.Name = "holidaysMenuItem";
-            // 
-            // schedulesMenuItem
-            // 
-            resources.ApplyResources(this.schedulesMenuItem, "schedulesMenuItem");
-            this.schedulesMenuItem.Image = global::T3000.Properties.Resources.SchedulesIcon.ToBitmap();
-            this.schedulesMenuItem.Name = "schedulesMenuItem";
-            // 
-            // outputsButton
-            // 
-            this.outputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.outputsButton.Image = global::T3000.Properties.Resources.OutputsIcon.ToBitmap();
-            resources.ApplyResources(this.outputsButton, "outputsButton");
-            this.outputsButton.Name = "outputsButton";
-            this.outputsButton.Click += new System.EventHandler(this.ShowOutputs);
-            // 
             // inputsButton
             // 
             this.inputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.inputsButton.Image = global::T3000.Properties.Resources.InputsIcon.ToBitmap();
             resources.ApplyResources(this.inputsButton, "inputsButton");
             this.inputsButton.Name = "inputsButton";
             this.inputsButton.Click += new System.EventHandler(this.ShowInputs);
             // 
+            // outputsButton
+            // 
+            this.outputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.outputsButton, "outputsButton");
+            this.outputsButton.Name = "outputsButton";
+            this.outputsButton.Click += new System.EventHandler(this.ShowOutputs);
+            // 
+            // variablesButton
+            // 
+            this.variablesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.variablesButton, "variablesButton");
+            this.variablesButton.Name = "variablesButton";
+            this.variablesButton.Click += new System.EventHandler(this.ShowVariables);
+            // 
             // programsButton
             // 
             this.programsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.programsButton.Image = global::T3000.Properties.Resources.ProgramsIcon.ToBitmap();
             resources.ApplyResources(this.programsButton, "programsButton");
             this.programsButton.Name = "programsButton";
+            this.programsButton.Click += new System.EventHandler(this.ShowPrograms);
             // 
             // controllersButton
             // 
             this.controllersButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.controllersButton.Image = global::T3000.Properties.Resources.PIDsIcon.ToBitmap();
             resources.ApplyResources(this.controllersButton, "controllersButton");
             this.controllersButton.Name = "controllersButton";
             // 
             // screensButton
             // 
             this.screensButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.screensButton.Image = global::T3000.Properties.Resources.GraphicsIcon.ToBitmap();
             resources.ApplyResources(this.screensButton, "screensButton");
             this.screensButton.Name = "screensButton";
             this.screensButton.Click += new System.EventHandler(this.ShowScreens);
@@ -286,14 +274,12 @@
             // schedulesButton
             // 
             this.schedulesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.schedulesButton.Image = global::T3000.Properties.Resources.SchedulesIcon.ToBitmap();
             resources.ApplyResources(this.schedulesButton, "schedulesButton");
             this.schedulesButton.Name = "schedulesButton";
             // 
             // holidaysButton
             // 
             this.holidaysButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.holidaysButton.Image = global::T3000.Properties.Resources.HolidaysIcon.ToBitmap();
             resources.ApplyResources(this.holidaysButton, "holidaysButton");
             this.holidaysButton.Name = "holidaysButton";
             // 

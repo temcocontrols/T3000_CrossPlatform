@@ -5,10 +5,10 @@ namespace PRGReaderLibrary
 
     public class SchedulePoint : BasePoint, IBinaryObject
     {
-        public Control Control { get; set; }
+        public OffOn Control { get; set; }
         public AutoManual AutoManual { get; set; }
-        public Control Override1Control { get; set; }
-        public Control Override2Control { get; set; }
+        public OffOn Override1Control { get; set; }
+        public OffOn Override2Control { get; set; }
         public int Off { get; set; }
         public int Unused { get; set; }
         public T3000Point Override1Point { get; set; } = new T3000Point();
@@ -64,10 +64,10 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Control = (Control)bytes.ToByte(30 + offset);
+                    Control = (OffOn)bytes.ToByte(30 + offset);
                     AutoManual = (AutoManual)bytes.ToByte(31 + offset);
-                    Override1Control = (Control)bytes.ToByte(32 + offset);
-                    Override2Control = (Control)bytes.ToByte(33 + offset);
+                    Override1Control = (OffOn)bytes.ToByte(32 + offset);
+                    Override2Control = (OffOn)bytes.ToByte(33 + offset);
                     Off = bytes.ToByte(34 + offset);
                     Unused = bytes.ToByte(35 + offset);
                     Override1Point = new T3000Point(bytes.ToBytes(36 + offset, 3), 0, FileVersion);

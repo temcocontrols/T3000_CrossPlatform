@@ -55,7 +55,7 @@
     <Compile Include="Enums\AnalogOutput.cs" />
     <Compile Include="Enums\CommandRequest.cs" />
     <Compile Include="Enums\FileVersion.cs" />
-    <Compile Include="Enums\Control.cs" />
+    <Compile Include="Enums\OffOn.cs" />
     <Compile Include="Enums\DigitalAnalog.cs" />
     <Compile Include="Enums\AutoManual.cs" />
     <Compile Include="Enums\VariableType.cs" />

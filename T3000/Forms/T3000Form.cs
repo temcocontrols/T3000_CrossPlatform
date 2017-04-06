@@ -235,6 +235,24 @@
             }
         }
 
+        private void ShowPrograms(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckIsOpened())
+                {
+                    return;
+                }
+
+                var form = new ProgramsForm(Prg.Programs);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
         private void ShowScreens(object sender, EventArgs e)
         {
             try

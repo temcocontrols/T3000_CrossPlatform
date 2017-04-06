@@ -1,12 +1,11 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
     public class ProgramPoint : BasePoint, IBinaryObject
     {
         public int Length { get; set; }
-        public Control Control { get; set; }
+        public OffOn Control { get; set; }
         public AutoManual AutoManual { get; set; }
         public NormalCom NormalCom { get; set; }
         public int ErrorCode { get; set; }

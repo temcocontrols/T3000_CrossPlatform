@@ -8,7 +8,7 @@ namespace PRGReaderLibrary
         public int LowVoltage { get; set; }
         public int HighVoltage { get; set; }
         public SwitchStatus HwSwitchStatus { get; set; }
-        public Control DigitalControl { get; set; }
+        public OffOn DigitalControl { get; set; }
         public int PwmPeriod { get; set; }
 
         public OutputPoint(string description = "", string label = "",
