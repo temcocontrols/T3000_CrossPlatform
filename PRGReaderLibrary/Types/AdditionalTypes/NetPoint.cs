@@ -1,6 +1,5 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
     public class NetPoint : T3000Point, IBinaryObject

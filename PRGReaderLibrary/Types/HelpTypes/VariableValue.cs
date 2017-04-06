@@ -7,7 +7,7 @@
     {
         public int Value { get; set; }
         public Units Units { get; set; }
-        public List<DigitalCustomUnitsPoint> CustomUnits { get; set; }
+        public List<CustomDigitalUnitsPoint> CustomUnits { get; set; }
 
         public static int FromTimeSpan(TimeSpan time) =>
                 ((time.Days * 60 * 60 * 24 +
@@ -39,7 +39,7 @@
             }
         }
 
-        public static object ToObject(string value, Units units, List<DigitalCustomUnitsPoint> customUnits)
+        public static object ToObject(string value, Units units, List<CustomDigitalUnitsPoint> customUnits)
         {
             switch (units)
             {
@@ -53,7 +53,7 @@
             }
         }
 
-        public static string ToString(object value, Units units, List<DigitalCustomUnitsPoint> customUnits)
+        public static string ToString(object value, Units units, List<CustomDigitalUnitsPoint> customUnits)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -138,18 +138,18 @@ Type: {type}, Value: {value}, Units: {units}
 Supported types: bool, float, TimeSpan");
         }
 
-        public VariableValue(int value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(int value, Units units, List<CustomDigitalUnitsPoint> customUnits = null)
         {
             Value = value;
             Units = units;
             CustomUnits = customUnits;
         }
 
-        public VariableValue(object value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(object value, Units units, List<CustomDigitalUnitsPoint> customUnits = null)
             : this(ToInt(value, units), units, customUnits)
         { }
 
-        public VariableValue(string value, Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public VariableValue(string value, Units units, List<CustomDigitalUnitsPoint> customUnits = null)
             : this(ToObject(value, units, customUnits), units, customUnits)
         { }
 

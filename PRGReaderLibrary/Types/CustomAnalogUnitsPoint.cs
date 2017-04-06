@@ -1,15 +1,14 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
-    public class AnalogCustomUnitsPoint : Version, IBinaryObject
+    public class CustomAnalogUnitsPoint : Version, IBinaryObject
     {
         public string Name { get; set; }
 
         public bool IsEmpty => string.IsNullOrWhiteSpace(Name);
 
-        public AnalogCustomUnitsPoint(string name = "", 
+        public CustomAnalogUnitsPoint(string name = "", 
             FileVersion version = FileVersion.Current)
             : base(version)
         {
@@ -48,7 +47,7 @@ namespace PRGReaderLibrary
         /// <param name="bytes"></param>
         /// <param name="offset"></param>
         /// <param name="version"></param>
-        public AnalogCustomUnitsPoint(byte[] bytes, int offset = 0, 
+        public CustomAnalogUnitsPoint(byte[] bytes, int offset = 0, 
             FileVersion version = FileVersion.Current)
             : base(version)
         {

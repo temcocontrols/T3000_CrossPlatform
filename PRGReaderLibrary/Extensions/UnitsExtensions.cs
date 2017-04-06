@@ -11,7 +11,7 @@
         public static bool IsDigital(this Units units) =>
             !units.IsAnalog();
 
-        public static UnitsNames GetUnitsNames(this Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        public static UnitsNames GetUnitsNames(this Units units, List<CustomDigitalUnitsPoint> customUnits = null)
         {
             var names = UnitsNamesConstants.GetNames(customUnits);
             if (!names.ContainsKey(units))
@@ -23,13 +23,13 @@ Units: {units}", nameof(units));
             return names[units];
         }
 
-        public static string GetOffName(this Units units, List<DigitalCustomUnitsPoint> customUnits = null) =>
+        public static string GetOffName(this Units units, List<CustomDigitalUnitsPoint> customUnits = null) =>
             GetUnitsNames(units, customUnits).OffName;
 
-        public static string GetOnName(this Units units, List<DigitalCustomUnitsPoint> customUnits = null) =>
+        public static string GetOnName(this Units units, List<CustomDigitalUnitsPoint> customUnits = null) =>
             GetUnitsNames(units, customUnits).OnName;
 
-        public static string GetOffOnName(this Units units, List<DigitalCustomUnitsPoint> customUnits = null) =>
+        public static string GetOffOnName(this Units units, List<CustomDigitalUnitsPoint> customUnits = null) =>
             GetUnitsNames(units, customUnits).OffOnName;
     }
 }

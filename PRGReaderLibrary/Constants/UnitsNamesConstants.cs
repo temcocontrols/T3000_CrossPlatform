@@ -9,7 +9,7 @@
         private static Dictionary<Units, UnitsNames> BaseAnalogDictionary { get; } = GetFilledAnalogDictionary();
         private static Dictionary<Units, UnitsNames> BaseDigitalDictionary { get; } = GetFilledDigitalDictionary();
 
-        private static UnitsNames GetCustomName(int index, List<DigitalCustomUnitsPoint> customUnits = null, string defaultOnOff = "")
+        private static UnitsNames GetCustomName(int index, List<CustomDigitalUnitsPoint> customUnits = null, string defaultOnOff = "")
         {
             if (customUnits == null ||
                 index < 0 ||
@@ -25,7 +25,7 @@
                 unit.DigitalUnitsOff, unit.DigitalUnitsOn);
         }
 
-        private static UnitsNames GetNameCollection(Units units, List<DigitalCustomUnitsPoint> customUnits = null)
+        private static UnitsNames GetNameCollection(Units units, List<CustomDigitalUnitsPoint> customUnits = null)
         {
             switch (units)
             {
@@ -127,7 +127,7 @@
             }
         }
 
-        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<DigitalCustomUnitsPoint> customUnits = null, Func<Units, bool> predicate = null)
+        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<CustomDigitalUnitsPoint> customUnits = null, Func<Units, bool> predicate = null)
         {
             var names = new Dictionary<Units, UnitsNames>();
             foreach (Units units in Enum.GetValues(typeof(Units)))
@@ -143,22 +143,22 @@
             return names;
         }
 
-        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(List<DigitalCustomUnitsPoint> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(List<CustomDigitalUnitsPoint> customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsAnalog());
 
-        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(List<DigitalCustomUnitsPoint> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(List<CustomDigitalUnitsPoint> customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsDigital());
 
-        public static Dictionary<Units, UnitsNames> GetNames(List<DigitalCustomUnitsPoint> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetNames(List<CustomDigitalUnitsPoint> customUnits = null) =>
             customUnits == null ? BaseDictionary : GetFilledDictionary(customUnits);
 
-        public static Dictionary<Units, UnitsNames> GetAnalogNames(List<DigitalCustomUnitsPoint> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetAnalogNames(List<CustomDigitalUnitsPoint> customUnits = null) =>
             customUnits == null ? BaseAnalogDictionary : GetFilledAnalogDictionary(customUnits);
 
-        public static Dictionary<Units, UnitsNames> GetDigitalNames(List<DigitalCustomUnitsPoint> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetDigitalNames(List<CustomDigitalUnitsPoint> customUnits = null) =>
             customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
 
-        public static Units UnitsFromName(string name, List<DigitalCustomUnitsPoint> customUnits = null)
+        public static Units UnitsFromName(string name, List<CustomDigitalUnitsPoint> customUnits = null)
         {
             var names = GetNames(customUnits);
             foreach (var pair in names)

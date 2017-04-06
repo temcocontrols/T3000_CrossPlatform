@@ -37,8 +37,8 @@
         public List<HolidayCode> HolidayCodes { get; set; } = new List<HolidayCode>();
         public List<ProgramCode> ProgramCodes { get; set; } = new List<ProgramCode>();
 
-        public List<DigitalCustomUnitsPoint> CustomUnits { get; set; } = new List<DigitalCustomUnitsPoint>();
-        public List<AnalogCustomUnitsPoint> AnalogCustomUnits { get; set; } = new List<AnalogCustomUnitsPoint>();
+        public List<CustomDigitalUnitsPoint> CustomUnits { get; set; } = new List<CustomDigitalUnitsPoint>();
+        public List<CustomAnalogUnitsPoint> AnalogCustomUnits { get; set; } = new List<CustomAnalogUnitsPoint>();
 
         #endregion
 
@@ -136,7 +136,7 @@
                                 break;
 
                             case PointType.UNIT:
-                                CustomUnits.Add(new PRGReaderLibrary.DigitalCustomUnitsPoint(data, 0, FileVersion));
+                                CustomUnits.Add(new PRGReaderLibrary.CustomDigitalUnitsPoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -168,12 +168,12 @@
                 var schedulesSize = SchedulePoint.GetSize(FileVersion);
                 for (var j = 0; j < size; j += schedulesCount * schedulesCount)
                 {
-                    var list = new List<WrOneDay>();
+                    //var list = new List<WrOneDay>();
                     for (var k = 0; k < schedulesCount; ++k)
                     {
                         var data = bytes.ToBytes(offset, schedulesCount);
                         offset += schedulesCount;
-                        list.Add(WrOneDay.FromBytes(data));
+                        //list.Add(WrOneDay.FromBytes(data));
                     }
 
                     //WrTimes.Add(list);
@@ -301,9 +301,9 @@
                 .Select(i => new UserPoint(i, 0, FileVersion)));
 
             CustomUnits.AddRange(GetArray(bytes,
-                DigitalCustomUnitsPoint.GetCount(FileVersion),
-                DigitalCustomUnitsPoint.GetSize(FileVersion), ref offset)
-                .Select(i => new DigitalCustomUnitsPoint(i, 0, FileVersion)));
+                CustomDigitalUnitsPoint.GetCount(FileVersion),
+                CustomDigitalUnitsPoint.GetSize(FileVersion), ref offset)
+                .Select(i => new CustomDigitalUnitsPoint(i, 0, FileVersion)));
 
             Tables.AddRange(GetArray(bytes,
                 TablePoint.GetCount(FileVersion),
@@ -344,9 +344,9 @@
                 .Select(i => new ProgramCode(i, 0, FileVersion)));
 
             AnalogCustomUnits.AddRange(GetArray(bytes,
-                AnalogCustomUnitsPoint.GetCount(FileVersion),
-                AnalogCustomUnitsPoint.GetSize(FileVersion), ref offset)
-                .Select(i => new AnalogCustomUnitsPoint(i, 0, FileVersion)));
+                CustomAnalogUnitsPoint.GetCount(FileVersion),
+                CustomAnalogUnitsPoint.GetSize(FileVersion), ref offset)
+                .Select(i => new CustomAnalogUnitsPoint(i, 0, FileVersion)));
 
             if (offset != Length)
             {
@@ -544,9 +544,9 @@ Offset: {offset}, Length: {Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < DigitalCustomUnitsPoint.GetCount(FileVersion); ++i)
+            for (var i = 0; i < CustomDigitalUnitsPoint.GetCount(FileVersion); ++i)
             {
-                var obj = CustomUnits.ElementAtOrDefault(i) ?? new DigitalCustomUnitsPoint();
+                var obj = CustomUnits.ElementAtOrDefault(i) ?? new CustomDigitalUnitsPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
@@ -597,9 +597,9 @@ Offset: {offset}, Length: {Length}");
                 bytes.AddRange(obj.ToBytes());
             }
 
-            for (var i = 0; i < AnalogCustomUnitsPoint.GetCount(FileVersion); ++i)
+            for (var i = 0; i < CustomAnalogUnitsPoint.GetCount(FileVersion); ++i)
             {
-                var obj = AnalogCustomUnits.ElementAtOrDefault(i) ?? new AnalogCustomUnitsPoint();
+                var obj = AnalogCustomUnits.ElementAtOrDefault(i) ?? new CustomAnalogUnitsPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
