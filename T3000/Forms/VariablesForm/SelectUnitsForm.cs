@@ -90,6 +90,7 @@
 
         private void numberTextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            var maxItemsInColumn = analogUnitsListBox.Height / analogUnitsListBox.ItemHeight;
             switch (e.KeyCode)
             {
                 case Keys.Enter:
@@ -109,6 +110,24 @@
                 case Keys.PageDown:
                 case Keys.VolumeDown:
                     SelectedUnits = EnumUtilities.NextValue(SelectedUnits);
+                    ShowSelectedItem();
+                    break;
+
+                case Keys.Left:
+                case Keys.A:
+                    for (var i = 0; i < maxItemsInColumn; ++i)
+                    {
+                        SelectedUnits = EnumUtilities.PrevValue(SelectedUnits);
+                    }
+                    ShowSelectedItem();
+                    break;
+
+                case Keys.Right:
+                case Keys.D:
+                    for (var i = 0; i < maxItemsInColumn; ++i)
+                    {
+                        SelectedUnits = EnumUtilities.NextValue(SelectedUnits);
+                    }
                     ShowSelectedItem();
                     break;
             }
