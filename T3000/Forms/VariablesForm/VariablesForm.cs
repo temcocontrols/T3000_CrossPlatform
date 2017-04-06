@@ -197,7 +197,7 @@
 
         #region Callbacks
 
-        private void prgView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void view_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
@@ -218,10 +218,7 @@
                 }
                 ValidateRow(row);
             }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
+            catch (Exception) { }
         }
 
         private void EditUnitsColumn(object sender, EventArgs e)
@@ -287,7 +284,7 @@
         }
 
 
-        private void prgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void view_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (!(((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn) ||
                 !FormUtilities.RowIndexIsValid(e.RowIndex, view))
@@ -298,17 +295,21 @@
             ButtonEdit(sender, e);
         }
 
-        private void prgView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        private void view_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (!FormUtilities.RowIndexIsValid(e.RowIndex, view))
             {
                 return;
             }
 
-            ValidateRow(view.Rows[e.RowIndex]);
+            try
+            {
+                ValidateRow(view.Rows[e.RowIndex]);
+            }
+            catch(Exception) { }
         }
 
-        private void prgView_KeyDown(object sender, KeyEventArgs e)
+        private void view_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {

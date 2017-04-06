@@ -58,10 +58,10 @@
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellContentClick);
-            this.view.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.prgView_CellValidating);
-            this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.prgView_CellValueChanged);
-            this.view.KeyDown += new System.Windows.Forms.KeyEventHandler(this.prgView_KeyDown);
+            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellContentClick);
+            this.view.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.view_CellValidating);
+            this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
+            this.view.KeyDown += new System.Windows.Forms.KeyEventHandler(this.view_KeyDown);
             // 
             // NumberColumn
             // 
