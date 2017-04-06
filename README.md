@@ -28,7 +28,7 @@ Launch:
 ```
 rm -r -f T3000_CrossPlatform
 git clone https://github.com/temcocontrols/T3000_CrossPlatform
-nuget restore T3000_CrossPlatform/T3000.sln
-xbuild T3000_CrossPlatform/T3000.sln /p:Configuration=Release
+nuget restore T3000_CrossPlatform/T3000_CrossPlatform.sln
+xbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
 T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
