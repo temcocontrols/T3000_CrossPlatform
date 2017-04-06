@@ -48,10 +48,14 @@
                 inputsMenuItem.Enabled = true;
                 outputsMenuItem.Enabled = true;
                 variablesMenuItem.Enabled = true;
+                programsMenuItem.Enabled = true;
+                controllersMenuItem.Enabled = true;
                 screensMenuItem.Enabled = true;
+                schedulesMenuItem.Enabled = true;
+                holidaysMenuItem.Enabled = true;
 
                 //Buttons tool strip
-                variablesButton.Enabled = true;
+                buttonsToolStrip.Enabled = true;
 
                 if (Prg.FileVersion != FileVersion.Current)
                 {

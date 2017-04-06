@@ -36,7 +36,7 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.upgradeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.controlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controlMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.variablesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +49,17 @@
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
             this.variablesButton = new System.Windows.Forms.ToolStripButton();
+            this.programsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controllersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.holidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.schedulesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outputsButton = new System.Windows.Forms.ToolStripButton();
+            this.inputsButton = new System.Windows.Forms.ToolStripButton();
+            this.programsButton = new System.Windows.Forms.ToolStripButton();
+            this.controllersButton = new System.Windows.Forms.ToolStripButton();
+            this.screensButton = new System.Windows.Forms.ToolStripButton();
+            this.schedulesButton = new System.Windows.Forms.ToolStripButton();
+            this.holidaysButton = new System.Windows.Forms.ToolStripButton();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.buttonsToolStrip.SuspendLayout();
@@ -59,7 +70,7 @@
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.controlToolStripMenuItem,
+            this.controlMenuItem,
             this.languageMenuItem});
             resources.ApplyResources(this.menuStrip, "menuStrip");
             this.menuStrip.Name = "menuStrip";
@@ -106,15 +117,19 @@
             resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.Exit);
             // 
-            // controlToolStripMenuItem
+            // controlMenuItem
             // 
-            this.controlToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.controlMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputsMenuItem,
             this.outputsMenuItem,
             this.variablesMenuItem,
-            this.screensMenuItem});
-            this.controlToolStripMenuItem.Name = "controlToolStripMenuItem";
-            resources.ApplyResources(this.controlToolStripMenuItem, "controlToolStripMenuItem");
+            this.programsMenuItem,
+            this.controllersMenuItem,
+            this.screensMenuItem,
+            this.schedulesMenuItem,
+            this.holidaysMenuItem});
+            this.controlMenuItem.Name = "controlMenuItem";
+            resources.ApplyResources(this.controlMenuItem, "controlMenuItem");
             // 
             // inputsMenuItem
             // 
@@ -182,19 +197,91 @@
             // 
             // buttonsToolStrip
             // 
+            resources.ApplyResources(this.buttonsToolStrip, "buttonsToolStrip");
             this.buttonsToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.buttonsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.variablesButton});
-            resources.ApplyResources(this.buttonsToolStrip, "buttonsToolStrip");
+            this.inputsButton,
+            this.outputsButton,
+            this.variablesButton,
+            this.programsButton,
+            this.controllersButton,
+            this.screensButton,
+            this.schedulesButton,
+            this.holidaysButton});
             this.buttonsToolStrip.Name = "buttonsToolStrip";
             // 
             // variablesButton
             // 
             this.variablesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.variablesButton, "variablesButton");
             this.variablesButton.Image = global::T3000.Properties.Resources.VariablesImage;
+            resources.ApplyResources(this.variablesButton, "variablesButton");
             this.variablesButton.Name = "variablesButton";
             this.variablesButton.Click += new System.EventHandler(this.ShowVariables);
+            // 
+            // programsMenuItem
+            // 
+            resources.ApplyResources(this.programsMenuItem, "programsMenuItem");
+            this.programsMenuItem.Name = "programsMenuItem";
+            // 
+            // controllersMenuItem
+            // 
+            resources.ApplyResources(this.controllersMenuItem, "controllersMenuItem");
+            this.controllersMenuItem.Name = "controllersMenuItem";
+            // 
+            // holidaysMenuItem
+            // 
+            resources.ApplyResources(this.holidaysMenuItem, "holidaysMenuItem");
+            this.holidaysMenuItem.Name = "holidaysMenuItem";
+            // 
+            // schedulesMenuItem
+            // 
+            resources.ApplyResources(this.schedulesMenuItem, "schedulesMenuItem");
+            this.schedulesMenuItem.Name = "schedulesMenuItem";
+            // 
+            // outputsButton
+            // 
+            this.outputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.outputsButton, "outputsButton");
+            this.outputsButton.Name = "outputsButton";
+            this.outputsButton.Click += new System.EventHandler(this.ShowOutputs);
+            // 
+            // inputsButton
+            // 
+            this.inputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.inputsButton, "inputsButton");
+            this.inputsButton.Name = "inputsButton";
+            this.inputsButton.Click += new System.EventHandler(this.ShowInputs);
+            // 
+            // programsButton
+            // 
+            this.programsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.programsButton, "programsButton");
+            this.programsButton.Name = "programsButton";
+            // 
+            // controllersButton
+            // 
+            this.controllersButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.controllersButton, "controllersButton");
+            this.controllersButton.Name = "controllersButton";
+            // 
+            // screensButton
+            // 
+            this.screensButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.screensButton, "screensButton");
+            this.screensButton.Name = "screensButton";
+            this.screensButton.Click += new System.EventHandler(this.ShowScreens);
+            // 
+            // schedulesButton
+            // 
+            this.schedulesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.schedulesButton, "schedulesButton");
+            this.schedulesButton.Name = "schedulesButton";
+            // 
+            // holidaysButton
+            // 
+            this.holidaysButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.holidaysButton, "holidaysButton");
+            this.holidaysButton.Name = "holidaysButton";
             // 
             // T3000Form
             // 
@@ -223,7 +310,7 @@
         private System.Windows.Forms.ToolStripMenuItem loadPRGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem savePRGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem controlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem controlMenuItem;
         private System.Windows.Forms.ToolStripMenuItem variablesMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
@@ -238,5 +325,16 @@
         private System.Windows.Forms.ToolStrip buttonsToolStrip;
         private System.Windows.Forms.ToolStripButton variablesButton;
         private System.Windows.Forms.ToolStripMenuItem upgradeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem programsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem controllersMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem holidaysMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem schedulesMenuItem;
+        private System.Windows.Forms.ToolStripButton inputsButton;
+        private System.Windows.Forms.ToolStripButton outputsButton;
+        private System.Windows.Forms.ToolStripButton programsButton;
+        private System.Windows.Forms.ToolStripButton controllersButton;
+        private System.Windows.Forms.ToolStripButton screensButton;
+        private System.Windows.Forms.ToolStripButton schedulesButton;
+        private System.Windows.Forms.ToolStripButton holidaysButton;
     }
 }
