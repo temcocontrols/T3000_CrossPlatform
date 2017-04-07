@@ -32,6 +32,7 @@
             view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 };
             view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[LabelColumn.Name] = new object[] { 9 };
+            view.ValidationHandles[RefreshColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
 
             //Show points
             view.Rows.Clear();
@@ -71,6 +72,13 @@
 
         private void Save(object sender, EventArgs e)
         {
+            if (!view.Validate())
+            {
+                MessageBoxUtilities.ShowWarning(Resources.ViewNotValidated);
+                DialogResult = DialogResult.None;
+                return;
+            }
+
             try
             {
                 var i = 0;
