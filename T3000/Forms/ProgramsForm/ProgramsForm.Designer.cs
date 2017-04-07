@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramsForm));
-            this.view = new T3000.Controls.Improved.TDataGridView();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
+            this.view = new T3000.Controls.Improved.TDataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -42,24 +42,6 @@
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
-            // 
-            // view
-            // 
-            this.view.AllowUserToAddRows = false;
-            this.view.AllowUserToDeleteRows = false;
-            resources.ApplyResources(this.view, "view");
-            this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NumberColumn,
-            this.DescriptionColumn,
-            this.StatusColumn,
-            this.AutoManualColumn,
-            this.SizeColumn,
-            this.RunStatusColumn,
-            this.LabelColumn});
-            this.view.MultiSelect = false;
-            this.view.Name = "view";
             // 
             // saveButton
             // 
@@ -82,6 +64,24 @@
             this.clearSelectedRowButton.Name = "clearSelectedRowButton";
             this.clearSelectedRowButton.UseVisualStyleBackColor = true;
             this.clearSelectedRowButton.Click += new System.EventHandler(this.ClearSelectedRow);
+            // 
+            // view
+            // 
+            this.view.AllowUserToAddRows = false;
+            this.view.AllowUserToDeleteRows = false;
+            resources.ApplyResources(this.view, "view");
+            this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NumberColumn,
+            this.DescriptionColumn,
+            this.StatusColumn,
+            this.AutoManualColumn,
+            this.SizeColumn,
+            this.RunStatusColumn,
+            this.LabelColumn});
+            this.view.MultiSelect = false;
+            this.view.Name = "view";
             // 
             // NumberColumn
             // 
@@ -132,7 +132,6 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
-            this.Icon = global::T3000.Properties.Resources.GraphicsIcon;
             this.Name = "ProgramsForm";
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
