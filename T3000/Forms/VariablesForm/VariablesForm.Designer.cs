@@ -29,18 +29,43 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
+            this.saveButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.view = new T3000.Controls.Improved.TDataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RangeTextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.clearSelectedRowButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
+            // 
+            // saveButton
+            // 
+            resources.ApplyResources(this.saveButton, "saveButton");
+            this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.saveButton.Name = "saveButton";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.Save);
+            // 
+            // cancelButton
+            // 
+            resources.ApplyResources(this.cancelButton, "cancelButton");
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.Cancel);
+            // 
+            // clearSelectedRowButton
+            // 
+            resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
+            this.clearSelectedRowButton.Name = "clearSelectedRowButton";
+            this.clearSelectedRowButton.UseVisualStyleBackColor = true;
+            this.clearSelectedRowButton.Click += new System.EventHandler(this.ClearSelectedRow);
             // 
             // view
             // 
@@ -55,9 +80,13 @@
             this.AutoManualColumn,
             this.ValueColumn,
             this.UnitsColumn,
+            this.RangeColumn,
+            this.RangeTextColumn,
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
+            this.view.ValidationArguments = ((System.Collections.Generic.Dictionary<string, object[]>)(resources.GetObject("view.ValidationArguments")));
+            this.view.ValidationHandles = ((System.Collections.Generic.Dictionary<string, System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>>)(resources.GetObject("view.ValidationHandles")));
             this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
             // 
             // NumberColumn
@@ -90,33 +119,20 @@
             this.UnitsColumn.Name = "UnitsColumn";
             this.UnitsColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
+            // RangeColumn
+            // 
+            resources.ApplyResources(this.RangeColumn, "RangeColumn");
+            this.RangeColumn.Name = "RangeColumn";
+            // 
+            // RangeTextColumn
+            // 
+            resources.ApplyResources(this.RangeTextColumn, "RangeTextColumn");
+            this.RangeTextColumn.Name = "RangeTextColumn";
+            // 
             // LabelColumn
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
-            // 
-            // saveButton
-            // 
-            resources.ApplyResources(this.saveButton, "saveButton");
-            this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveButton.Name = "saveButton";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.Save);
-            // 
-            // cancelButton
-            // 
-            resources.ApplyResources(this.cancelButton, "cancelButton");
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.Cancel);
-            // 
-            // clearSelectedRowButton
-            // 
-            resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
-            this.clearSelectedRowButton.Name = "clearSelectedRowButton";
-            this.clearSelectedRowButton.UseVisualStyleBackColor = true;
-            this.clearSelectedRowButton.Click += new System.EventHandler(this.ClearSelectedRow);
             // 
             // VariablesForm
             // 
@@ -146,6 +162,8 @@
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RangeTextColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
 }

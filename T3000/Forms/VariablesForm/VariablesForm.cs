@@ -52,6 +52,10 @@
                     point.AutoManual,
                     point.Value.ToString(),
                     point.Value.Units.GetOffOnName(point.Value.CustomUnits),
+                    point.Value.Value,
+                    point.Value.Units.IsDigital()
+                    ? $"0 -> {point.Value.Value / 100.0}"
+                    : "",
                     point.Label
                 });
                 ++i;
@@ -71,9 +75,10 @@
 
             row.Cells[DescriptionColumn.Name].Value = string.Empty;
             row.Cells[LabelColumn.Name].Value = string.Empty;
-            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
             row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
             row.Cells[ValueColumn.Name].Value = "0";
+            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
+            row.Cells[RangeColumn.Name].Value = 0;
         }
 
         private void Save(object sender, EventArgs e)
@@ -96,13 +101,14 @@
                     }
 
                     var point = Points[i];
+                    var range = (int)row.Cells[RangeColumn.Name].Value;
                     point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
                     point.Label = (string)row.Cells[LabelColumn.Name].Value;
                     point.Value = new VariableValue(
                         (string)row.Cells[ValueColumn.Name].Value,
                         UnitsNamesConstants.UnitsFromName(
                             (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
-                        CustomUnits);
+                        CustomUnits, range);
                     point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
                     ++i;
                 }
