@@ -94,6 +94,33 @@
             return isValidated;
         }
 
+        public static bool ValidateRowColumnInteger(DataGridViewCell cell, object[] arguments)
+        {
+            var isValidated = true;
+            var message = string.Empty;
+            if (cell.Value.GetType() == typeof(string))
+            {
+                try
+                {
+                    int.Parse((string) cell.Value);
+                }
+                catch (Exception exception)
+                {
+                    message = exception.Message;
+                    isValidated = false;
+                }
+            }
+            else if (cell.Value.GetType() != typeof(int))
+            {
+                message = $"Type is not int or string. Type: {cell.ValueType}";
+                isValidated = false;
+            }
+
+            SetCellErrorMessage(cell, isValidated, message);
+
+            return isValidated;
+        }
+
         #endregion
     }
 }
