@@ -83,7 +83,7 @@
             }
 
             var length = (int)arguments[0];
-            var description = (string)cell.Value;
+            var description = (string)cell.Value ?? "";
             var isValidated = description.Length <= length;
             var message = $"Description too long. Maximum is {length} symbols. " +
                                $"Current length: {description.Length}. " +
@@ -98,7 +98,13 @@
         {
             var isValidated = true;
             var message = string.Empty;
-            if (cell.Value.GetType() == typeof(string))
+
+            if (cell.Value == null)
+            {
+                message = $"Value is null. Please input valid value.";
+                isValidated = false;
+            }
+            else if (cell.Value.GetType() == typeof(string))
             {
                 try
                 {
