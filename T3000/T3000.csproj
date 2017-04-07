@@ -97,7 +97,7 @@
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\EnumUtilities.cs" />
-    <Compile Include="Utilities\DataGridViewUtilities.cs" />
+    <Compile Include="Utilities\TDataGridViewUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Forms\ProgramsForm\ProgramsForm.de-DE.resx">

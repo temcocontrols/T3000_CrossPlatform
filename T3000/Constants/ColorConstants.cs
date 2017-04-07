@@ -4,6 +4,7 @@
 
     class ColorConstants
     {
+        //Change to SystemColors.Window for disable valid color
         public static readonly Color ValidColor = Color.LightGreen;
         public static readonly Color NotValidColor = Color.MistyRose;
 

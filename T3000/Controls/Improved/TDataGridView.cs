@@ -125,6 +125,7 @@
             {
                 return;
             }
+
             var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
             ValidateCell(cell);
         }
