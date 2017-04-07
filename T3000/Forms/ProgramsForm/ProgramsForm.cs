@@ -32,9 +32,9 @@
 
             //Validation
             view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 };
+            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
             view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 };
+            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
             view.ValidationHandles[SizeColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
 
             //Show points
