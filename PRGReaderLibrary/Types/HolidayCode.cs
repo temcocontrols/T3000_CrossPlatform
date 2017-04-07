@@ -1,7 +1,5 @@
 ﻿namespace PRGReaderLibrary
 {
-    using System;
-
     public class HolidayCode : BaseCode, IBinaryObject
     {
         public HolidayCode(byte[] code = null, FileVersion version = FileVersion.Current)
