@@ -22,12 +22,20 @@
 
             InitializeComponent();
 
+            //User input handles
             view.ColumnHandles[StatusColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<OffOn>;
             view.ColumnHandles[AutoManualColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[RunStatusColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<NormalCom>;
+
+            //Validation
+            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 };
+            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 };
+            view.ValidationHandles[SizeColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
 
             //Show points
             view.Rows.Clear();
@@ -45,6 +53,7 @@
                 });
                 ++i;
             }
+            view.Validate();
         }
 
         #region Buttons
@@ -68,6 +77,13 @@
 
         private void Save(object sender, EventArgs e)
         {
+            if (!view.Validate())
+            {
+                MessageBoxUtilities.ShowWarning(Resources.ViewNotValidated);
+                DialogResult = DialogResult.None;
+                return;
+            }
+
             try
             {
                 var i = 0;
