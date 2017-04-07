@@ -22,15 +22,27 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
+
+            //User input handles
             view.ColumnHandles[AutoManualColumn.Name] =
                 DataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
 
-            //Show points
-            view.Rows.Clear();
+            //Validation
+            view.ValidationHandles[DescriptionColumn.Name] = DataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[DescriptionColumn.Name] = new Tuple<object, object, object>(21, null, null);
+            view.ValidationHandles[LabelColumn.Name] = DataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[LabelColumn.Name] = new Tuple<object, object, object>(9, null, null);
+            view.ValidationHandles[ValueColumn.Name] = DataGridViewUtilities.ValidateRowValue;
+            view.ValidationArguments[ValueColumn.Name] = 
+                new Tuple<object, object, object>(
+                    ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.ValidationHandles[UnitsColumn.Name] = view.ValidationHandles[ValueColumn.Name];
+            view.ValidationArguments[UnitsColumn.Name] = view.ValidationArguments[ValueColumn.Name];
 
-            //Fix for auto-filled column exception
-            view.SuspendLayout();
+            //Show points
+
+            view.Rows.Clear();
 
             var i = 0;
             foreach (var point in Points)
@@ -45,50 +57,8 @@
                 });
                 ++i;
             }
-
-            //Fix for auto-filled column exception
-            view.ResumeLayout();
-
-            ValidateView();
+            view.Validate();
         }
-
-        #region Utilities
-        
-        public bool ValidateRow(DataGridViewRow row)
-        {
-            if (!DataGridViewUtilities.ValidateRowValue(row, ValueColumn.Name,
-                UnitsColumn.Name, CustomUnits))
-            {
-                return false;
-            }
-
-            if (!DataGridViewUtilities.ValidateRowColumnString(row, DescriptionColumn.Name, 21))
-            {
-                return false;
-            }
-
-            if (!DataGridViewUtilities.ValidateRowColumnString(row, LabelColumn.Name, 9))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool ValidateView()
-        {
-            foreach (DataGridViewRow row in view.Rows)
-            {
-                if (!ValidateRow(row))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        #endregion
 
         #region Buttons
 
@@ -109,7 +79,7 @@
 
         private void Save(object sender, EventArgs e)
         {
-            if (!ValidateView())
+            if (!view.Validate())
             {
                 MessageBoxUtilities.ShowWarning(Resources.VariablesFormNotValid);
                 DialogResult = DialogResult.None;
@@ -151,7 +121,6 @@
 
         private void Cancel(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
             Close();
         }
 
@@ -178,10 +147,14 @@
                 {
                     row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
                 }
-                ValidateRow(row);
+                view.ValidateRow(row);
             }
             catch (Exception) { }
         }
+
+        #endregion
+
+        #region User input handles
 
         private void EditUnitsColumn(object sender, EventArgs e)
         {
@@ -203,30 +176,20 @@
                         form.SelectedUnits,
                         CustomUnits, form.CustomUnits);
                 CustomUnits = form.CustomUnits;
+                view.ValidationArguments[UnitsColumn.Name] =
+                    new Tuple<object, object, object>(
+                        ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+                view.ValidationArguments[ValueColumn.Name] = view.ValidationArguments[UnitsColumn.Name];
                 var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
 
                 row.Cells[UnitsColumn.Name].Value = newUnits;
                 row.Cells[ValueColumn.Name].Value = newValue;
-                ValidateRow(row);
+                view.ValidateRow(row);
             }
             catch (Exception exception)
             {
                 MessageBoxUtilities.ShowException(exception);
             }
-        }
-
-        private void view_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            if (!DataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
-            {
-                return;
-            }
-
-            try
-            {
-                ValidateRow(view.Rows[e.RowIndex]);
-            }
-            catch (Exception) { }
         }
 
         #endregion

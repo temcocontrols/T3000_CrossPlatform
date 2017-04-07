@@ -58,7 +58,6 @@
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.view_CellValidating);
             this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
             // 
             // NumberColumn

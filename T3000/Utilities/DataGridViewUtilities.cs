@@ -41,19 +41,21 @@
             cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
         }
 
-        public static bool ValidateRowValue(DataGridViewRow row,
-            string valueColumn, string unitsColumn,
-            List<CustomDigitalUnitsPoint> customUnits = null)
+        public static bool ValidateRowValue(DataGridViewCell cell, object obj1, object obj2, object obj3)
         {
-            var cell = row.Cells[valueColumn];
+            var valueColumn = (string) obj1;
+            var unitsColumn = (string) obj2;
+            var customUnits = (List<CustomDigitalUnitsPoint>) obj3;
             var isValidated = true;
             var message = string.Empty;
             try
             {
+                var row = cell.OwningRow;
                 var unitsCell = row.Cells[unitsColumn];
+                var valueCell = row.Cells[valueColumn];
                 var units = UnitsNamesConstants.UnitsFromName(
                     (string)unitsCell.Value, customUnits);
-                new VariableValue((string)cell.Value, units, customUnits);
+                new VariableValue((string)valueCell.Value, units, customUnits);
             }
             catch (Exception exception)
             {
@@ -66,10 +68,9 @@
             return isValidated;
         }
 
-        public static bool ValidateRowColumnString(DataGridViewRow row,
-            string columnName, int length)
+        public static bool ValidateRowColumnString(DataGridViewCell cell, object obj1, object obj2, object obj3)
         {
-            var cell = row.Cells[columnName];
+            var length = (int) obj1;
             var description = (string)cell.Value;
             var isValidated = description.Length <= length;
             var message = $"Description too long. Maximum is {length} symbols. " +
