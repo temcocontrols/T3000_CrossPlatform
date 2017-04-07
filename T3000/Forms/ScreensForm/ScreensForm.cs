@@ -11,7 +11,18 @@
     {
         public List<ScreenPoint> Points { get; set; }
 
-        public ScreensForm(List<ScreenPoint> points)
+        public ScreensForm()
+        {
+            InitializeComponent();
+        }
+
+        public ScreensForm(List<ScreenPoint> points) :
+            base()
+        {
+            SetData(points);
+        }
+
+        public void SetData(List<ScreenPoint> points)
         {
             if (points == null)
             {
@@ -19,8 +30,6 @@
             }
 
             Points = points;
-
-            InitializeComponent();
 
             //User input handles
             view.ColumnHandles[ModeColumn.Name] =
@@ -106,12 +115,12 @@
             }
 
             DialogResult = DialogResult.OK;
-            Close();
+            Hide();
         }
 
         private void Cancel(object sender, EventArgs e)
         {
-            Close();
+            Hide();
         }
 
         #endregion
