@@ -253,7 +253,6 @@
             }
         }
 
-        private ScreensForm screensForm { get; set; } = new ScreensForm();
         private void ShowScreens(object sender, EventArgs e)
         {
             try
@@ -263,8 +262,8 @@
                     return;
                 }
 
-                screensForm.SetData(Prg.Screens);
-                screensForm.Show();
+                var form = new ScreensForm(Prg.Screens);
+                form.Show();
             }
             catch (Exception exception)
             {
