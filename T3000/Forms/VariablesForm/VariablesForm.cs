@@ -80,7 +80,7 @@
         {
             if (!view.Validate())
             {
-                MessageBoxUtilities.ShowWarning(Resources.VariablesFormNotValid);
+                MessageBoxUtilities.ShowWarning(Resources.ViewNotValidated);
                 DialogResult = DialogResult.None;
                 return;
             }
