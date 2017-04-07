@@ -56,8 +56,8 @@ namespace PRGReaderLibrary
             {
                 case FileVersion.Current:
                     Length = bytes.ToUInt16(30 + offset);
-                    Control = ValuedPoint.ControlFromByte(bytes.ToByte(32 + offset));
-                    AutoManual = ValuedPoint.AutoManualFromByte(bytes.ToByte(33 + offset));
+                    Control = (OffOn)bytes.ToByte(32 + offset);
+                    AutoManual = (AutoManual)bytes.ToByte(33 + offset);
                     NormalCom = (NormalCom)bytes.ToByte(34 + offset);
                     ErrorCode = bytes.ToByte(35 + offset);
                     Unused = bytes.ToByte(36 + offset);
@@ -81,8 +81,8 @@ namespace PRGReaderLibrary
                 case FileVersion.Current:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(((ushort)Length).ToBytes());
-                    bytes.Add(ValuedPoint.ToByte(Control));
-                    bytes.Add(ValuedPoint.ToByte(AutoManual));
+                    bytes.Add((byte)Control);
+                    bytes.Add((byte)AutoManual);
                     bytes.Add((byte)NormalCom);
                     bytes.Add((byte)ErrorCode);
                     bytes.Add((byte)Unused);

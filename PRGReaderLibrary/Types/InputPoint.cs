@@ -67,9 +67,9 @@ namespace PRGReaderLibrary
                     Decommissioned = bytes.ToByte(35 + offset);
                     SubId = bytes.ToBoolean(36 + offset);
                     SubProduct = bytes.ToBoolean(37 + offset);
-                    Control = ControlFromByte(bytes.ToByte(38 + offset));
-                    AutoManual = AutoManualFromByte(bytes.ToByte(39 + offset));
-                    DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(40 + offset));
+                    Control = (OffOn)bytes.ToByte(38 + offset);
+                    AutoManual = (AutoManual)bytes.ToByte(39 + offset);
+                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(40 + offset);
                     calibrationSignRaw = bytes.ToBoolean(41 + offset);
                     SubNumber = SubNumberFromByte(bytes.ToByte(42 + offset));
                     calibrationHRaw = bytes.ToByte(43 + offset);
@@ -110,9 +110,9 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)Decommissioned);
                     bytes.Add(SubId.ToByte());
                     bytes.Add(SubProduct.ToByte());
-                    bytes.Add(ToByte(Control));
-                    bytes.Add(ToByte(AutoManual));
-                    bytes.Add(ToByte(DigitalAnalog));
+                    bytes.Add((byte)Control);
+                    bytes.Add((byte)AutoManual);
+                    bytes.Add((byte)DigitalAnalog);
                     bytes.Add(calibrationSignRaw.ToByte());
                     bytes.Add(SubNumberToByte(SubNumber));
                     bytes.Add(calibrationHRaw);

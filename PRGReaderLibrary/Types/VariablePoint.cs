@@ -57,17 +57,17 @@ namespace PRGReaderLibrary
             {
                 case FileVersion.Dos:
                     valueRaw = bytes.ToInt32(30 + offset);
-                    AutoManual = AutoManualFromByte(bytes.GetBit(0, 34 + offset).ToByte());
-                    DigitalAnalog = DigitalAnalogFromByte(bytes.GetBit(1, 34 + offset).ToByte());
-                    Control = ControlFromByte(bytes.GetBit(2, 34 + offset).ToByte());
+                    AutoManual = (AutoManual) bytes.GetBit(0, 34 + offset).ToByte();
+                    DigitalAnalog = (DigitalAnalog)bytes.GetBit(1, 34 + offset).ToByte();
+                    Control = (OffOn)bytes.GetBit(2, 34 + offset).ToByte();
                     units = (Units)bytes.ToByte(35 + offset);
                     break;
 
                 case FileVersion.Current:
                     valueRaw = bytes.ToInt32(30 + offset);
-                    AutoManual = AutoManualFromByte(bytes.ToByte(34 + offset));
-                    DigitalAnalog = DigitalAnalogFromByte(bytes.ToByte(35 + offset));
-                    Control = ControlFromByte(bytes.ToByte(36 + offset));
+                    AutoManual = (AutoManual)bytes.ToByte(34 + offset);
+                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(35 + offset);
+                    Control = (OffOn)bytes.ToByte(36 + offset);
                     //37 byte is unused
                     units = UnitsFromByte(bytes.ToByte(38 + offset), DigitalAnalog);
                     break;
@@ -94,18 +94,18 @@ namespace PRGReaderLibrary
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(Value.Value.ToBytes());
                     bytes.Add(new[] {
-                        ToByte(AutoManual).ToBoolean(),
-                        ToByte(DigitalAnalog).ToBoolean(),
-                        ToByte(Control).ToBoolean() }.ToBits());
+                        ((byte)AutoManual).ToBoolean(),
+                        ((byte)DigitalAnalog).ToBoolean(),
+                        ((byte)Control).ToBoolean() }.ToBits());
                     bytes.Add((byte)Value.Units);
                     break;
 
                 case FileVersion.Current:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(Value.Value.ToBytes());
-                    bytes.Add(ToByte(AutoManual));
-                    bytes.Add(ToByte(DigitalAnalog));
-                    bytes.Add(ToByte(Control));
+                    bytes.Add((byte)AutoManual);
+                    bytes.Add((byte)DigitalAnalog);
+                    bytes.Add((byte)Control);
                     bytes.Add(2); //TODO: WTF (it equals 2)??
                     bytes.Add(ToByte(Value.Units, DigitalAnalog));
                     break;

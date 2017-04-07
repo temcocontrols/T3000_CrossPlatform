@@ -33,9 +33,12 @@
                     return ToTimeSpan(value);
 
                 default:
-                    return units.IsAnalog()
-                        ? Convert.ToDouble(value) / 1000.0
-                        : (object)Convert.ToBoolean(value);
+                    if (units.IsAnalog())
+                    {
+                        return Convert.ToDouble(value)/1000.0;
+                    }
+
+                    return Convert.ToBoolean(value);
             }
         }
 
@@ -87,7 +90,7 @@ Supported types: bool, float, TimeSpan");
             }
         }
 
-        public static int ToInt(object value, Units units)
+        public static int ToInt(object value, Units units, int maxRange = 1)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -97,21 +100,8 @@ Supported types: bool, float, TimeSpan");
                     throw new ArgumentException($"Please select digital units for boolean value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
                 }
-
-                switch (units)
-                {
-                    case Units.NoYes:
-                        return Convert.ToInt32(value) * 1000;
-
-                    case Units.OnOff:
-                        return Convert.ToInt32(value) * 1000;
-
-                    case Units.OffOn:
-                        return Convert.ToInt32(value) * 1000;
-
-                    default:
-                        return Convert.ToInt32(value);
-                }
+                
+                return Convert.ToInt32(value) * maxRange;
             }
             else if (type == typeof(TimeSpan))
             {
@@ -145,12 +135,14 @@ Supported types: bool, float, TimeSpan");
             CustomUnits = customUnits;
         }
 
-        public VariableValue(object value, Units units, List<CustomDigitalUnitsPoint> customUnits = null)
-            : this(ToInt(value, units), units, customUnits)
+        public VariableValue(object value, Units units, List<CustomDigitalUnitsPoint> customUnits = null,
+            int maxRange = 1)
+            : this(ToInt(value, units, maxRange), units, customUnits)
         { }
 
-        public VariableValue(string value, Units units, List<CustomDigitalUnitsPoint> customUnits = null)
-            : this(ToObject(value, units, customUnits), units, customUnits)
+        public VariableValue(string value, Units units, List<CustomDigitalUnitsPoint> customUnits = null,
+            int maxRange = 1)
+            : this(ToObject(value, units, customUnits), units, customUnits, maxRange)
         { }
 
         public object ToObject() => ToObject(Value, Units);

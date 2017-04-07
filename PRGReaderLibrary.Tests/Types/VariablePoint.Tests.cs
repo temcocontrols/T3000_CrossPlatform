@@ -114,12 +114,12 @@
             customUnits.Add(new CustomDigitalUnitsPoint(false, "TEST1", "TEST2"));
 
             var expected = new VariablePoint("TEST CUS UNITS", "TESTCUS");
-            expected.Value = new VariableValue("TEST2", Units.CustomDigital1, customUnits);
+            expected.Value = new VariableValue("TEST2", Units.CustomDigital1, customUnits, 2000);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
             expected.Control = OffOn.On;
 
-            //BaseTest(actual, expected, FileVersion.Rev6, customUnits);
+            BaseTest(actual, expected, FileVersion.Rev6, customUnits);
         }
     }
 }

@@ -83,7 +83,7 @@ namespace PRGReaderLibrary
                     SetPoint = new T3000Point(bytes.ToBytes(11 + offset, 3), 0, FileVersion);
                     SetPointValue = bytes.ToFloat(14 + offset);
                     Units = (Units)bytes.ToByte(18 + offset);
-                    AutoManual = ValuedPoint.AutoManualFromByte(bytes.ToByte(19 + offset));
+                    AutoManual = (AutoManual)bytes.ToByte(19 + offset);
                     Action = (DirectReverse) bytes.ToByte(20 + offset);
                     Periodicity = (Periodicity)bytes.ToByte(21 + offset);
                     IsSample = bytes.ToByte(22 + offset);
@@ -118,7 +118,7 @@ namespace PRGReaderLibrary
                     bytes.AddRange(SetPoint.ToBytes());
                     bytes.AddRange(SetPointValue.ToBytes());
                     bytes.Add((byte)Units);
-                    bytes.Add(ValuedPoint.ToByte(AutoManual));
+                    bytes.Add((byte)AutoManual);
                     bytes.Add((byte)Action);
                     bytes.Add((byte)Periodicity);
                     bytes.Add((byte)IsSample);

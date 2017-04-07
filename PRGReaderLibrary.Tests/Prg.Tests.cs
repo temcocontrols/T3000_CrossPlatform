@@ -10,7 +10,7 @@
     {
         public void VariableVariantToFromTest(VariableValue value, List<CustomDigitalUnitsPoint> customUnits)
         {
-            var tempValue = new VariableValue(value.ToString(), value.Units, customUnits);
+            var tempValue = new VariableValue(value.ToString(), value.Units, customUnits, value.Value);
             ObjectAssert.AreEqual(value, tempValue,
                 $@"Variable value toFrom string test failed.
 Value.ToString(): {value.ToString()}
@@ -193,7 +193,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             BaseTest("BTUMeter.prg");
             BaseTest("CustomAnalogRev6.prg");
             BaseTest("TemcoPanelRev6.prg");
-            //BaseTest("T3DemoRev6.prg");
+            BaseTest("T3DemoRev6.prg");
 
             //Dos
             BaseTest("asy1.prg");
