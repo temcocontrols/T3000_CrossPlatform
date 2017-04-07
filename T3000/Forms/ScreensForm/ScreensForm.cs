@@ -22,9 +22,16 @@
 
             InitializeComponent();
 
+            //User input handles
             view.ColumnHandles[ModeColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<TextGraphic>;
             view.ColumnHandles[PictureColumn.Name] = EditPictureColumn;
+
+            //Validation
+            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 };
+            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 };
 
             //Show points
             view.Rows.Clear();
@@ -41,6 +48,7 @@
                 });
                 ++i;
             }
+            view.Validate();
         }
 
         #region Buttons
