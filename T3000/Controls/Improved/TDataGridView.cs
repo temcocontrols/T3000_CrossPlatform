@@ -78,23 +78,6 @@
             return true;
         }
 
-        protected override void OnCellValidating(DataGridViewCellValidatingEventArgs e)
-        {
-            if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
-            {
-                return;
-            }
-
-            try
-            {
-                var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
-                ValidateCell(cell);
-            }
-            catch (Exception) { }
-
-            base.OnCellValidating(e);
-        }
-
         public bool ValidateRow(DataGridViewRow row)
         {
             var isValidated = true;
@@ -115,6 +98,35 @@
             }
 
             return isValidated;
+        }
+
+        protected override void OnCellValidating(DataGridViewCellValidatingEventArgs e)
+        {
+            if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            {
+                return;
+            }
+
+            try
+            {
+                var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
+                ValidateCell(cell);
+            }
+            catch (Exception) { }
+
+            base.OnCellValidating(e);
+        }
+
+        protected override void OnCellValueChanged(DataGridViewCellEventArgs e)
+        {
+            base.OnCellValueChanged(e);
+
+            if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            {
+                return;
+            }
+            var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
+            ValidateCell(cell);
         }
 
         #endregion
