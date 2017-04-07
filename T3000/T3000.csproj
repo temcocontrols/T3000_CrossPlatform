@@ -45,6 +45,9 @@
     <Compile Include="Controls\Improved\TDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Improved\TMonthCalendar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\ProgramsForm\ProgramsForm.cs">
       <SubType>Form</SubType>
     </Compile>
