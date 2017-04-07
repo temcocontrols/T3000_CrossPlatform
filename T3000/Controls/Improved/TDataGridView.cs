@@ -97,28 +97,24 @@
 
         public bool ValidateRow(DataGridViewRow row)
         {
+            var isValidated = true;
             foreach (DataGridViewCell cell in row.Cells)
             {
-                if (!InvokeValidationHandle(cell))
-                {
-                    return false;
-                }
+                isValidated &= InvokeValidationHandle(cell);
             }
 
-            return true;
+            return isValidated;
         }
 
         public bool Validate()
         {
+            var isValidated = true;
             foreach (DataGridViewRow row in Rows)
             {
-                if (!ValidateRow(row))
-                {
-                    return false;
-                }
+                isValidated &= ValidateRow(row);
             }
 
-            return true;
+            return isValidated;
         }
 
         #endregion
