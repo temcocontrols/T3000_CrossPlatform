@@ -25,15 +25,15 @@
 
             //User input handles
             view.ColumnHandles[AutoManualColumn.Name] =
-                DataGridViewUtilities.EditEnumColumn<AutoManual>;
+                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = DataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 };
-            view.ValidationHandles[LabelColumn.Name] = DataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[LabelColumn.Name] = new object[] { 9 };
-            view.ValidationHandles[ValueColumn.Name] = DataGridViewUtilities.ValidateRowValue;
+            view.ValidationHandles[ValueColumn.Name] = TDataGridViewUtilities.ValidateRowValue;
             view.ValidationArguments[ValueColumn.Name] =
                 new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
             view.ValidationHandles[UnitsColumn.Name] = view.ValidationHandles[ValueColumn.Name];
@@ -131,7 +131,7 @@
         {
             try
             {
-                if (!DataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
+                if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
                 {
                     return;
                 }

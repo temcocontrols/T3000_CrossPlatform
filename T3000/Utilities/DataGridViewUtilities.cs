@@ -4,8 +4,9 @@
     using System;
     using System.Windows.Forms;
     using System.Collections.Generic;
+    using Controls.Improved;
 
-    public static class DataGridViewUtilities
+    public static class TDataGridViewUtilities
     {
         public static bool RowIndexIsValid(int index, DataGridView view) =>
             index >= 0 && index < view.RowCount;
@@ -21,10 +22,11 @@
                     throw new ArgumentException("T must be an enumerated type");
                 }
 
-                var view = (DataGridView)sender;
+                var view = (TDataGridView)sender;
                 var cell = view.CurrentCell;
                 cell.Value = EnumUtilities.NextValue((T)cell.Value);
-                view.EndEdit();
+
+                view.ValidateCell(cell);
             }
             catch (Exception exception)
             {

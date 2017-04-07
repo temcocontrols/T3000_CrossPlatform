@@ -23,7 +23,7 @@
             InitializeComponent();
 
             view.ColumnHandles[ModeColumn.Name] =
-                DataGridViewUtilities.EditEnumColumn<TextGraphic>;
+                TDataGridViewUtilities.EditEnumColumn<TextGraphic>;
             view.ColumnHandles[PictureColumn.Name] = EditPictureColumn;
 
             //Show points

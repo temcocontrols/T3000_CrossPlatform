@@ -64,7 +64,7 @@
         public Dictionary<string, object[]> ValidationArguments { get; set; } =
             new Dictionary<string, object[]>();
 
-        private bool InvokeValidationHandle(DataGridViewCell cell)
+        public bool ValidateCell(DataGridViewCell cell)
         {
             var name = ColumnIndexToName(cell.ColumnIndex);
             if (ValidationHandles.ContainsKey(name))
@@ -80,7 +80,7 @@
 
         protected override void OnCellValidating(DataGridViewCellValidatingEventArgs e)
         {
-            if (!DataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
             {
                 return;
             }
@@ -88,7 +88,7 @@
             try
             {
                 var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
-                InvokeValidationHandle(cell);
+                ValidateCell(cell);
             }
             catch (Exception) { }
 
@@ -100,7 +100,7 @@
             var isValidated = true;
             foreach (DataGridViewCell cell in row.Cells)
             {
-                isValidated &= InvokeValidationHandle(cell);
+                isValidated &= ValidateCell(cell);
             }
 
             return isValidated;

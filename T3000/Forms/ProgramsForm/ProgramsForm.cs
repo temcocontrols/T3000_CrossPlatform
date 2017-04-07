@@ -23,11 +23,11 @@
             InitializeComponent();
 
             view.ColumnHandles[StatusColumn.Name] =
-                DataGridViewUtilities.EditEnumColumn<OffOn>;
+                TDataGridViewUtilities.EditEnumColumn<OffOn>;
             view.ColumnHandles[AutoManualColumn.Name] =
-                DataGridViewUtilities.EditEnumColumn<AutoManual>;
+                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[RunStatusColumn.Name] =
-                DataGridViewUtilities.EditEnumColumn<NormalCom>;
+                TDataGridViewUtilities.EditEnumColumn<NormalCom>;
 
             //Show points
             view.Rows.Clear();
