@@ -41,11 +41,16 @@
             cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
         }
 
-        public static bool ValidateRowValue(DataGridViewCell cell, object obj1, object obj2, object obj3)
+        public static bool ValidateRowValue(DataGridViewCell cell, object[] arguments)
         {
-            var valueColumn = (string) obj1;
-            var unitsColumn = (string) obj2;
-            var customUnits = (List<CustomDigitalUnitsPoint>) obj3;
+            if (arguments.Length < 3)
+            {
+                throw new ArgumentException("Object less 3", nameof(arguments));
+            }
+
+            var valueColumn = (string)arguments[0];
+            var unitsColumn = (string)arguments[1];
+            var customUnits = (List<CustomDigitalUnitsPoint>)arguments[2];
             var isValidated = true;
             var message = string.Empty;
             try
@@ -68,9 +73,14 @@
             return isValidated;
         }
 
-        public static bool ValidateRowColumnString(DataGridViewCell cell, object obj1, object obj2, object obj3)
+        public static bool ValidateRowColumnString(DataGridViewCell cell, object[] arguments)
         {
-            var length = (int) obj1;
+            if (arguments.Length < 1)
+            {
+                throw new ArgumentException("Object less 1", nameof(arguments));
+            }
+
+            var length = (int)arguments[0];
             var description = (string)cell.Value;
             var isValidated = description.Length <= length;
             var message = $"Description too long. Maximum is {length} symbols. " +

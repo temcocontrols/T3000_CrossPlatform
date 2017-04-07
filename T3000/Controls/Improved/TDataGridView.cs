@@ -5,9 +5,7 @@
     using System.Collections.Generic;
 
     using ValidationFunc =
-        System.Func<System.Windows.Forms.DataGridViewCell, object, object, object, bool>;
-    using ValidationArguments =
-        System.Tuple<object, object, object>;
+        System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>;
 
     public class TDataGridView : DataGridView
     {
@@ -63,8 +61,8 @@
 
         public Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
             new Dictionary<string, ValidationFunc>();
-        public Dictionary<string, ValidationArguments> ValidationArguments { get; set; } =
-            new Dictionary<string, ValidationArguments>();
+        public Dictionary<string, object[]> ValidationArguments { get; set; } =
+            new Dictionary<string, object[]>();
 
         private bool InvokeValidationHandle(DataGridViewCell cell)
         {
@@ -72,11 +70,9 @@
             if (ValidationHandles.ContainsKey(name))
             {
                 var arguments = ValidationArguments.ContainsKey(name)
-                    ? ValidationArguments[name]
-                    : new ValidationArguments(null, null, null);
+                    ? ValidationArguments[name] : null;
 
-                return ValidationHandles[name]?.Invoke(cell,
-                    arguments.Item1, arguments.Item2, arguments.Item3) ?? true;
+                return ValidationHandles[name]?.Invoke(cell, arguments) ?? true;
             }
 
             return true;

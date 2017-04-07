@@ -30,13 +30,12 @@
 
             //Validation
             view.ValidationHandles[DescriptionColumn.Name] = DataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new Tuple<object, object, object>(21, null, null);
+            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 };
             view.ValidationHandles[LabelColumn.Name] = DataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new Tuple<object, object, object>(9, null, null);
+            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 };
             view.ValidationHandles[ValueColumn.Name] = DataGridViewUtilities.ValidateRowValue;
-            view.ValidationArguments[ValueColumn.Name] = 
-                new Tuple<object, object, object>(
-                    ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.ValidationArguments[ValueColumn.Name] =
+                new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
             view.ValidationHandles[UnitsColumn.Name] = view.ValidationHandles[ValueColumn.Name];
             view.ValidationArguments[UnitsColumn.Name] = view.ValidationArguments[ValueColumn.Name];
 
@@ -177,9 +176,9 @@
                         CustomUnits, form.CustomUnits);
                 CustomUnits = form.CustomUnits;
                 view.ValidationArguments[UnitsColumn.Name] =
-                    new Tuple<object, object, object>(
-                        ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-                view.ValidationArguments[ValueColumn.Name] = view.ValidationArguments[UnitsColumn.Name];
+                    new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
+                view.ValidationArguments[ValueColumn.Name] = 
+                    view.ValidationArguments[UnitsColumn.Name];
                 var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
 
                 row.Cells[UnitsColumn.Name].Value = newUnits;
