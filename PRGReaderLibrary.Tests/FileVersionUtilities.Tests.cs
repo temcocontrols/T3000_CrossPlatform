@@ -53,7 +53,7 @@
         }
 
         [Test]
-        public void Utilities_IsCurrentVersion()
+        public void Utilities_IsRev6Version()
         {
             //Rev6
             IsRev6Version("BTUMeter.prg", true);
