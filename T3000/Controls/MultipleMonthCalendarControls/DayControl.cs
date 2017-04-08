@@ -38,7 +38,8 @@
             set {
                 _date = value;
 
-                Text =  value.Day.ToString();
+                var isEmpty = Date.Equals(new DateTime());
+                Text = isEmpty ? "" : value.Day.ToString();
             }
         }
 
@@ -49,6 +50,8 @@
             //FlatStyle = FlatStyle.Flat;
             Font = new Font(FontFamily.GenericSansSerif, 8);
             TextAlign = ContentAlignment.MiddleCenter;
+
+            ResizeRedraw = true;
         }
     }
 }

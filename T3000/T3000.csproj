@@ -48,6 +48,12 @@
     <Compile Include="Controls\Improved\TMonthCalendar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\MultipleMonthCalendarControls\MonthsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MultipleMonthCalendarControls\MonthsControl.Designer.cs">
+      <DependentUpon>MonthsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MultipleMonthCalendarControls\MultipleMonthCalendar.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -63,6 +69,7 @@
     <Compile Include="Controls\MultipleMonthCalendarControls\DayControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\MultipleMonthCalendarControls\Utilities.cs" />
     <Compile Include="Forms\ProgramsForm\ProgramsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +124,9 @@
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Controls\MultipleMonthCalendarControls\MonthControl.resx">
       <DependentUpon>MonthControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MultipleMonthCalendarControls\MultipleMonthCalendar.resx">
+      <DependentUpon>MultipleMonthCalendar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProgramsForm\ProgramsForm.de-DE.resx">
       <DependentUpon>ProgramsForm.cs</DependentUpon>

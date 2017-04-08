@@ -36,10 +36,11 @@
             for (var i = 0; i < 35; ++i)
             {
                 var day = Days[i];
-                if (i - offset >= 0 && i - offset < DateTime.DaysInMonth(Date.Year, Date.Month))
-                {
-                    day.Date = new DateTime(Date.Year, Date.Month, i - offset + 1);
-                }
+                var isCurrentMonth = i - offset >= 0 && 
+                    i - offset < DateTime.DaysInMonth(Date.Year, Date.Month);
+                day.Date = isCurrentMonth
+                    ? new DateTime(Date.Year, Date.Month, i - offset + 1)
+                    : new DateTime();
             }
             titleButton.Text = Date.ToString("MMMM yyyy");
 
@@ -75,7 +76,14 @@
             InitializeComponent();
             InitializeDays();
 
-            Click += (sender, args) => MessageBox.Show($"SelectedDates: {SelectedDays.Count}");
+            ResizeRedraw = true;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            e.Graphics.DrawLine(SystemPens.ControlDark, 0, 40, Width, 40);
         }
     }
 }
