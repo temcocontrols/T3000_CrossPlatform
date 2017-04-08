@@ -3,6 +3,7 @@
     using System;
     using System.Windows.Forms;
     using System.ComponentModel;
+    using System.Collections.Generic;
     using MultipleMonthCalendarControls;
 
     public partial class MultipleMonthCalendar : UserControl
@@ -26,24 +27,19 @@
             get { return monthsControl.StartDate; }
             set { monthsControl.StartDate = value; }
         }
-        
-        #endregion
-
-        #region Overrided
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
+        /*
+        [Description("Selected dates"), Category("MultipleMonthCalendar")]
+        public List<DateTime> SelectedDates {
+            get { return monthsControl.SelectedDates; }
+            set { monthsControl.SelectedDates = value; }
         }
-
+        */
         #endregion
 
         public MultipleMonthCalendar()
         {
             InitializeComponent();
-
-            ResizeRedraw = true;
-
+            
             nextButton.Click += (sender, args) => 
                 monthsControl.StartDate = MonthUtilities.GetNextMonth(monthsControl.StartDate);
 

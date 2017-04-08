@@ -7,7 +7,7 @@
     using System.ComponentModel;
     using System.Collections.Generic;
 
-    public partial class MonthControl : UserControl
+    internal partial class MonthControl : UserControl
     {
         #region Properties
 
@@ -24,6 +24,24 @@
 
         public List<DateTime> SelectedDays =>
             Days.Where(i => i.IsSelected).Select(i => i.Date).ToList();
+
+        public void SelectDay(DateTime date)
+        {
+            var day = Days.Where(i => i.Date.Equals(date)).FirstOrDefault();
+            if (day != null)
+            {
+                day.IsSelected = true;
+            }
+        }
+
+        public void UnselectDay(DateTime date)
+        {
+            var day = Days.Where(i => i.Date.Equals(date)).FirstOrDefault();
+            if (day != null)
+            {
+                day.IsSelected = false;
+            }
+        }
 
         #endregion
 

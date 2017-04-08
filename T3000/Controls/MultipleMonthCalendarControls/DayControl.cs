@@ -5,7 +5,7 @@
     using System.Windows.Forms;
     using System.ComponentModel;
 
-    public class DayControl : Label
+    internal class DayControl : Label
     {
         #region Properties
 

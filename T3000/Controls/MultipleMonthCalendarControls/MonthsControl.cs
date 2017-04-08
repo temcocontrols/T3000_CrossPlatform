@@ -7,12 +7,12 @@
     using System.Collections.Generic;
     using MultipleMonthCalendarControls;
 
-    public partial class MonthsControl : UserControl
+    internal partial class MonthsControl : UserControl
     {
         #region Properties
 
         private int _dimensionX = 1;
-        [Description("Dimension X value"), Category("MultipleMonthCalendar")]
+        [Description("Dimension X value"), Category("MonthsControl")]
         public int DimensionX {
             get { return _dimensionX; }
             set {
@@ -24,7 +24,7 @@
         }
 
         private int _dimensionY = 1;
-        [Description("Dimension Y value"), Category("MultipleMonthCalendar")]
+        [Description("Dimension Y value"), Category("MonthsControl")]
         public int DimensionY {
             get { return _dimensionY; }
             set {
@@ -36,13 +36,40 @@
         }
 
         private DateTime _startDate = DateTime.Today;
-        [Description("Start date"), Category("MultipleMonthCalendar")]
+        [Description("Start date"), Category("MonthsControl")]
         public DateTime StartDate {
             get { return _startDate; }
             set {
                 _startDate = value;
                 UpdateMonths();
                 Invalidate();
+            }
+        }
+
+        [Description("Selected dates"), Category("MonthsControl")]
+        public List<DateTime> SelectedDates {
+            get
+            {
+                var dates = new List<DateTime>();
+                foreach (var month in Months)
+                {
+                    dates.AddRange(SelectedDates);
+                }
+
+                return dates;
+            }
+            set {
+                foreach (var date in value)
+                {
+                    foreach (var month in Months)
+                    {
+                        if (month.Date.Month == date.Month &&
+                            month.Date.Year == date.Year)
+                        {
+                            month.SelectDay(date);
+                        }
+                    }
+                }
             }
         }
 
