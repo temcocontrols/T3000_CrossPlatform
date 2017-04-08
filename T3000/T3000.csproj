@@ -73,6 +73,12 @@
     <Compile Include="Forms\InputsForm\InputsForm.Designer.cs">
       <DependentUpon>InputsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\OutputsForm\OutputsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OutputsForm\OutputsForm.Designer.cs">
+      <DependentUpon>OutputsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProgramsForm\EditCodeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,16 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputsForm\InputsForm.zh-Hant.resx">
       <DependentUpon>InputsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OutputsForm\OutputsForm.de-DE.resx">
+      <DependentUpon>OutputsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OutputsForm\OutputsForm.resx">
+      <DependentUpon>OutputsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OutputsForm\OutputsForm.zh-Hant.resx">
+      <DependentUpon>OutputsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProgramsForm\EditCodeForm.resx">
       <DependentUpon>EditCodeForm.cs</DependentUpon>
