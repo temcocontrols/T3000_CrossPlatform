@@ -73,6 +73,12 @@
     <Compile Include="Forms\ControllersForm\ControllersForm.Designer.cs">
       <DependentUpon>ControllersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\HolidaysForm\HolidaysForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HolidaysForm\HolidaysForm.Designer.cs">
+      <DependentUpon>HolidaysForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputsForm\InputsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +164,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ControllersForm\ControllersForm.zh-Hant.resx">
       <DependentUpon>ControllersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HolidaysForm\HolidaysForm.de-DE.resx">
+      <DependentUpon>HolidaysForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HolidaysForm\HolidaysForm.resx">
+      <DependentUpon>HolidaysForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HolidaysForm\HolidaysForm.zh-Hant.resx">
+      <DependentUpon>HolidaysForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputsForm\InputsForm.de-DE.resx">
       <DependentUpon>InputsForm.cs</DependentUpon>

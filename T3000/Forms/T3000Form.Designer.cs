@@ -176,6 +176,7 @@
             // 
             resources.ApplyResources(this.holidaysMenuItem, "holidaysMenuItem");
             this.holidaysMenuItem.Name = "holidaysMenuItem";
+            this.holidaysMenuItem.Click += new System.EventHandler(this.ShowHolidays);
             // 
             // languageMenuItem
             // 
@@ -284,6 +285,7 @@
             this.holidaysButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.holidaysButton, "holidaysButton");
             this.holidaysButton.Name = "holidaysButton";
+            this.holidaysButton.Click += new System.EventHandler(this.ShowHolidays);
             // 
             // T3000Form
             // 

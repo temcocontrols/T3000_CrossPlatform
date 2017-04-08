@@ -283,6 +283,24 @@
             }
         }
 
+        private void ShowHolidays(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckIsOpened())
+                {
+                    return;
+                }
+
+                var form = new HolidaysForm(Prg.Holidays, Prg.HolidayCodes);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
         #endregion
 
         #region Language
