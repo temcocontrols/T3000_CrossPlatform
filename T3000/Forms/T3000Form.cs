@@ -220,9 +220,7 @@
                     return;
                 }
 
-                var form = new VariablesForm(
-                    Prg.Variables.Cast<ValuedPoint>().ToList(),
-                    Prg.CustomUnits);
+                var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)

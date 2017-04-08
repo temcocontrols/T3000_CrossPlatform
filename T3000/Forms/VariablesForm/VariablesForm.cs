@@ -8,10 +8,10 @@
 
     public partial class VariablesForm : Form
     {
-        public List<ValuedPoint> Points { get; set; }
+        public List<VariablePoint> Points { get; set; }
         public List<CustomDigitalUnitsPoint> CustomUnits { get; private set; }
 
-        public VariablesForm(List<ValuedPoint> points, List<CustomDigitalUnitsPoint> customUnits = null)
+        public VariablesForm(List<VariablePoint> points, List<CustomDigitalUnitsPoint> customUnits = null)
         {
             if (points == null)
             {
