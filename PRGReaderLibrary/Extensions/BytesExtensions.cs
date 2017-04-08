@@ -5,11 +5,12 @@
 
     public static class BytesExtensions
     {
-        public static string GetString(this byte[] bytes, int offset = 0, int length = 0)
+        public static string GetString(this byte[] bytes, int offset = 0, int length = 0, 
+            Encoding encoding = null)
         {
             var buffer = bytes.ToBytes(offset, length);
 
-            return Encoding.UTF7.GetString(buffer, 0, buffer.Length);
+            return (encoding ?? Encoding.UTF7).GetString(buffer, 0, buffer.Length);
         }
 
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
