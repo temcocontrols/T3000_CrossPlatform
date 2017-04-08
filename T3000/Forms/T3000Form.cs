@@ -229,6 +229,24 @@
             }
         }
 
+        private void ShowControllers(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckIsOpened())
+                {
+                    return;
+                }
+
+                var form = new ControllersForm(Prg.Controllers, Prg.CustomUnits);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
         private void ShowPrograms(object sender, EventArgs e)
         {
             try

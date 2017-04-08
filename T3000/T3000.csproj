@@ -67,6 +67,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\MultipleMonthCalendarControls\Utilities.cs" />
+    <Compile Include="Forms\ControllersForm\ControllersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ControllersForm\ControllersForm.Designer.cs">
+      <DependentUpon>ControllersForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputsForm\InputsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +148,16 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MultipleMonthCalendarControls\MultipleMonthCalendar.resx">
       <DependentUpon>MultipleMonthCalendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ControllersForm\ControllersForm.de-DE.resx">
+      <DependentUpon>ControllersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ControllersForm\ControllersForm.resx">
+      <DependentUpon>ControllersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ControllersForm\ControllersForm.zh-Hant.resx">
+      <DependentUpon>ControllersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputsForm\InputsForm.de-DE.resx">
       <DependentUpon>InputsForm.cs</DependentUpon>

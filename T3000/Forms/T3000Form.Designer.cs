@@ -159,6 +159,7 @@
             // 
             resources.ApplyResources(this.controllersMenuItem, "controllersMenuItem");
             this.controllersMenuItem.Name = "controllersMenuItem";
+            this.controllersMenuItem.Click += new System.EventHandler(this.ShowControllers);
             // 
             // screensMenuItem
             // 
@@ -263,6 +264,7 @@
             this.controllersButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.controllersButton, "controllersButton");
             this.controllersButton.Name = "controllersButton";
+            this.controllersButton.Click += new System.EventHandler(this.ShowControllers);
             // 
             // screensButton
             // 
