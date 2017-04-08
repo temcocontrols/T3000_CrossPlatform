@@ -40,6 +40,7 @@
             this.SizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RunStatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CodeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,9 +80,12 @@
             this.AutoManualColumn,
             this.SizeColumn,
             this.RunStatusColumn,
-            this.LabelColumn});
+            this.LabelColumn,
+            this.CodeColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
+            this.view.ValidationArguments = ((System.Collections.Generic.Dictionary<string, object[]>)(resources.GetObject("view.ValidationArguments")));
+            this.view.ValidationHandles = ((System.Collections.Generic.Dictionary<string, System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>>)(resources.GetObject("view.ValidationHandles")));
             // 
             // NumberColumn
             // 
@@ -122,6 +126,13 @@
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
             // 
+            // CodeColumn
+            // 
+            resources.ApplyResources(this.CodeColumn, "CodeColumn");
+            this.CodeColumn.Name = "CodeColumn";
+            this.CodeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.CodeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // ProgramsForm
             // 
             this.AcceptButton = this.saveButton;
@@ -151,6 +162,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SizeColumn;
         private System.Windows.Forms.DataGridViewButtonColumn RunStatusColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn CodeColumn;
     }
 }
 

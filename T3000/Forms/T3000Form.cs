@@ -244,7 +244,7 @@
                     return;
                 }
 
-                var form = new ProgramsForm(Prg.Programs);
+                var form = new ProgramsForm(Prg.Programs, Prg.ProgramCodes);
                 form.Show();
             }
             catch (Exception exception)

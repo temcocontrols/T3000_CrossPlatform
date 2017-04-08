@@ -3,15 +3,15 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
-    using System.Reflection;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
     public partial class ProgramsForm : Form
     {
         public List<ProgramPoint> Points { get; set; }
+        public List<ProgramCode> Codes { get; set; }
 
-        public ProgramsForm(List<ProgramPoint> points)
+        public ProgramsForm(List<ProgramPoint> points, List<ProgramCode> codes)
         {
             if (points == null)
             {
@@ -19,6 +19,7 @@
             }
 
             Points = points;
+            Codes = codes;
 
             InitializeComponent();
 
@@ -29,6 +30,7 @@
                 TDataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[RunStatusColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<NormalCom>;
+            view.ColumnHandles[CodeColumn.Name] = EditCodeColumn;
 
             //Validation
             view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
@@ -49,7 +51,8 @@
                     point.AutoManual,
                     point.Length,
                     point.NormalCom,
-                    point.Label
+                    point.Label,
+                    $"Length: {codes[i].Code.GetString().ClearBinarySymvols().Length}"
                 });
                 ++i;
             }
@@ -122,7 +125,27 @@
 
         #endregion
 
-        #region Handles
+        #region User input handles
+
+        private void EditCodeColumn(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = view.CurrentRow;
+                var index = ((int)row.Cells[NumberColumn.Name].Value) - 1;
+                var form = new EditCodeForm(Codes[index]);
+                if (form.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                Codes[index] = form.Code;
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
 
         #endregion
 
