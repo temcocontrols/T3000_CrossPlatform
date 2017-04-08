@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulesForm));
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.view = new T3000.Controls.Improved.TDataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.SizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RunStatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.OutputColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Holiday1Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State1Column = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Holiday2Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State2Column = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CodeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.SchedulesColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,12 +78,14 @@
             this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NumberColumn,
             this.DescriptionColumn,
-            this.StatusColumn,
             this.AutoManualColumn,
-            this.SizeColumn,
-            this.RunStatusColumn,
+            this.OutputColumn,
+            this.Holiday1Column,
+            this.State1Column,
+            this.Holiday2Column,
+            this.State2Column,
             this.LabelColumn,
-            this.CodeColumn});
+            this.SchedulesColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             this.view.ValidationArguments = ((System.Collections.Generic.Dictionary<string, object[]>)(resources.GetObject("view.ValidationArguments")));
@@ -100,40 +104,49 @@
             resources.ApplyResources(this.DescriptionColumn, "DescriptionColumn");
             this.DescriptionColumn.Name = "DescriptionColumn";
             // 
-            // StatusColumn
-            // 
-            resources.ApplyResources(this.StatusColumn, "StatusColumn");
-            this.StatusColumn.Name = "StatusColumn";
-            // 
             // AutoManualColumn
             // 
             resources.ApplyResources(this.AutoManualColumn, "AutoManualColumn");
             this.AutoManualColumn.Name = "AutoManualColumn";
             // 
-            // SizeColumn
+            // OutputColumn
             // 
-            resources.ApplyResources(this.SizeColumn, "SizeColumn");
-            this.SizeColumn.Name = "SizeColumn";
+            resources.ApplyResources(this.OutputColumn, "OutputColumn");
+            this.OutputColumn.Name = "OutputColumn";
             // 
-            // RunStatusColumn
+            // Holiday1Column
             // 
-            resources.ApplyResources(this.RunStatusColumn, "RunStatusColumn");
-            this.RunStatusColumn.Name = "RunStatusColumn";
-            this.RunStatusColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            resources.ApplyResources(this.Holiday1Column, "Holiday1Column");
+            this.Holiday1Column.Name = "Holiday1Column";
+            // 
+            // State1Column
+            // 
+            resources.ApplyResources(this.State1Column, "State1Column");
+            this.State1Column.Name = "State1Column";
+            // 
+            // Holiday2Column
+            // 
+            resources.ApplyResources(this.Holiday2Column, "Holiday2Column");
+            this.Holiday2Column.Name = "Holiday2Column";
+            // 
+            // State2Column
+            // 
+            resources.ApplyResources(this.State2Column, "State2Column");
+            this.State2Column.Name = "State2Column";
             // 
             // LabelColumn
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
             // 
-            // CodeColumn
+            // SchedulesColumn
             // 
-            resources.ApplyResources(this.CodeColumn, "CodeColumn");
-            this.CodeColumn.Name = "CodeColumn";
-            this.CodeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CodeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            resources.ApplyResources(this.SchedulesColumn, "SchedulesColumn");
+            this.SchedulesColumn.Name = "SchedulesColumn";
+            this.SchedulesColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.SchedulesColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // ProgramsForm
+            // SchedulesForm
             // 
             this.AcceptButton = this.saveButton;
             resources.ApplyResources(this, "$this");
@@ -143,7 +156,7 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
-            this.Name = "ProgramsForm";
+            this.Name = "SchedulesForm";
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 
@@ -157,12 +170,14 @@
         private System.Windows.Forms.Button clearSelectedRowButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SizeColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn RunStatusColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn OutputColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Holiday1Column;
+        private System.Windows.Forms.DataGridViewButtonColumn State1Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Holiday2Column;
+        private System.Windows.Forms.DataGridViewButtonColumn State2Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn CodeColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn SchedulesColumn;
     }
 }
 

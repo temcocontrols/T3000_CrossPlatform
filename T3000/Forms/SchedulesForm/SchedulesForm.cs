@@ -24,20 +24,25 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[StatusColumn.Name] =
+            view.ColumnHandles[OutputColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<OffOn>;
             view.ColumnHandles[AutoManualColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[RunStatusColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<NormalCom>;
-            view.ColumnHandles[CodeColumn.Name] = EditCodeColumn;
+            view.ColumnHandles[State1Column.Name] =
+                TDataGridViewUtilities.EditEnumColumn<OffOn>;
+            view.ColumnHandles[State2Column.Name] =
+                TDataGridViewUtilities.EditEnumColumn<OffOn>;
+            view.ColumnHandles[SchedulesColumn.Name] = EditCodeColumn;
 
             //Validation
             view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
             view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
-            view.ValidationHandles[SizeColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
+            view.ValidationHandles[Holiday1Column.Name] = TDataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[Holiday1Column.Name] = new object[] { 9 }; //Max Holiday1 length
+            view.ValidationHandles[Holiday2Column.Name] = TDataGridViewUtilities.ValidateRowColumnString;
+            view.ValidationArguments[Holiday2Column.Name] = new object[] { 9 }; //Max Holiday2 length
 
             //Show points
             view.Rows.Clear();
@@ -47,10 +52,12 @@
                 view.Rows.Add(new object[] {
                     i + 1,
                     point.Description,
-                    point.Control,
                     point.AutoManual,
-                    0,
-                    0,
+                    point.Control,
+                    "",
+                    point.Override1Control,
+                    "",
+                    point.Override2Control,
                     point.Label,
                     $"Length: {codes[i].Code.GetString().ClearBinarySymvols().Length}"
                 });
@@ -71,10 +78,12 @@
             }
 
             row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[StatusColumn.Name].Value = OffOn.Off;
             row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
-            row.Cells[SizeColumn.Name].Value = 0;
-            row.Cells[RunStatusColumn.Name].Value = NormalCom.Normal;
+            row.Cells[OutputColumn.Name].Value = OffOn.Off;
+            row.Cells[Holiday1Column.Name].Value = "";
+            row.Cells[State1Column.Name].Value = OffOn.Off;
+            row.Cells[Holiday2Column.Name].Value = "";
+            row.Cells[State2Column.Name].Value = OffOn.Off;
             row.Cells[LabelColumn.Name].Value = string.Empty;
         }
 
@@ -99,8 +108,10 @@
                     
                     var point = Points[i];
                     point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Control = (OffOn)row.Cells[StatusColumn.Name].Value;
                     point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
+                    point.Control = (OffOn)row.Cells[OutputColumn.Name].Value;
+                    point.Override1Control = (OffOn)row.Cells[State1Column.Name].Value;
+                    point.Override2Control = (OffOn)row.Cells[State2Column.Name].Value;
                     point.Label = (string)row.Cells[LabelColumn.Name].Value;
                     ++i;
                 }
@@ -131,6 +142,13 @@
             {
                 var row = view.CurrentRow;
                 var index = ((int)row.Cells[NumberColumn.Name].Value) - 1;
+                var form = new EditSchedulesForm(Codes[index]);
+                if (form.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                Codes[index] = form.Code;
             }
             catch (Exception exception)
             {
