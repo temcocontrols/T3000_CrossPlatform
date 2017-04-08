@@ -171,6 +171,7 @@
             // 
             resources.ApplyResources(this.schedulesMenuItem, "schedulesMenuItem");
             this.schedulesMenuItem.Name = "schedulesMenuItem";
+            this.schedulesMenuItem.Click += new System.EventHandler(this.ShowSchedules);
             // 
             // holidaysMenuItem
             // 
@@ -279,6 +280,7 @@
             this.schedulesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.schedulesButton, "schedulesButton");
             this.schedulesButton.Name = "schedulesButton";
+            this.schedulesButton.Click += new System.EventHandler(this.ShowSchedules);
             // 
             // holidaysButton
             // 

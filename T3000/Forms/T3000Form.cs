@@ -283,6 +283,24 @@
             }
         }
 
+        private void ShowSchedules(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckIsOpened())
+                {
+                    return;
+                }
+
+                var form = new SchedulesForm(Prg.Schedules, Prg.ScheduleCodes);
+                form.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
         private void ShowHolidays(object sender, EventArgs e)
         {
             try
