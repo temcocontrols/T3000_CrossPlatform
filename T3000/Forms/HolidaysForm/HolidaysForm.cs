@@ -24,20 +24,17 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[StatusColumn.Name] =
+            view.ColumnHandles[ValueColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<OffOn>;
             view.ColumnHandles[AutoManualColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[RunStatusColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<NormalCom>;
-            view.ColumnHandles[CodeColumn.Name] = EditCodeColumn;
+            view.ColumnHandles[HolidaysColumn.Name] = EditCodeColumn;
 
             //Validation
             view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
             view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
             view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
-            view.ValidationHandles[SizeColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
 
             //Show points
             view.Rows.Clear();
@@ -47,15 +44,14 @@
                 view.Rows.Add(new object[] {
                     i + 1,
                     point.Description,
-                    point.Control,
                     point.AutoManual,
-                    0,
-                    0,
+                    point.Control,
                     point.Label,
-                    $"Length: {codes[i].Code.GetString().ClearBinarySymvols().Length}"
+                    "Edit"
                 });
                 ++i;
             }
+
             view.Validate();
         }
 
@@ -71,10 +67,8 @@
             }
 
             row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[StatusColumn.Name].Value = OffOn.Off;
             row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
-            row.Cells[SizeColumn.Name].Value = 0;
-            row.Cells[RunStatusColumn.Name].Value = NormalCom.Normal;
+            row.Cells[ValueColumn.Name].Value = OffOn.Off;
             row.Cells[LabelColumn.Name].Value = string.Empty;
         }
 
@@ -99,8 +93,8 @@
                     
                     var point = Points[i];
                     point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Control = (OffOn)row.Cells[StatusColumn.Name].Value;
                     point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
+                    point.Control = (OffOn)row.Cells[ValueColumn.Name].Value;
                     point.Label = (string)row.Cells[LabelColumn.Name].Value;
                     ++i;
                 }
@@ -131,6 +125,13 @@
             {
                 var row = view.CurrentRow;
                 var index = ((int)row.Cells[NumberColumn.Name].Value) - 1;
+                var form = new SelectHolidaysForm(Codes[index]);
+                if (form.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                Codes[index] = form.Code;
             }
             catch (Exception exception)
             {

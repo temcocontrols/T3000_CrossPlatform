@@ -28,19 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HolidaysForm));
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.view = new T3000.Controls.Improved.TDataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.SizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RunStatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ValueColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CodeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.HolidaysColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,12 +74,10 @@
             this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NumberColumn,
             this.DescriptionColumn,
-            this.StatusColumn,
             this.AutoManualColumn,
-            this.SizeColumn,
-            this.RunStatusColumn,
+            this.ValueColumn,
             this.LabelColumn,
-            this.CodeColumn});
+            this.HolidaysColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             this.view.ValidationArguments = ((System.Collections.Generic.Dictionary<string, object[]>)(resources.GetObject("view.ValidationArguments")));
@@ -100,40 +96,28 @@
             resources.ApplyResources(this.DescriptionColumn, "DescriptionColumn");
             this.DescriptionColumn.Name = "DescriptionColumn";
             // 
-            // StatusColumn
-            // 
-            resources.ApplyResources(this.StatusColumn, "StatusColumn");
-            this.StatusColumn.Name = "StatusColumn";
-            // 
             // AutoManualColumn
             // 
             resources.ApplyResources(this.AutoManualColumn, "AutoManualColumn");
             this.AutoManualColumn.Name = "AutoManualColumn";
             // 
-            // SizeColumn
+            // ValueColumn
             // 
-            resources.ApplyResources(this.SizeColumn, "SizeColumn");
-            this.SizeColumn.Name = "SizeColumn";
-            // 
-            // RunStatusColumn
-            // 
-            resources.ApplyResources(this.RunStatusColumn, "RunStatusColumn");
-            this.RunStatusColumn.Name = "RunStatusColumn";
-            this.RunStatusColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            resources.ApplyResources(this.ValueColumn, "ValueColumn");
+            this.ValueColumn.Name = "ValueColumn";
+            this.ValueColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // LabelColumn
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
             // 
-            // CodeColumn
+            // HolidaysColumn
             // 
-            resources.ApplyResources(this.CodeColumn, "CodeColumn");
-            this.CodeColumn.Name = "CodeColumn";
-            this.CodeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CodeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            resources.ApplyResources(this.HolidaysColumn, "HolidaysColumn");
+            this.HolidaysColumn.Name = "HolidaysColumn";
             // 
-            // ProgramsForm
+            // HolidaysForm
             // 
             this.AcceptButton = this.saveButton;
             resources.ApplyResources(this, "$this");
@@ -143,7 +127,7 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
-            this.Name = "ProgramsForm";
+            this.Name = "HolidaysForm";
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 
@@ -157,12 +141,10 @@
         private System.Windows.Forms.Button clearSelectedRowButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SizeColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn RunStatusColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn ValueColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn CodeColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn HolidaysColumn;
     }
 }
 
