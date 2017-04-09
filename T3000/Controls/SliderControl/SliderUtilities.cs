@@ -2,7 +2,7 @@
 {
     using System;
 
-    internal static class SliderUtilities
+    public static class SliderUtilities
     {
         public static float YToValue(float y, float topValue, float bottomValue, int height)
         {

@@ -3,6 +3,7 @@
     using NUnit.Framework;
 
     [TestFixture]
+    [Category("PRGReaderLibrary.Utilities")]
     public class Bytes_Tests
     {
         [Test]

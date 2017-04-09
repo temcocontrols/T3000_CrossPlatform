@@ -4,6 +4,7 @@
     using System.IO;
 
     [TestFixture]
+    [Category("PRGReaderLibrary.Utilities")]
     public class FileVersionUtilities_Tests
     {
         public byte[] GetBytesFromName(string name)

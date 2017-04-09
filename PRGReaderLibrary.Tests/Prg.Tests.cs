@@ -6,7 +6,8 @@
     using System.IO;
 
     [TestFixture]
-    public class PrgReader_Tests
+    [Category("PRGReaderLibrary.Prg")]
+    public class Prg_Tests
     {
         public void VariableVariantToFromTest(VariableValue value, List<CustomDigitalUnitsPoint> customUnits)
         {

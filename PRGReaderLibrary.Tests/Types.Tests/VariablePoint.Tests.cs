@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     [TestFixture]
+    [Category("PRGReaderLibrary.Types")]
     public class VariablePoint_Tests
     {
         public void BaseTest(byte[] actualBytes, VariablePoint expected, FileVersion version, List<CustomDigitalUnitsPoint> customUnits = null)
