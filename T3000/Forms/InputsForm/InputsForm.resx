@@ -213,11 +213,17 @@
   <data name="view.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <metadata name="NumberColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="InputColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="NumberColumn.HeaderText" xml:space="preserve">
-    <value>Number</value>
+  <data name="InputColumn.HeaderText" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <metadata name="PanelColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="PanelColumn.HeaderText" xml:space="preserve">
+    <value>Panel</value>
   </data>
   <metadata name="DescriptionColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -262,13 +268,25 @@
     <value>True</value>
   </metadata>
   <data name="CalibrationColumn.HeaderText" xml:space="preserve">
-    <value>Cal</value>
+    <value>Calibration</value>
   </data>
-  <metadata name="FilColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="SignColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="FilColumn.HeaderText" xml:space="preserve">
-    <value>Fil</value>
+  <data name="SignColumn.HeaderText" xml:space="preserve">
+    <value>Sign</value>
+  </data>
+  <metadata name="FilterColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="FilterColumn.HeaderText" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <metadata name="StatusColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="StatusColumn.HeaderText" xml:space="preserve">
+    <value>Status</value>
   </data>
   <metadata name="DColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -636,13 +654,22 @@
         //////////////////////////////////////////////////8=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Inputs</value>
   </data>
-  <data name="&gt;&gt;NumberColumn.Name" xml:space="preserve">
-    <value>NumberColumn</value>
+  <data name="&gt;&gt;InputColumn.Name" xml:space="preserve">
+    <value>InputColumn</value>
   </data>
-  <data name="&gt;&gt;NumberColumn.Type" xml:space="preserve">
+  <data name="&gt;&gt;InputColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PanelColumn.Name" xml:space="preserve">
+    <value>PanelColumn</value>
+  </data>
+  <data name="&gt;&gt;PanelColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;DescriptionColumn.Name" xml:space="preserve">
@@ -687,11 +714,23 @@
   <data name="&gt;&gt;CalibrationColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;FilColumn.Name" xml:space="preserve">
-    <value>FilColumn</value>
+  <data name="&gt;&gt;SignColumn.Name" xml:space="preserve">
+    <value>SignColumn</value>
   </data>
-  <data name="&gt;&gt;FilColumn.Type" xml:space="preserve">
+  <data name="&gt;&gt;SignColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FilterColumn.Name" xml:space="preserve">
+    <value>FilterColumn</value>
+  </data>
+  <data name="&gt;&gt;FilterColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StatusColumn.Name" xml:space="preserve">
+    <value>StatusColumn</value>
+  </data>
+  <data name="&gt;&gt;StatusColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;DColumn.Name" xml:space="preserve">
     <value>DColumn</value>

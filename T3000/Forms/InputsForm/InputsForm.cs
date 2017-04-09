@@ -27,6 +27,7 @@
             view.ColumnHandles[AutoManualColumn.Name] =
                 TDataGridViewUtilities.EditEnumColumn<AutoManual>;
             view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
+            view.ColumnHandles[SignColumn.Name] = EditSignColumn;
 
             //Validation
             view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
@@ -42,7 +43,8 @@
             foreach (var point in Points)
             {
                 view.Rows.Add(new object[] {
-                    i + 1,
+                    $"IN{i + 1}",
+                    "?",
                     point.Description,
                     point.AutoManual,
                     point.Value.ToString(),
@@ -52,7 +54,9 @@
                     ? $"0 -> {point.Value.Value / 100.0}"
                     : "",
                     point.CalibrationL,
+                    point.CalibrationSign.GetString(),
                     point.Filter,
+                    "Normal",
                     point.Decommissioned,
                     point.Label
                 });
@@ -77,7 +81,8 @@
             row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
             row.Cells[RangeColumn.Name].Value = 0;
             row.Cells[CalibrationColumn.Name].Value = 0;
-            row.Cells[FilColumn.Name].Value = 0;
+            row.Cells[SignColumn.Name].Value = Sign.Positive;
+            row.Cells[FilterColumn.Name].Value = 0;
             row.Cells[DColumn.Name].Value = 0;
             row.Cells[LabelColumn.Name].Value = string.Empty;
         }
@@ -111,6 +116,7 @@
                             (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
                         CustomUnits, range);
                     point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
+                    point.CalibrationSign = (Sign)row.Cells[SignColumn.Name].Value;
                     ++i;
                 }
             }
@@ -191,6 +197,26 @@
                 row.Cells[UnitsColumn.Name].Value = newUnits;
                 row.Cells[ValueColumn.Name].Value = newValue;
                 view.ValidateRow(row);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        private void EditSignColumn(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = (Controls.Improved.TDataGridView)sender;
+                var cell = view.CurrentCell;
+                var text = (string) cell.Value;
+                var sign = text.Equals(Sign.Positive.GetString()) 
+                    ? Sign.Positive : Sign.Negative;
+                var nextValue = EnumUtilities.NextValue(sign);
+                cell.Value = nextValue.GetString();
+
+                view.ValidateCell(cell);
             }
             catch (Exception exception)
             {

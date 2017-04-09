@@ -33,7 +33,8 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
             this.view = new T3000.Controls.Improved.TDataGridView();
-            this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InputColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PanelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,7 +42,9 @@
             this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RangeTextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CalibrationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FilColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SignColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.FilterColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.DColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
@@ -78,7 +81,8 @@
             this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NumberColumn,
+            this.InputColumn,
+            this.PanelColumn,
             this.DescriptionColumn,
             this.AutoManualColumn,
             this.ValueColumn,
@@ -86,7 +90,9 @@
             this.RangeColumn,
             this.RangeTextColumn,
             this.CalibrationColumn,
-            this.FilColumn,
+            this.SignColumn,
+            this.FilterColumn,
+            this.StatusColumn,
             this.DColumn,
             this.LabelColumn});
             this.view.MultiSelect = false;
@@ -95,12 +101,17 @@
             this.view.ValidationHandles = ((System.Collections.Generic.Dictionary<string, System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>>)(resources.GetObject("view.ValidationHandles")));
             this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
             // 
-            // NumberColumn
+            // InputColumn
             // 
-            this.NumberColumn.FillWeight = 55F;
-            resources.ApplyResources(this.NumberColumn, "NumberColumn");
-            this.NumberColumn.Name = "NumberColumn";
-            this.NumberColumn.ReadOnly = true;
+            this.InputColumn.FillWeight = 55F;
+            resources.ApplyResources(this.InputColumn, "InputColumn");
+            this.InputColumn.Name = "InputColumn";
+            this.InputColumn.ReadOnly = true;
+            // 
+            // PanelColumn
+            // 
+            resources.ApplyResources(this.PanelColumn, "PanelColumn");
+            this.PanelColumn.Name = "PanelColumn";
             // 
             // DescriptionColumn
             // 
@@ -140,10 +151,23 @@
             resources.ApplyResources(this.CalibrationColumn, "CalibrationColumn");
             this.CalibrationColumn.Name = "CalibrationColumn";
             // 
-            // FilColumn
+            // SignColumn
             // 
-            resources.ApplyResources(this.FilColumn, "FilColumn");
-            this.FilColumn.Name = "FilColumn";
+            this.SignColumn.FillWeight = 60F;
+            resources.ApplyResources(this.SignColumn, "SignColumn");
+            this.SignColumn.Name = "SignColumn";
+            // 
+            // FilterColumn
+            // 
+            resources.ApplyResources(this.FilterColumn, "FilterColumn");
+            this.FilterColumn.Name = "FilterColumn";
+            // 
+            // StatusColumn
+            // 
+            resources.ApplyResources(this.StatusColumn, "StatusColumn");
+            this.StatusColumn.Name = "StatusColumn";
+            this.StatusColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.StatusColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // DColumn
             // 
@@ -177,7 +201,8 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InputColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PanelColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
@@ -185,7 +210,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeTextColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn CalibrationColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FilColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn SignColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FilterColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewButtonColumn DColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
