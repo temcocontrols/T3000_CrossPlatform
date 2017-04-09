@@ -70,7 +70,9 @@
             }
 
             // Apply to self
+            var enabled = control.Enabled;
             manager.ApplyResources(control, control.Name, info);
+            control.Enabled = enabled;
         }
 
         private static void ApplyResourceToToolStripItemCollection(ToolStripItemCollection collection, ComponentResourceManager manager, CultureInfo info)
