@@ -25,6 +25,8 @@
 
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(ActionColumn, TViewUtilities.EditEnum<DirectReverse>);
+            view.AddEditHandler(TimeColumn, TViewUtilities.EditEnum<Periodicity>);
 
             //Validation
 
@@ -48,7 +50,17 @@
                     point.Input.Number,
                     point.Value.ToString(),
                     point.Units.ToString(),
-                    point.AutoManual
+                    point.AutoManual,
+                    "x.x %",
+                    "",
+                    "",
+                    "",
+                    point.Action,
+                    point.Proportional,
+                    0,
+                    point.Periodicity,
+                    0.00,
+                    point.Bias
                 });
                 ++i;
             }
