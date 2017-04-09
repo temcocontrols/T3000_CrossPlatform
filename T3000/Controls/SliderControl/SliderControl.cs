@@ -352,6 +352,18 @@
             set { indicator.IndicatorText = value; }
         }
 
+        private bool _timeValues = false;
+        [Description("Time values"), Category("Time")]
+        public bool TimeValues {
+            get { return _timeValues; }
+            set
+            {
+                _timeValues = value;
+                
+                Invalidate();
+            }
+        }
+
         #endregion
 
         #region PublicMethods
@@ -489,6 +501,8 @@
             Mover = new MouseMover(this);
         }
 
+        #region Utilities
+
         public float YToValue(float y)
         {
             return SliderUtilities.YToValue(y, TopValue, BottomValue, Height);
@@ -516,6 +530,8 @@
 
             return value.Clamp(minValue, maxValue);
         }
+
+        #endregion
 
         private void handle_MouseDown(object sender, MouseEventArgs e)
         {

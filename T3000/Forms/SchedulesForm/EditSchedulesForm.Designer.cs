@@ -30,6 +30,7 @@
         {
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.sliderControl1 = new T3000.Controls.SliderControl();
             this.SuspendLayout();
             // 
             // saveButton
@@ -57,6 +58,44 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
+            // sliderControl1
+            // 
+            this.sliderControl1.AdditionalText = " H";
+            this.sliderControl1.BackColor = System.Drawing.Color.Transparent;
+            this.sliderControl1.BackgroundWidth = 50;
+            this.sliderControl1.BorderColor = System.Drawing.Color.Black;
+            this.sliderControl1.BottomValue = 24F;
+            this.sliderControl1.BottomZone = true;
+            this.sliderControl1.BottomZoneColor = System.Drawing.Color.Red;
+            this.sliderControl1.BottomZoneValue = 18F;
+            this.sliderControl1.CurrentValue = 12F;
+            this.sliderControl1.CurrentValueColor = System.Drawing.Color.Black;
+            this.sliderControl1.EnableIndicator = false;
+            this.sliderControl1.HandlesBorderColor = System.Drawing.Color.White;
+            this.sliderControl1.HandlesHeight = 8;
+            this.sliderControl1.IndicatorBorderColor = System.Drawing.Color.Black;
+            this.sliderControl1.IndicatorColor = System.Drawing.Color.GreenYellow;
+            this.sliderControl1.IndicatorHeight = 20;
+            this.sliderControl1.IndicatorText = "";
+            this.sliderControl1.IndicatorWidth = 20;
+            this.sliderControl1.IsSimpleIndicator = true;
+            this.sliderControl1.LinesColor = System.Drawing.Color.LightGray;
+            this.sliderControl1.Location = new System.Drawing.Point(12, 12);
+            this.sliderControl1.LowEventMode = true;
+            this.sliderControl1.MiddleHandleColor = System.Drawing.Color.GreenYellow;
+            this.sliderControl1.MiddleZoneValue = 12F;
+            this.sliderControl1.MiddleZoneValueAsAverage = true;
+            this.sliderControl1.Name = "sliderControl1";
+            this.sliderControl1.Size = new System.Drawing.Size(153, 298);
+            this.sliderControl1.StepValue = 6F;
+            this.sliderControl1.TabIndex = 7;
+            this.sliderControl1.TimeValues = true;
+            this.sliderControl1.TopValue = 0F;
+            this.sliderControl1.TopZone = true;
+            this.sliderControl1.TopZoneColor = System.Drawing.Color.DeepSkyBlue;
+            this.sliderControl1.TopZoneValue = 6F;
+            this.sliderControl1.TwoSliderMode = true;
+            // 
             // EditSchedulesForm
             // 
             this.AcceptButton = this.saveButton;
@@ -64,6 +103,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.sliderControl1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Name = "EditSchedulesForm";
@@ -75,5 +115,6 @@
         #endregion
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private Controls.SliderControl sliderControl1;
     }
 }
