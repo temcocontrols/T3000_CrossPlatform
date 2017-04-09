@@ -132,15 +132,11 @@
         {
             try
             {
-                var row = view.CurrentRow;
-                var index = ((int)row.Cells[NumberColumn.Name].Value) - 1;
-                var form = new EditSchedulesForm(Codes[index]);
+                var form = new EditSchedulesForm();
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
-
-                Codes[index] = form.Code;
             }
             catch (Exception exception)
             {
