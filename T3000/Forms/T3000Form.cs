@@ -55,7 +55,14 @@
                 holidaysMenuItem.Enabled = true;
 
                 //Buttons tool strip
-                buttonsToolStrip.Enabled = true;
+                inputsButton.Enabled = true;
+                outputsButton.Enabled = true;
+                variablesButton.Enabled = true;
+                programsButton.Enabled = true;
+                controllersButton.Enabled = true;
+                screensButton.Enabled = true;
+                schedulesButton.Enabled = true;
+                holidaysButton.Enabled = true;
 
                 if (Prg.FileVersion != FileVersion.Current)
                 {

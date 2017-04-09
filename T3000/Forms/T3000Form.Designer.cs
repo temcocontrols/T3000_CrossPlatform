@@ -220,7 +220,6 @@
             // 
             // buttonsToolStrip
             // 
-            resources.ApplyResources(this.buttonsToolStrip, "buttonsToolStrip");
             this.buttonsToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.buttonsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputsButton,
@@ -231,6 +230,7 @@
             this.screensButton,
             this.schedulesButton,
             this.holidaysButton});
+            resources.ApplyResources(this.buttonsToolStrip, "buttonsToolStrip");
             this.buttonsToolStrip.Name = "buttonsToolStrip";
             // 
             // inputsButton

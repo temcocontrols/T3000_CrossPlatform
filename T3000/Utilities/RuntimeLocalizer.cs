@@ -20,6 +20,7 @@
             ApplyResourceToControl(resources, form, culture);
             resources.ApplyResources(form, "$this", culture);
 
+            //Show font dialog for Unix + Chinese language
             if (Environment.OSVersion.Platform != PlatformID.Win32NT &&
                 cultureCode.StartsWith("zh"))
             {
@@ -44,16 +45,24 @@
         }
 
         private static void ApplyResourceToControl(ComponentResourceManager manager, Control control, CultureInfo info)
-        {  
+        {
+            var type = control.GetType();
             // See if this is a MenuStrip
-            if (control.GetType() == typeof(MenuStrip))
+            if (type == typeof(MenuStrip))
             {
                 var strip = (MenuStrip)control;
                 ApplyResourceToToolStripItemCollection(strip.Items, manager, info);
             }
 
+            // See if this is a ToolStrip
+            if (type == typeof(ToolStrip))
+            {
+                var strip = (ToolStrip)control;
+                ApplyResourceToToolStripItemCollection(strip.Items, manager, info);
+            }
+
             // See if this is a DataGridViewColumn
-            if (control.GetType() == typeof(DataGridView))
+            if (type == typeof(DataGridView))
             {
                 var view = (DataGridView)control;
                 foreach (DataGridViewColumn item in view.Columns)
@@ -78,12 +87,13 @@
         private static void ApplyResourceToToolStripItemCollection(ToolStripItemCollection collection, ComponentResourceManager manager, CultureInfo info)
         { 
             // Apply to all sub items
-            foreach (ToolStripMenuItem item in collection)
+            foreach (ToolStripItem item in collection)
             {
-                if (item.GetType() == typeof(ToolStripMenuItem))
+                var type = item.GetType();
+                if (type == typeof(ToolStripMenuItem))
                 {
-                    var menuitem = item;
-                    ApplyResourceToToolStripItemCollection(menuitem.DropDownItems, manager, info);
+                    var menuItem = (ToolStripMenuItem)item;
+                    ApplyResourceToToolStripItemCollection(menuItem.DropDownItems, manager, info);
                 }
 
                 var enabled = item.Enabled;
