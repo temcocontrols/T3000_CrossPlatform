@@ -48,23 +48,6 @@
         #region Days
 
         private List<DayControl> Days = new List<DayControl>();
-        private void UpdateDays()
-        {
-            var offset = (int)Date.DayOfWeek;
-            for (var i = 0; i < 35; ++i)
-            {
-                var day = Days[i];
-                var isCurrentMonth = i - offset >= 0 && 
-                    i - offset < DateTime.DaysInMonth(Date.Year, Date.Month);
-                day.Date = isCurrentMonth
-                    ? new DateTime(Date.Year, Date.Month, i - offset + 1)
-                    : new DateTime();
-            }
-            titleButton.Text = Date.ToString("MMMM yyyy");
-
-            Invalidate();
-        }
-
         private void InitializeDays()
         {
             var width = (Width - 10) / 7.0;
@@ -79,10 +62,28 @@
                 day.Left = 5 + x * size.Width;
                 day.Top = 45 + y * size.Height;
                 day.Size = size;
+                day.Width += 3;
                 day.Click += (sender, args) => day.IsSelected = !day.IsSelected;
                 Controls.Add(day);
                 Days.Add(day);
             }
+
+            Invalidate();
+        }
+
+        private void UpdateDays()
+        {
+            var offset = (int)Date.DayOfWeek;
+            for (var i = 0; i < 35; ++i)
+            {
+                var day = Days[i];
+                var isCurrentMonth = i - offset >= 0 && 
+                    i - offset < DateTime.DaysInMonth(Date.Year, Date.Month);
+                day.Date = isCurrentMonth
+                    ? new DateTime(Date.Year, Date.Month, i - offset + 1)
+                    : new DateTime();
+            }
+            titleButton.Text = Date.ToString("MMMM yyyy");
 
             Invalidate();
         }

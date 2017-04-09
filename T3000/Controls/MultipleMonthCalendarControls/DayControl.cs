@@ -5,7 +5,7 @@
     using System.Windows.Forms;
     using System.ComponentModel;
 
-    internal class DayControl : Label
+    internal class DayControl : Button
     {
         #region Properties
 
@@ -47,9 +47,13 @@
 
         public DayControl()
         {
-            //FlatStyle = FlatStyle.Flat;
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
             Font = new Font(FontFamily.GenericSansSerif, 8);
             TextAlign = ContentAlignment.MiddleCenter;
+            UseVisualStyleBackColor = false;
+            Margin = new Padding(0);
+            Padding = new Padding(0);
 
             ResizeRedraw = true;
         }

@@ -92,6 +92,8 @@
             for (var i = 0; i < currentMonthLength; ++i)
             {
                 var month = new MonthControl();
+                month.TabStop = true;
+                month.TabIndex = i;
                 Controls.Add(month);
                 Months.Add(month);
             }
