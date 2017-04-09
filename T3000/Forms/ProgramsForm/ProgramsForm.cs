@@ -3,6 +3,7 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
+    using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -34,6 +35,9 @@
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
             view.AddValidation(SizeColumn, TViewUtilities.ValidateInteger);
 
+            //Value changed handles
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
+
             //Show points
             view.Rows.Clear();
             var i = 0;
@@ -51,6 +55,10 @@
                 });
                 ++i;
             }
+
+            //For apply changed handlers
+            view.SendChanged(StatusColumn);
+
             view.Validate();
         }
 
@@ -65,12 +73,12 @@
                 return;
             }
 
-            row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[StatusColumn.Name].Value = OffOn.Off;
-            row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
-            row.Cells[SizeColumn.Name].Value = 0;
-            row.Cells[RunStatusColumn.Name].Value = NormalCom.Normal;
-            row.Cells[LabelColumn.Name].Value = string.Empty;
+            row.SetValue(DescriptionColumn, string.Empty);
+            row.SetValue(StatusColumn, OffOn.Off);
+            row.SetValue(AutoManualColumn, AutoManual.Automatic);
+            row.SetValue(SizeColumn, 0);
+            row.SetValue(RunStatusColumn, NormalCom.Normal);
+            row.SetValue(LabelColumn, string.Empty);
         }
 
         private void Save(object sender, EventArgs e)
@@ -84,22 +92,21 @@
 
             try
             {
-                var i = 0;
-                foreach (DataGridViewRow row in view.Rows)
+                for (var i = 0; i < view.Rows.Count; ++i)
                 {
                     if (i >= Points.Count)
                     {
                         break;
                     }
-                    
+
+                    var row = view.Rows[i];
                     var point = Points[i];
-                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Control = (OffOn)row.Cells[StatusColumn.Name].Value;
-                    point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
-                    point.Length = (int)row.Cells[SizeColumn.Name].Value;
-                    point.NormalCom = (NormalCom)row.Cells[RunStatusColumn.Name].Value;
-                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
-                    ++i;
+                    point.Description = row.GetValue<string>(DescriptionColumn);
+                    point.Control = row.GetValue<OffOn>(StatusColumn);
+                    point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
+                    point.Length = row.GetValue<int>(SizeColumn);
+                    point.NormalCom = row.GetValue<NormalCom>(RunStatusColumn);
+                    point.Label = row.GetValue<string>(LabelColumn);
                 }
             }
             catch (Exception exception)
@@ -127,7 +134,7 @@
             try
             {
                 var row = view.CurrentRow;
-                var index = ((int)row.Cells[NumberColumn.Name].Value) - 1;
+                var index = row.GetValue<int>(NumberColumn) - 1;
                 var form = new EditCodeForm(Codes[index]);
                 if (form.ShowDialog() != DialogResult.OK)
                 {

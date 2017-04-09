@@ -2,6 +2,7 @@
 {
     using PRGReaderLibrary;
     using System;
+    using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
     using Controls;
@@ -151,6 +152,34 @@
                 var value = arguments[1];
 
                 row.SetValue(columnName, value);
+            }
+            catch (Exception) { }
+        }
+
+        public static void ChangeColor(object sender, DataGridViewCellEventArgs e, object[] arguments)
+        {
+            if (arguments.Length < 2)
+            {
+                throw new ArgumentException("Arguments less 2", nameof(arguments));
+            }
+
+            try
+            {
+                var view = (TView)sender;
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
+                {
+                    return;
+                }
+
+                var colorOff = (Color)arguments[0];
+                var colorOn = (Color)arguments[1];
+
+                var cell = row.Cells[e.ColumnIndex];
+                cell.Style.ForeColor = ((int)cell.Value == 0)
+                    ? colorOff
+                    : colorOn;
+                cell.Style.SelectionForeColor = cell.Style.ForeColor;
             }
             catch (Exception) { }
         }

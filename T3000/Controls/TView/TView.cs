@@ -203,6 +203,14 @@
         public void AddChangedHandler(DataGridViewColumn column, CellAction handler, params object[] arguments) =>
             AddChangedHandler(column.Name, handler, arguments);
 
+        public void SendChanged(DataGridViewColumn column)
+        {
+            foreach (DataGridViewRow row in column.DataGridView.Rows)
+            {
+                OnCellValueChanged(new DataGridViewCellEventArgs(column.Index, row.Index));
+            }
+        }
+
         #endregion
     }
 }
