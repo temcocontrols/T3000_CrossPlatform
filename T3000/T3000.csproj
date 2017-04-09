@@ -42,31 +42,64 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ColorConstants.cs" />
+    <Compile Include="Controls\SliderControl\BackgroundControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SliderControl\BackgroundControl.Designer.cs">
+      <DependentUpon>BackgroundControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SliderControl\GraphicsUtilities.cs" />
+    <Compile Include="Controls\SliderControl\HandleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SliderControl\HandleControl.Designer.cs">
+      <DependentUpon>HandleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SliderControl\IndicatorControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SliderControl\IndicatorControl.Designer.cs">
+      <DependentUpon>IndicatorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SliderControl\IntegerExtensions.cs" />
+    <Compile Include="Controls\SliderControl\Interfaces\ISliderControl.cs" />
+    <Compile Include="Controls\SliderControl\Interfaces\ISliderControlEvents.cs" />
+    <Compile Include="Controls\SliderControl\MouseMover.cs" />
+    <Compile Include="Controls\SliderControl\SliderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SliderControl\SliderControl.Designer.cs">
+      <DependentUpon>SliderControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SliderControl\SliderUtilities.cs" />
+    <Compile Include="Controls\SliderControl\TransparentLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TView\TView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\MonthsControl.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\MonthsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\MonthsControl.Designer.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\MonthsControl.Designer.cs">
       <DependentUpon>MonthsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\MultipleMonthCalendar.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\MultipleMonthCalendar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\MultipleMonthCalendar.Designer.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\MultipleMonthCalendar.Designer.cs">
       <DependentUpon>MultipleMonthCalendar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\MonthControl.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\MonthControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\MonthControl.Designer.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\MonthControl.Designer.cs">
       <DependentUpon>MonthControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\DayControl.cs">
+    <Compile Include="Controls\MultipleMonthCalendar\DayControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MultipleMonthCalendarControls\Utilities.cs" />
+    <Compile Include="Controls\MultipleMonthCalendar\Utilities.cs" />
     <Compile Include="Controls\TView\TViewExtensions.cs" />
     <Compile Include="Forms\ControllersForm\ControllersForm.cs">
       <SubType>Form</SubType>
@@ -174,11 +207,23 @@
     <Compile Include="Controls\TView\TViewUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
-    <EmbeddedResource Include="Controls\MultipleMonthCalendarControls\MonthControl.resx">
+    <EmbeddedResource Include="Controls\MultipleMonthCalendar\MonthControl.resx">
       <DependentUpon>MonthControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\MultipleMonthCalendarControls\MultipleMonthCalendar.resx">
+    <EmbeddedResource Include="Controls\MultipleMonthCalendar\MultipleMonthCalendar.resx">
       <DependentUpon>MultipleMonthCalendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderControl\BackgroundControl.resx">
+      <DependentUpon>BackgroundControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderControl\HandleControl.resx">
+      <DependentUpon>HandleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderControl\IndicatorControl.resx">
+      <DependentUpon>IndicatorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderControl\SliderControl.resx">
+      <DependentUpon>SliderControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ControllersForm\ControllersForm.de-DE.resx">
       <DependentUpon>ControllersForm.cs</DependentUpon>
