@@ -24,25 +24,17 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[OutputColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<OffOn>;
-            view.ColumnHandles[AutoManualColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[State1Column.Name] =
-                TDataGridViewUtilities.EditEnumColumn<OffOn>;
-            view.ColumnHandles[State2Column.Name] =
-                TDataGridViewUtilities.EditEnumColumn<OffOn>;
-            view.ColumnHandles[SchedulesColumn.Name] = EditCodeColumn;
+            view.AddEditHandler(OutputColumn, TViewUtilities.EditEnum<OffOn>);
+            view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(State1Column, TViewUtilities.EditEnum<OffOn>);
+            view.AddEditHandler(State2Column, TViewUtilities.EditEnum<OffOn>);
+            view.AddEditHandler(SchedulesColumn, EditCodeColumn);
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
-            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
-            view.ValidationHandles[Holiday1Column.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[Holiday1Column.Name] = new object[] { 9 }; //Max Holiday1 length
-            view.ValidationHandles[Holiday2Column.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[Holiday2Column.Name] = new object[] { 9 }; //Max Holiday2 length
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(Holiday1Column, TViewUtilities.ValidateString, 9);
+            view.AddValidation(Holiday2Column, TViewUtilities.ValidateString, 9);
 
             //Show points
             view.Rows.Clear();

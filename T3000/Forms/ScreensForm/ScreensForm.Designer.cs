@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreensForm));
-            this.view = new T3000.Controls.Improved.TDataGridView();
+            this.view = new T3000.Controls.Improved.TView();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
@@ -134,7 +134,7 @@
 
         #endregion
 
-        private T3000.Controls.Improved.TDataGridView view;
+        private T3000.Controls.Improved.TView view;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;

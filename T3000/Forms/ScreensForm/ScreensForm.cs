@@ -23,16 +23,13 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[ModeColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<TextGraphic>;
-            view.ColumnHandles[PictureColumn.Name] = EditPictureColumn;
+            view.AddEditHandler(ModeColumn, TViewUtilities.EditEnum<TextGraphic>);
+            view.AddEditHandler(PictureColumn, EditPictureColumn);
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
-            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
-            view.ValidationHandles[RefreshColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(RefreshColumn, TViewUtilities.ValidateInteger);
 
             //Show points
             view.Rows.Clear();

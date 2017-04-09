@@ -24,16 +24,12 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[AutoManualColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
-            view.ColumnHandles[SignColumn.Name] = EditSignColumn;
+            view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(SignColumn, EditSignColumn);
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
-            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
 
             //Show points
 
@@ -144,21 +140,19 @@
         {
             try
             {
-                if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
                 {
                     return;
                 }
 
-                var row = view.Rows[e.RowIndex];
-                //Set AutoManual to Manual, if user changed units
-                if (e.ColumnIndex == UnitsColumn.Index)
+                //Set AutoManual to Manual, if user changed units or value
+                if (e.ColumnIndex == UnitsColumn.Index ||
+                    e.ColumnIndex == ValueColumn.Index)
                 {
-                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
+                    row.SetValue(AutoManualColumn, AutoManual.Manual);
                 }
-                else if (e.ColumnIndex == ValueColumn.Index)
-                {
-                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
-                }
+
                 view.ValidateRow(row);
             }
             catch (Exception) { }
@@ -168,47 +162,11 @@
 
         #region User input handles
 
-        private void EditUnitsColumn(object sender, EventArgs e)
-        {
-            try
-            {
-                var row = view.CurrentRow;
-                var currentUnits = UnitsNamesConstants.UnitsFromName(
-                    (string)row.Cells[UnitsColumn.Name].Value, CustomUnits);
-                var form = new SelectUnitsForm(currentUnits, CustomUnits);
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-
-                var newValue = UnitsUtilities.ConvertValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
-                        UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
-                        form.SelectedUnits,
-                        CustomUnits, form.CustomUnits);
-                CustomUnits = form.CustomUnits;
-                view.ValidationArguments[UnitsColumn.Name] =
-                    new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
-                view.ValidationArguments[ValueColumn.Name] = 
-                    view.ValidationArguments[UnitsColumn.Name];
-                var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
-
-                row.Cells[UnitsColumn.Name].Value = newUnits;
-                row.Cells[ValueColumn.Name].Value = newValue;
-                view.ValidateRow(row);
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
-        }
-
         private void EditSignColumn(object sender, EventArgs e)
         {
             try
             {
-                var view = (Controls.Improved.TDataGridView)sender;
+                var view = (Controls.Improved.TView)sender;
                 var cell = view.CurrentCell;
                 var text = (string) cell.Value;
                 var sign = text.Equals(Sign.Positive.GetString()) 

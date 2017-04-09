@@ -5,7 +5,7 @@
     using Properties;
     using System.Windows.Forms;
     using System.Collections.Generic;
-
+    
     public partial class OutputsForm : Form
     {
         public List<OutputPoint> Points { get; set; }
@@ -24,15 +24,12 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[AutoManualColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
+            view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(HOASwitchColumn, TViewUtilities.EditEnum<SwitchStatus>);
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
-            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
 
             //Show points
 
@@ -42,18 +39,21 @@
             foreach (var point in Points)
             {
                 view.Rows.Add(new object[] {
-                    i + 1,
+                    $"OUT{i + 1}",
+                    "?",
                     point.Description,
                     point.AutoManual,
+                    point.HwSwitchStatus,
                     point.Value.ToString(),
                     point.Value.Units.GetOffOnName(point.Value.CustomUnits),
                     point.Value.Value,
                     point.Value.Units.IsDigital()
                     ? $"0 -> {point.Value.Value / 100.0}"
                     : "",
-                    point.PwmPeriod,
+                    point.LowVoltage,
                     point.HighVoltage,
-                    point.Decommissioned,
+                    point.PwmPeriod,
+                    point.Control,
                     point.Label
                 });
                 ++i;
@@ -71,15 +71,16 @@
                 return;
             }
 
-            row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
-            row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
-            row.Cells[RangeColumn.Name].Value = 0;
-            row.Cells[PercentsColumn.Name].Value = 0;
-            row.Cells[HundredColumn.Name].Value = 0;
-            row.Cells[DColumn.Name].Value = 0;
-            row.Cells[LabelColumn.Name].Value = string.Empty;
+            row.SetValue(DescriptionColumn, string.Empty);
+            row.SetValue(AutoManualColumn, AutoManual.Automatic);
+            row.SetValue(HOASwitchColumn, SwitchStatus.Off);
+            row.SetValue(ValueColumn, "0");
+            row.SetValue(UnitsColumn, Units.Unused.GetOffOnName());
+            row.SetValue(RangeColumn, 0);
+            row.SetValue(LowVColumn, 0);
+            row.SetValue(HighVColumn, 0);
+            row.SetValue(PWMPeriodColumn, 0);
+            row.SetValue(LabelColumn, string.Empty);
         }
 
         private void Save(object sender, EventArgs e)
@@ -102,15 +103,16 @@
                     }
 
                     var point = Points[i];
-                    var range = (int)row.Cells[RangeColumn.Name].Value;
-                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
+                    var range = row.GetValue<int>(RangeColumn);
+                    point.Description = row.GetValue<string>(DescriptionColumn);
                     point.Value = new VariableValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
+                        row.GetValue<string>(ValueColumn),
                         UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
+                            row.GetValue<string>(UnitsColumn), CustomUnits),
                         CustomUnits, range);
-                    point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
+                    point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
+                    point.HwSwitchStatus = row.GetValue<SwitchStatus>(HOASwitchColumn);
+                    point.Label = row.GetValue<string>(LabelColumn);
                     ++i;
                 }
             }
@@ -138,21 +140,19 @@
         {
             try
             {
-                if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
                 {
                     return;
                 }
 
-                var row = view.Rows[e.RowIndex];
-                //Set AutoManual to Manual, if user changed units
-                if (e.ColumnIndex == UnitsColumn.Index)
+                //Set AutoManual to Manual, if user changed units or value
+                if (e.ColumnIndex == UnitsColumn.Index ||
+                    e.ColumnIndex == ValueColumn.Index)
                 {
-                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
+                    row.SetValue(AutoManualColumn, AutoManual.Manual);
                 }
-                else if (e.ColumnIndex == ValueColumn.Index)
-                {
-                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
-                }
+
                 view.ValidateRow(row);
             }
             catch (Exception) { }
@@ -162,41 +162,7 @@
 
         #region User input handles
 
-        private void EditUnitsColumn(object sender, EventArgs e)
-        {
-            try
-            {
-                var row = view.CurrentRow;
-                var currentUnits = UnitsNamesConstants.UnitsFromName(
-                    (string)row.Cells[UnitsColumn.Name].Value, CustomUnits);
-                var form = new SelectUnitsForm(currentUnits, CustomUnits);
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
 
-                var newValue = UnitsUtilities.ConvertValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
-                        UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
-                        form.SelectedUnits,
-                        CustomUnits, form.CustomUnits);
-                CustomUnits = form.CustomUnits;
-                view.ValidationArguments[UnitsColumn.Name] =
-                    new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
-                view.ValidationArguments[ValueColumn.Name] = 
-                    view.ValidationArguments[UnitsColumn.Name];
-                var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
-
-                row.Cells[UnitsColumn.Name].Value = newUnits;
-                row.Cells[ValueColumn.Name].Value = newValue;
-                view.ValidateRow(row);
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
-        }
 
         #endregion
 

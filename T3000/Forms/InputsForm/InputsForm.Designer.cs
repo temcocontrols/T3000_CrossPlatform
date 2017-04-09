@@ -32,7 +32,7 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
-            this.view = new T3000.Controls.Improved.TDataGridView();
+            this.view = new T3000.Controls.Improved.TView();
             this.InputColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PanelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -97,8 +97,6 @@
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.ValidationArguments = ((System.Collections.Generic.Dictionary<string, object[]>)(resources.GetObject("view.ValidationArguments")));
-            this.view.ValidationHandles = ((System.Collections.Generic.Dictionary<string, System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>>)(resources.GetObject("view.ValidationHandles")));
             this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
             // 
             // InputColumn
@@ -197,7 +195,7 @@
 
         #endregion
 
-        private T3000.Controls.Improved.TDataGridView view;
+        private T3000.Controls.Improved.TView view;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;

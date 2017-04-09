@@ -24,20 +24,16 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[AutoManualColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[UnitsColumn.Name] = EditUnitsColumn;
+            view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(UnitsColumn, EditUnitsColumn);
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
-            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
-            view.ValidationHandles[ValueColumn.Name] = TDataGridViewUtilities.ValidateRowValue;
-            view.ValidationArguments[ValueColumn.Name] =
-                new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
-            view.ValidationHandles[UnitsColumn.Name] = view.ValidationHandles[ValueColumn.Name];
-            view.ValidationArguments[UnitsColumn.Name] = view.ValidationArguments[ValueColumn.Name];
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue, 
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
 
             //Show points
 
@@ -137,21 +133,19 @@
         {
             try
             {
-                if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, view))
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
                 {
                     return;
                 }
 
-                var row = view.Rows[e.RowIndex];
-                //Set AutoManual to Manual, if user changed units
-                if (e.ColumnIndex == UnitsColumn.Index)
+                //Set AutoManual to Manual, if user changed units or value
+                if (e.ColumnIndex == UnitsColumn.Index ||
+                    e.ColumnIndex == ValueColumn.Index)
                 {
-                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
+                    row.SetValue(AutoManualColumn, AutoManual.Manual);
                 }
-                else if (e.ColumnIndex == ValueColumn.Index)
-                {
-                    row.Cells[AutoManualColumn.Name].Value = AutoManual.Manual;
-                }
+
                 view.ValidateRow(row);
             }
             catch (Exception) { }
@@ -166,8 +160,8 @@
             try
             {
                 var row = view.CurrentRow;
-                var currentUnits = UnitsNamesConstants.UnitsFromName(
-                    (string)row.Cells[UnitsColumn.Name].Value, CustomUnits);
+                var unitsName = row.GetValue<string>(UnitsColumn);
+                var currentUnits = UnitsNamesConstants.UnitsFromName(unitsName, CustomUnits);
                 var form = new SelectUnitsForm(currentUnits, CustomUnits);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
@@ -175,20 +169,20 @@
                 }
 
                 var newValue = UnitsUtilities.ConvertValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
-                        UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
+                        row.GetValue<string>(ValueColumn),
+                        currentUnits,
                         form.SelectedUnits,
                         CustomUnits, form.CustomUnits);
                 CustomUnits = form.CustomUnits;
-                view.ValidationArguments[UnitsColumn.Name] =
-                    new object[] { ValueColumn.Name, UnitsColumn.Name, CustomUnits };
-                view.ValidationArguments[ValueColumn.Name] = 
-                    view.ValidationArguments[UnitsColumn.Name];
+                view.ChangeValidationArguments(
+                    UnitsColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+                view.ChangeValidationArguments(
+                    ValueColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
 
-                row.Cells[UnitsColumn.Name].Value = newUnits;
-                row.Cells[ValueColumn.Name].Value = newValue;
+                row.SetValue(UnitsColumn, newUnits);
+                row.SetValue(ValueColumn, newValue);
+
                 view.ValidateRow(row);
             }
             catch (Exception exception)

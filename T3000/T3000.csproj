@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ColorConstants.cs" />
-    <Compile Include="Controls\Improved\TDataGridView.cs">
+    <Compile Include="Controls\Improved\TView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\MultipleMonthCalendarControls\MonthsControl.cs">
@@ -67,6 +67,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\MultipleMonthCalendarControls\Utilities.cs" />
+    <Compile Include="Extensions\DataGridViewExtensions.cs" />
     <Compile Include="Forms\ControllersForm\ControllersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,7 +165,7 @@
       <DependentUpon>Resources.zh.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\EnumUtilities.cs" />
-    <Compile Include="Utilities\TDataGridViewUtilities.cs" />
+    <Compile Include="Utilities\TViewUtilities.cs" />
     <Compile Include="Utilities\MessageBoxUtilities.cs" />
     <Compile Include="Utilities\RuntimeLocalizer.cs" />
     <EmbeddedResource Include="Controls\MultipleMonthCalendarControls\MonthControl.resx">

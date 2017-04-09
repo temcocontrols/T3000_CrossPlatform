@@ -24,20 +24,15 @@
             InitializeComponent();
 
             //User input handles
-            view.ColumnHandles[StatusColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<OffOn>;
-            view.ColumnHandles[AutoManualColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<AutoManual>;
-            view.ColumnHandles[RunStatusColumn.Name] =
-                TDataGridViewUtilities.EditEnumColumn<NormalCom>;
-            view.ColumnHandles[CodeColumn.Name] = EditCodeColumn;
+            view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
+            view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(RunStatusColumn, TViewUtilities.EditEnum<NormalCom>);
+            view.AddEditHandler(CodeColumn, EditCodeColumn);
 
             //Validation
-            view.ValidationHandles[DescriptionColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[DescriptionColumn.Name] = new object[] { 21 }; //Max description length
-            view.ValidationHandles[LabelColumn.Name] = TDataGridViewUtilities.ValidateRowColumnString;
-            view.ValidationArguments[LabelColumn.Name] = new object[] { 9 }; //Max label length
-            view.ValidationHandles[SizeColumn.Name] = TDataGridViewUtilities.ValidateRowColumnInteger;
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(SizeColumn, TViewUtilities.ValidateInteger);
 
             //Show points
             view.Rows.Clear();

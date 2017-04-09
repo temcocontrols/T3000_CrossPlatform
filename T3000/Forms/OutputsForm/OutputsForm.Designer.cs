@@ -32,17 +32,20 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
-            this.view = new T3000.Controls.Improved.TDataGridView();
-            this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.view = new T3000.Controls.Improved.TView();
+            this.OutputColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PanelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.HOASwitchColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RangeTextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PercentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HundredColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.LowVColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HighVColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PWMPeriodColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
@@ -74,33 +77,39 @@
             // 
             this.view.AllowUserToAddRows = false;
             this.view.AllowUserToDeleteRows = false;
-            resources.ApplyResources(this.view, "view");
             this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NumberColumn,
+            this.OutputColumn,
+            this.PanelColumn,
             this.DescriptionColumn,
             this.AutoManualColumn,
+            this.HOASwitchColumn,
             this.ValueColumn,
             this.UnitsColumn,
             this.RangeColumn,
             this.RangeTextColumn,
-            this.PercentsColumn,
-            this.HundredColumn,
-            this.DColumn,
+            this.LowVColumn,
+            this.HighVColumn,
+            this.PWMPeriodColumn,
+            this.StatusColumn,
             this.LabelColumn});
+            resources.ApplyResources(this.view, "view");
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.ValidationArguments = ((System.Collections.Generic.Dictionary<string, object[]>)(resources.GetObject("view.ValidationArguments")));
-            this.view.ValidationHandles = ((System.Collections.Generic.Dictionary<string, System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>>)(resources.GetObject("view.ValidationHandles")));
             this.view.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellValueChanged);
             // 
-            // NumberColumn
+            // OutputColumn
             // 
-            this.NumberColumn.FillWeight = 55F;
-            resources.ApplyResources(this.NumberColumn, "NumberColumn");
-            this.NumberColumn.Name = "NumberColumn";
-            this.NumberColumn.ReadOnly = true;
+            this.OutputColumn.FillWeight = 55F;
+            resources.ApplyResources(this.OutputColumn, "OutputColumn");
+            this.OutputColumn.Name = "OutputColumn";
+            this.OutputColumn.ReadOnly = true;
+            // 
+            // PanelColumn
+            // 
+            resources.ApplyResources(this.PanelColumn, "PanelColumn");
+            this.PanelColumn.Name = "PanelColumn";
             // 
             // DescriptionColumn
             // 
@@ -113,6 +122,13 @@
             resources.ApplyResources(this.AutoManualColumn, "AutoManualColumn");
             this.AutoManualColumn.Name = "AutoManualColumn";
             this.AutoManualColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // HOASwitchColumn
+            // 
+            resources.ApplyResources(this.HOASwitchColumn, "HOASwitchColumn");
+            this.HOASwitchColumn.Name = "HOASwitchColumn";
+            this.HOASwitchColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.HOASwitchColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // ValueColumn
             // 
@@ -135,20 +151,25 @@
             resources.ApplyResources(this.RangeTextColumn, "RangeTextColumn");
             this.RangeTextColumn.Name = "RangeTextColumn";
             // 
-            // PercentsColumn
+            // LowVColumn
             // 
-            resources.ApplyResources(this.PercentsColumn, "PercentsColumn");
-            this.PercentsColumn.Name = "PercentsColumn";
+            resources.ApplyResources(this.LowVColumn, "LowVColumn");
+            this.LowVColumn.Name = "LowVColumn";
             // 
-            // HundredColumn
+            // HighVColumn
             // 
-            resources.ApplyResources(this.HundredColumn, "HundredColumn");
-            this.HundredColumn.Name = "HundredColumn";
+            resources.ApplyResources(this.HighVColumn, "HighVColumn");
+            this.HighVColumn.Name = "HighVColumn";
             // 
-            // DColumn
+            // PWMPeriodColumn
             // 
-            resources.ApplyResources(this.DColumn, "DColumn");
-            this.DColumn.Name = "DColumn";
+            resources.ApplyResources(this.PWMPeriodColumn, "PWMPeriodColumn");
+            this.PWMPeriodColumn.Name = "PWMPeriodColumn";
+            // 
+            // StatusColumn
+            // 
+            resources.ApplyResources(this.StatusColumn, "StatusColumn");
+            this.StatusColumn.Name = "StatusColumn";
             // 
             // LabelColumn
             // 
@@ -173,20 +194,23 @@
 
         #endregion
 
-        private T3000.Controls.Improved.TDataGridView view;
+        private T3000.Controls.Improved.TView view;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button clearSelectedRowButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OutputColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PanelColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn HOASwitchColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeTextColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PercentsColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HundredColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn DColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LowVColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HighVColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PWMPeriodColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
 }

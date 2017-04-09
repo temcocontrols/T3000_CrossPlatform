@@ -6,13 +6,13 @@
     using System.Collections.Generic;
     using Controls.Improved;
 
-    public static class TDataGridViewUtilities
+    public static class TViewUtilities
     {
         public static bool RowIndexIsValid(int index, DataGridView view) =>
             index >= 0 && index < view.RowCount;
 
 
-        public static void EditEnumColumn<T>(object sender, EventArgs e) where T
+        public static void EditEnum<T>(object sender, EventArgs e) where T
             : struct, IConvertible
         {
             try
@@ -22,7 +22,7 @@
                     throw new ArgumentException("T must be an enumerated type");
                 }
 
-                var view = (TDataGridView)sender;
+                var view = (TView)sender;
                 var cell = view.CurrentCell;
                 cell.Value = EnumUtilities.NextValue((T)cell.Value);
 
@@ -43,7 +43,7 @@
             cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
         }
 
-        public static bool ValidateRowValue(DataGridViewCell cell, object[] arguments)
+        public static bool ValidateValue(DataGridViewCell cell, object[] arguments)
         {
             if (arguments.Length < 3)
             {
@@ -75,7 +75,7 @@
             return isValidated;
         }
 
-        public static bool ValidateRowColumnString(DataGridViewCell cell, object[] arguments)
+        public static bool ValidateString(DataGridViewCell cell, object[] arguments)
         {
             if (arguments.Length < 1)
             {
@@ -94,7 +94,7 @@
             return isValidated;
         }
 
-        public static bool ValidateRowColumnInteger(DataGridViewCell cell, object[] arguments)
+        public static bool ValidateInteger(DataGridViewCell cell, object[] arguments)
         {
             var isValidated = true;
             var message = string.Empty;

@@ -7,11 +7,11 @@
     using ValidationFunc =
         System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>;
 
-    public class TDataGridView : DataGridView
+    public class TView : DataGridView
     {
         #region User input handles
 
-        public Dictionary<string, EventHandler> ColumnHandles = new Dictionary<string, EventHandler>();
+        protected Dictionary<string, EventHandler> ColumnHandles = new Dictionary<string, EventHandler>();
 
         protected string ColumnIndexToName(int index) =>
             Columns[index].Name;
@@ -55,14 +55,49 @@
             base.OnCellContentClick(e);
         }
 
+        public void AddEditHandler(DataGridViewColumn column, EventHandler handler)
+        {
+            ColumnHandles[column.Name] = handler;
+        }
+
         #endregion
 
         #region Validation
 
-        public Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
+        protected Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
             new Dictionary<string, ValidationFunc>();
-        public Dictionary<string, object[]> ValidationArguments { get; set; } =
+        protected Dictionary<string, object[]> ValidationArguments { get; set; } =
             new Dictionary<string, object[]>();
+
+        protected override void OnCellValidating(DataGridViewCellValidatingEventArgs e)
+        {
+            if (!TViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            {
+                return;
+            }
+
+            try
+            {
+                var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
+                ValidateCell(cell);
+            }
+            catch (Exception) { }
+
+            base.OnCellValidating(e);
+        }
+
+        protected override void OnCellValueChanged(DataGridViewCellEventArgs e)
+        {
+            base.OnCellValueChanged(e);
+
+            if (!TViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            {
+                return;
+            }
+
+            var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
+            ValidateCell(cell);
+        }
 
         public bool ValidateCell(DataGridViewCell cell)
         {
@@ -100,34 +135,20 @@
             return isValidated;
         }
 
-        protected override void OnCellValidating(DataGridViewCellValidatingEventArgs e)
+        public void AddValidation(DataGridViewColumn column, ValidationFunc func, params object[] arguments)
         {
-            if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
-            {
-                return;
-            }
-
-            try
-            {
-                var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
-                ValidateCell(cell);
-            }
-            catch (Exception) { }
-
-            base.OnCellValidating(e);
+            ValidationHandles[column.Name] = func;
+            ValidationArguments[column.Name] = arguments;
         }
 
-        protected override void OnCellValueChanged(DataGridViewCellEventArgs e)
+        public void ChangeValidationFunc(DataGridViewColumn column, ValidationFunc func)
         {
-            base.OnCellValueChanged(e);
+            ValidationHandles[column.Name] = func;
+        }
 
-            if (!TDataGridViewUtilities.RowIndexIsValid(e.RowIndex, this))
-            {
-                return;
-            }
-
-            var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
-            ValidateCell(cell);
+        public void ChangeValidationArguments(DataGridViewColumn column, params object[] arguments)
+        {
+            ValidationArguments[column.Name] = arguments;
         }
 
         #endregion
