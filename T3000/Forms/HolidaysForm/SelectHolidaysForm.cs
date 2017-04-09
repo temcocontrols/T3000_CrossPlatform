@@ -13,8 +13,6 @@
             InitializeComponent();
 
             Code = code;
-
-            editTextBox.Text = Code.Code.GetString().ClearBinarySymvols();
         }
 
 
@@ -24,7 +22,6 @@
         {
             try
             {
-                Code.Code = editTextBox.Text.ToBytes(2000);
             }
             catch (Exception exception)
             {

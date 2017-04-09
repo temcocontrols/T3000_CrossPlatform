@@ -28,18 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.editTextBox = new System.Windows.Forms.RichTextBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.multipleMonthCalendar1 = new T3000.Controls.MultipleMonthCalendar();
             this.SuspendLayout();
-            // 
-            // editTextBox
-            // 
-            this.editTextBox.Location = new System.Drawing.Point(0, 0);
-            this.editTextBox.Name = "editTextBox";
-            this.editTextBox.Size = new System.Drawing.Size(580, 321);
-            this.editTextBox.TabIndex = 0;
-            this.editTextBox.Text = "";
             // 
             // saveButton
             // 
@@ -66,26 +58,35 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
-            // EditCodeForm
+            // multipleMonthCalendar1
+            // 
+            this.multipleMonthCalendar1.DimensionX = 3;
+            this.multipleMonthCalendar1.DimensionY = 2;
+            this.multipleMonthCalendar1.Location = new System.Drawing.Point(12, 12);
+            this.multipleMonthCalendar1.Name = "multipleMonthCalendar1";
+            this.multipleMonthCalendar1.Size = new System.Drawing.Size(560, 309);
+            this.multipleMonthCalendar1.StartDate = new System.DateTime(2017, 4, 8, 0, 0, 0, 0);
+            this.multipleMonthCalendar1.TabIndex = 7;
+            // 
+            // SelectHolidaysForm
             // 
             this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.multipleMonthCalendar1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.editTextBox);
-            this.Name = "EditCodeForm";
-            this.Text = "Edit code:";
+            this.Name = "SelectHolidaysForm";
+            this.Text = "Select holidays:";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox editTextBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private Controls.MultipleMonthCalendar multipleMonthCalendar1;
     }
 }
