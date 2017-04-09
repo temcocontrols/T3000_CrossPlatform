@@ -31,6 +31,12 @@
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
 
+            //Cell changed handles
+            view.AddChangedHandler(UnitsColumn, TViewUtilities.Change,
+                AutoManualColumn.Name, AutoManual.Manual);
+            view.AddChangedHandler(ValueColumn, TViewUtilities.Change,
+                AutoManualColumn.Name, AutoManual.Manual);
+
             //Show points
 
             view.Rows.Clear();
@@ -133,40 +139,14 @@
         }
 
         #endregion
-
-        #region Callbacks
-
-        private void view_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                var row = view.GetRow(e.RowIndex);
-                if (row == null)
-                {
-                    return;
-                }
-
-                //Set AutoManual to Manual, if user changed units or value
-                if (e.ColumnIndex == UnitsColumn.Index ||
-                    e.ColumnIndex == ValueColumn.Index)
-                {
-                    row.SetValue(AutoManualColumn, AutoManual.Manual);
-                }
-
-                view.ValidateRow(row);
-            }
-            catch (Exception) { }
-        }
-
-        #endregion
-
+        
         #region User input handles
 
         private void EditSignColumn(object sender, EventArgs e)
         {
             try
             {
-                var view = (Controls.Improved.TView)sender;
+                var view = (Controls.TView)sender;
                 var cell = view.CurrentCell;
                 var text = (string) cell.Value;
                 var sign = text.Equals(Sign.Positive.GetString()) 

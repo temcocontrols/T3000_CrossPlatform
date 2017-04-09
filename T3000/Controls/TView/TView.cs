@@ -1,4 +1,4 @@
-﻿namespace T3000.Controls.Improved
+﻿namespace T3000.Controls
 {
     using System;
     using System.Windows.Forms;
@@ -6,14 +6,24 @@
 
     using ValidationFunc =
         System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>;
+    using CellAction =
+        System.Action<object, System.Windows.Forms.DataGridViewCellEventArgs, object[]>;
 
     public class TView : DataGridView
     {
+        public bool RowIndexIsValid(int index) =>
+            index >= 0 && index < RowCount;
+
+        public TView() : base()
+        {
+            CellValueChanged += OnCellValueChanged;
+        }
+
         #region User input handles
 
-        protected Dictionary<string, EventHandler> ColumnHandles = new Dictionary<string, EventHandler>();
+        private Dictionary<string, EventHandler> ColumnHandles = new Dictionary<string, EventHandler>();
 
-        protected string ColumnIndexToName(int index) =>
+        private string ColumnIndexToName(int index) =>
             Columns[index].Name;
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -64,14 +74,14 @@
 
         #region Validation
 
-        protected Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
+        private Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
             new Dictionary<string, ValidationFunc>();
-        protected Dictionary<string, object[]> ValidationArguments { get; set; } =
+        private Dictionary<string, object[]> ValidationArguments { get; set; } =
             new Dictionary<string, object[]>();
 
         protected override void OnCellValidating(DataGridViewCellValidatingEventArgs e)
         {
-            if (!TViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            if (!RowIndexIsValid(e.RowIndex))
             {
                 return;
             }
@@ -90,7 +100,7 @@
         {
             base.OnCellValueChanged(e);
 
-            if (!TViewUtilities.RowIndexIsValid(e.RowIndex, this))
+            if (!RowIndexIsValid(e.RowIndex))
             {
                 return;
             }
@@ -105,7 +115,7 @@
             if (ValidationHandles.ContainsKey(name))
             {
                 var arguments = ValidationArguments.ContainsKey(name)
-                    ? ValidationArguments[name] : null;
+                    ? ValidationArguments[name] : new object[0];
 
                 return ValidationHandles[name]?.Invoke(cell, arguments) ?? true;
             }
@@ -153,5 +163,46 @@
 
         #endregion
 
+        #region Value changed handles
+
+        private Dictionary<string, CellAction> ValueChangedHandles { get; set; } = 
+            new Dictionary<string, CellAction>();
+        private Dictionary<string, object[]> ValueChangedArguments { get; set; } =
+            new Dictionary<string, object[]>();
+
+        private void OnCellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                var row = this.GetRow(e.RowIndex);
+                if (row == null)
+                {
+                    return;
+                }
+
+                var name = ColumnIndexToName(e.ColumnIndex);
+                if (ValueChangedHandles.ContainsKey(name))
+                {
+                    var arguments = ValueChangedArguments.ContainsKey(name)
+                        ? ValueChangedArguments[name] : new object[0];
+
+                    ValueChangedHandles[name]?.Invoke(this, e, arguments);
+                }
+
+                ValidateRow(row);
+            }
+            catch (Exception) { }
+        }
+
+        public void AddChangedHandler(string columnName, CellAction handler, params object[] arguments)
+        {
+            ValueChangedHandles[columnName] = handler;
+            ValueChangedArguments[columnName] = arguments;
+        }
+
+        public void AddChangedHandler(DataGridViewColumn column, CellAction handler, params object[] arguments) =>
+            AddChangedHandler(column.Name, handler, arguments);
+
+        #endregion
     }
 }

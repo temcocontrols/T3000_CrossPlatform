@@ -1,14 +1,22 @@
 ﻿namespace T3000
 {
+    using Controls;
     using System.Windows.Forms;
 
-    public static class DataGridViewExtensions
+    public static class TViewExtensions
     {
+        public static T GetValue<T>(this DataGridViewRow row, string columnName) =>
+            (T)row.Cells[columnName].Value;
+
+        public static void SetValue<T>(this DataGridViewRow row, string columnName, T value = default(T)) =>
+            row.Cells[columnName].Value = value;
+
         public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column) =>
-            (T)row.Cells[column.Name].Value;
+            row.GetValue<T>(column.Name);
 
         public static void SetValue<T>(this DataGridViewRow row, DataGridViewColumn column, T value = default(T)) =>
-            row.Cells[column.Name].Value = value;
+            row.SetValue(column.Name, value);
+
 
         /// <summary>
         /// Returns null if index not valid
@@ -16,9 +24,9 @@
         /// <param name="view"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static DataGridViewRow GetRow(this DataGridView view, int index)
+        public static DataGridViewRow GetRow(this TView view, int index)
         {
-            if (!TViewUtilities.RowIndexIsValid(index, view))
+            if (!view.RowIndexIsValid(index))
             {
                 return null;
             }

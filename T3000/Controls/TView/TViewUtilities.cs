@@ -4,13 +4,11 @@
     using System;
     using System.Windows.Forms;
     using System.Collections.Generic;
-    using Controls.Improved;
+    using Controls;
 
     public static class TViewUtilities
     {
-        public static bool RowIndexIsValid(int index, DataGridView view) =>
-            index >= 0 && index < view.RowCount;
-
+        #region User input handles
 
         public static void EditEnum<T>(object sender, EventArgs e) where T
             : struct, IConvertible
@@ -33,6 +31,8 @@
                 MessageBoxUtilities.ShowException(exception);
             }
         }
+
+        #endregion
 
         #region Validation
 
@@ -125,6 +125,34 @@
             SetCellErrorMessage(cell, isValidated, message);
 
             return isValidated;
+        }
+
+        #endregion
+
+        #region Value changed handles
+
+        public static void Change(object sender, DataGridViewCellEventArgs e, object[] arguments)
+        {
+            if (arguments.Length < 2)
+            {
+                throw new ArgumentException("Arguments less 2", nameof(arguments));
+            }
+
+            try
+            {
+                var view = (TView)sender;
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
+                {
+                    return;
+                }
+
+                var columnName = (string)arguments[0];
+                var value = arguments[1];
+
+                row.SetValue(columnName, value);
+            }
+            catch (Exception) { }
         }
 
         #endregion
