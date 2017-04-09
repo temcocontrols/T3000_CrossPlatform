@@ -175,21 +175,21 @@ namespace T3000.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image files.
+        /// </summary>
+        internal static string ImageFiles {
+            get {
+                return ResourceManager.GetString("ImageFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon InputsIcon {
             get {
                 object obj = ResourceManager.GetObject("InputsIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .JPEG files.
-        /// </summary>
-        internal static string JpegFiles {
-            get {
-                return ResourceManager.GetString("JpegFiles", resourceCulture);
             }
         }
         
@@ -220,15 +220,6 @@ namespace T3000.Properties {
             get {
                 object obj = ResourceManager.GetObject("PIDsIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .PNG files.
-        /// </summary>
-        internal static string PngFiles {
-            get {
-                return ResourceManager.GetString("PngFiles", resourceCulture);
             }
         }
         

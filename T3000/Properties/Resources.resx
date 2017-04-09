@@ -165,12 +165,6 @@
   <data name="SelectUnitsFormNotValid" xml:space="preserve">
     <value>Selected units not valid. Please select valid item.</value>
   </data>
-  <data name="JpegFiles" xml:space="preserve">
-    <value>.JPEG files</value>
-  </data>
-  <data name="PngFiles" xml:space="preserve">
-    <value>.PNG files</value>
-  </data>
   <data name="SelectImageFile" xml:space="preserve">
     <value>Please select an image(.PNG or .JPEG) file</value>
   </data>
@@ -225,5 +219,8 @@
   </data>
   <data name="ViewNotValidated" xml:space="preserve">
     <value>View values not valid. Please fix it before saving.</value>
+  </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Image files</value>
   </data>
 </root>

@@ -25,6 +25,7 @@
             //User input handles
             view.AddEditHandler(ModeColumn, TViewUtilities.EditEnum<TextGraphic>);
             view.AddEditHandler(PictureColumn, EditPictureColumn);
+            view.AddEditHandler(ScreenColumn, EditScreenColumn);
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
@@ -113,15 +114,31 @@
 
         #endregion
 
-        #region Handles
+        #region User input handles
+
+        private void EditScreenColumn(object sender, EventArgs e)
+        {
+            try
+            {
+                var path = view.CurrentRow.GetValue<string>(PictureColumn);
+                var form = new EditScreenForm(path);
+                if (form.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
 
         private void EditPictureColumn(object sender, EventArgs e)
         {
             try
             {
                 var dialog = new OpenFileDialog();
-                dialog.Filter = $"{Resources.JpegFiles} (*.jpg)|*.jpg|" +
-                                $"{Resources.PngFiles} (*.png)|*.png|" +
+                dialog.Filter = $"{Resources.ImageFiles} (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png|" +
                                 $"{Resources.AllFiles} (*.*)|*.*";
                 dialog.Title = Resources.SelectImageFile;
                 dialog.InitialDirectory = Assembly.GetExecutingAssembly().Location;
@@ -133,7 +150,6 @@
                 var row = view.CurrentRow;
                 var cell = row.Cells[PictureColumn.Name];
                 cell.Value = dialog.FileName;
-                view.EndEdit();
             }
             catch (Exception exception)
             {

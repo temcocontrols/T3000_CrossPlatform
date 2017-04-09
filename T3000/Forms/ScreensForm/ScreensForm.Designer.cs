@@ -39,6 +39,7 @@
             this.PictureColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ModeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RefreshColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScreenColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +56,8 @@
             this.LabelColumn,
             this.PictureColumn,
             this.ModeColumn,
-            this.RefreshColumn});
+            this.RefreshColumn,
+            this.ScreenColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             // 
@@ -115,6 +117,13 @@
             resources.ApplyResources(this.RefreshColumn, "RefreshColumn");
             this.RefreshColumn.Name = "RefreshColumn";
             // 
+            // ScreenColumn
+            // 
+            resources.ApplyResources(this.ScreenColumn, "ScreenColumn");
+            this.ScreenColumn.Name = "ScreenColumn";
+            this.ScreenColumn.Text = "Edit";
+            this.ScreenColumn.UseColumnTextForButtonValue = true;
+            // 
             // ScreensForm
             // 
             this.AcceptButton = this.saveButton;
@@ -125,8 +134,8 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.view);
-            this.Name = "ScreensForm";
             this.Icon = global::T3000.Properties.Resources.GraphicsIcon;
+            this.Name = "ScreensForm";
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
             this.ResumeLayout(false);
 
@@ -144,6 +153,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn PictureColumn;
         private System.Windows.Forms.DataGridViewButtonColumn ModeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RefreshColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn ScreenColumn;
     }
 }
 
