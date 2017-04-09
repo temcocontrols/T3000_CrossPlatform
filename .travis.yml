@@ -3,5 +3,6 @@ solution: T3000_CrossPlatform.sln
 script:
   - xbuild /p:Configuration=Release
   - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./T3000.Tests/bin/Release/T3000.Tests.dll
 notifications:
   email: false
