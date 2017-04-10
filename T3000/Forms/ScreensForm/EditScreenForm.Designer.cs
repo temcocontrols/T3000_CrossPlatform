@@ -30,7 +30,6 @@
         {
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.imageLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // saveButton
@@ -58,16 +57,6 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
-            // imageLabel
-            // 
-            this.imageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imageLabel.Location = new System.Drawing.Point(1, -1);
-            this.imageLabel.Name = "imageLabel";
-            this.imageLabel.Size = new System.Drawing.Size(579, 325);
-            this.imageLabel.TabIndex = 7;
-            // 
             // EditScreenForm
             // 
             this.AcceptButton = this.saveButton;
@@ -75,7 +64,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(584, 361);
-            this.Controls.Add(this.imageLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Name = "EditScreenForm";
@@ -87,6 +75,5 @@
         #endregion
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Label imageLabel;
     }
 }
