@@ -47,70 +47,70 @@
                     return new UnitsNames("DigitalUnused", bool.FalseString, bool.TrueString);
 
                 case Units.OffOn:
-                    return new UnitsNames("Off/On", "Off", "On");
+                    return new UnitsNames("Off/On", "/");
 
                 case Units.ClosedOpen:
-                    return new UnitsNames("Closed/Open", "Closed", "Open");
+                    return new UnitsNames("Closed/Open", "/");
 
                 case Units.StopStart:
-                    return new UnitsNames("Stop/Start", "Stop", "Start");
+                    return new UnitsNames("Stop/Start", "/");
 
                 case Units.DisabledEnabled:
-                    return new UnitsNames("Disabled/Enabled", "Disabled", "Enabled");
+                    return new UnitsNames("Disabled/Enabled", "/");
 
                 case Units.NormalAlarm:
-                    return new UnitsNames("Normal/Alarm", "Normal", "Alarm");
+                    return new UnitsNames("Normal/Alarm", "/");
 
                 case Units.NormalHigh:
-                    return new UnitsNames("Normal/High", "Normal", "High");
+                    return new UnitsNames("Normal/High", "/");
 
                 case Units.NormalLow:
-                    return new UnitsNames("Normal/Low", "Normal", "Low");
+                    return new UnitsNames("Normal/Low", "/");
 
                 case Units.NoYes:
-                    return new UnitsNames("No/Yes", "No", "Yes");
+                    return new UnitsNames("No/Yes", "/");
 
                 case Units.CoolHeat:
-                    return new UnitsNames("Cool/Heat", "Cool", "Heat");
+                    return new UnitsNames("Cool/Heat", "/");
 
                 case Units.UnoccupiedOccupied:
-                    return new UnitsNames("Unoccupied/Occupied", "Unoccupied", "Occupied");
+                    return new UnitsNames("Unoccupied/Occupied", "/");
 
                 case Units.OnOff:
-                    return new UnitsNames("On/Off", "On", "Off");
+                    return new UnitsNames("On/Off", "/");
 
                 case Units.OpenClosed:
-                    return new UnitsNames("Open/Closed", "Open", "Closed");
+                    return new UnitsNames("Open/Closed", "/");
 
                 case Units.StartStop:
-                    return new UnitsNames("Start/Stop", "Start", "Stop");
+                    return new UnitsNames("Start/Stop", "/");
 
                 case Units.EnabledDisabled:
-                    return new UnitsNames("Enabled/Disabled", "Enabled", "Disabled");
+                    return new UnitsNames("Enabled/Disabled", "/");
 
                 case Units.AlarmNormal:
-                    return new UnitsNames("Alarm/Normal", "Alarm", "Normal");
+                    return new UnitsNames("Alarm/Normal", "/");
 
                 case Units.HighNormal:
-                    return new UnitsNames("High/Normal", "High", "Normal");
+                    return new UnitsNames("High/Normal", "/");
 
                 case Units.LowHigh:
-                    return new UnitsNames("Low/High", "Low", "High");
+                    return new UnitsNames("Low/High", "/");
 
                 case Units.LowNormal:
-                    return new UnitsNames("Low/Normal", "Low", "Normal");
+                    return new UnitsNames("Low/Normal", "/");
 
                 case Units.YesNo:
-                    return new UnitsNames("Yes/No", "Yes", "No");
+                    return new UnitsNames("Yes/No", "/");
 
                 case Units.HeatCool:
-                    return new UnitsNames("Heat/Cool", "Heat", "Cool");
+                    return new UnitsNames("Heat/Cool", "/");
 
                 case Units.OccupiedUnoccupied:
-                    return new UnitsNames("Occupied/Unoccupied", "Occupied", "Unoccupied");
+                    return new UnitsNames("Occupied/Unoccupied", "/");
 
                 case Units.HighLow:
-                    return new UnitsNames("High/Low", "High", "Low");
+                    return new UnitsNames("High/Low", "/");
 
                 case Units.CustomDigital1:
                 case Units.CustomDigital2:
