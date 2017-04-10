@@ -132,7 +132,7 @@
 
         #region Value changed handles
 
-        public static void Change(object sender, DataGridViewCellEventArgs e, object[] arguments)
+        public static void ChangeValue(object sender, DataGridViewCellEventArgs e, object[] arguments)
         {
             if (arguments.Length < 2)
             {
@@ -152,6 +152,31 @@
                 var value = arguments[1];
 
                 row.SetValue(columnName, value);
+            }
+            catch (Exception) { }
+        }
+
+        public static void ChangeEnabled(object sender, DataGridViewCellEventArgs e, object[] arguments)
+        {
+            if (arguments.Length < 2)
+            {
+                throw new ArgumentException("Arguments less 2", nameof(arguments));
+            }
+
+            try
+            {
+                var view = (TView)sender;
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
+                {
+                    return;
+                }
+
+                var columnName = (string)arguments[0];
+                var valueColumnName = (string)arguments[1];
+
+                var value = row.GetValue<int>(valueColumnName);
+                row.Cells[columnName].Enable(value != 0);
             }
             catch (Exception) { }
         }

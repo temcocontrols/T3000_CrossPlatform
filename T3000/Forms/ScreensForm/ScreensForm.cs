@@ -32,6 +32,10 @@
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
             view.AddValidation(RefreshColumn, TViewUtilities.ValidateInteger);
 
+            //Cell changed handles
+            view.AddChangedHandler(ModeColumn, TViewUtilities.ChangeEnabled,
+                PictureColumn.Name, ModeColumn.Name);
+
             //Show points
             view.Rows.Clear();
             var i = 0;
@@ -47,6 +51,8 @@
                 });
                 ++i;
             }
+
+            view.SendChanged(ModeColumn);
             view.Validate();
         }
 

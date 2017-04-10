@@ -36,9 +36,9 @@
                 ValueColumn.Name, UnitsColumn.Name, CustomUnits);
 
             //Cell changed handles
-            view.AddChangedHandler(UnitsColumn, TViewUtilities.Change,
+            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
-            view.AddChangedHandler(ValueColumn, TViewUtilities.Change,
+            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
 
             //Show points

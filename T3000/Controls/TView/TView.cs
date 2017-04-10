@@ -32,7 +32,7 @@
             {
                 case Keys.Enter:
                     var cell = CurrentCell;
-                    if (cell != null)
+                    if (cell != null && !cell.ReadOnly)
                     {
                         e.Handled = true;
 
@@ -56,7 +56,7 @@
         {
             var cell = CurrentCell;
             var name = ColumnIndexToName(cell.ColumnIndex);
-            if (ColumnHandles.ContainsKey(name))
+            if (!cell.ReadOnly && ColumnHandles.ContainsKey(name))
             {
                 ColumnHandles[name]?.Invoke(this, e);
                 return;
