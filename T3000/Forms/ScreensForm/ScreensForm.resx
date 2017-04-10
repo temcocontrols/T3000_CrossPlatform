@@ -145,6 +145,12 @@
   <data name="PictureColumn.HeaderText" xml:space="preserve">
     <value>Picture</value>
   </data>
+  <metadata name="CountColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="CountColumn.HeaderText" xml:space="preserve">
+    <value>Count</value>
+  </data>
   <metadata name="ModeColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -302,6 +308,12 @@
   </data>
   <data name="&gt;&gt;PictureColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CountColumn.Name" xml:space="preserve">
+    <value>CountColumn</value>
+  </data>
+  <data name="&gt;&gt;CountColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ModeColumn.Name" xml:space="preserve">
     <value>ModeColumn</value>

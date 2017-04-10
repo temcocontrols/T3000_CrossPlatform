@@ -38,6 +38,7 @@
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PictureColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ModeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RefreshColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ScreenColumn = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -56,6 +57,7 @@
             this.DescriptionColumn,
             this.LabelColumn,
             this.PictureColumn,
+            this.CountColumn,
             this.ModeColumn,
             this.RefreshColumn,
             this.ScreenColumn});
@@ -113,6 +115,12 @@
             resources.ApplyResources(this.PictureColumn, "PictureColumn");
             this.PictureColumn.Name = "PictureColumn";
             // 
+            // CountColumn
+            // 
+            resources.ApplyResources(this.CountColumn, "CountColumn");
+            this.CountColumn.Name = "CountColumn";
+            this.CountColumn.ReadOnly = true;
+            // 
             // ModeColumn
             // 
             resources.ApplyResources(this.ModeColumn, "ModeColumn");
@@ -158,6 +166,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
         private System.Windows.Forms.DataGridViewButtonColumn PictureColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CountColumn;
         private System.Windows.Forms.DataGridViewButtonColumn ModeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RefreshColumn;
         private System.Windows.Forms.DataGridViewButtonColumn ScreenColumn;

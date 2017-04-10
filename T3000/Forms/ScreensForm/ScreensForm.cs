@@ -31,6 +31,7 @@
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
             view.AddValidation(RefreshColumn, TViewUtilities.ValidateInteger);
+            view.AddValidation(CountColumn, TViewUtilities.ValidateInteger);
 
             //Cell changed handles
             view.AddChangedHandler(ModeColumn, TViewUtilities.ChangeEnabled,
@@ -46,6 +47,7 @@
                     point.Description,
                     point.Label,
                     point.PictureFile,
+                    0,
                     point.GraphicMode,
                     point.RefreshTime
                 });
