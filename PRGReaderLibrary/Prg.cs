@@ -14,7 +14,7 @@
         public ushort Version { get; set; }
         public ushort MiniVersion { get; set; }
         public byte[] Reserved { get; set; }
-        public long Length { get; set; }
+        public int Length { get; set; }
         public long Coef { get; set; }
         public bool IsUpgraded { get; set; } = false;
 
@@ -350,8 +350,7 @@
 
             if (offset != Length)
             {
-                throw new ArgumentException($@"Offset != Length after reading.
-Offset: {offset}, Length: {Length}");
+                throw new OffsetException(offset, Length);
             }
 
             UpdateCustomUnits();
@@ -605,8 +604,7 @@ Offset: {offset}, Length: {Length}");
 
             if (!IsUpgraded && bytes.Count != Length)
             {
-                throw new ArgumentException($@"Output lenght != Length after writing.
-Output lenght: {bytes.Count}, Length: {Length}");
+                throw new OffsetException(bytes.Count, Length);
             }
 
             return bytes.ToArray();

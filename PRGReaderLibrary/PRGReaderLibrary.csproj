@@ -95,7 +95,7 @@
     <Compile Include="Types\HelpTypes\Version.cs" />
     <Compile Include="Extensions\BytesExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Utilities\FileVersionNotImplementedException.cs" />
+    <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\FileVersionUtilities.cs" />
     <Compile Include="Utilities\DebugUtilities.cs" />
     <Compile Include="Utilities\UnitsUtilities.cs" />

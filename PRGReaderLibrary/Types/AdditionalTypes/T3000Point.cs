@@ -1,6 +1,5 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
     public class T3000Point : Version, IBinaryObject
@@ -18,6 +17,18 @@ namespace PRGReaderLibrary
             Number = number;
             Type = type;
             Panel = panel;
+        }
+
+        public static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Current:
+                    return 3;
+
+                default:
+                    throw new FileVersionNotImplementedException(version);
+            }
         }
 
         public override int GetHashCode() =>
@@ -40,9 +51,9 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Number = bytes.ToByte(0 + offset);
-                    Type = (PanelType)bytes.ToByte(1 + offset);
-                    Panel = bytes.ToByte(2 + offset);
+                    Number = bytes.ToByte(ref offset);
+                    Type = (PanelType)bytes.ToByte(ref offset);
+                    Panel = bytes.ToByte(ref offset);
                     break;
 
                 default:

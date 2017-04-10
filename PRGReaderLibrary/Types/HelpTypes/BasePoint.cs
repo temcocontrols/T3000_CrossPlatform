@@ -12,6 +12,19 @@ namespace PRGReaderLibrary
             Label = label;
         }
 
+        public new static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Dos:
+                case FileVersion.Current:
+                    return DescriptionPoint.GetSize(version) + 9;
+
+                default:
+                    throw new FileVersionNotImplementedException(version);
+            }
+        }
+
         public bool IsEmpty =>
             string.IsNullOrWhiteSpace(Description) &&
             string.IsNullOrWhiteSpace(Label);
@@ -21,14 +34,46 @@ namespace PRGReaderLibrary
         public BasePoint(byte[] bytes, int offset = 0, FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
-            Label = bytes.GetString(21 + offset, 9).ClearBinarySymvols();
+            offset += DescriptionPoint.GetSize(FileVersion);
+            switch (FileVersion)
+            {
+                case FileVersion.Current:
+                case FileVersion.Dos:
+                    Label = bytes.GetString(ref offset, 9).ClearBinarySymvols();
+                    break;
+
+                default:
+                    throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
+            }
         }
 
         public new byte[] ToBytes()
         {
             var bytes = new List<byte>();
-            bytes.AddRange(base.ToBytes());
-            bytes.AddRange(Label.ToBytes(9));
+
+            switch (FileVersion)
+            {
+                case FileVersion.Current:
+                case FileVersion.Dos:
+                    bytes.AddRange(base.ToBytes());
+                    bytes.AddRange(Label.ToBytes(9));
+                    break;
+
+                default:
+                    throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
+            }
 
             return bytes.ToArray();
         }

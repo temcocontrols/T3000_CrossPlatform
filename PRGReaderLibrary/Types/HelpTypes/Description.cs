@@ -13,6 +13,19 @@ namespace PRGReaderLibrary
             Description = description;
         }
 
+        public static int GetSize(FileVersion version = FileVersion.Current)
+        {
+            switch (version)
+            {
+                case FileVersion.Dos:
+                case FileVersion.Current:
+                    return 21;
+
+                default:
+                    throw new FileVersionNotImplementedException(version);
+            }
+        }
+
         #region Binary data
 
         /// <summary>
@@ -29,11 +42,17 @@ namespace PRGReaderLibrary
             {
                 case FileVersion.Current:
                 case FileVersion.Dos:
-                    Description = bytes.GetString(0 + offset, 21).ClearBinarySymvols();
+                    Description = bytes.GetString(ref offset, 21).ClearBinarySymvols();
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
             }
         }
 
@@ -55,6 +74,12 @@ namespace PRGReaderLibrary
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
             }
 
             return bytes.ToArray();

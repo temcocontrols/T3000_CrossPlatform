@@ -35,7 +35,7 @@ namespace PRGReaderLibrary
             }
         }
 
-        public static int GetSize(FileVersion version = FileVersion.Current)
+        public new static int GetSize(FileVersion version = FileVersion.Current)
         {
             switch (version)
             {
@@ -60,21 +60,29 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
+            offset += BasePoint.GetSize(FileVersion);
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Control = (OffOn)bytes.ToByte(30 + offset);
-                    AutoManual = (AutoManual)bytes.ToByte(31 + offset);
-                    Override1Control = (OffOn)bytes.ToByte(32 + offset);
-                    Override2Control = (OffOn)bytes.ToByte(33 + offset);
-                    Off = bytes.ToByte(34 + offset);
-                    Unused = bytes.ToByte(35 + offset);
-                    Override1Point = new T3000Point(bytes.ToBytes(36 + offset, 3), 0, FileVersion);
-                    Override2Point = new T3000Point(bytes.ToBytes(39 + offset, 3), 0, FileVersion);
+                    Control = (OffOn)bytes.ToByte(ref offset);
+                    AutoManual = (AutoManual)bytes.ToByte(ref offset);
+                    Override1Control = (OffOn)bytes.ToByte(ref offset);
+                    Override2Control = (OffOn)bytes.ToByte(ref offset);
+                    Off = bytes.ToByte(ref offset);
+                    Unused = bytes.ToByte(ref offset);
+                    var T3000PointSize = T3000Point.GetSize(FileVersion);
+                    Override1Point = new T3000Point(bytes.ToBytes(ref offset, T3000PointSize), 0, FileVersion);
+                    Override2Point = new T3000Point(bytes.ToBytes(ref offset, T3000PointSize), 0, FileVersion);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
             }
         }
 
@@ -102,6 +110,12 @@ namespace PRGReaderLibrary
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
             }
 
             return bytes.ToArray();

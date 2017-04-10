@@ -24,15 +24,16 @@ namespace PRGReaderLibrary
             }
         }
 
-        public static int GetSize(FileVersion version = FileVersion.Current)
+        public new static int GetSize(FileVersion version = FileVersion.Current)
         {
+            var size = ValuedPoint.GetSize(version);
             switch (version)
             {
                 case FileVersion.Current:
-                    return 39;
+                    return size + 9;
 
                 case FileVersion.Dos:
-                    return 36;
+                    return size + 6;
 
                 default:
                     throw new FileVersionNotImplementedException(version);

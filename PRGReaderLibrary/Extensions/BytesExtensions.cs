@@ -13,6 +13,15 @@
             return (encoding ?? Encoding.UTF7).GetString(buffer, 0, buffer.Length);
         }
 
+        public static string GetString(this byte[] bytes, ref int offset, int length = 0,
+            Encoding encoding = null)
+        {
+            var value = bytes.GetString(offset, length, encoding);
+            offset += value.Length;
+
+            return value;
+        }
+
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
             BitConverter.ToBoolean(bytes, offset);
 
@@ -43,6 +52,14 @@
         //Marasmus
         public static byte ToByte(this byte[] bytes, int offset = 0) => bytes[offset];
 
+        public static byte ToByte(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToByte(offset);
+            offset += 1;
+
+            return value;
+        } 
+
         public static byte[] ToBytes(this byte[] bytes, int offset = 0, int length = 0)
         {
             if (offset < 0 || offset >= bytes.Length)
@@ -72,6 +89,14 @@ Offset: {offset}, Length: {length}, bytes.Length: {bytes.Length}");
             Array.ConstrainedCopy(bytes, offset, newBytes, 0, length);
 
             return newBytes;
+        }
+
+        public static byte[] ToBytes(this byte[] bytes, ref int offset, int length = 0)
+        {
+            var value = bytes.ToBytes(offset, length);
+            offset += value.Length;
+
+            return value;
         }
 
         public static bool GetBit(this byte[] bytes, int bit, int offset = 0) =>
