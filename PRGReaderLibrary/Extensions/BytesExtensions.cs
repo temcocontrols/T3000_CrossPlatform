@@ -25,29 +25,101 @@
         public static bool ToBoolean(this byte[] bytes, int offset = 0) =>
             BitConverter.ToBoolean(bytes, offset);
 
+        public static bool ToBoolean(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToBoolean(offset);
+            offset += 1;
+
+            return value;
+        }
+
         public static ushort ToUInt16(this byte[] bytes, int offset = 0) =>
             BitConverter.ToUInt16(bytes, offset);
+
+        public static ushort ToUInt16(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToUInt16(offset);
+            offset += 2;
+
+            return value;
+        }
 
         public static uint ToUInt32(this byte[] bytes, int offset = 0) =>
             BitConverter.ToUInt32(bytes, offset);
 
+        public static uint ToUInt32(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToUInt32(offset);
+            offset += 4;
+
+            return value;
+        }
+
         public static ulong ToUInt64(this byte[] bytes, int offset = 0) =>
             BitConverter.ToUInt32(bytes, offset);
+
+        public static ulong ToUInt64(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToUInt64(offset);
+            offset += 8;
+
+            return value;
+        }
 
         public static short ToInt16(this byte[] bytes, int offset = 0) =>
             BitConverter.ToInt16(bytes, offset);
 
+        public static short ToInt16(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToInt16(offset);
+            offset += 2;
+
+            return value;
+        }
+
         public static int ToInt32(this byte[] bytes, int offset = 0) =>
             BitConverter.ToInt32(bytes, offset);
+
+        public static int ToInt32(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToInt32(offset);
+            offset += 4;
+
+            return value;
+        }
 
         public static long ToInt64(this byte[] bytes, int offset = 0) =>
             BitConverter.ToInt32(bytes, offset);
 
+        public static long ToInt64(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToInt64(offset);
+            offset += 8;
+
+            return value;
+        }
+
         public static double ToDouble(this byte[] bytes, int offset = 0) =>
             BitConverter.ToDouble(bytes, offset);
 
+        public static double ToDouble(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToDouble(offset);
+            offset += 8;
+
+            return value;
+        }
+
         public static float ToFloat(this byte[] bytes, int offset = 0) =>
             BitConverter.ToSingle(bytes, offset);
+
+        public static float ToFloat(this byte[] bytes, ref int offset)
+        {
+            var value = bytes.ToFloat(offset);
+            offset += 4;
+
+            return value;
+        }
 
         //Marasmus
         public static byte ToByte(this byte[] bytes, int offset = 0) => bytes[offset];
@@ -101,5 +173,13 @@ Offset: {offset}, Length: {length}, bytes.Length: {bytes.Length}");
 
         public static bool GetBit(this byte[] bytes, int bit, int offset = 0) =>
             bytes[offset].GetBit(bit);
+
+        public static bool GetBit(this byte[] bytes, int bit, ref int offset)
+        {
+            var value = bytes.GetBit(bit, offset);
+            offset += 0;
+
+            return value;
+        }
     }
 }
