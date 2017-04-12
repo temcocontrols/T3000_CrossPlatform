@@ -66,4 +66,25 @@ Separator: {separator}");
 
         public object Clone() => new UnitsNames(OffOnName, OffName, OnName);
     }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public class UnitsNamesAttribute : Attribute
+    {
+        public UnitsNames UnitsNames { get; set; }
+
+        public UnitsNamesAttribute(string offOnName, string offName, string onName)
+        {
+            UnitsNames = new UnitsNames(offOnName, offName, onName);
+        }
+
+        public UnitsNamesAttribute(string offOnName)
+            : this(offOnName, "", "")
+        {
+        }
+
+        public UnitsNamesAttribute(string offOnName, string separator)
+        {
+            UnitsNames = new UnitsNames(offOnName, separator);
+        }
+    }
 }

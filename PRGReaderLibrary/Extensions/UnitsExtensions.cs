@@ -1,6 +1,8 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public static class UnitsExtensions
     {
@@ -34,7 +36,30 @@ Units: {units}", nameof(units));
         public static string GetOffOnName(this Units units, CustomUnits customUnits = null) =>
             GetUnitsNames(units, customUnits).OffOnName;
 
-        public static string GetName(this Units units, CustomUnits customUnits = null) =>
-            units.GetOffOnName(customUnits);
+        public static T GetAttribute<T>(Enum value) where T : Attribute
+        {
+            var info = value.GetType().GetMember(value.ToString())
+                                            .FirstOrDefault();
+
+            return (T)info?.GetCustomAttributes(typeof(T), false)?.FirstOrDefault();
+        }
+
+        public static Dictionary<Units, UnitsNamesAttribute> GetFilledUnitsNamesAttributes()
+        {
+            var attributes = new Dictionary<Units, UnitsNamesAttribute>();
+
+            foreach (Units units in Enum.GetValues(typeof(Units)))
+            {
+                attributes.Add(units, GetAttribute<UnitsNamesAttribute>(units));
+            }
+
+            return attributes;
+        }
+
+        public static Dictionary<Units, UnitsNamesAttribute> UnitsNamesAttributes { get; set; }
+            = GetFilledUnitsNamesAttributes();
+
+        public static UnitsNamesAttribute GetUnitsNames(this Units value) =>
+            UnitsNamesAttributes[value];
     }
 }

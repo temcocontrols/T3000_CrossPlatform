@@ -52,89 +52,7 @@
         {
             switch (units)
             {
-                //Analog part
-                case Units.DegreesC:
-                    return new UnitsNames("°C");
-
-                case Units.DegreesF:
-                    return new UnitsNames("°F");
-
-                case Units.Percents:
-                    return new UnitsNames("%");
-
-                case Units.Cfh:
-                    return new UnitsNames("Kg");
-
-                //Digital part
-                case Units.DigitalUnused:
-                    return new UnitsNames("DigitalUnused", bool.FalseString, bool.TrueString);
-
-                case Units.OffOn:
-                    return new UnitsNames("Off/On", "/");
-
-                case Units.ClosedOpen:
-                    return new UnitsNames("Closed/Open", "/");
-
-                case Units.StopStart:
-                    return new UnitsNames("Stop/Start", "/");
-
-                case Units.DisabledEnabled:
-                    return new UnitsNames("Disabled/Enabled", "/");
-
-                case Units.NormalAlarm:
-                    return new UnitsNames("Normal/Alarm", "/");
-
-                case Units.NormalHigh:
-                    return new UnitsNames("Normal/High", "/");
-
-                case Units.NormalLow:
-                    return new UnitsNames("Normal/Low", "/");
-
-                case Units.NoYes:
-                    return new UnitsNames("No/Yes", "/");
-
-                case Units.CoolHeat:
-                    return new UnitsNames("Cool/Heat", "/");
-
-                case Units.UnoccupiedOccupied:
-                    return new UnitsNames("Unoccupied/Occupied", "/");
-
-                case Units.OnOff:
-                    return new UnitsNames("On/Off", "/");
-
-                case Units.OpenClosed:
-                    return new UnitsNames("Open/Closed", "/");
-
-                case Units.StartStop:
-                    return new UnitsNames("Start/Stop", "/");
-
-                case Units.EnabledDisabled:
-                    return new UnitsNames("Enabled/Disabled", "/");
-
-                case Units.AlarmNormal:
-                    return new UnitsNames("Alarm/Normal", "/");
-
-                case Units.HighNormal:
-                    return new UnitsNames("High/Normal", "/");
-
-                case Units.LowHigh:
-                    return new UnitsNames("Low/High", "/");
-
-                case Units.LowNormal:
-                    return new UnitsNames("Low/Normal", "/");
-
-                case Units.YesNo:
-                    return new UnitsNames("Yes/No", "/");
-
-                case Units.HeatCool:
-                    return new UnitsNames("Heat/Cool", "/");
-
-                case Units.OccupiedUnoccupied:
-                    return new UnitsNames("Occupied/Unoccupied", "/");
-
-                case Units.HighLow:
-                    return new UnitsNames("High/Low", "/");
-
+                //Custom digital part
                 case Units.CustomDigital1:
                 case Units.CustomDigital2:
                 case Units.CustomDigital3:
@@ -145,64 +63,6 @@
                 case Units.CustomDigital8:
                     return GetCustomDigitalName(units - Units.CustomDigital1, customUnits?.Digital, units.ToString());
 
-                //Analog range part
-                case Units.DegCY3K150:
-                    return new UnitsNames("Y3K -40 to 150 °C");
-
-                case Units.DegFY3K300:
-                    return new UnitsNames("Y3K -40 to 300 °F");
-
-                case Units.DegC10K120:
-                    return new UnitsNames("10K -40 to 120 °C");
-
-                case Units.DegF10K250:
-                    return new UnitsNames("10K -40 to 250 °F");
-
-                case Units.DegCG3K120:
-                    return new UnitsNames("G3K -40 to 120 °C");
-
-                case Units.DegFG3K250:
-                    return new UnitsNames("G3K -40 to 250 °F");
-
-                case Units.DegCKM10K120:
-                    return new UnitsNames("KM10K -40 to 120 °C");
-
-                case Units.DegFKM10K250:
-                    return new UnitsNames("KM10K -40 to 250 °F");
-
-                case Units.DegCA10K110:
-                    return new UnitsNames("A10K -50 to 110 °C");
-
-                case Units.DegFA10K200:
-                    return new UnitsNames("A10K -60 to 200 °F");
-
-                case Units.Volts5:
-                    return new UnitsNames("0.0 to 5.0 Volts");
-
-                case Units.Amps100:
-                    return new UnitsNames("0.0 to 10.0 Amps");
-
-                case Units.Ma20:
-                    return new UnitsNames("0.0 to 20.0 Ma");
-
-                case Units.Psi20:
-                    return new UnitsNames("0.0 to 20.0 Psi");
-
-                case Units.Counts2pow22:
-                    return new UnitsNames("0.0 to 2^22 Counts");
-
-                case Units.FPM3000:
-                    return new UnitsNames("0.0 to 3000 FPM");
-
-                case Units.PercentsVolts5:
-                    return new UnitsNames("0.0 to 100% (0-5V)");
-
-                case Units.PercentsMa20:
-                    return new UnitsNames("0.0 to 100% (4-20Ma)");
-
-                case Units.PulsesPerMin:
-                    return new UnitsNames("Pulses/Min");
-
                 //Custom range analog part
                 case Units.AnalogRangeCustom1:
                 case Units.AnalogRangeCustom2:
@@ -212,7 +72,7 @@
                     return GetCustomAnalogName(units - Units.AnalogRangeCustom1, customUnits?.Analog, units.ToString());
 
                 default:
-                    return new UnitsNames(units.ToString());
+                    return units.GetUnitsNames()?.UnitsNames ?? new UnitsNames(units.ToString());
             }
         }
 
@@ -261,8 +121,8 @@
         public static Dictionary<Units, UnitsNames> GetAnalogRangeNames(
             CustomUnits customUnits = null) =>
             customUnits == null
-            ? BaseDigitalDictionary
-            : GetFilledDigitalDictionary(customUnits);
+            ? BaseAnalogRangeDictionary
+            : GetFilledAnalogRangeDictionary(customUnits);
 
         public static Units UnitsFromName(string name,
             CustomUnits customUnits = null)
