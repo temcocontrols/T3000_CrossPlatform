@@ -5,11 +5,18 @@
 
     public static class UnitsNamesConstants
     {
-        private static Dictionary<Units, UnitsNames> BaseDictionary { get; } = GetFilledDictionary();
-        private static Dictionary<Units, UnitsNames> BaseAnalogDictionary { get; } = GetFilledAnalogDictionary();
-        private static Dictionary<Units, UnitsNames> BaseDigitalDictionary { get; } = GetFilledDigitalDictionary();
+        private static Dictionary<Units, UnitsNames> BaseDictionary { get; } =
+            GetFilledDictionary();
+        private static Dictionary<Units, UnitsNames> BaseAnalogDictionary { get; } =
+            GetFilledAnalogDictionary();
+        private static Dictionary<Units, UnitsNames> BaseDigitalDictionary { get; } =
+            GetFilledDigitalDictionary();
+        private static Dictionary<Units, UnitsNames> BaseAnalogRangeDictionary { get; } =
+            GetFilledAnalogRangeDictionary();
 
-        private static UnitsNames GetCustomName(int index, List<CustomDigitalUnitsPoint> customUnits = null, string defaultOnOff = "")
+        private static UnitsNames GetCustomDigitalName(int index,
+            List<CustomDigitalUnitsPoint> customUnits = null,
+            string defaultOnOff = "")
         {
             if (customUnits == null ||
                 index < 0 ||
@@ -21,11 +28,27 @@
             var unit = customUnits[index];
             return unit.IsEmpty
                 ? new UnitsNames(defaultOnOff, bool.FalseString, bool.TrueString)
-                : new UnitsNames($"{unit.DigitalUnitsOff}/{unit.DigitalUnitsOn}", 
+                : new UnitsNames($"{unit.DigitalUnitsOff}/{unit.DigitalUnitsOn}",
                 unit.DigitalUnitsOff, unit.DigitalUnitsOn);
         }
 
-        private static UnitsNames GetNameCollection(Units units, List<CustomDigitalUnitsPoint> customUnits = null)
+        private static UnitsNames GetCustomAnalogName(int index,
+            List<CustomAnalogUnitsPoint> customUnits = null,
+            string defaultName = "")
+        {
+            if (customUnits == null ||
+                index < 0 ||
+                index >= customUnits.Count)
+            {
+                return new UnitsNames(defaultName);
+            }
+
+            var unit = customUnits[index];
+            return new UnitsNames(unit.IsEmpty ? defaultName : unit.Name);
+        }
+
+        private static UnitsNames GetNameCollection(Units units,
+            CustomUnits customUnits = null)
         {
             switch (units)
             {
@@ -120,14 +143,82 @@
                 case Units.CustomDigital6:
                 case Units.CustomDigital7:
                 case Units.CustomDigital8:
-                    return GetCustomName(units - Units.CustomDigital1, customUnits, units.ToString());
+                    return GetCustomDigitalName(units - Units.CustomDigital1, customUnits?.Digital, units.ToString());
+
+                //Analog range part
+                case Units.DegCY3K150:
+                    return new UnitsNames("Y3K -40 to 150 °C");
+
+                case Units.DegFY3K300:
+                    return new UnitsNames("Y3K -40 to 300 °F");
+
+                case Units.DegC10K120:
+                    return new UnitsNames("10K -40 to 120 °C");
+
+                case Units.DegF10K250:
+                    return new UnitsNames("10K -40 to 250 °F");
+
+                case Units.DegCG3K120:
+                    return new UnitsNames("G3K -40 to 120 °C");
+
+                case Units.DegFG3K250:
+                    return new UnitsNames("G3K -40 to 250 °F");
+
+                case Units.DegCKM10K120:
+                    return new UnitsNames("KM10K -40 to 120 °C");
+
+                case Units.DegFKM10K250:
+                    return new UnitsNames("KM10K -40 to 250 °F");
+
+                case Units.DegCA10K110:
+                    return new UnitsNames("A10K -50 to 110 °C");
+
+                case Units.DegFA10K200:
+                    return new UnitsNames("A10K -60 to 200 °F");
+
+                case Units.Volts5:
+                    return new UnitsNames("0.0 to 5.0 Volts");
+
+                case Units.Amps100:
+                    return new UnitsNames("0.0 to 10.0 Amps");
+
+                case Units.Ma20:
+                    return new UnitsNames("0.0 to 20.0 Ma");
+
+                case Units.Psi20:
+                    return new UnitsNames("0.0 to 20.0 Psi");
+
+                case Units.Counts2pow22:
+                    return new UnitsNames("0.0 to 2^22 Counts");
+
+                case Units.FPM3000:
+                    return new UnitsNames("0.0 to 3000 FPM");
+
+                case Units.PercentsVolts5:
+                    return new UnitsNames("0.0 to 100% (0-5V)");
+
+                case Units.PercentsMa20:
+                    return new UnitsNames("0.0 to 100% (4-20Ma)");
+
+                case Units.PulsesPerMin:
+                    return new UnitsNames("Pulses/Min");
+
+                //Custom analog part
+                case Units.AnalogRangeCustom1:
+                case Units.AnalogRangeCustom2:
+                case Units.AnalogRangeCustom3:
+                case Units.AnalogRangeCustom4:
+                case Units.AnalogRangeCustom5:
+                    return GetCustomAnalogName(units - Units.AnalogRangeCustom1, customUnits?.Analog, units.ToString());
 
                 default:
                     return new UnitsNames(units.ToString());
             }
         }
 
-        private static Dictionary<Units, UnitsNames> GetFilledDictionary(List<CustomDigitalUnitsPoint> customUnits = null, Func<Units, bool> predicate = null)
+        private static Dictionary<Units, UnitsNames> GetFilledDictionary(
+            CustomUnits customUnits = null,
+            Func<Units, bool> predicate = null)
         {
             var names = new Dictionary<Units, UnitsNames>();
             foreach (Units units in Enum.GetValues(typeof(Units)))
@@ -143,22 +234,38 @@
             return names;
         }
 
-        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(List<CustomDigitalUnitsPoint> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledAnalogDictionary(
+            CustomUnits customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsAnalog());
 
-        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(List<CustomDigitalUnitsPoint> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledDigitalDictionary(
+            CustomUnits customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsDigital());
 
-        public static Dictionary<Units, UnitsNames> GetNames(List<CustomDigitalUnitsPoint> customUnits = null) =>
+        private static Dictionary<Units, UnitsNames> GetFilledAnalogRangeDictionary(
+            CustomUnits customUnits = null) =>
+            GetFilledDictionary(customUnits, units => units.IsAnalogRange());
+
+        public static Dictionary<Units, UnitsNames> GetNames(
+            CustomUnits customUnits = null) =>
             customUnits == null ? BaseDictionary : GetFilledDictionary(customUnits);
 
-        public static Dictionary<Units, UnitsNames> GetAnalogNames(List<CustomDigitalUnitsPoint> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetAnalogNames(
+            CustomUnits customUnits = null) =>
             customUnits == null ? BaseAnalogDictionary : GetFilledAnalogDictionary(customUnits);
 
-        public static Dictionary<Units, UnitsNames> GetDigitalNames(List<CustomDigitalUnitsPoint> customUnits = null) =>
+        public static Dictionary<Units, UnitsNames> GetDigitalNames(
+            CustomUnits customUnits = null) =>
             customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
 
-        public static Units UnitsFromName(string name, List<CustomDigitalUnitsPoint> customUnits = null)
+        public static Dictionary<Units, UnitsNames> GetAnalogRangeNames(
+            CustomUnits customUnits = null) =>
+            customUnits == null
+            ? BaseDigitalDictionary
+            : GetFilledDigitalDictionary(customUnits);
+
+        public static Units UnitsFromName(string name,
+            CustomUnits customUnits = null)
         {
             var names = GetNames(customUnits);
             foreach (var pair in names)
@@ -171,7 +278,7 @@
 
             throw new NotImplementedException($@"This name not implemented.
 Name: {name}
-CustomUnits.Count: {customUnits?.Count}");
+CustomUnits: {customUnits?.PropertiesText(shortMode: true)}");
         }
     }
 }

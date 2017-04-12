@@ -1,11 +1,29 @@
 ﻿namespace PRGReaderLibrary
 {
-    public class InoutPoint : ValuedPoint
+    using System.Collections.Generic;
+
+    public class InoutPoint : BasePoint
     {
-        public int Decommissioned { get; set; }
+        public VariableValue Value { get; set; } = new VariableValue(0, 0);
+        public AutoManual AutoManual { get; set; }
+        public DigitalAnalog DigitalAnalog { get; set; }
+        public OffOn Control { get; set; }
+        
+        public List<CustomAnalogUnitsPoint> CustomUnits { get; set; }
+
         public bool SubId { get; set; }
         public bool SubProduct { get; set; }
         public double SubNumber { get; set; }
+
+        public static byte ToByte(Units units, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? (byte)(units - Units.AnalogRangeUnused)
+            : (byte)(units - 106);
+
+        public static Units AnalogRangeFromByte(byte value, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? value + Units.AnalogRangeUnused
+            : (Units)(value + 106);
 
         public InoutPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)

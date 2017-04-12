@@ -9,9 +9,9 @@
     public partial class OutputsForm : Form
     {
         public List<OutputPoint> Points { get; set; }
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; private set; }
+        public CustomUnits CustomUnits { get; private set; }
 
-        public OutputsForm(List<OutputPoint> points, List<CustomDigitalUnitsPoint> customUnits = null)
+        public OutputsForm(List<OutputPoint> points, CustomUnits customUnits = null)
         {
             if (points == null)
             {

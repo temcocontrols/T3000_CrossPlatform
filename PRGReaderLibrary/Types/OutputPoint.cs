@@ -1,6 +1,5 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
     public class OutputPoint : InoutPoint, IBinaryObject
@@ -10,6 +9,8 @@ namespace PRGReaderLibrary
         public SwitchStatus HwSwitchStatus { get; set; }
         public OffOn DigitalControl { get; set; }
         public int PwmPeriod { get; set; }
+
+        protected int Decommissioned { get; set; }
 
         public OutputPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)
@@ -60,22 +61,22 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Description = bytes.GetString(0 + offset, 19).ClearBinarySymvols();
-                    LowVoltage = bytes.ToByte(19 + offset);
-                    HighVoltage = bytes.ToByte(20 + offset);
-                    Label = bytes.GetString(21 + offset, 9).ClearBinarySymvols();
-                    valueRaw = bytes.ToInt32(30 + offset);
-                    AutoManual = (AutoManual)bytes.ToByte(34 + offset);
-                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(35 + offset);
-                    HwSwitchStatus = (SwitchStatus)bytes.ToByte(36 + offset);
-                    Control = (OffOn)bytes.ToByte(37 + offset);
-                    DigitalControl = (OffOn)bytes.ToByte(38 + offset);
-                    Decommissioned = bytes.ToByte(39 + offset);
-                    units = UnitsFromByte(bytes.ToByte(40 + offset), DigitalAnalog);
-                    SubId = bytes.ToBoolean(41 + offset);
-                    SubProduct = bytes.ToBoolean(42 + offset);
-                    SubNumber = SubNumberFromByte(bytes.ToByte(43 + offset));
-                    PwmPeriod = bytes.ToByte(44 + offset);
+                    Description = bytes.GetString(ref offset, 19).ClearBinarySymvols();
+                    LowVoltage = bytes.ToByte(ref offset);
+                    HighVoltage = bytes.ToByte(ref offset);
+                    Label = bytes.GetString(ref offset, 9).ClearBinarySymvols();
+                    valueRaw = bytes.ToInt32(ref offset);
+                    AutoManual = (AutoManual)bytes.ToByte(ref offset);
+                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(ref offset);
+                    HwSwitchStatus = (SwitchStatus)bytes.ToByte(ref offset);
+                    Control = (OffOn)bytes.ToByte(ref offset);
+                    DigitalControl = (OffOn)bytes.ToByte(ref offset);
+                    Decommissioned = bytes.ToByte(ref offset);
+                    units = VariablePoint.UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
+                    SubId = bytes.ToBoolean(ref offset);
+                    SubProduct = bytes.ToBoolean(ref offset);
+                    SubNumber = SubNumberFromByte(bytes.ToByte(ref offset));
+                    PwmPeriod = bytes.ToByte(ref offset);
                     break;
 
                 default:
@@ -83,6 +84,12 @@ namespace PRGReaderLibrary
             }
 
             Value = new VariableValue(valueRaw, units);
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
+            }
         }
 
         /// <summary>
@@ -107,7 +114,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)Control);
                     bytes.Add((byte)DigitalControl);
                     bytes.Add((byte)Decommissioned);
-                    bytes.Add(ToByte(Value.Units, DigitalAnalog));
+                    bytes.Add(VariablePoint.ToByte(Value.Units, DigitalAnalog));
                     bytes.Add(SubId.ToByte());
                     bytes.Add(SubProduct.ToByte());
                     bytes.Add(SubNumberToByte(SubNumber));
@@ -116,6 +123,12 @@ namespace PRGReaderLibrary
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
             }
 
             return bytes.ToArray();

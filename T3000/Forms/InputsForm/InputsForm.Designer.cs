@@ -45,7 +45,7 @@
             this.SignColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.FilterColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.DColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.JumperColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
@@ -93,7 +93,7 @@
             this.SignColumn,
             this.FilterColumn,
             this.StatusColumn,
-            this.DColumn,
+            this.JumperColumn,
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
@@ -166,10 +166,10 @@
             this.StatusColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.StatusColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // DColumn
+            // JumperColumn
             // 
-            resources.ApplyResources(this.DColumn, "DColumn");
-            this.DColumn.Name = "DColumn";
+            resources.ApplyResources(this.JumperColumn, "JumperColumn");
+            this.JumperColumn.Name = "JumperColumn";
             // 
             // LabelColumn
             // 
@@ -210,7 +210,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn SignColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn FilterColumn;
         private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn DColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn JumperColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
 }

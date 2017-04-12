@@ -11,10 +11,10 @@
     {
         public static string Separator { get; } = "/";
 
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; private set; }
+        public CustomUnits CustomUnits { get; private set; }
         public bool IsValidated { get; private set; } = true;
 
-        public EditCustomUnitsForm(List<CustomDigitalUnitsPoint> customUnits)
+        public EditCustomUnitsForm(CustomUnits customUnits)
         {
             InitializeComponent();
 
@@ -62,7 +62,7 @@
             return names;
         }
 
-        public static string ToText(List<CustomDigitalUnitsPoint> customUnits)
+        public static string ToText(CustomUnits customUnits)
         {
             if (customUnits == null)
             {
@@ -70,7 +70,7 @@
             }
 
             var text = string.Empty;
-            foreach (var unit in customUnits)
+            foreach (var unit in customUnits.Digital)
             {
                 if (unit.IsEmpty)
                 {
@@ -83,13 +83,13 @@
             return text;
         }
 
-        public static List<CustomDigitalUnitsPoint> ToCustomUnits(string text)
+        public static CustomUnits ToCustomUnits(string text)
         {
-            var units = new List<CustomDigitalUnitsPoint>();
+            var units = new CustomUnits();
             var names = ToUnitsNames(text);
             foreach (var name in names)
             {
-                units.Add(new CustomDigitalUnitsPoint(false, name.OffName, name.OnName));
+                units.Digital.Add(new CustomDigitalUnitsPoint(false, name.OffName, name.OnName));
             }
 
             return units;

@@ -9,9 +9,9 @@
     public partial class InputsForm : Form
     {
         public List<InputPoint> Points { get; set; }
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; private set; }
+        public CustomUnits CustomUnits { get; private set; }
 
-        public InputsForm(List<InputPoint> points, List<CustomDigitalUnitsPoint> customUnits = null)
+        public InputsForm(List<InputPoint> points, CustomUnits customUnits = null)
         {
             if (points == null)
             {
@@ -26,6 +26,8 @@
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditHandler(SignColumn, EditSignColumn);
+            view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<InputStatus>);
+            view.AddEditHandler(JumperColumn, TViewUtilities.EditEnum<Jumper>);
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
@@ -50,7 +52,7 @@
                     point.Description,
                     point.AutoManual,
                     point.Value.ToString(),
-                    point.Value.Units.GetOffOnName(point.Value.CustomUnits),
+                    point.Value.Units.GetOffOnName(customUnits),
                     point.Value.Value,
                     point.Value.Units.IsDigital()
                     ? $"0 -> {point.Value.Value / 100.0}"
@@ -58,8 +60,8 @@
                     point.CalibrationL,
                     point.CalibrationSign.GetString(),
                     point.Filter,
-                    "Normal",
-                    point.Decommissioned,
+                    point.Status,
+                    point.Jumper,
                     point.Label
                 });
                 ++i;
@@ -85,7 +87,8 @@
             row.Cells[CalibrationColumn.Name].Value = 0;
             row.Cells[SignColumn.Name].Value = Sign.Positive;
             row.Cells[FilterColumn.Name].Value = 0;
-            row.Cells[DColumn.Name].Value = 0;
+            row.Cells[StatusColumn.Name].Value = InputStatus.Normal;
+            row.Cells[JumperColumn.Name].Value = Jumper.Thermistor;
             row.Cells[LabelColumn.Name].Value = string.Empty;
         }
 

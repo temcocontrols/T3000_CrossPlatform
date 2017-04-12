@@ -1,13 +1,60 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
-    using System.Collections.Generic;
 
     public class VariableValue
     {
         public int Value { get; set; }
         public Units Units { get; set; }
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; set; }
+        public CustomUnits CustomUnits { get; set; }
+
+        public static string BooleanToDigitalValue(bool value, Units units,
+            CustomUnits customUnits = null) =>
+            value ? units.GetOnName(customUnits) : units.GetOffName(customUnits);
+
+        public static bool DigitalValueToBoolean(string value, Units units,
+            CustomUnits customUnits = null)
+        {
+            var onName = units.GetOnName(customUnits);
+            var offName = units.GetOffName(customUnits);
+            if (!value.Equals(onName, StringComparison.OrdinalIgnoreCase) &&
+                !value.Equals(offName, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException($@"Value not valid.
+Value: {value}, Units: {units}.
+Supporting values: {onName}, {offName}
+CustomUnits: {customUnits}");
+            }
+
+            return value.Equals(onName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string ConvertValue(string value, Units fromUnits, Units toUnits, 
+            CustomUnits fromCustomUnits = null,
+            CustomUnits toCustomUnits = null)
+        {
+            if (fromUnits.IsDigital())
+            {
+                var boolean = DigitalValueToBoolean(value, fromUnits, fromCustomUnits);
+
+                return toUnits.IsDigital()
+                    ? BooleanToDigitalValue(boolean, toUnits, toCustomUnits)
+                    : boolean.ToByte().ToString();
+            }
+
+            if (toUnits.IsDigital())
+            {
+                double doubleValue;
+                if (!double.TryParse(value, out doubleValue))
+                {
+                    BooleanToDigitalValue(true, toUnits, toCustomUnits);
+                }
+
+                return BooleanToDigitalValue(doubleValue != 0.0, toUnits, toCustomUnits);
+            }
+
+            return value;
+        }
 
         public static int FromTimeSpan(TimeSpan time) =>
                 ((time.Days * 60 * 60 * 24 +
@@ -33,16 +80,16 @@
                     return ToTimeSpan(value);
 
                 default:
-                    if (units.IsAnalog())
+                    if (units.IsDigital())
                     {
-                        return Convert.ToDouble(value)/1000.0;
+                        return Convert.ToBoolean(value);
                     }
 
-                    return Convert.ToBoolean(value);
+                    return Convert.ToDouble(value) / 1000.0;
             }
         }
 
-        public static object ToObject(string value, Units units, List<CustomDigitalUnitsPoint> customUnits)
+        public static object ToObject(string value, Units units, CustomUnits customUnits)
         {
             switch (units)
             {
@@ -50,13 +97,13 @@
                     return TimeSpan.Parse(value);
 
                 default:
-                    return units.IsAnalog()
-                        ? (object)Convert.ToDouble(value)
-                        : UnitsUtilities.DigitalValueToBoolean(value, units, customUnits);
+                    return units.IsDigital()
+                        ? DigitalValueToBoolean(value, units, customUnits)
+                        : (object)Convert.ToDouble(value);
             }
         }
 
-        public static string ToString(object value, Units units, List<CustomDigitalUnitsPoint> customUnits)
+        public static string ToString(object value, Units units, CustomUnits customUnits)
         {
             var type = value.GetType();
             if (type == typeof(bool))
@@ -64,11 +111,11 @@
                 var boolean = Convert.ToBoolean(value);
                 if (!units.IsDigital())
                 {
-                    throw new ArgumentException($@"Bool value acceptably onle for digital units.
+                    throw new ArgumentException($@"Bool value acceptably only for digital units.
 Value: {boolean}, Units: {units}");
                 }
 
-                return UnitsUtilities.BooleanToDigitalValue(boolean, units, customUnits);
+                return BooleanToDigitalValue(boolean, units, customUnits);
             }
             else if (type == typeof(TimeSpan))
             {
@@ -95,7 +142,7 @@ Supported types: bool, float, TimeSpan");
             var type = value.GetType();
             if (type == typeof(bool))
             {
-                if (units.IsAnalog())
+                if (!units.IsDigital())
                 {
                     throw new ArgumentException($"Please select digital units for boolean value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
@@ -105,7 +152,7 @@ Supported types: bool, float, TimeSpan");
             }
             else if (type == typeof(TimeSpan))
             {
-                if (!units.IsAnalog())
+                if (units.IsDigital())
                 {
                     throw new ArgumentException($"Please select time units for TimeSpan value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
@@ -115,9 +162,9 @@ Supported types: bool, float, TimeSpan");
             }
             else if (type == typeof(double))
             {
-                if (!units.IsAnalog())
+                if (units.IsDigital())
                 {
-                    throw new ArgumentException($"Please select analog units for float value or cast it." +
+                    throw new ArgumentException($"Please select analog units for double value or cast it." +
                                                 $"Value: {value}, Units: {units}, Type: {type}");
                 }
                 return Convert.ToInt32((Convert.ToDouble(value)) * 1000.0);
@@ -128,24 +175,26 @@ Type: {type}, Value: {value}, Units: {units}
 Supported types: bool, float, TimeSpan");
         }
 
-        public VariableValue(int value, Units units, List<CustomDigitalUnitsPoint> customUnits = null)
+        public VariableValue(int value, Units units, CustomUnits customUnits = null)
         {
             Value = value;
             Units = units;
             CustomUnits = customUnits;
         }
 
-        public VariableValue(object value, Units units, List<CustomDigitalUnitsPoint> customUnits = null,
+        public VariableValue(object value, Units units, CustomUnits customUnits = null,
             int maxRange = 1)
             : this(ToInt(value, units, maxRange), units, customUnits)
         { }
 
-        public VariableValue(string value, Units units, List<CustomDigitalUnitsPoint> customUnits = null,
+        public VariableValue(string value, Units units, CustomUnits customUnits = null,
             int maxRange = 1)
             : this(ToObject(value, units, customUnits), units, customUnits, maxRange)
         { }
 
         public object ToObject() => ToObject(Value, Units);
+        public string ConvertValue(Units units, CustomUnits customUnits = null) => 
+            ConvertValue(ToString(), Units, units, CustomUnits, customUnits);
 
         public override int GetHashCode() => Value.GetHashCode() ^ Units.GetHashCode();
         public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();

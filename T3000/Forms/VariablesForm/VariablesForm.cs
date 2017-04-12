@@ -9,9 +9,9 @@
     public partial class VariablesForm : Form
     {
         public List<VariablePoint> Points { get; set; }
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; private set; }
+        public CustomUnits CustomUnits { get; private set; }
 
-        public VariablesForm(List<VariablePoint> points, List<CustomDigitalUnitsPoint> customUnits = null)
+        public VariablesForm(List<VariablePoint> points, CustomUnits customUnits = null)
         {
             if (points == null)
             {
@@ -103,15 +103,10 @@
                     }
 
                     var point = Points[i];
-                    var range = (int)row.Cells[RangeColumn.Name].Value;
-                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
-                    point.Value = new VariableValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
-                        UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
-                        CustomUnits, range);
-                    point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
+                    point.Description = row.GetValue<string>(DescriptionColumn);
+                    point.Label = row.GetValue<string>(LabelColumn);
+                    point.Value = GetVariableValue(row);
+                    point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     ++i;
                 }
             }
@@ -135,25 +130,30 @@
         
         #region User input handles
 
+        private VariableValue GetVariableValue(DataGridViewRow row) => 
+            new VariableValue(
+                        row.GetValue<string>(ValueColumn),
+                        UnitsNamesConstants.UnitsFromName(
+                            row.GetValue<string>(UnitsColumn), CustomUnits),
+                        CustomUnits,
+                        row.GetValue<int>(RangeColumn));
+
+
         private void EditUnitsColumn(object sender, EventArgs e)
         {
             try
             {
                 var row = view.CurrentRow;
-                var unitsName = row.GetValue<string>(UnitsColumn);
-                var currentUnits = UnitsNamesConstants.UnitsFromName(unitsName, CustomUnits);
-                var form = new SelectUnitsForm(currentUnits, CustomUnits);
+                var value = GetVariableValue(row);
+                var form = new SelectUnitsForm(value.Units, value.CustomUnits);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
 
-                var newValue = UnitsUtilities.ConvertValue(
-                        row.GetValue<string>(ValueColumn),
-                        currentUnits,
-                        form.SelectedUnits,
-                        CustomUnits, form.CustomUnits);
+                var newValue = value.ConvertValue(form.SelectedUnits, form.CustomUnits);
                 CustomUnits = form.CustomUnits;
+
                 view.ChangeValidationArguments(
                     UnitsColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 view.ChangeValidationArguments(
@@ -162,6 +162,7 @@
 
                 row.SetValue(UnitsColumn, newUnits);
                 row.SetValue(ValueColumn, newValue);
+                //row.SetValue(RangeColumn, newValue.);
 
                 view.ValidateRow(row);
             }

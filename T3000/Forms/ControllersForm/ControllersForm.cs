@@ -9,9 +9,9 @@
     public partial class ControllersForm : Form
     {
         public List<ControllerPoint> Points { get; set; }
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; private set; }
+        public CustomUnits CustomUnits { get; private set; }
 
-        public ControllersForm(List<ControllerPoint> points, List<CustomDigitalUnitsPoint> customUnits = null)
+        public ControllersForm(List<ControllerPoint> points, CustomUnits customUnits = null)
         {
             if (points == null)
             {

@@ -3,12 +3,29 @@ namespace PRGReaderLibrary
     using System;
     using System.Collections.Generic;
 
+    public enum InputStatus
+    {
+        Normal,
+        Open,
+        Shorted
+    }
+    public enum Jumper
+    {
+        Thermistor,
+        To20Ma,
+        To5V,
+        To10V
+    }
+
     public class InputPoint : InoutPoint, IBinaryObject
     {
         public int Filter { get; set; }
         public Sign CalibrationSign { get; set; }
         public double CalibrationH { get; set; }
         public double CalibrationL { get; set; }
+
+        public InputStatus Status { get; set; }
+        public Jumper Jumper { get; set; }
 
         public InputPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)
@@ -52,29 +69,32 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
+            offset += InoutPoint.GetSize(FileVersion);
+
             int valueRaw;
             Units units;
 
             byte filterRaw;
             byte calibrationHRaw;
             byte calibrationLRaw;
+            byte decommissionedRaw;
 
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    valueRaw = bytes.ToInt32(30 + offset);
-                    filterRaw = bytes.ToByte(34 + offset);
-                    Decommissioned = bytes.ToByte(35 + offset);
-                    SubId = bytes.ToBoolean(36 + offset);
-                    SubProduct = bytes.ToBoolean(37 + offset);
-                    Control = (OffOn)bytes.ToByte(38 + offset);
-                    AutoManual = (AutoManual)bytes.ToByte(39 + offset);
-                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(40 + offset);
-                    CalibrationSign = (Sign)bytes.ToByte(41 + offset);
-                    SubNumber = SubNumberFromByte(bytes.ToByte(42 + offset));
-                    calibrationHRaw = bytes.ToByte(43 + offset);
-                    calibrationLRaw = bytes.ToByte(44 + offset);
-                    units = UnitsFromByte(bytes.ToByte(45 + offset), DigitalAnalog);
+                    valueRaw = bytes.ToInt32(ref offset);
+                    filterRaw = bytes.ToByte(ref offset);
+                    decommissionedRaw = bytes.ToByte(ref offset);
+                    SubId = bytes.ToBoolean(ref offset);
+                    SubProduct = bytes.ToBoolean(ref offset);
+                    Control = (OffOn)bytes.ToByte(ref offset);
+                    AutoManual = (AutoManual)bytes.ToByte(ref offset);
+                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(ref offset);
+                    CalibrationSign = (Sign)bytes.ToByte(ref offset);
+                    SubNumber = SubNumberFromByte(bytes.ToByte(ref offset));
+                    calibrationHRaw = bytes.ToByte(ref offset);
+                    calibrationLRaw = bytes.ToByte(ref offset);
+                    units = AnalogRangeFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     break;
 
                 default:
@@ -86,6 +106,38 @@ namespace PRGReaderLibrary
             Filter = (int)Math.Pow(2, filterRaw);
             CalibrationH = calibrationHRaw / 10.0;
             CalibrationL = calibrationLRaw / 10.0;
+
+            //Status
+            var statusIndex = decommissionedRaw % 32;
+            if (statusIndex >= (int) InputStatus.Normal &&
+                statusIndex <= (int) InputStatus.Shorted)
+            {
+                Status = (InputStatus) statusIndex;
+            }
+            else
+            {
+                Status = units == Units.AnalogRangeUnused || ToByte(units, DigitalAnalog) > 230
+                    ? InputStatus.Normal
+                    : (InputStatus)(-1);
+            }
+
+            //Jumper
+            var jumperIndex = decommissionedRaw >> 5;
+            if (jumperIndex >= (int)Jumper.Thermistor &&
+                jumperIndex <= (int)Jumper.To10V)
+            {
+                Jumper = (Jumper)jumperIndex;
+            }
+            else
+            {
+                Jumper = Jumper.Thermistor;
+            }
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
+            }
         }
 
         /// <summary>
@@ -98,6 +150,7 @@ namespace PRGReaderLibrary
 
             var calibrationHRaw = Convert.ToByte(CalibrationH * 10.0);
             var calibrationLRaw = Convert.ToByte(CalibrationL * 10.0);
+            var decommissionedRaw = (int) Status + ((int) Jumper << 5);
 
             switch (FileVersion)
             {
@@ -105,7 +158,7 @@ namespace PRGReaderLibrary
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(Value.Value.ToBytes());
                     bytes.Add((byte)Math.Log(Filter, 2));
-                    bytes.Add((byte)Decommissioned);
+                    bytes.Add((byte)decommissionedRaw);
                     bytes.Add(SubId.ToByte());
                     bytes.Add(SubProduct.ToByte());
                     bytes.Add((byte)Control);
@@ -120,6 +173,12 @@ namespace PRGReaderLibrary
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
             }
 
             return bytes.ToArray();

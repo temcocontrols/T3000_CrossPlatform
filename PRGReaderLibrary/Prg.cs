@@ -37,8 +37,7 @@
         public List<HolidayCode> HolidayCodes { get; set; } = new List<HolidayCode>();
         public List<ProgramCode> ProgramCodes { get; set; } = new List<ProgramCode>();
 
-        public List<CustomDigitalUnitsPoint> CustomUnits { get; set; } = new List<CustomDigitalUnitsPoint>();
-        public List<CustomAnalogUnitsPoint> AnalogCustomUnits { get; set; } = new List<CustomAnalogUnitsPoint>();
+        public CustomUnits CustomUnits { get; set; } = new CustomUnits();
 
         #endregion
 
@@ -136,7 +135,7 @@
                                 break;
 
                             case PointType.UNIT:
-                                CustomUnits.Add(new PRGReaderLibrary.CustomDigitalUnitsPoint(data, 0, FileVersion));
+                                CustomUnits.Digital.Add(new CustomDigitalUnitsPoint(data, 0, FileVersion));
                                 break;
 
                             default:
@@ -300,7 +299,7 @@
                 UserPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new UserPoint(i, 0, FileVersion)));
 
-            CustomUnits.AddRange(GetArray(bytes,
+            CustomUnits.Digital.AddRange(GetArray(bytes,
                 CustomDigitalUnitsPoint.GetCount(FileVersion),
                 CustomDigitalUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new CustomDigitalUnitsPoint(i, 0, FileVersion)));
@@ -343,7 +342,7 @@
                 ProgramCode.GetSize(FileVersion), ref offset)
                 .Select(i => new ProgramCode(i, 0, FileVersion)));
 
-            AnalogCustomUnits.AddRange(GetArray(bytes,
+            CustomUnits.Analog.AddRange(GetArray(bytes,
                 CustomAnalogUnitsPoint.GetCount(FileVersion),
                 CustomAnalogUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new CustomAnalogUnitsPoint(i, 0, FileVersion)));
@@ -465,7 +464,7 @@
                                 break;
 
                             case PointType.UNIT:
-                                bytes.AddRange(CustomUnits[j].ToBytes());
+                                bytes.AddRange(CustomUnits.Digital[j].ToBytes());
                                 break;
 
                             default:
@@ -545,7 +544,7 @@
 
             for (var i = 0; i < CustomDigitalUnitsPoint.GetCount(FileVersion); ++i)
             {
-                var obj = CustomUnits.ElementAtOrDefault(i) ?? new CustomDigitalUnitsPoint();
+                var obj = CustomUnits.Digital.ElementAtOrDefault(i) ?? new CustomDigitalUnitsPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 
@@ -598,7 +597,7 @@
 
             for (var i = 0; i < CustomAnalogUnitsPoint.GetCount(FileVersion); ++i)
             {
-                var obj = AnalogCustomUnits.ElementAtOrDefault(i) ?? new CustomAnalogUnitsPoint();
+                var obj = CustomUnits.Analog.ElementAtOrDefault(i) ?? new CustomAnalogUnitsPoint();
                 bytes.AddRange(obj.ToBytes());
             }
 

@@ -7,7 +7,7 @@
     [Category("PRGReaderLibrary.Types")]
     public class VariablePoint_Tests
     {
-        public void BaseTest(byte[] actualBytes, VariablePoint expected, FileVersion version, List<CustomDigitalUnitsPoint> customUnits = null)
+        public void BaseTest(byte[] actualBytes, VariablePoint expected, FileVersion version, CustomUnits customUnits = null)
         {
             var actual = new VariablePoint(actualBytes, 0, version);
             actual.Value.CustomUnits = customUnits;
@@ -111,8 +111,8 @@
             list.Add(23);//Units
             var actual = list.ToArray();
 
-            var customUnits = new List<CustomDigitalUnitsPoint>();
-            customUnits.Add(new CustomDigitalUnitsPoint(false, "TEST1", "TEST2"));
+            var customUnits = new CustomUnits();
+            customUnits.Digital.Add(new CustomDigitalUnitsPoint(false, "TEST1", "TEST2"));
 
             var expected = new VariablePoint("TEST CUS UNITS", "TESTCUS");
             expected.Value = new VariableValue("TEST2", Units.CustomDigital1, customUnits, 2000);

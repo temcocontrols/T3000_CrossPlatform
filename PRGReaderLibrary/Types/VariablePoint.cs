@@ -1,16 +1,30 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
-    public class VariablePoint : ValuedPoint, IBinaryObject
+    public class VariablePoint : BasePoint, IBinaryObject
     {
+        public VariableValue Value { get; set; } = new VariableValue(0, 0);
+        public AutoManual AutoManual { get; set; }
+        public DigitalAnalog DigitalAnalog { get; set; }
+        public OffOn Control { get; set; }
+
         public VariablePoint(string description = "", string label = "", 
             FileVersion version = FileVersion.Current)
             : base(description, label, version)
-        {}
+        { }
 
         #region Binary data
+
+        public static byte ToByte(Units units, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? (byte)units
+            : (byte)(units - Units.DigitalUnused);
+
+        public static Units UnitsFromByte(byte value, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? (Units)value
+            : value + Units.DigitalUnused;
 
         public static int GetCount(FileVersion version = FileVersion.Current)
         {
@@ -26,7 +40,7 @@ namespace PRGReaderLibrary
 
         public new static int GetSize(FileVersion version = FileVersion.Current)
         {
-            var size = ValuedPoint.GetSize(version);
+            var size = BasePoint.GetSize(version);
             switch (version)
             {
                 case FileVersion.Current:
@@ -51,26 +65,29 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
+            offset += BasePoint.GetSize(FileVersion);
+
             int valueRaw;
             Units units;
 
             switch (FileVersion)
             {
                 case FileVersion.Dos:
-                    valueRaw = bytes.ToInt32(30 + offset);
-                    AutoManual = (AutoManual) bytes.GetBit(0, 34 + offset).ToByte();
-                    DigitalAnalog = (DigitalAnalog)bytes.GetBit(1, 34 + offset).ToByte();
-                    Control = (OffOn)bytes.GetBit(2, 34 + offset).ToByte();
-                    units = (Units)bytes.ToByte(35 + offset);
+                    valueRaw = bytes.ToInt32(ref offset);
+                    AutoManual = (AutoManual) bytes.GetBit(0, ref offset).ToByte();
+                    DigitalAnalog = (DigitalAnalog)bytes.GetBit(1, ref offset).ToByte();
+                    Control = (OffOn)bytes.GetBit(2, ref offset).ToByte();
+                    offset += 1;//after GetBit
+                    units = (Units)bytes.ToByte(ref offset);
                     break;
 
                 case FileVersion.Current:
-                    valueRaw = bytes.ToInt32(30 + offset);
-                    AutoManual = (AutoManual)bytes.ToByte(34 + offset);
-                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(35 + offset);
-                    Control = (OffOn)bytes.ToByte(36 + offset);
-                    //37 byte is unused
-                    units = UnitsFromByte(bytes.ToByte(38 + offset), DigitalAnalog);
+                    valueRaw = bytes.ToInt32(ref offset);
+                    AutoManual = (AutoManual)bytes.ToByte(ref offset);
+                    DigitalAnalog = (DigitalAnalog)bytes.ToByte(ref offset);
+                    Control = (OffOn)bytes.ToByte(ref offset);
+                    offset += 1;//this byte is unused
+                    units = UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     break;
 
                 default:
@@ -78,6 +95,12 @@ namespace PRGReaderLibrary
             }
 
             Value = new VariableValue(valueRaw, units);
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
+            }
         }
 
         /// <summary>
@@ -113,6 +136,12 @@ namespace PRGReaderLibrary
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
             }
 
             return bytes.ToArray();

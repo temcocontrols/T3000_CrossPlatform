@@ -53,7 +53,7 @@
 
             var valueColumn = (string)arguments[0];
             var unitsColumn = (string)arguments[1];
-            var customUnits = (List<CustomDigitalUnitsPoint>)arguments[2];
+            var customUnits = (CustomUnits)arguments[2];
             var isValidated = true;
             var message = string.Empty;
             try

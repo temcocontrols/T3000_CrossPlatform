@@ -54,11 +54,17 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Name = bytes.GetString(0 + offset, 20).ClearBinarySymvols();
+                    Name = bytes.GetString(ref offset, 20).ClearBinarySymvols();
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (offset != size)
+            {
+                throw new OffsetException(offset, size);
             }
         }
 
@@ -78,6 +84,12 @@ namespace PRGReaderLibrary
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
+            }
+
+            var size = GetSize(FileVersion);
+            if (bytes.Count != size)
+            {
+                throw new OffsetException(bytes.Count, size);
             }
 
             return bytes.ToArray();

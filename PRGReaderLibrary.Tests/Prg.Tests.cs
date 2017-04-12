@@ -2,14 +2,13 @@
 {
     using NUnit.Framework;
     using System;
-    using System.Collections.Generic;
     using System.IO;
 
     [TestFixture]
     [Category("PRGReaderLibrary.Prg")]
     public class Prg_Tests
     {
-        public void VariableVariantToFromTest(VariableValue value, List<CustomDigitalUnitsPoint> customUnits)
+        public void VariableVariantToFromTest(VariableValue value, CustomUnits customUnits)
         {
             var tempValue = new VariableValue(value.ToString(), value.Units, customUnits, value.Value);
             ObjectAssert.AreEqual(value, tempValue,
@@ -17,6 +16,19 @@
 Value.ToString(): {value.ToString()}
 Value.ToFromToString(): {tempValue.ToString()}
 ");
+        }
+
+        public int GetDifferOffset(Exception exception)
+        {
+            var text = exception.Message;
+            var atOffset = "at offset ";
+            var offsetIndex = exception.Message.IndexOf(atOffset);
+            var offsetString = exception.Message.Substring(offsetIndex + atOffset.Length,
+                text.Length - offsetIndex - atOffset.Length);
+            var pointIndex = offsetString.IndexOf(".");
+            offsetString = offsetString.Substring(0, pointIndex);
+
+            return int.Parse(offsetString);
         }
 
         public void BaseTest(string name)
@@ -36,7 +48,7 @@ Value.ToFromToString(): {tempValue.ToString()}
                     VariableVariantToFromTest(input.Value, prg.CustomUnits);
 
                     ObjectAssert.AreEqual(input, new InputPoint(input.ToBytes()),
-                            $"{nameof(input)} ToFromBytes test failed.");
+                       $"{nameof(input)} ToFromBytes test failed.");
                 }
 
                 foreach (var output in prg.Outputs)
@@ -85,7 +97,7 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(user)} ToFromBytes test failed.");
                 }
 
-                foreach (var unit in prg.CustomUnits)
+                foreach (var unit in prg.CustomUnits.Digital)
                 {
                     ObjectAssert.AreEqual(unit, new CustomDigitalUnitsPoint(unit.ToBytes()),
                         $"{nameof(unit)} ToFromBytes test failed.");
@@ -139,7 +151,7 @@ Value.ToFromToString(): {tempValue.ToString()}
                         $"{nameof(code)} ToFromBytes test failed.");
                 }
 
-                foreach (var units in prg.AnalogCustomUnits)
+                foreach (var units in prg.CustomUnits.Analog)
                 {
                     ObjectAssert.AreEqual(units, new CustomAnalogUnitsPoint(units.ToBytes()),
                         $"{nameof(units)} ToFromBytes test failed.");
@@ -147,7 +159,20 @@ Value.ToFromToString(): {tempValue.ToString()}
             }
 
             prg.Save(temp);
-            FileAssert.AreEqual(path, temp, name);
+            try
+            {
+                FileAssert.AreEqual(path, temp, 
+                    $@"Name: {name}. 
+See console log for details.
+");
+            }
+            catch (Exception exception)
+            {
+                var offset = GetDifferOffset(exception);
+                Console.WriteLine(DebugUtilities.CompareBytes(File.ReadAllBytes(path),
+                    prg.ToBytes(), offset - 35, false, 70, true));
+                throw;
+            }
 
             if (prg.Variables.Count > 0)
             {
@@ -184,7 +209,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             var path = TestUtilities.GetFullPathForTestFile("BTUMeter.prg");
             var prg = Prg.Load(path);
 
-            ObjectAssert.AreEqual(new CustomDigitalUnitsPoint(false, "TANK1", "TANK2"), prg.CustomUnits[0]);
+            ObjectAssert.AreEqual(new CustomDigitalUnitsPoint(false, "TANK1", "TANK2"), prg.CustomUnits.Digital[0]);
         }
 
         [Test]
