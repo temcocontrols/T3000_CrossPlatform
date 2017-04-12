@@ -6,14 +6,17 @@
 
     public static class StringExtensions
     {
-        public static string PropertiesText<T>(this T obj)
+        public static string PropertiesText<T>(this T obj, bool shortMode = false)
         {
             var type = obj.GetType();
+            var properties = type.GetProperties();
             var builder = new StringBuilder();
             builder.AppendLine($"{type.Name} Data:");
-            foreach (var property in type.GetProperties())
+            for (var i = 0; i < properties.Length; ++i)
             {
-                builder.Append($"{property.Name}: ");
+                var property = properties[i];
+
+                builder.Append(shortMode ? "" : $"{property.Name}: ");
                 var value = property.GetValue(obj);
                 if (value == null)
                 {
@@ -24,16 +27,21 @@
                 var valueType = value.GetType();
                 if (valueType.IsArray)
                 {
-                    builder.AppendLine($"{value}. Length: {(value as Array).Length}");
+                    builder.Append(shortMode
+                        ? $"Array({(value as Array).Length})"
+                        : $"{value}. Length: {(value as Array).Length}");
                 }
                 else if (valueType.IsGenericType)
                 {
-                    builder.AppendLine($"{value}. Length: {(value as IList).Count}");
+                    builder.Append(shortMode
+                        ? $"Generic({(value as IList).Count})"
+                        : $"{value}. Length: {(value as IList).Count}");
                 }
                 else
                 {
-                    builder.AppendLine($"{value}");
+                    builder.Append($"{value}");
                 }
+                builder.Append(shortMode && i != properties.Length - 1 ? ", " : Environment.NewLine);
             }
 
             return builder.ToString();

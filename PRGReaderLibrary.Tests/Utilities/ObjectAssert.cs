@@ -4,7 +4,7 @@
 
     public static class ObjectAssert
     {
-        public static void AreEqual(object expected, object actual, string message = "")
+        public static void AreEqual(object expected, object actual, string message = "", bool shortMode = true)
         {
             Assert.AreEqual(expected.GetType(), actual.GetType(), $@"{message}
 Objects types not equals.
@@ -19,8 +19,9 @@ Actual type: {actual.GetType()}");
 
                 Assert.AreEqual(expectedValue, actualValue, $@"{message}
 {property.Name} not equals.
-Expected properties: {expected.PropertiesText()}
-Actual properties: {actual.PropertiesText()}");
+
+Expected properties: {expected.PropertiesText(shortMode)}
+Actual properties: {actual.PropertiesText(shortMode)}");
 
 
             }
