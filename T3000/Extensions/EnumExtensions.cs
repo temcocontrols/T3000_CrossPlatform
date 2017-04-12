@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
 
-    public static class EnumUtilities
+    public static class EnumExtensions
     {
         /// <summary>
         /// Returns next value of enum
@@ -11,7 +11,7 @@
         /// <typeparam name="T">Type of enum</typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static T NextValue<T>(T value) where T : struct, IConvertible
+        public static T NextValue<T>(this T value) where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)
             {
@@ -33,7 +33,7 @@
         /// <typeparam name="T">Type of enum</typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static T PrevValue<T>(T value) where T : struct, IConvertible
+        public static T PrevValue<T>(this T value) where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)
             {
