@@ -18,29 +18,31 @@
 
                 builder.Append(shortMode ? "" : $"{property.Name}: ");
                 var value = property.GetValue(obj);
-                if (value == null)
+                if (value != null)
                 {
-                    builder.AppendLine($"null");
-                    continue;
-                }
-
-                var valueType = value.GetType();
-                if (valueType.IsArray)
-                {
-                    builder.Append(shortMode
-                        ? $"Array({(value as Array).Length})"
-                        : $"{value}. Length: {(value as Array).Length}");
-                }
-                else if (valueType.IsGenericType)
-                {
-                    builder.Append(shortMode
-                        ? $"Generic({(value as IList).Count})"
-                        : $"{value}. Length: {(value as IList).Count}");
+                    var valueType = value.GetType();
+                    if (valueType.IsArray)
+                    {
+                        builder.Append(shortMode
+                            ? $"Array({(value as Array).Length})"
+                            : $"{value}. Length: {(value as Array).Length}");
+                    }
+                    else if (valueType.IsGenericType)
+                    {
+                        builder.Append(shortMode
+                            ? $"Generic({(value as IList).Count})"
+                            : $"{value}. Length: {(value as IList).Count}");
+                    }
+                    else
+                    {
+                        builder.Append($"{value}");
+                    }
                 }
                 else
                 {
-                    builder.Append($"{value}");
+                    builder.Append($"null");
                 }
+
                 builder.Append(shortMode && i != properties.Length - 1 ? ", " : Environment.NewLine);
             }
 
@@ -58,7 +60,7 @@
             var bytes = new byte[length];
             for (var i = 0; i < Math.Min(text.Length, length); ++i)
             {
-                bytes[i] = i < text.Length ? 
+                bytes[i] = i < text.Length ?
                     (byte)text[i] : (byte)0; //'\0'
             }
 
