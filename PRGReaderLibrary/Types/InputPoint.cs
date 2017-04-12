@@ -77,14 +77,14 @@ namespace PRGReaderLibrary
             byte filterRaw;
             byte calibrationHRaw;
             byte calibrationLRaw;
-            byte decommissionedRaw;
+            byte decomRaw;
 
             switch (FileVersion)
             {
                 case FileVersion.Current:
                     valueRaw = bytes.ToInt32(ref offset);
                     filterRaw = bytes.ToByte(ref offset);
-                    decommissionedRaw = bytes.ToByte(ref offset);
+                    decomRaw = bytes.ToByte(ref offset);
                     SubId = bytes.ToBoolean(ref offset);
                     SubProduct = bytes.ToBoolean(ref offset);
                     Control = (OffOn)bytes.ToByte(ref offset);
@@ -108,7 +108,7 @@ namespace PRGReaderLibrary
             CalibrationL = calibrationLRaw / 10.0;
 
             //Status
-            var statusIndex = decommissionedRaw % 32;
+            var statusIndex = decomRaw % 16;
             if (statusIndex >= (int) InputStatus.Normal &&
                 statusIndex <= (int) InputStatus.Shorted)
             {
@@ -116,13 +116,11 @@ namespace PRGReaderLibrary
             }
             else
             {
-                Status = units == Units.AnalogRangeUnused || ToByte(units, DigitalAnalog) > 230
-                    ? InputStatus.Normal
-                    : (InputStatus)(-1);
+                Status = InputStatus.Normal;
             }
 
             //Jumper
-            var jumperIndex = decommissionedRaw >> 5;
+            var jumperIndex = decomRaw / 16;
             if (jumperIndex >= (int)Jumper.Thermistor &&
                 jumperIndex <= (int)Jumper.To10V)
             {
@@ -130,9 +128,11 @@ namespace PRGReaderLibrary
             }
             else
             {
-                Jumper = Jumper.Thermistor;
+                Jumper = jumperIndex == 4
+                    ? (Jumper)4 //TODO: Fix for T3DemoRev6.prg
+                    : Jumper.Thermistor;
             }
-
+            
             var size = GetSize(FileVersion);
             if (offset != size)
             {
@@ -150,7 +150,7 @@ namespace PRGReaderLibrary
 
             var calibrationHRaw = Convert.ToByte(CalibrationH * 10.0);
             var calibrationLRaw = Convert.ToByte(CalibrationL * 10.0);
-            var decommissionedRaw = (int) Status + ((int) Jumper << 5);
+            var decommissionedRaw = ((int)Status) + ((int)Jumper * 16);
 
             switch (FileVersion)
             {

@@ -9,7 +9,7 @@
         public DigitalAnalog DigitalAnalog { get; set; }
         public OffOn Control { get; set; }
         
-        public List<CustomAnalogUnitsPoint> CustomUnits { get; set; }
+        public CustomUnits CustomUnits { get; set; }
 
         public bool SubId { get; set; }
         public bool SubProduct { get; set; }

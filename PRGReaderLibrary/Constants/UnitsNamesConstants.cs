@@ -203,7 +203,7 @@
                 case Units.PulsesPerMin:
                     return new UnitsNames("Pulses/Min");
 
-                //Custom analog part
+                //Custom range analog part
                 case Units.AnalogRangeCustom1:
                 case Units.AnalogRangeCustom2:
                 case Units.AnalogRangeCustom3:
