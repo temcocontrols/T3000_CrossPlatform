@@ -51,7 +51,7 @@
     <Compile Include="Types\HelpTypes\TableValue.cs" />
     <Compile Include="Types\HelpTypes\InoutPoint.cs" />
     <Compile Include="Types\HelpTypes\UnitsNames.cs" />
-    <Compile Include="Constants\UnitsNamesConstants.cs" />
+    <Compile Include="Utilities\UnitsNamesUtilities.cs" />
     <Compile Include="Enums\AnalogOutput.cs" />
     <Compile Include="Enums\CommandRequest.cs" />
     <Compile Include="Enums\FileVersion.cs" />

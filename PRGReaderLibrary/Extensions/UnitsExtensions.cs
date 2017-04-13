@@ -17,7 +17,7 @@
 
         public static UnitsNames GetUnitsNames(this Units units, CustomUnits customUnits = null)
         {
-            var names = UnitsNamesConstants.GetNames(customUnits);
+            var names = UnitsNamesUtilities.GetNames(customUnits);
             if (!names.ContainsKey(units))
             {
                 throw new ArgumentException($@"Units name not exists.

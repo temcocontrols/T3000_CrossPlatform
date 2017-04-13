@@ -133,7 +133,7 @@
         private VariableValue GetVariableValue(DataGridViewRow row) => 
             new VariableValue(
                         row.GetValue<string>(ValueColumn),
-                        UnitsNamesConstants.UnitsFromName(
+                        UnitsNamesUtilities.UnitsFromName(
                             row.GetValue<string>(UnitsColumn), CustomUnits),
                         CustomUnits,
                         row.GetValue<int>(RangeColumn));

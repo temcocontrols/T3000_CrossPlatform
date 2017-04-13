@@ -1,8 +1,9 @@
 namespace PRGReaderLibrary
 {
+    using System;
     using System.Collections.Generic;
 
-    public class CustomDigitalUnitsPoint : Version, IBinaryObject
+    public class CustomDigitalUnitsPoint : Version, IBinaryObject, ICloneable
     {
         public bool Direct { get; set; }
         public string DigitalUnitsOff { get; set; }
@@ -99,5 +100,7 @@ namespace PRGReaderLibrary
         }
 
         #endregion
+
+        public object Clone() => new CustomDigitalUnitsPoint(Direct, DigitalUnitsOff, DigitalUnitsOn, FileVersion);
     }
 }

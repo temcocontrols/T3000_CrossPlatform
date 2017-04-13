@@ -113,7 +113,7 @@
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.Value = new VariableValue(
                         row.GetValue<string>(ValueColumn),
-                        UnitsNamesConstants.UnitsFromName(
+                        UnitsNamesUtilities.UnitsFromName(
                             row.GetValue<string>(UnitsColumn), CustomUnits),
                         CustomUnits, range);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);

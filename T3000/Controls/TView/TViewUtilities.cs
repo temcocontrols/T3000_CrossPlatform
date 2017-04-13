@@ -4,7 +4,6 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
-    using System.Collections.Generic;
     using Controls;
 
     public static class TViewUtilities
@@ -23,7 +22,7 @@
 
                 var view = (TView)sender;
                 var cell = view.CurrentCell;
-                cell.Value = EnumUtilities.NextValue((T)cell.Value);
+                cell.Value = ((T)cell.Value).NextValue();
 
                 view.ValidateCell(cell);
             }
@@ -61,7 +60,7 @@
                 var row = cell.OwningRow;
                 var unitsCell = row.Cells[unitsColumn];
                 var valueCell = row.Cells[valueColumn];
-                var units = UnitsNamesConstants.UnitsFromName(
+                var units = UnitsNamesUtilities.UnitsFromName(
                     (string)unitsCell.Value, customUnits);
                 new VariableValue((string)valueCell.Value, units, customUnits);
             }

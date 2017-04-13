@@ -28,26 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.customUnitsTextBox = new System.Windows.Forms.RichTextBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.previewListBox = new System.Windows.Forms.ListBox();
+            this.analogListBox = new System.Windows.Forms.ListBox();
+            this.editButton = new System.Windows.Forms.Button();
+            this.digitalListBox = new System.Windows.Forms.ListBox();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // customUnitsTextBox
-            // 
-            this.customUnitsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.customUnitsTextBox.Location = new System.Drawing.Point(12, 6);
-            this.customUnitsTextBox.Name = "customUnitsTextBox";
-            this.customUnitsTextBox.Size = new System.Drawing.Size(258, 225);
-            this.customUnitsTextBox.TabIndex = 0;
-            this.customUnitsTextBox.Text = "";
-            this.customUnitsTextBox.TextChanged += new System.EventHandler(this.Validate);
             // 
             // statusStrip
             // 
@@ -66,9 +55,9 @@
             // 
             // saveButton
             // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveButton.Location = new System.Drawing.Point(12, 238);
+            this.saveButton.Location = new System.Drawing.Point(188, 238);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(137, 23);
             this.saveButton.TabIndex = 2;
@@ -78,9 +67,9 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(155, 238);
+            this.cancelButton.Location = new System.Drawing.Point(331, 238);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(115, 23);
             this.cancelButton.TabIndex = 3;
@@ -88,15 +77,40 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
-            // previewListBox
+            // analogListBox
             // 
-            this.previewListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.analogListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.previewListBox.FormattingEnabled = true;
-            this.previewListBox.Location = new System.Drawing.Point(276, 6);
-            this.previewListBox.Name = "previewListBox";
-            this.previewListBox.Size = new System.Drawing.Size(170, 251);
-            this.previewListBox.TabIndex = 4;
+            this.analogListBox.FormattingEnabled = true;
+            this.analogListBox.Location = new System.Drawing.Point(12, 10);
+            this.analogListBox.Name = "analogListBox";
+            this.analogListBox.Size = new System.Drawing.Size(205, 225);
+            this.analogListBox.TabIndex = 4;
+            this.analogListBox.DoubleClick += new System.EventHandler(this.Edit);
+            // 
+            // editButton
+            // 
+            this.editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.editButton.Location = new System.Drawing.Point(12, 238);
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(137, 23);
+            this.editButton.TabIndex = 5;
+            this.editButton.Text = "Edit";
+            this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Click += new System.EventHandler(this.Edit);
+            // 
+            // digitalListBox
+            // 
+            this.digitalListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.digitalListBox.FormattingEnabled = true;
+            this.digitalListBox.Location = new System.Drawing.Point(223, 10);
+            this.digitalListBox.Name = "digitalListBox";
+            this.digitalListBox.Size = new System.Drawing.Size(223, 225);
+            this.digitalListBox.TabIndex = 6;
+            this.digitalListBox.DoubleClick += new System.EventHandler(this.Edit);
             // 
             // EditCustomUnitsForm
             // 
@@ -105,11 +119,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(458, 291);
-            this.Controls.Add(this.previewListBox);
+            this.Controls.Add(this.digitalListBox);
+            this.Controls.Add(this.editButton);
+            this.Controls.Add(this.analogListBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.customUnitsTextBox);
             this.Name = "EditCustomUnitsForm";
             this.Text = "Change custom units:";
             this.statusStrip.ResumeLayout(false);
@@ -120,12 +135,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox customUnitsTextBox;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.ListBox previewListBox;
+        private System.Windows.Forms.ListBox analogListBox;
+        private System.Windows.Forms.Button editButton;
+        private System.Windows.Forms.ListBox digitalListBox;
     }
 }

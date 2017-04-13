@@ -12,13 +12,19 @@
         public Units SelectedUnits { get; private set; } = Units.Unused;
         public bool IsValidated { get; private set; } = true;
         public CustomUnits CustomUnits { get; set; } = null;
+        public bool IsAnalogRange { get; private set; } = false;
 
-        public SelectUnitsForm(Units selectedUnits = Units.Unused, CustomUnits customUnits = null)
+        public SelectUnitsForm(
+            Units selectedUnits = Units.Unused, 
+            CustomUnits customUnits = null, 
+            bool isAnalogRange = false)
         {
             InitializeComponent();
 
             SelectedUnits = selectedUnits;
             CustomUnits = customUnits;
+            IsAnalogRange = isAnalogRange;
+
             UpdateUnits();
         }
 
@@ -33,13 +39,16 @@
             try
             {
                 analogUnitsListBox.Items.Clear();
-                foreach (var name in UnitsNamesConstants.GetAnalogNames(CustomUnits))
+                var analogDictionary = IsAnalogRange 
+                    ? UnitsNamesUtilities.GetAnalogRangeNames(CustomUnits)
+                    : UnitsNamesUtilities.GetAnalogNames(CustomUnits);
+                foreach (var name in analogDictionary)
                 {
                     analogUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
 
                 digitalUnitsListBox.Items.Clear();
-                foreach (var name in UnitsNamesConstants.GetDigitalNames(CustomUnits))
+                foreach (var name in UnitsNamesUtilities.GetDigitalNames(CustomUnits))
                 {
                     digitalUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
@@ -51,6 +60,7 @@
                 MessageBoxUtilities.ShowException(exception);
             }
         }
+
         private void unitsListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -101,7 +111,7 @@
                 case Keys.Up:
                 case Keys.PageUp:
                 case Keys.VolumeUp:
-                    SelectedUnits = EnumUtilities.PrevValue(SelectedUnits);
+                    SelectedUnits = SelectedUnits.PrevValue();
                     ShowSelectedItem();
                     break;
 
@@ -109,7 +119,7 @@
                 case Keys.Down:
                 case Keys.PageDown:
                 case Keys.VolumeDown:
-                    SelectedUnits = EnumUtilities.NextValue(SelectedUnits);
+                    SelectedUnits = SelectedUnits.NextValue();
                     ShowSelectedItem();
                     break;
 
@@ -117,7 +127,7 @@
                 case Keys.A:
                     for (var i = 0; i < maxItemsInColumn; ++i)
                     {
-                        SelectedUnits = EnumUtilities.PrevValue(SelectedUnits);
+                        SelectedUnits = SelectedUnits.PrevValue();
                     }
                     ShowSelectedItem();
                     break;
@@ -126,7 +136,7 @@
                 case Keys.D:
                     for (var i = 0; i < maxItemsInColumn; ++i)
                     {
-                        SelectedUnits = EnumUtilities.NextValue(SelectedUnits);
+                        SelectedUnits = SelectedUnits.NextValue();
                     }
                     ShowSelectedItem();
                     break;

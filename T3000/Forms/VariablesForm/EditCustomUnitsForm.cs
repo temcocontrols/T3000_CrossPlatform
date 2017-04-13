@@ -1,12 +1,10 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
-    using Properties;
     using System;
-    using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
-
+    
     public partial class EditCustomUnitsForm : Form
     {
         public static string Separator { get; } = "/";
@@ -18,123 +16,85 @@
         {
             InitializeComponent();
 
-            CustomUnits = customUnits;
-            customUnitsTextBox.Text = ToText(CustomUnits);
+            CustomUnits = (CustomUnits)customUnits.Clone();
 
-            Validate(this, EventArgs.Empty);
+            //Clear selection
+            digitalListBox.SelectedIndexChanged +=
+                (sender, args) =>
+                {
+                    if (digitalListBox.SelectedIndex != -1)
+                    {
+                        analogListBox.SelectedIndex = -1;
+                    }
+                };
+
+            analogListBox.SelectedIndexChanged +=
+                (sender, args) =>
+                {
+                    if (analogListBox.SelectedIndex != -1)
+                    {
+                        digitalListBox.SelectedIndex = -1;
+                    }
+                };
+
+            Preview();
         }
 
-        private void Preview(string text)
+        private void Preview()
         {
-            previewListBox.Items.Clear();
+            analogListBox.Items.Clear();
             var i = 0;
-            foreach (var name in ToUnitsNames(text))
+            foreach (var name in CustomUnits.Analog)
             {
-                previewListBox.Items.Add($"{i + 1}. {name.OffOnName}");
+                analogListBox.Items.Add($"{i + 1}. {name.Name}");
                 ++i;
             }
+
+            digitalListBox.Items.Clear();
+            i = 0;
+            foreach (var name in CustomUnits.Digital)
+            {
+                digitalListBox.Items.Add($"{i + 1}. {name.DigitalUnitsOff}/{name.DigitalUnitsOn}");
+                ++i;
+            }
+
         }
 
-        private static string[] ToLines(string text) => 
-            text.Split(Environment.NewLine.ToCharArray());
+        #region Buttons
 
-        /// <summary>
-        /// Returns items list of valid lines
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        private static List<UnitsNames> ToUnitsNames(string text)
+        private void Edit(object sender, EventArgs e)
         {
-            var names = new List<UnitsNames>();
-
-            var lines = ToLines(text);
-            foreach (var line in lines)
+            var selectedIndex = analogListBox.SelectedIndex;
+            if (selectedIndex >= 0 && selectedIndex < CustomUnits.Analog.Count)
             {
-                if (string.IsNullOrWhiteSpace(line) ||
-                    !UnitsNames.ValidateSeparatoredString(line, Separator))
+                var point = CustomUnits.Analog[selectedIndex];
+                var form = new EditCustomAnalogUnitForm(point);
+                if (form.ShowDialog() != DialogResult.OK)
                 {
-                    continue;
+                    return;
                 }
 
-                names.Add(new UnitsNames(line, Separator));
+                CustomUnits.Analog[selectedIndex] = form.Point;
             }
 
-            return names;
-        }
-
-        public static string ToText(CustomUnits customUnits)
-        {
-            if (customUnits == null)
+            selectedIndex = digitalListBox.SelectedIndex;
+            if (selectedIndex >= 0 && selectedIndex < CustomUnits.Digital.Count)
             {
-                return string.Empty;
-            }
-
-            var text = string.Empty;
-            foreach (var unit in customUnits.Digital)
-            {
-                if (unit.IsEmpty)
+                var point = CustomUnits.Digital[selectedIndex];
+                var form = new EditCustomDigitalUnitForm(point);
+                if (form.ShowDialog() != DialogResult.OK)
                 {
-                    continue;
+                    return;
                 }
 
-                text += $"{unit.DigitalUnitsOff}{Separator}{unit.DigitalUnitsOn}{Environment.NewLine}";
+                CustomUnits.Digital[selectedIndex] = form.Point;
             }
 
-            return text;
-        }
-
-        public static CustomUnits ToCustomUnits(string text)
-        {
-            var units = new CustomUnits();
-            var names = ToUnitsNames(text);
-            foreach (var name in names)
-            {
-                units.Digital.Add(new CustomDigitalUnitsPoint(false, name.OffName, name.OnName));
-            }
-
-            return units;
-        }
-
-        public static bool IsValid(string text)
-        {
-            var lines = ToLines(text);
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                if (!UnitsNames.ValidateSeparatoredString(line, Separator))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private void Validate(object sender, EventArgs e)
-        {
-            var text = customUnitsTextBox.Text;
-            IsValidated = IsValid(text);
-            customUnitsTextBox.BackColor = ColorConstants.GetValidationColor(IsValidated);
-            Preview(text);
+            Preview();
         }
 
         private void Save(object sender, EventArgs e)
         {
-            if (!IsValidated)
-            {
-                MessageBoxUtilities.ShowWarning(Resources.EditCustomUnitsFormNotValid);
-                DialogResult = DialogResult.None;
-                return;
-            }
-
-            var text = customUnitsTextBox.Text;
-            CustomUnits = ToCustomUnits(text);
-
-            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -142,5 +102,7 @@
         {
             Close();
         }
+
+        #endregion
     }
 }

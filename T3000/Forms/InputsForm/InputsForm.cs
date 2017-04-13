@@ -117,7 +117,7 @@
                     point.Label = (string)row.Cells[LabelColumn.Name].Value;
                     point.Value = new VariableValue(
                         (string)row.Cells[ValueColumn.Name].Value,
-                        UnitsNamesConstants.UnitsFromName(
+                        UnitsNamesUtilities.UnitsFromName(
                             (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
                         CustomUnits, range);
                     point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
@@ -154,7 +154,7 @@
                 var text = (string) cell.Value;
                 var sign = text.Equals(Sign.Positive.GetString()) 
                     ? Sign.Positive : Sign.Negative;
-                var nextValue = EnumUtilities.NextValue(sign);
+                var nextValue = sign.NextValue();
                 cell.Value = nextValue.GetString();
 
                 view.ValidateCell(cell);

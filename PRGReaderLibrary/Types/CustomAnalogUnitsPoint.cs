@@ -1,8 +1,9 @@
 namespace PRGReaderLibrary
 {
+    using System;
     using System.Collections.Generic;
 
-    public class CustomAnalogUnitsPoint : Version, IBinaryObject
+    public class CustomAnalogUnitsPoint : Version, IBinaryObject, ICloneable
     {
         public string Name { get; set; }
 
@@ -96,5 +97,7 @@ namespace PRGReaderLibrary
         }
 
         #endregion
+
+        public object Clone() => new CustomAnalogUnitsPoint(Name, FileVersion);
     }
 }

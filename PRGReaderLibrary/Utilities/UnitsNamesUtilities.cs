@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public static class UnitsNamesConstants
+    public static class UnitsNamesUtilities
     {
         private static Dictionary<Units, UnitsNames> BaseDictionary { get; } =
             GetFilledDictionary();
