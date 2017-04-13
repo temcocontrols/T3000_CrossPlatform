@@ -8,6 +8,8 @@
         System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>;
     using CellAction =
         System.Action<object, System.Windows.Forms.DataGridViewCellEventArgs, object[]>;
+    using FormatingFunc =
+        System.Func<object, object>;
 
     public class TView : DataGridView
     {
@@ -72,7 +74,7 @@
 
         #endregion
 
-        #region Validation
+        #region Validation handles
 
         private Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
             new Dictionary<string, ValidationFunc>();
@@ -212,5 +214,44 @@
         }
 
         #endregion
+
+        #region Formatting handles
+
+        private Dictionary<string, FormatingFunc> FormattingHandles { get; set; } =
+            new Dictionary<string, FormatingFunc>();
+
+        protected override void OnCellFormatting(DataGridViewCellFormattingEventArgs e)
+        {
+            if (!RowIndexIsValid(e.RowIndex))
+            {
+                return;
+            }
+
+            try
+            {
+                var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+                var name = ColumnIndexToName(e.ColumnIndex);
+                if (FormattingHandles.ContainsKey(name))
+                {
+                    e.Value = FormattingHandles[name].Invoke(cell.Value);
+                    e.FormattingApplied = true;
+                    return;
+                }
+
+                ValidateCell(cell);
+            }
+            catch (Exception) { }
+
+            base.OnCellFormatting(e);
+        }
+
+        public void AddFormating(DataGridViewColumn column, FormatingFunc func)
+        {
+            FormattingHandles[column.Name] = func;
+        }
+
+        #endregion
+
     }
 }
