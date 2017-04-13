@@ -5,23 +5,23 @@
     public class VariableValue
     {
         public int Value { get; set; }
-        public Units Units { get; set; }
+        public Unit Unit { get; set; }
         public CustomUnits CustomUnits { get; set; }
 
-        public static string BooleanToDigitalValue(bool value, Units units,
+        public static string BooleanToDigitalValue(bool value, Unit unit,
             CustomUnits customUnits = null) =>
-            value ? units.GetOnName(customUnits) : units.GetOffName(customUnits);
+            value ? unit.GetOnName(customUnits) : unit.GetOffName(customUnits);
 
-        public static bool DigitalValueToBoolean(string value, Units units,
+        public static bool DigitalValueToBoolean(string value, Unit unit,
             CustomUnits customUnits = null)
         {
-            var onName = units.GetOnName(customUnits);
-            var offName = units.GetOffName(customUnits);
+            var onName = unit.GetOnName(customUnits);
+            var offName = unit.GetOffName(customUnits);
             if (!value.Equals(onName, StringComparison.OrdinalIgnoreCase) &&
                 !value.Equals(offName, StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException($@"Value not valid.
-Value: {value}, Units: {units}.
+Value: {value}, Unit: {unit}.
 Supporting values: {onName}, {offName}
 CustomUnits: {customUnits}");
             }
@@ -29,28 +29,28 @@ CustomUnits: {customUnits}");
             return value.Equals(onName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string ConvertValue(string value, Units fromUnits, Units toUnits, 
+        public static string ConvertValue(string value, Unit fromUnit, Unit toUnit, 
             CustomUnits fromCustomUnits = null,
             CustomUnits toCustomUnits = null)
         {
-            if (fromUnits.IsDigital())
+            if (fromUnit.IsDigital())
             {
-                var boolean = DigitalValueToBoolean(value, fromUnits, fromCustomUnits);
+                var boolean = DigitalValueToBoolean(value, fromUnit, fromCustomUnits);
 
-                return toUnits.IsDigital()
-                    ? BooleanToDigitalValue(boolean, toUnits, toCustomUnits)
+                return toUnit.IsDigital()
+                    ? BooleanToDigitalValue(boolean, toUnit, toCustomUnits)
                     : boolean.ToByte().ToString();
             }
 
-            if (toUnits.IsDigital())
+            if (toUnit.IsDigital())
             {
                 double doubleValue;
                 if (!double.TryParse(value, out doubleValue))
                 {
-                    BooleanToDigitalValue(true, toUnits, toCustomUnits);
+                    BooleanToDigitalValue(true, toUnit, toCustomUnits);
                 }
 
-                return BooleanToDigitalValue(doubleValue != 0.0, toUnits, toCustomUnits);
+                return BooleanToDigitalValue(doubleValue != 0.0, toUnit, toCustomUnits);
             }
 
             return value;
@@ -72,15 +72,15 @@ CustomUnits: {customUnits}");
                 value % 1000                 //milliseconds
             );
 
-        public static object ToObject(int value, Units units)
+        public static object ToObject(int value, Unit unit)
         {
-            switch (units)
+            switch (unit)
             {
-                case Units.Time:
+                case Unit.Time:
                     return ToTimeSpan(value);
 
                 default:
-                    if (units.IsDigital())
+                    if (unit.IsDigital())
                     {
                         return Convert.ToBoolean(value);
                     }
@@ -89,33 +89,33 @@ CustomUnits: {customUnits}");
             }
         }
 
-        public static object ToObject(string value, Units units, CustomUnits customUnits)
+        public static object ToObject(string value, Unit unit, CustomUnits customUnits)
         {
-            switch (units)
+            switch (unit)
             {
-                case Units.Time:
+                case Unit.Time:
                     return TimeSpan.Parse(value);
 
                 default:
-                    return units.IsDigital()
-                        ? DigitalValueToBoolean(value, units, customUnits)
+                    return unit.IsDigital()
+                        ? DigitalValueToBoolean(value, unit, customUnits)
                         : (object)Convert.ToDouble(value);
             }
         }
 
-        public static string ToString(object value, Units units, CustomUnits customUnits)
+        public static string ToString(object value, Unit unit, CustomUnits customUnits)
         {
             var type = value.GetType();
             if (type == typeof(bool))
             {
                 var boolean = Convert.ToBoolean(value);
-                if (!units.IsDigital())
+                if (!unit.IsDigital())
                 {
-                    throw new ArgumentException($@"Bool value acceptably only for digital units.
-Value: {boolean}, Units: {units}");
+                    throw new ArgumentException($@"Bool value acceptably only for digital unit.
+Value: {boolean}, Unit: {unit}");
                 }
 
-                return BooleanToDigitalValue(boolean, units, customUnits);
+                return BooleanToDigitalValue(boolean, unit, customUnits);
             }
             else if (type == typeof(TimeSpan))
             {
@@ -132,73 +132,73 @@ Value: {boolean}, Units: {units}");
             else
             {
                 throw new NotImplementedException($@"Type not supported.
-Type: {type}, Value: {value}, Units: {units}
+Type: {type}, Value: {value}, Unit: {unit}
 Supported types: bool, float, TimeSpan");
             }
         }
 
-        public static int ToInt(object value, Units units, int maxRange = 1)
+        public static int ToInt(object value, Unit unit, int maxRange = 1)
         {
             var type = value.GetType();
             if (type == typeof(bool))
             {
-                if (!units.IsDigital())
+                if (!unit.IsDigital())
                 {
-                    throw new ArgumentException($"Please select digital units for boolean value or cast it." +
-                                                $"Value: {value}, Units: {units}, Type: {type}");
+                    throw new ArgumentException($"Please select digital unit for boolean value or cast it." +
+                                                $"Value: {value}, Unit: {unit}, Type: {type}");
                 }
                 
                 return Convert.ToInt32(value) * maxRange;
             }
             else if (type == typeof(TimeSpan))
             {
-                if (units.IsDigital())
+                if (unit.IsDigital())
                 {
-                    throw new ArgumentException($"Please select time units for TimeSpan value or cast it." +
-                                                $"Value: {value}, Units: {units}, Type: {type}");
+                    throw new ArgumentException($"Please select time unit for TimeSpan value or cast it." +
+                                                $"Value: {value}, Unit: {unit}, Type: {type}");
                 }
 
                 return FromTimeSpan((TimeSpan)value);
             }
             else if (type == typeof(double))
             {
-                if (units.IsDigital())
+                if (unit.IsDigital())
                 {
-                    throw new ArgumentException($"Please select analog units for double value or cast it." +
-                                                $"Value: {value}, Units: {units}, Type: {type}");
+                    throw new ArgumentException($"Please select analog unit for double value or cast it." +
+                                                $"Value: {value}, Unit: {unit}, Type: {type}");
                 }
                 return Convert.ToInt32((Convert.ToDouble(value)) * 1000.0);
             }
 
             throw new NotImplementedException($@"Type not supported.
-Type: {type}, Value: {value}, Units: {units}
+Type: {type}, Value: {value}, Unit: {unit}
 Supported types: bool, float, TimeSpan");
         }
 
-        public VariableValue(int value, Units units, CustomUnits customUnits = null)
+        public VariableValue(int value, Unit unit, CustomUnits customUnits = null)
         {
             Value = value;
-            Units = units;
+            Unit = unit;
             CustomUnits = customUnits;
         }
 
-        public VariableValue(object value, Units units, CustomUnits customUnits = null,
+        public VariableValue(object value, Unit unit, CustomUnits customUnits = null,
             int maxRange = 1)
-            : this(ToInt(value, units, maxRange), units, customUnits)
+            : this(ToInt(value, unit, maxRange), unit, customUnits)
         { }
 
-        public VariableValue(string value, Units units, CustomUnits customUnits = null,
+        public VariableValue(string value, Unit unit, CustomUnits customUnits = null,
             int maxRange = 1)
-            : this(ToObject(value, units, customUnits), units, customUnits, maxRange)
+            : this(ToObject(value, unit, customUnits), unit, customUnits, maxRange)
         { }
 
-        public object ToObject() => ToObject(Value, Units);
-        public string ConvertValue(Units units, CustomUnits customUnits = null) => 
-            ConvertValue(ToString(), Units, units, CustomUnits, customUnits);
+        public object ToObject() => ToObject(Value, Unit);
+        public string ConvertValue(Unit unit, CustomUnits customUnits = null) => 
+            ConvertValue(ToString(), Unit, unit, CustomUnits, customUnits);
 
-        public override int GetHashCode() => Value.GetHashCode() ^ Units.GetHashCode();
+        public override int GetHashCode() => Value.GetHashCode() ^ Unit.GetHashCode();
         public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
-        public override string ToString() => ToString(ToObject(), Units, CustomUnits);
+        public override string ToString() => ToString(ToObject(), Unit, CustomUnits);
 
     }
 }

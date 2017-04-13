@@ -24,10 +24,10 @@
             list.AddRange("Label".ToBytes(9));
             list.AddRange(5000.ToBytes());//Value
             list.Add(new [] {true,true,true}.ToBits()); //AutoManual DigitalAnalog Control
-            list.Add((byte)Units.DegreesC);//Units
+            list.Add((byte)Unit.DegreesC);//Unit
 
             var expected = new VariablePoint("Description", "Label", FileVersion.Dos);
-            expected.Value = new VariableValue("5.000", Units.DegreesC);
+            expected.Value = new VariableValue("5.000", Unit.DegreesC);
             expected.AutoManual = AutoManual.Manual;
             expected.DigitalAnalog = DigitalAnalog.Analog;
             expected.Control = OffOn.On;
@@ -45,10 +45,10 @@
             list.Add(0);//DigitalAnalog
             list.Add(0);//Control
             list.Add(2);//Unused
-            list.Add(1);//Units
+            list.Add(1);//Unit
 
             var expected = new VariablePoint("START TEST FLAG", "INIT");
-            expected.Value = new VariableValue("Off", Units.OffOn);
+            expected.Value = new VariableValue("Off", Unit.OffOn);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
             expected.Control = OffOn.Off;
@@ -66,10 +66,10 @@
             list.Add(1);//DigitalAnalog
             list.Add(0);//Control
             list.Add(2);//Unused
-            list.Add(22);//Units
+            list.Add(22);//Unit
 
             var expected = new VariablePoint("PUMP SPEED", "PMPSPEED");
-            expected.Value = new VariableValue("40.000", Units.Percents);
+            expected.Value = new VariableValue("40.000", Unit.Percents);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Analog;
             expected.Control = OffOn.Off;
@@ -87,10 +87,10 @@
             list.Add(1);//DigitalAnalog
             list.Add(1);//Control
             list.Add(2);//Unused
-            list.Add(20);//Units
+            list.Add(20);//Unit
 
             var expected = new VariablePoint("TEST RUN TIMER", "TESTTIM");
-            expected.Value = new VariableValue("03:45:09", Units.Time);
+            expected.Value = new VariableValue("03:45:09", Unit.Time);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Analog;
             expected.Control = OffOn.On;
@@ -108,14 +108,14 @@
             list.Add(0);//DigitalAnalog
             list.Add(1);//Control
             list.Add(2);//Unused
-            list.Add(23);//Units
+            list.Add(23);//Unit
             var actual = list.ToArray();
 
             var customUnits = new CustomUnits();
             customUnits.Digital.Add(new CustomDigitalUnitsPoint(false, "TEST1", "TEST2"));
 
             var expected = new VariablePoint("TEST CUS UNITS", "TESTCUS");
-            expected.Value = new VariableValue("TEST2", Units.CustomDigital1, customUnits, 2000);
+            expected.Value = new VariableValue("TEST2", Unit.CustomDigital1, customUnits, 2000);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
             expected.Control = OffOn.On;

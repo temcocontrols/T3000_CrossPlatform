@@ -16,15 +16,15 @@ namespace PRGReaderLibrary
 
         #region Binary data
 
-        public static byte ToByte(Units units, DigitalAnalog digitalAnalog) =>
+        public static byte ToByte(Unit unit, DigitalAnalog digitalAnalog) =>
             digitalAnalog == DigitalAnalog.Analog
-            ? (byte)units
-            : (byte)(units - Units.DigitalUnused);
+            ? (byte)unit
+            : (byte)(unit - Unit.DigitalUnused);
 
-        public static Units UnitsFromByte(byte value, DigitalAnalog digitalAnalog) =>
+        public static Unit UnitsFromByte(byte value, DigitalAnalog digitalAnalog) =>
             digitalAnalog == DigitalAnalog.Analog
-            ? (Units)value
-            : value + Units.DigitalUnused;
+            ? (Unit)value
+            : value + Unit.DigitalUnused;
 
         public static int GetCount(FileVersion version = FileVersion.Current)
         {
@@ -68,7 +68,7 @@ namespace PRGReaderLibrary
             offset += BasePoint.GetSize(FileVersion);
 
             int valueRaw;
-            Units units;
+            Unit unit;
 
             switch (FileVersion)
             {
@@ -78,7 +78,7 @@ namespace PRGReaderLibrary
                     DigitalAnalog = (DigitalAnalog)bytes.GetBit(1, ref offset).ToByte();
                     Control = (OffOn)bytes.GetBit(2, ref offset).ToByte();
                     offset += 1;//after GetBit
-                    units = (Units)bytes.ToByte(ref offset);
+                    unit = (Unit)bytes.ToByte(ref offset);
                     break;
 
                 case FileVersion.Current:
@@ -87,14 +87,14 @@ namespace PRGReaderLibrary
                     DigitalAnalog = (DigitalAnalog)bytes.ToByte(ref offset);
                     Control = (OffOn)bytes.ToByte(ref offset);
                     offset += 1;//this byte is unused
-                    units = UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
+                    unit = UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
 
-            Value = new VariableValue(valueRaw, units);
+            Value = new VariableValue(valueRaw, unit);
 
             var size = GetSize(FileVersion);
             if (offset != size)
@@ -121,7 +121,7 @@ namespace PRGReaderLibrary
                         ((byte)AutoManual).ToBoolean(),
                         ((byte)DigitalAnalog).ToBoolean(),
                         ((byte)Control).ToBoolean() }.ToBits());
-                    bytes.Add((byte)Value.Units);
+                    bytes.Add((byte)Value.Unit);
                     break;
 
                 case FileVersion.Current:
@@ -131,7 +131,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)DigitalAnalog);
                     bytes.Add((byte)Control);
                     bytes.Add(2); //TODO: WTF (it equals 2)??
-                    bytes.Add(ToByte(Value.Units, DigitalAnalog));
+                    bytes.Add(ToByte(Value.Unit, DigitalAnalog));
                     break;
 
                 default:

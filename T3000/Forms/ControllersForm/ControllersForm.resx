@@ -235,7 +235,7 @@
     <value>True</value>
   </metadata>
   <data name="UnitsColumn.HeaderText" xml:space="preserve">
-    <value>Units</value>
+    <value>Unit</value>
   </data>
   <metadata name="AutoManualColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -265,7 +265,7 @@
     <value>True</value>
   </metadata>
   <data name="SetPointUnitsColumn.HeaderText" xml:space="preserve">
-    <value>Units</value>
+    <value>Unit</value>
   </data>
   <metadata name="ActionColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

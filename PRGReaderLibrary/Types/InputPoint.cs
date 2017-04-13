@@ -65,7 +65,7 @@ namespace PRGReaderLibrary
             offset += InoutPoint.GetSize(FileVersion);
 
             int valueRaw;
-            Units units;
+            Unit unit;
 
             byte filterRaw;
             byte calibrationHRaw;
@@ -87,14 +87,14 @@ namespace PRGReaderLibrary
                     SubNumber = SubNumberFromByte(bytes.ToByte(ref offset));
                     calibrationHRaw = bytes.ToByte(ref offset);
                     calibrationLRaw = bytes.ToByte(ref offset);
-                    units = AnalogRangeFromByte(bytes.ToByte(ref offset), DigitalAnalog);
+                    unit = AnalogRangeFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
             
-            Value = new VariableValue(valueRaw, units);
+            Value = new VariableValue(valueRaw, unit);
 
             Filter = (int)Math.Pow(2, filterRaw);
             CalibrationH = calibrationHRaw / 10.0;
@@ -161,7 +161,7 @@ namespace PRGReaderLibrary
                     bytes.Add(SubNumberToByte(SubNumber));
                     bytes.Add(calibrationHRaw);
                     bytes.Add(calibrationLRaw);
-                    bytes.Add(ToByte(Value.Units, DigitalAnalog));
+                    bytes.Add(ToByte(Value.Unit, DigitalAnalog));
                     break;
 
                 default:

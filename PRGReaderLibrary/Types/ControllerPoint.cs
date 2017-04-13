@@ -10,7 +10,7 @@ namespace PRGReaderLibrary
         public int Value { get; set; }
         public T3000Point SetPoint { get; set; } = new T3000Point();
         public float SetPointValue { get; set; }
-        public Units Units { get; set; }
+        public Unit Unit { get; set; }
         public AutoManual AutoManual { get; set; }
         public DirectReverse Action { get; set; }
         public Periodicity Periodicity { get; set; }
@@ -82,7 +82,7 @@ namespace PRGReaderLibrary
                     Value = bytes.ToInt32(7 + offset);
                     SetPoint = new T3000Point(bytes.ToBytes(11 + offset, 3), 0, FileVersion);
                     SetPointValue = bytes.ToFloat(14 + offset);
-                    Units = (Units)bytes.ToByte(18 + offset);
+                    Unit = (Unit)bytes.ToByte(18 + offset);
                     AutoManual = (AutoManual)bytes.ToByte(19 + offset);
                     Action = (DirectReverse) bytes.ToByte(20 + offset);
                     Periodicity = (Periodicity)bytes.ToByte(21 + offset);
@@ -117,7 +117,7 @@ namespace PRGReaderLibrary
                     bytes.AddRange(Value.ToBytes());
                     bytes.AddRange(SetPoint.ToBytes());
                     bytes.AddRange(SetPointValue.ToBytes());
-                    bytes.Add((byte)Units);
+                    bytes.Add((byte)Unit);
                     bytes.Add((byte)AutoManual);
                     bytes.Add((byte)Action);
                     bytes.Add((byte)Periodicity);

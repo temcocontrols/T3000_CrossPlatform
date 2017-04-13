@@ -51,9 +51,9 @@
                     point.AutoManual,
                     point.HwSwitchStatus,
                     point.Value.ToString(),
-                    point.Value.Units.GetOffOnName(point.Value.CustomUnits),
+                    point.Value.Unit.GetOffOnName(point.Value.CustomUnits),
                     point.Value.Value,
-                    point.Value.Units.IsDigital()
+                    point.Value.Unit.IsDigital()
                     ? $"0 -> {point.Value.Value / 100.0}"
                     : "",
                     point.LowVoltage,
@@ -81,7 +81,7 @@
             row.SetValue(AutoManualColumn, AutoManual.Automatic);
             row.SetValue(HOASwitchColumn, SwitchStatus.Off);
             row.SetValue(ValueColumn, "0");
-            row.SetValue(UnitsColumn, Units.Unused.GetOffOnName());
+            row.SetValue(UnitsColumn, Unit.Unused.GetOffOnName());
             row.SetValue(RangeColumn, 0);
             row.SetValue(LowVColumn, 0);
             row.SetValue(HighVColumn, 0);

@@ -80,7 +80,7 @@
             // 
             this.messageLabel.Name = "messageLabel";
             this.messageLabel.Size = new System.Drawing.Size(131, 17);
-            this.messageLabel.Text = "Please select need units";
+            this.messageLabel.Text = "Please select need unit";
             // 
             // numberTextBox
             // 
@@ -119,7 +119,7 @@
             this.editButton.Name = "editButton";
             this.editButton.Size = new System.Drawing.Size(173, 25);
             this.editButton.TabIndex = 5;
-            this.editButton.Text = "Edit custom units";
+            this.editButton.Text = "Edit custom unit";
             this.editButton.UseVisualStyleBackColor = true;
             this.editButton.Click += new System.EventHandler(this.EditCustomUnits);
             // 
@@ -130,7 +130,7 @@
             this.analogUnitsLabel.Name = "analogUnitsLabel";
             this.analogUnitsLabel.Size = new System.Drawing.Size(68, 13);
             this.analogUnitsLabel.TabIndex = 6;
-            this.analogUnitsLabel.Text = "Analog units:";
+            this.analogUnitsLabel.Text = "Analog unit:";
             // 
             // digitalUnitsLabel
             // 
@@ -139,7 +139,7 @@
             this.digitalUnitsLabel.Name = "digitalUnitsLabel";
             this.digitalUnitsLabel.Size = new System.Drawing.Size(64, 13);
             this.digitalUnitsLabel.TabIndex = 7;
-            this.digitalUnitsLabel.Text = "Digital units:";
+            this.digitalUnitsLabel.Text = "Digital unit:";
             // 
             // SelectUnitsForm
             // 
@@ -158,7 +158,7 @@
             this.Controls.Add(this.analogUnitsListBox);
             this.Controls.Add(this.digitalUnitsListBox);
             this.Name = "SelectUnitsForm";
-            this.Text = "Select units:";
+            this.Text = "Select unit:";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);

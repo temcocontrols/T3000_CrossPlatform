@@ -56,7 +56,7 @@ namespace PRGReaderLibrary
             FileVersion = version;
 
             int valueRaw;
-            Units units;
+            Unit unit;
 
             switch (FileVersion)
             {
@@ -72,7 +72,7 @@ namespace PRGReaderLibrary
                     Control = (OffOn)bytes.ToByte(ref offset);
                     DigitalControl = (OffOn)bytes.ToByte(ref offset);
                     Decommissioned = bytes.ToByte(ref offset);
-                    units = VariablePoint.UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
+                    unit = VariablePoint.UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     SubId = bytes.ToBoolean(ref offset);
                     SubProduct = bytes.ToBoolean(ref offset);
                     SubNumber = SubNumberFromByte(bytes.ToByte(ref offset));
@@ -83,7 +83,7 @@ namespace PRGReaderLibrary
                     throw new FileVersionNotImplementedException(FileVersion);
             }
 
-            Value = new VariableValue(valueRaw, units);
+            Value = new VariableValue(valueRaw, unit);
 
             var size = GetSize(FileVersion);
             if (offset != size)
@@ -114,7 +114,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)Control);
                     bytes.Add((byte)DigitalControl);
                     bytes.Add((byte)Decommissioned);
-                    bytes.Add(VariablePoint.ToByte(Value.Units, DigitalAnalog));
+                    bytes.Add(VariablePoint.ToByte(Value.Unit, DigitalAnalog));
                     bytes.Add(SubId.ToByte());
                     bytes.Add(SubProduct.ToByte());
                     bytes.Add(SubNumberToByte(SubNumber));

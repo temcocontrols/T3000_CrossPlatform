@@ -1,6 +1,6 @@
 namespace PRGReaderLibrary
 {
-    public enum Units
+    public enum Unit
     {
         /// <summary>
         /// Analog part

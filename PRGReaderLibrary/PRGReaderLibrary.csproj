@@ -90,7 +90,7 @@
     <Compile Include="Types\VariablePoint.cs" />
     <Compile Include="Types\SchedulePoint.cs" />
     <Compile Include="Types\AdditionalTypes\T3000Point.cs" />
-    <Compile Include="Types\Enums\Units.cs" />
+    <Compile Include="Types\Enums\Unit.cs" />
     <Compile Include="Prg.cs" />
     <Compile Include="IO\PrgReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

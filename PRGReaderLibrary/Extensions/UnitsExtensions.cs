@@ -6,42 +6,42 @@
 
     public static class UnitsExtensions
     {
-        public static bool IsAnalog(this Units units) =>
-            units < Units.DigitalUnused;
+        public static bool IsAnalog(this Unit unit) =>
+            unit < Unit.DigitalUnused;
 
-        public static bool IsAnalogRange(this Units units) =>
-            units >= Units.AnalogRangeUnused;
+        public static bool IsAnalogRange(this Unit unit) =>
+            unit >= Unit.AnalogRangeUnused;
 
-        public static bool IsDigital(this Units units) =>
-            !units.IsAnalog() && !units.IsAnalogRange();
+        public static bool IsDigital(this Unit unit) =>
+            !unit.IsAnalog() && !unit.IsAnalogRange();
 
-        public static UnitsNames GetUnitsNames(this Units units, CustomUnits customUnits = null)
+        public static UnitsNames GetUnitsNames(this Unit unit, CustomUnits customUnits = null)
         {
             var names = UnitsNamesUtilities.GetNames(customUnits);
-            if (!names.ContainsKey(units))
+            if (!names.ContainsKey(unit))
             {
-                throw new ArgumentException($@"Units name not exists.
-Units: {units}", nameof(units));
+                throw new ArgumentException($@"Unit name not exists.
+Unit: {unit}", nameof(unit));
             }
 
-            return names[units];
+            return names[unit];
         }
 
-        public static string GetOffName(this Units units, CustomUnits customUnits = null) =>
-            GetUnitsNames(units, customUnits).OffName;
+        public static string GetOffName(this Unit unit, CustomUnits customUnits = null) =>
+            GetUnitsNames(unit, customUnits).OffName;
 
-        public static string GetOnName(this Units units, CustomUnits customUnits = null) =>
-            GetUnitsNames(units, customUnits).OnName;
+        public static string GetOnName(this Unit unit, CustomUnits customUnits = null) =>
+            GetUnitsNames(unit, customUnits).OnName;
 
-        public static string GetOffOnName(this Units units, CustomUnits customUnits = null) =>
-            GetUnitsNames(units, customUnits).OffOnName;
+        public static string GetOffOnName(this Unit unit, CustomUnits customUnits = null) =>
+            GetUnitsNames(unit, customUnits).OffOnName;
 
 
-        private static Dictionary<Units, UnitsNamesAttribute> GetFilledUnitsNamesAttributes()
+        private static Dictionary<Unit, UnitsNamesAttribute> GetFilledUnitsNamesAttributes()
         {
-            var attributes = new Dictionary<Units, UnitsNamesAttribute>();
+            var attributes = new Dictionary<Unit, UnitsNamesAttribute>();
 
-            foreach (Units units in Enum.GetValues(typeof(Units)))
+            foreach (Unit units in Enum.GetValues(typeof(Unit)))
             {
                 attributes.Add(units, units.GetAttribute<UnitsNamesAttribute>());
             }
@@ -49,10 +49,10 @@ Units: {units}", nameof(units));
             return attributes;
         }
 
-        private static Dictionary<Units, UnitsNamesAttribute> UnitsNamesAttributes { get; set; }
+        private static Dictionary<Unit, UnitsNamesAttribute> UnitsNamesAttributes { get; set; }
             = GetFilledUnitsNamesAttributes();
 
-        public static UnitsNamesAttribute GetUnitsNames(this Units value) =>
+        public static UnitsNamesAttribute GetUnitsNames(this Unit value) =>
             UnitsNamesAttributes[value];
     }
 }

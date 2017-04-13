@@ -483,7 +483,7 @@
 
         public byte[] ToCurrentFormat()
         {
-            //Update if Units changed
+            //Update if Unit changed
             UpdateCustomUnits();
 
             var bytes = new List<byte>();

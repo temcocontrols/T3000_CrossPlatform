@@ -229,7 +229,7 @@
     <value>Value</value>
   </data>
   <data name="UnitsColumn.HeaderText" xml:space="preserve">
-    <value>Units</value>
+    <value>Unit</value>
   </data>
   <data name="RangeColumn.HeaderText" xml:space="preserve">
     <value>Range</value>

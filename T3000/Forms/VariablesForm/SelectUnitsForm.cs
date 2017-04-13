@@ -9,30 +9,30 @@
 
     public partial class SelectUnitsForm : Form
     {
-        public Units SelectedUnits { get; private set; } = Units.Unused;
+        public Unit SelectedUnit { get; private set; } = Unit.Unused;
         public bool IsValidated { get; private set; } = true;
         public CustomUnits CustomUnits { get; set; } = null;
         public bool IsAnalogRange { get; private set; } = false;
 
         public SelectUnitsForm(
-            Units selectedUnits = Units.Unused, 
+            Unit selectedUnit = Unit.Unused, 
             CustomUnits customUnits = null, 
             bool isAnalogRange = false)
         {
             InitializeComponent();
 
-            SelectedUnits = selectedUnits;
+            SelectedUnit = selectedUnit;
             CustomUnits = customUnits;
             IsAnalogRange = isAnalogRange;
 
             UpdateUnits();
         }
 
-        private int ToNumber(Units units) =>
-            (int)(units + 1);
+        private int ToNumber(Unit unit) =>
+            (int)(unit + 1);
 
-        private Units ToUnits(int units) =>
-            (Units)(units - 1);
+        private Unit ToUnits(int units) =>
+            (Unit)(units - 1);
 
         public void UpdateUnits()
         {
@@ -111,7 +111,7 @@
                 case Keys.Up:
                 case Keys.PageUp:
                 case Keys.VolumeUp:
-                    SelectedUnits = SelectedUnits.PrevValue();
+                    SelectedUnit = SelectedUnit.PrevValue();
                     ShowSelectedItem();
                     break;
 
@@ -119,7 +119,7 @@
                 case Keys.Down:
                 case Keys.PageDown:
                 case Keys.VolumeDown:
-                    SelectedUnits = SelectedUnits.NextValue();
+                    SelectedUnit = SelectedUnit.NextValue();
                     ShowSelectedItem();
                     break;
 
@@ -127,7 +127,7 @@
                 case Keys.A:
                     for (var i = 0; i < maxItemsInColumn; ++i)
                     {
-                        SelectedUnits = SelectedUnits.PrevValue();
+                        SelectedUnit = SelectedUnit.PrevValue();
                     }
                     ShowSelectedItem();
                     break;
@@ -136,7 +136,7 @@
                 case Keys.D:
                     for (var i = 0; i < maxItemsInColumn; ++i)
                     {
-                        SelectedUnits = SelectedUnits.NextValue();
+                        SelectedUnit = SelectedUnit.NextValue();
                     }
                     ShowSelectedItem();
                     break;
@@ -145,16 +145,16 @@
 
         public void ShowSelectedItem()
         {
-            numberTextBox.Text = ToNumber(SelectedUnits).ToString();
-            messageLabel.Text = string.Format(Resources.SelectUnitsFormSelectedUnits, SelectedUnits.GetOffOnName(CustomUnits));
-            if (SelectedUnits.IsAnalog())
+            numberTextBox.Text = ToNumber(SelectedUnit).ToString();
+            messageLabel.Text = string.Format(Resources.SelectUnitsFormSelectedUnits, SelectedUnit.GetOffOnName(CustomUnits));
+            if (SelectedUnit.IsAnalog())
             {
-                analogUnitsListBox.SelectedIndex = (int) SelectedUnits;
+                analogUnitsListBox.SelectedIndex = (int) SelectedUnit;
                 digitalUnitsListBox.SelectedIndex = -1;
             }
             else
             {
-                digitalUnitsListBox.SelectedIndex = SelectedUnits - Units.DigitalUnused;
+                digitalUnitsListBox.SelectedIndex = SelectedUnit - Unit.DigitalUnused;
                 analogUnitsListBox.SelectedIndex = -1;
             }
         }
@@ -162,7 +162,7 @@
         private void analogUnitsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (analogUnitsListBox.SelectedIndex == -1 ||
-                analogUnitsListBox.SelectedIndex == (int)SelectedUnits)
+                analogUnitsListBox.SelectedIndex == (int)SelectedUnit)
             {
                 return;
             }
@@ -173,7 +173,7 @@
                     digitalUnitsListBox.SelectedIndex = -1;
 
                 var selectedIndex = analogUnitsListBox.SelectedIndex;
-                SelectedUnits = (Units)selectedIndex;
+                SelectedUnit = (Unit)selectedIndex;
                 ShowSelectedItem();
             }
             catch (Exception exception)
@@ -185,7 +185,7 @@
         private void digitalUnitsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (digitalUnitsListBox.SelectedIndex == -1 ||
-                digitalUnitsListBox.SelectedIndex == (SelectedUnits - Units.DigitalUnused))
+                digitalUnitsListBox.SelectedIndex == (SelectedUnit - Unit.DigitalUnused))
             {
                 return;
             }
@@ -196,7 +196,7 @@
                     analogUnitsListBox.SelectedIndex = -1;
 
                 var selectedIndex = digitalUnitsListBox.SelectedIndex;
-                SelectedUnits = (Units.DigitalUnused + selectedIndex);
+                SelectedUnit = (Unit.DigitalUnused + selectedIndex);
                 ShowSelectedItem();
             }
             catch (Exception exception)
@@ -218,7 +218,7 @@
                 {
                     var units = ToUnits(number);
                     units.GetOffOnName(CustomUnits);
-                    SelectedUnits = units;
+                    SelectedUnit = units;
                     ShowSelectedItem();
                 }
                 catch (Exception)

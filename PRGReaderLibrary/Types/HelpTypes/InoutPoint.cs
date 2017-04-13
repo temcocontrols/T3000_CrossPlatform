@@ -15,15 +15,15 @@
         public bool SubProduct { get; set; }
         public double SubNumber { get; set; }
 
-        public static byte ToByte(Units units, DigitalAnalog digitalAnalog) =>
+        public static byte ToByte(Unit unit, DigitalAnalog digitalAnalog) =>
             digitalAnalog == DigitalAnalog.Analog
-            ? (byte)(units - Units.AnalogRangeUnused)
-            : (byte)(units - 106);
+            ? (byte)(unit - Unit.AnalogRangeUnused)
+            : (byte)(unit - 106);
 
-        public static Units AnalogRangeFromByte(byte value, DigitalAnalog digitalAnalog) =>
+        public static Unit AnalogRangeFromByte(byte value, DigitalAnalog digitalAnalog) =>
             digitalAnalog == DigitalAnalog.Analog
-            ? value + Units.AnalogRangeUnused
-            : (Units)(value + 106);
+            ? value + Unit.AnalogRangeUnused
+            : (Unit)(value + 106);
 
         public InoutPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)

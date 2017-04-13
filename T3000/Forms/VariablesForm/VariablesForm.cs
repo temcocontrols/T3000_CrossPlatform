@@ -53,9 +53,9 @@
                     point.Description,
                     point.AutoManual,
                     point.Value.ToString(),
-                    point.Value.Units.GetOffOnName(point.Value.CustomUnits),
+                    point.Value.Unit.GetOffOnName(point.Value.CustomUnits),
                     point.Value.Value,
-                    point.Value.Units.IsDigital()
+                    point.Value.Unit.IsDigital()
                     ? $"0 -> {point.Value.Value / 100.0}"
                     : "",
                     point.Label
@@ -79,7 +79,7 @@
             row.Cells[LabelColumn.Name].Value = string.Empty;
             row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
             row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
+            row.Cells[UnitsColumn.Name].Value = Unit.Unused.GetOffOnName();
             row.Cells[RangeColumn.Name].Value = 0;
         }
 
@@ -145,20 +145,20 @@
             {
                 var row = view.CurrentRow;
                 var value = GetVariableValue(row);
-                var form = new SelectUnitsForm(value.Units, value.CustomUnits);
+                var form = new SelectUnitsForm(value.Unit, value.CustomUnits);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
 
-                var newValue = value.ConvertValue(form.SelectedUnits, form.CustomUnits);
+                var newValue = value.ConvertValue(form.SelectedUnit, form.CustomUnits);
                 CustomUnits = form.CustomUnits;
 
                 view.ChangeValidationArguments(
                     UnitsColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 view.ChangeValidationArguments(
                     ValueColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-                var newUnits = form.SelectedUnits.GetOffOnName(CustomUnits);
+                var newUnits = form.SelectedUnit.GetOffOnName(CustomUnits);
 
                 row.SetValue(UnitsColumn, newUnits);
                 row.SetValue(ValueColumn, newValue);

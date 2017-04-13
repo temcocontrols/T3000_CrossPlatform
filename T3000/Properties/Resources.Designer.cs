@@ -119,7 +119,7 @@ namespace T3000.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Custom units is not valid. Please fix it before saving..
+        ///   Looks up a localized string similar to Custom unit is not valid. Please fix it before saving..
         /// </summary>
         internal static string EditCustomUnitsFormNotValid {
             get {
@@ -317,7 +317,7 @@ namespace T3000.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected units not valid. Please select valid item..
+        ///   Looks up a localized string similar to Selected unit not valid. Please select valid item..
         /// </summary>
         internal static string SelectUnitsFormNotValid {
             get {
@@ -326,7 +326,7 @@ namespace T3000.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected units: {0}.
+        ///   Looks up a localized string similar to Selected unit: {0}.
         /// </summary>
         internal static string SelectUnitsFormSelectedUnits {
             get {

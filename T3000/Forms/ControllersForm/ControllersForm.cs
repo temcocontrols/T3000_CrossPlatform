@@ -49,7 +49,7 @@
                     i + 1,
                     point.Input.Number,
                     point.Value.ToString(),
-                    point.Units.ToString(),
+                    point.Unit.ToString(),
                     point.AutoManual,
                     "x.x %",
                     "",
@@ -79,7 +79,7 @@
 
             row.Cells[InputColumn.Name].Value = string.Empty;
             row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
+            row.Cells[UnitsColumn.Name].Value = Unit.Unused.GetOffOnName();
             row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
         }
 

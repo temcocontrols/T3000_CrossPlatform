@@ -168,6 +168,7 @@
             // 
             // JumperColumn
             // 
+            this.JumperColumn.FillWeight = 150F;
             resources.ApplyResources(this.JumperColumn, "JumperColumn");
             this.JumperColumn.Name = "JumperColumn";
             // 

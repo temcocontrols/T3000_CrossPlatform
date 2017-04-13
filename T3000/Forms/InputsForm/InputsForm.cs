@@ -52,9 +52,9 @@
                     point.Description,
                     point.AutoManual,
                     point.Value.ToString(),
-                    point.Value.Units.GetOffOnName(customUnits),
+                    point.Value.Unit.GetOffOnName(customUnits),
                     point.Value.Value,
-                    point.Value.Units.IsDigital()
+                    point.Value.Unit.IsDigital()
                     ? $"0 -> {point.Value.Value / 100.0}"
                     : "",
                     point.CalibrationL,
@@ -82,7 +82,7 @@
             row.Cells[DescriptionColumn.Name].Value = string.Empty;
             row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
             row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Units.Unused.GetOffOnName();
+            row.Cells[UnitsColumn.Name].Value = Unit.Unused.GetOffOnName();
             row.Cells[RangeColumn.Name].Value = 0;
             row.Cells[CalibrationColumn.Name].Value = 0;
             row.Cells[SignColumn.Name].Value = Sign.Positive;

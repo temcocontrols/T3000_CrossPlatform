@@ -10,7 +10,7 @@
     {
         public void VariableVariantToFromTest(VariableValue value, CustomUnits customUnits)
         {
-            var tempValue = new VariableValue(value.ToString(), value.Units, customUnits, value.Value);
+            var tempValue = new VariableValue(value.ToString(), value.Unit, customUnits, value.Value);
             ObjectAssert.AreEqual(value, tempValue,
                 $@"Variable value toFrom string test failed.
 Value.ToString(): {value.ToString()}
@@ -177,7 +177,7 @@ See console log for details.
             if (prg.Variables.Count > 0)
             {
                 prg = Prg.Load(temp);
-                prg.Variables[0].Value = new VariableValue("9998.8999", Units.DegreesC);
+                prg.Variables[0].Value = new VariableValue("9998.8999", Unit.DegreesC);
                 prg.Save(temp);
                 FileAssert.AreNotEqual(path, temp);
             }
@@ -216,7 +216,7 @@ See console log for details.
             {
                 Description = "TANK2 TOP",
                 AutoManual = AutoManual.Automatic,
-                Value = new VariableValue(0.683, Units.PercentsVolts5),
+                Value = new VariableValue(0.683, Unit.PercentsVolts5),
                 CalibrationH = 0.0,
                 CalibrationL = 0.0,
                 CalibrationSign = Sign.Negative,
@@ -238,7 +238,7 @@ See console log for details.
             {
                 Description = "TANK2 BOT",
                 AutoManual = AutoManual.Automatic,
-                Value = new VariableValue("High", Units.LowHigh, null, 1000),
+                Value = new VariableValue("High", Unit.LowHigh, null, 1000),
                 CalibrationH = 0.0,
                 CalibrationL = 0.0,
                 CalibrationSign = Sign.Negative,
@@ -259,7 +259,7 @@ See console log for details.
             {
                 Description = "IN 3",
                 AutoManual = AutoManual.Automatic,
-                Value = new VariableValue(19.824, Units.Psi20),
+                Value = new VariableValue(19.824, Unit.Psi20),
                 CalibrationH = 0.0,
                 CalibrationL = 0.0,
                 CalibrationSign = Sign.Negative,
@@ -308,7 +308,7 @@ See console log for details.
             var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription    ", variable1.Description);
             Assert.AreEqual("FirstLabe", variable1.Label);
-            Assert.AreEqual(new VariableValue(5.0, Units.DegreesC), variable1.Value);
+            Assert.AreEqual(new VariableValue(5.0, Unit.DegreesC), variable1.Value);
             Assert.AreEqual(AutoManual.Automatic, variable1.AutoManual);
             Assert.AreEqual(DigitalAnalog.Analog, variable1.DigitalAnalog);
             Assert.AreEqual(OffOn.Off, variable1.Control);
@@ -316,7 +316,7 @@ See console log for details.
             var variable2 = prg.Variables[1];
             Assert.AreEqual("SecondDescription   ", variable2.Description);
             Assert.AreEqual("SecondLab", variable2.Label);
-            ObjectAssert.AreEqual(new VariableValue("On", Units.OffOn).Value, variable2.Value.Value);
+            ObjectAssert.AreEqual(new VariableValue("On", Unit.OffOn).Value, variable2.Value.Value);
             Assert.AreEqual(AutoManual.Manual, variable2.AutoManual);
             Assert.AreEqual(DigitalAnalog.Digital, variable2.DigitalAnalog);
             Assert.AreEqual(OffOn.Off, variable2.Control);
@@ -324,7 +324,7 @@ See console log for details.
             var variable3 = prg.Variables[2];
             Assert.AreEqual("ThirdDescription    ", variable3.Description);
             Assert.AreEqual("ThirdLabe", variable3.Label);
-            Assert.AreEqual(new VariableValue(new TimeSpan(0, 22, 22, 22, 0), Units.Time), variable3.Value);
+            Assert.AreEqual(new VariableValue(new TimeSpan(0, 22, 22, 22, 0), Unit.Time), variable3.Value);
             Assert.AreEqual(AutoManual.Automatic, variable3.AutoManual);
             Assert.AreEqual(DigitalAnalog.Analog, variable3.DigitalAnalog);
             Assert.AreEqual(OffOn.Off, variable3.Control);

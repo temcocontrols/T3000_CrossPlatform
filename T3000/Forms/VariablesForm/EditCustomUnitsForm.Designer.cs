@@ -126,7 +126,7 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.statusStrip);
             this.Name = "EditCustomUnitsForm";
-            this.Text = "Change custom units:";
+            this.Text = "Change custom unit:";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
