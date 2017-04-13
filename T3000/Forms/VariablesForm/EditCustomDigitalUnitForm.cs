@@ -50,7 +50,7 @@
             }
 
             Point.DigitalUnitsOff = offNameTextBox.Text;
-            Point.DigitalUnitsOn = offNameTextBox.Text;
+            Point.DigitalUnitsOn = onNameTextBox.Text;
 
             DialogResult = DialogResult.OK;
             Close();
