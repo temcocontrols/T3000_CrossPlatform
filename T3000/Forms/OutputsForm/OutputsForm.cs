@@ -37,6 +37,10 @@
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
 
+            //Formating
+            view.AddFormating(UnitsColumn, o => ((Unit)o).GetUnitName(CustomUnits));
+            view.AddFormating(RangeTextColumn, o => ((Unit)o).GetRange(CustomUnits));
+
             //Show points
 
             view.Rows.Clear();
@@ -51,11 +55,9 @@
                     point.AutoManual,
                     point.HwSwitchStatus,
                     point.Value.ToString(),
-                    point.Value.Unit.GetOffOnName(point.Value.CustomUnits),
+                    point.Value.Unit,
                     point.Value.Value,
-                    point.Value.Unit.IsDigital()
-                    ? $"0 -> {point.Value.Value / 100.0}"
-                    : "",
+                    point.Value.Unit,
                     point.LowVoltage,
                     point.HighVoltage,
                     point.PwmPeriod,
@@ -81,8 +83,9 @@
             row.SetValue(AutoManualColumn, AutoManual.Automatic);
             row.SetValue(HOASwitchColumn, SwitchStatus.Off);
             row.SetValue(ValueColumn, "0");
-            row.SetValue(UnitsColumn, Unit.Unused.GetOffOnName());
+            row.SetValue(UnitsColumn, Unit.Unused);
             row.SetValue(RangeColumn, 0);
+            row.SetValue(RangeTextColumn, Unit.Unused);
             row.SetValue(LowVColumn, 0);
             row.SetValue(HighVColumn, 0);
             row.SetValue(PWMPeriodColumn, 0);
@@ -113,8 +116,7 @@
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.Value = new VariableValue(
                         row.GetValue<string>(ValueColumn),
-                        UnitsNamesUtilities.UnitsFromName(
-                            row.GetValue<string>(UnitsColumn), CustomUnits),
+                        row.GetValue<Unit>(UnitsColumn),
                         CustomUnits, range);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.HwSwitchStatus = row.GetValue<SwitchStatus>(HOASwitchColumn);

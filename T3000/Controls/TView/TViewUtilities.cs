@@ -53,16 +53,16 @@
             var valueColumn = (string)arguments[0];
             var unitsColumn = (string)arguments[1];
             var customUnits = (CustomUnits)arguments[2];
+
             var isValidated = true;
             var message = string.Empty;
             try
             {
                 var row = cell.OwningRow;
-                var unitsCell = row.Cells[unitsColumn];
-                var valueCell = row.Cells[valueColumn];
-                var units = UnitsNamesUtilities.UnitsFromName(
-                    (string)unitsCell.Value, customUnits);
-                new VariableValue((string)valueCell.Value, units, customUnits);
+                new VariableValue(
+                    row.GetValue<string>(valueColumn), 
+                    row.GetValue<Unit>(unitsColumn), 
+                    customUnits);
             }
             catch (Exception exception)
             {

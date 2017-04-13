@@ -41,6 +41,9 @@
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
 
+            //Formating
+            view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
+
             //Show points
 
             view.Rows.Clear();
@@ -53,11 +56,8 @@
                     point.Description,
                     point.AutoManual,
                     point.Value.ToString(),
-                    point.Value.Unit.GetOffOnName(point.Value.CustomUnits),
+                    point.Value.Unit,
                     point.Value.Value,
-                    point.Value.Unit.IsDigital()
-                    ? $"0 -> {point.Value.Value / 100.0}"
-                    : "",
                     point.Label
                 });
                 ++i;
@@ -133,8 +133,7 @@
         private VariableValue GetVariableValue(DataGridViewRow row) => 
             new VariableValue(
                         row.GetValue<string>(ValueColumn),
-                        UnitsNamesUtilities.UnitsFromName(
-                            row.GetValue<string>(UnitsColumn), CustomUnits),
+                        row.GetValue<Unit>(UnitsColumn),
                         CustomUnits,
                         row.GetValue<int>(RangeColumn));
 
@@ -158,11 +157,10 @@
                     UnitsColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
                 view.ChangeValidationArguments(
                     ValueColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-                var newUnits = form.SelectedUnit.GetOffOnName(CustomUnits);
 
-                row.SetValue(UnitsColumn, newUnits);
+                row.SetValue(UnitsColumn, form.SelectedUnit);
                 row.SetValue(ValueColumn, newValue);
-                //row.SetValue(RangeColumn, newValue.);
+                //row.SetValue(RangeColumn, newValue.Va);
 
                 view.ValidateRow(row);
             }

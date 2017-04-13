@@ -17,6 +17,16 @@ namespace PRGReaderLibrary
             : base(description, label, version)
         { }
 
+        public static byte ToByte(Unit unit, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? (byte)(unit - Unit.OutputAnalogUnused)
+            : (byte)(unit - 100);
+
+        public static Unit UnitFromByte(byte value, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? value + Unit.OutputAnalogUnused
+            : (Unit)(value + 100);
+
         #region Binary data
 
         public static int GetCount(FileVersion version = FileVersion.Current)
@@ -72,7 +82,7 @@ namespace PRGReaderLibrary
                     Control = (OffOn)bytes.ToByte(ref offset);
                     DigitalControl = (OffOn)bytes.ToByte(ref offset);
                     Decommissioned = bytes.ToByte(ref offset);
-                    unit = VariablePoint.UnitsFromByte(bytes.ToByte(ref offset), DigitalAnalog);
+                    unit = UnitFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     SubId = bytes.ToBoolean(ref offset);
                     SubProduct = bytes.ToBoolean(ref offset);
                     SubNumber = SubNumberFromByte(bytes.ToByte(ref offset));

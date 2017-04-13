@@ -11,8 +11,8 @@
             GetFilledAnalogDictionary();
         private static Dictionary<Unit, UnitsNames> BaseDigitalDictionary { get; } =
             GetFilledDigitalDictionary();
-        private static Dictionary<Unit, UnitsNames> BaseAnalogRangeDictionary { get; } =
-            GetFilledAnalogRangeDictionary();
+        private static Dictionary<Unit, UnitsNames> BaseInputAnalogDictionary { get; } =
+            GetFilledInputAnalogDictionary();
 
         private static UnitsNames GetCustomDigitalName(int index,
             List<CustomDigitalUnitsPoint> customUnits = null,
@@ -63,13 +63,29 @@
                 case Unit.CustomDigital8:
                     return GetCustomDigitalName(unit - Unit.CustomDigital1, customUnits?.Digital, unit.ToString());
 
-                //Custom range analog part
-                case Unit.AnalogRangeCustom1:
-                case Unit.AnalogRangeCustom2:
-                case Unit.AnalogRangeCustom3:
-                case Unit.AnalogRangeCustom4:
-                case Unit.AnalogRangeCustom5:
-                    return GetCustomAnalogName(unit - Unit.AnalogRangeCustom1, customUnits?.Analog, unit.ToString());
+                //Custom analog part
+                case Unit.Custom1:
+                case Unit.Custom2:
+                case Unit.Custom3:
+                case Unit.Custom4:
+                case Unit.Custom5:
+                    return GetCustomAnalogName(unit - Unit.Custom1, customUnits?.Analog, unit.ToString());
+
+                //Custom input analog part
+                case Unit.InputAnalogCustom1:
+                case Unit.InputAnalogCustom2:
+                case Unit.InputAnalogCustom3:
+                case Unit.InputAnalogCustom4:
+                case Unit.InputAnalogCustom5:
+                    return GetCustomAnalogName(unit - Unit.InputAnalogCustom1, customUnits?.Analog, unit.ToString());
+
+                //Custom output analog part
+                case Unit.OutputAnalogCustom1:
+                case Unit.OutputAnalogCustom2:
+                case Unit.OutputAnalogCustom3:
+                case Unit.OutputAnalogCustom4:
+                case Unit.OutputAnalogCustom5:
+                    return GetCustomAnalogName(unit - Unit.OutputAnalogCustom1, customUnits?.Analog, unit.ToString());
 
                 default:
                     return unit.GetUnitsNames()?.UnitsNames ?? new UnitsNames(unit.ToString());
@@ -102,9 +118,9 @@
             CustomUnits customUnits = null) =>
             GetFilledDictionary(customUnits, units => units.IsDigital());
 
-        private static Dictionary<Unit, UnitsNames> GetFilledAnalogRangeDictionary(
+        private static Dictionary<Unit, UnitsNames> GetFilledInputAnalogDictionary(
             CustomUnits customUnits = null) =>
-            GetFilledDictionary(customUnits, units => units.IsAnalogRange());
+            GetFilledDictionary(customUnits, units => units.IsInputAnalog());
 
         public static Dictionary<Unit, UnitsNames> GetNames(
             CustomUnits customUnits = null) =>
@@ -118,27 +134,10 @@
             CustomUnits customUnits = null) =>
             customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
 
-        public static Dictionary<Unit, UnitsNames> GetAnalogRangeNames(
+        public static Dictionary<Unit, UnitsNames> GetInputAnalogNames(
             CustomUnits customUnits = null) =>
             customUnits == null
-            ? BaseAnalogRangeDictionary
-            : GetFilledAnalogRangeDictionary(customUnits);
-
-        public static Unit UnitsFromName(string name,
-            CustomUnits customUnits = null)
-        {
-            var names = GetNames(customUnits);
-            foreach (var pair in names)
-            {
-                if (name.Equals(pair.Value.OffOnName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return pair.Key;
-                }
-            }
-
-            throw new NotImplementedException($@"This name not implemented.
-Name: {name}
-CustomUnits: {customUnits?.PropertiesText(shortMode: true)}");
-        }
+            ? BaseInputAnalogDictionary
+            : GetFilledInputAnalogDictionary(customUnits);
     }
 }

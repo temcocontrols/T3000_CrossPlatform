@@ -2,18 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public static class UnitsExtensions
     {
         public static bool IsAnalog(this Unit unit) =>
             unit < Unit.DigitalUnused;
 
-        public static bool IsAnalogRange(this Unit unit) =>
-            unit >= Unit.AnalogRangeUnused;
+        public static bool IsInputAnalog(this Unit unit) =>
+            unit >= Unit.InputAnalogUnused && unit < Unit.OutputAnalogUnused;
+
+        public static bool IsOutputAnalog(this Unit unit) =>
+            unit >= Unit.OutputAnalogUnused;
 
         public static bool IsDigital(this Unit unit) =>
-            !unit.IsAnalog() && !unit.IsAnalogRange();
+            !unit.IsAnalog() && !unit.IsInputAnalog() && !unit.IsOutputAnalog();
 
         public static UnitsNames GetUnitsNames(this Unit unit, CustomUnits customUnits = null)
         {
@@ -35,6 +37,16 @@ Unit: {unit}", nameof(unit));
 
         public static string GetOffOnName(this Unit unit, CustomUnits customUnits = null) =>
             GetUnitsNames(unit, customUnits).OffOnName;
+
+        public static string GetRange(this Unit unit, CustomUnits customUnits = null) =>
+            unit.IsDigital()
+                ? unit.GetOffOnName(customUnits)
+                : unit.GetOnName(customUnits);
+
+        public static string GetUnitName(this Unit unit, CustomUnits customUnits = null) =>
+            unit.IsDigital()
+                ? unit.GetOffOnName(customUnits)
+                : unit.GetOffName(customUnits);
 
 
         private static Dictionary<Unit, UnitsNamesAttribute> GetFilledUnitsNamesAttributes()

@@ -3,27 +3,25 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
-    using System.Drawing;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
     public partial class SelectUnitsForm : Form
     {
         public Unit SelectedUnit { get; private set; } = Unit.Unused;
         public bool IsValidated { get; private set; } = true;
         public CustomUnits CustomUnits { get; set; } = null;
-        public bool IsAnalogRange { get; private set; } = false;
+        public bool IsInputAnalog { get; private set; } = false;
 
         public SelectUnitsForm(
             Unit selectedUnit = Unit.Unused, 
             CustomUnits customUnits = null, 
-            bool isAnalogRange = false)
+            bool isInputAnalog = false)
         {
             InitializeComponent();
 
             SelectedUnit = selectedUnit;
             CustomUnits = customUnits;
-            IsAnalogRange = isAnalogRange;
+            IsInputAnalog = isInputAnalog;
 
             UpdateUnits();
         }
@@ -39,8 +37,8 @@
             try
             {
                 analogUnitsListBox.Items.Clear();
-                var analogDictionary = IsAnalogRange 
-                    ? UnitsNamesUtilities.GetAnalogRangeNames(CustomUnits)
+                var analogDictionary = IsInputAnalog
+                    ? UnitsNamesUtilities.GetInputAnalogNames(CustomUnits)
                     : UnitsNamesUtilities.GetAnalogNames(CustomUnits);
                 foreach (var name in analogDictionary)
                 {

@@ -1,7 +1,5 @@
 ﻿namespace PRGReaderLibrary
 {
-    using System.Collections.Generic;
-
     public class InoutPoint : BasePoint
     {
         public VariableValue Value { get; set; } = new VariableValue(0, 0);
@@ -14,16 +12,6 @@
         public bool SubId { get; set; }
         public bool SubProduct { get; set; }
         public double SubNumber { get; set; }
-
-        public static byte ToByte(Unit unit, DigitalAnalog digitalAnalog) =>
-            digitalAnalog == DigitalAnalog.Analog
-            ? (byte)(unit - Unit.AnalogRangeUnused)
-            : (byte)(unit - 106);
-
-        public static Unit AnalogRangeFromByte(byte value, DigitalAnalog digitalAnalog) =>
-            digitalAnalog == DigitalAnalog.Analog
-            ? value + Unit.AnalogRangeUnused
-            : (Unit)(value + 106);
 
         public InoutPoint(string description = "", string label = "",
             FileVersion version = FileVersion.Current)

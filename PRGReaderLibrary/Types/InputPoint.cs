@@ -24,6 +24,16 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(description, label, version)
         { }
+        
+        public static byte ToByte(Unit unit, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? (byte)(unit - Unit.InputAnalogUnused)
+            : (byte)(unit - 106);
+
+        public static Unit UnitFromByte(byte value, DigitalAnalog digitalAnalog) =>
+            digitalAnalog == DigitalAnalog.Analog
+            ? value + Unit.InputAnalogUnused
+            : (Unit)(value + 106);
 
         #region Binary data
 
@@ -87,7 +97,7 @@ namespace PRGReaderLibrary
                     SubNumber = SubNumberFromByte(bytes.ToByte(ref offset));
                     calibrationHRaw = bytes.ToByte(ref offset);
                     calibrationLRaw = bytes.ToByte(ref offset);
-                    unit = AnalogRangeFromByte(bytes.ToByte(ref offset), DigitalAnalog);
+                    unit = UnitFromByte(bytes.ToByte(ref offset), DigitalAnalog);
                     break;
 
                 default:

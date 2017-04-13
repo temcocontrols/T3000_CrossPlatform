@@ -234,6 +234,9 @@
   <data name="RangeColumn.HeaderText" xml:space="preserve">
     <value>Range</value>
   </data>
+  <data name="RangeColumn.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="RangeTextColumn.HeaderText" xml:space="preserve">
     <value>RangeText</value>
   </data>
@@ -274,7 +277,7 @@
     <value>view</value>
   </data>
   <data name="&gt;&gt;view.Type" xml:space="preserve">
-    <value>T3000.Controls.Improved.TView, T3000, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>T3000.Controls.TView, T3000, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;view.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1324,6 +1327,9 @@
         ////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////w==
 </value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Outputs</value>

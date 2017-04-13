@@ -142,6 +142,7 @@
             // 
             resources.ApplyResources(this.RangeTextColumn, "RangeTextColumn");
             this.RangeTextColumn.Name = "RangeTextColumn";
+            this.RangeTextColumn.ReadOnly = true;
             // 
             // CalibrationColumn
             // 
