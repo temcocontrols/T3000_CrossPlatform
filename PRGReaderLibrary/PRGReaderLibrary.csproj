@@ -36,13 +36,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\TcpType.cs" />
-    <Compile Include="Enums\Periodicity.cs" />
-    <Compile Include="Enums\DirectReverse.cs" />
-    <Compile Include="Enums\NormalCom.cs" />
-    <Compile Include="Enums\Sign.cs" />
-    <Compile Include="Enums\SwitchStatus.cs" />
-    <Compile Include="Enums\TextGraphic.cs" />
+    <Compile Include="Types\Enums\TcpType.cs" />
+    <Compile Include="Types\Enums\Periodicity.cs" />
+    <Compile Include="Types\Enums\DirectReverse.cs" />
+    <Compile Include="Types\Enums\NormalCom.cs" />
+    <Compile Include="Types\Enums\Sign.cs" />
+    <Compile Include="Types\Enums\SwitchStatus.cs" />
+    <Compile Include="Types\Enums\TextGraphic.cs" />
     <Compile Include="Types\AdditionalTypes\UNTime.cs" />
     <Compile Include="Types\AdditionalTypes\ProInfo.cs" />
     <Compile Include="Types\CustomAnalogUnitsPoint.cs" />
@@ -51,15 +51,18 @@
     <Compile Include="Types\HelpTypes\TableValue.cs" />
     <Compile Include="Types\HelpTypes\InoutPoint.cs" />
     <Compile Include="Types\HelpTypes\UnitsNames.cs" />
+    <Compile Include="Types\HelpTypes\NameAttribute.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Types\Enums\Jumper.cs" />
     <Compile Include="Utilities\UnitsNamesUtilities.cs" />
-    <Compile Include="Enums\AnalogOutput.cs" />
-    <Compile Include="Enums\CommandRequest.cs" />
-    <Compile Include="Enums\FileVersion.cs" />
-    <Compile Include="Enums\OffOn.cs" />
-    <Compile Include="Enums\DigitalAnalog.cs" />
-    <Compile Include="Enums\AutoManual.cs" />
-    <Compile Include="Enums\VariableType.cs" />
-    <Compile Include="Enums\PointType.cs" />
+    <Compile Include="Types\Enums\AnalogOutput.cs" />
+    <Compile Include="Types\Enums\CommandRequest.cs" />
+    <Compile Include="Types\Enums\FileVersion.cs" />
+    <Compile Include="Types\Enums\OffOn.cs" />
+    <Compile Include="Types\Enums\DigitalAnalog.cs" />
+    <Compile Include="Types\Enums\AutoManual.cs" />
+    <Compile Include="Types\Enums\VariableType.cs" />
+    <Compile Include="Types\Enums\PointType.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\UnitsExtensions.cs" />
@@ -78,7 +81,7 @@
     <Compile Include="Types\ScreenPoint.cs" />
     <Compile Include="Types\Interfaces\IBinaryObject.cs" />
     <Compile Include="Types\AdditionalTypes\NetPoint.cs" />
-    <Compile Include="Enums\PanelType.cs" />
+    <Compile Include="Types\Enums\PanelType.cs" />
     <Compile Include="Types\HolidayPoint.cs" />
     <Compile Include="Types\ControllerPoint.cs" />
     <Compile Include="Types\InputPoint.cs" />
@@ -87,7 +90,7 @@
     <Compile Include="Types\VariablePoint.cs" />
     <Compile Include="Types\SchedulePoint.cs" />
     <Compile Include="Types\AdditionalTypes\T3000Point.cs" />
-    <Compile Include="Enums\Units.cs" />
+    <Compile Include="Types\Enums\Units.cs" />
     <Compile Include="Prg.cs" />
     <Compile Include="IO\PrgReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

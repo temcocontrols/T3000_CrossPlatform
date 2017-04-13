@@ -9,13 +9,6 @@ namespace PRGReaderLibrary
         Open,
         Shorted
     }
-    public enum Jumper
-    {
-        Thermistor,
-        To20Ma,
-        To5V,
-        To10V
-    }
 
     public class InputPoint : InoutPoint, IBinaryObject
     {

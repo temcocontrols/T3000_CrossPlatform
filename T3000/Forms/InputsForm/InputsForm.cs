@@ -27,7 +27,7 @@
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditHandler(SignColumn, EditSignColumn);
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<InputStatus>);
-            view.AddEditHandler(JumperColumn, TViewUtilities.EditEnum<Jumper>);
+            view.AddEditHandler(JumperColumn, EditJumperColumn);
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
@@ -58,10 +58,10 @@
                     ? $"0 -> {point.Value.Value / 100.0}"
                     : "",
                     point.CalibrationL,
-                    point.CalibrationSign.GetString(),
+                    point.CalibrationSign.GetName(),
                     point.Filter,
                     point.Status,
-                    point.Jumper,
+                    point.Jumper.GetName(),
                     point.Label
                 });
                 ++i;
@@ -88,7 +88,7 @@
             row.Cells[SignColumn.Name].Value = Sign.Positive;
             row.Cells[FilterColumn.Name].Value = 0;
             row.Cells[StatusColumn.Name].Value = InputStatus.Normal;
-            row.Cells[JumperColumn.Name].Value = Jumper.Thermistor;
+            row.Cells[JumperColumn.Name].Value = Jumper.Thermistor.GetName();
             row.Cells[LabelColumn.Name].Value = string.Empty;
         }
 
@@ -152,10 +152,43 @@
                 var view = (Controls.TView)sender;
                 var cell = view.CurrentCell;
                 var text = (string) cell.Value;
-                var sign = text.Equals(Sign.Positive.GetString()) 
+                var sign = text.Equals(Sign.Positive.GetName()) 
                     ? Sign.Positive : Sign.Negative;
                 var nextValue = sign.NextValue();
-                cell.Value = nextValue.GetString();
+                cell.Value = nextValue.GetName();
+
+                view.ValidateCell(cell);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        private void EditJumperColumn(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = (Controls.TView)sender;
+                var cell = view.CurrentCell;
+                var text = (string)cell.Value;
+
+                var jumper = Jumper.Thermistor;
+                if (text.Equals(Jumper.To10V.GetName()))
+                {
+                    jumper = Jumper.To10V;
+                }
+                else if (text.Equals(Jumper.To5V.GetName()))
+                {
+                    jumper = Jumper.To5V;
+                }
+                else if (text.Equals(Jumper.To20Ma.GetName()))
+                {
+                    jumper = Jumper.To20Ma;
+                }
+
+                var nextValue = jumper.NextValue();
+                cell.Value = nextValue.GetName();
 
                 view.ValidateCell(cell);
             }
