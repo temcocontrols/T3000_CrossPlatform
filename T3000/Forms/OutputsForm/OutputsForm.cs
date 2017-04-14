@@ -105,21 +105,19 @@
 
             try
             {
-                var i = 0;
-                foreach (DataGridViewRow row in view.Rows)
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
                 {
-                    if (i >= Points.Count)
-                    {
-                        break;
-                    }
-
                     var point = Points[i];
+                    var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
-                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.HwSwitchStatus = row.GetValue<SwitchStatus>(HOASwitchColumn);
+                    point.LowVoltage = row.GetValue<int>(LowVColumn);
+                    point.HighVoltage = row.GetValue<int>(HighVColumn);
+                    point.PwmPeriod = row.GetValue<int>(PWMPeriodColumn);
+                    point.Control = row.GetValue<OffOn>(StatusColumn);
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                     point.Label = row.GetValue<string>(LabelColumn);
-                    ++i;
                 }
             }
             catch (Exception exception)

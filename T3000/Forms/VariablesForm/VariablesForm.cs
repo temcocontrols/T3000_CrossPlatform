@@ -30,14 +30,6 @@
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()),
                 RangeTextColumn.Name);
 
-            //Validation
-            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue, 
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-
             //Cell changed handles
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
@@ -48,43 +40,46 @@
             view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
 
             //Show points
-
             view.Rows.Clear();
-
-            var i = 0;
-            foreach (var point in Points)
+            view.Rows.Add(Points.Count);
+            for (var i = 0; i < Points.Count; ++i)
             {
-                view.Rows.Add(new object[] {
-                    i + 1,
-                    point.Description,
-                    point.AutoManual,
-                    point.Value.ToString(),
-                    point.Value.Unit,
-                    point.Value.Value,
-                    point.Label
-                });
-                ++i;
+                var point = Points[i];
+                var row = view.Rows[i];
+                row.SetValue(NumberColumn, $"{i + 1}");
+                SetRow(row, point);
             }
+
+            //Validation
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.Validate();
         }
 
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e)
+        private void SetRow(DataGridViewRow row, VariablePoint point)
         {
-            var row = view.CurrentRow;
-            if (row == null)
+            if (row == null || point == null)
             {
                 return;
             }
 
-            row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[LabelColumn.Name].Value = string.Empty;
-            row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
-            row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Unit.Unused.GetOffOnName();
-            row.Cells[RangeColumn.Name].Value = 0;
+            row.SetValue(DescriptionColumn, point.Description);
+            row.SetValue(AutoManualColumn, point.AutoManual);
+            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetValue(UnitsColumn, point.Value.Unit);
+            row.SetValue(RangeColumn, point.Value.Value);
+            row.SetValue(RangeTextColumn, point.Value.Unit);
+            row.SetValue(LabelColumn, point.Label);
         }
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e) =>
+            SetRow(view.CurrentRow, new VariablePoint());
 
         private void Save(object sender, EventArgs e)
         {
@@ -97,20 +92,14 @@
 
             try
             {
-                var i = 0;
-                foreach (DataGridViewRow row in view.Rows)
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
                 {
-                    if (i >= Points.Count)
-                    {
-                        break;
-                    }
-
                     var point = Points[i];
+                    var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
-                    point.Label = row.GetValue<string>(LabelColumn);
-                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
-                    ++i;
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
+                    point.Label = row.GetValue<string>(LabelColumn);
                 }
             }
             catch (Exception exception)

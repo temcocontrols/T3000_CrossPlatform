@@ -63,6 +63,10 @@
                 ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
                 ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(RangeTextColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(CalibrationColumn, TViewUtilities.ValidateDouble);
+            view.AddValidation(FilterColumn, TViewUtilities.ValidateInteger);
             view.Validate();
         }
 
