@@ -65,7 +65,7 @@
     <Compile Include="Types\Enums\PointType.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
-    <Compile Include="Extensions\UnitsExtensions.cs" />
+    <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="IO\PrgWriter.cs" />
     <Compile Include="Types\HelpTypes\Description.cs" />
     <Compile Include="Types\HelpTypes\VariableValue.cs" />

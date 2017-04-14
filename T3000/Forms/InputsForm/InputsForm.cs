@@ -24,13 +24,13 @@
 
             //User input
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditHandler(UnitsColumn, TViewUtilities.EditUnitsColumn,
+                ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
+                CustomUnits, new Func<Unit, bool>(unit => unit.IsInputAnalog()),
+                RangeTextColumn.Name);
             view.AddEditHandler(SignColumn, TViewUtilities.EditEnum<Sign>);
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<InputStatus>);
             view.AddEditHandler(JumperColumn, TViewUtilities.EditEnum<Jumper>);
-
-            //Validation
-            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
 
             //Cell changed
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
@@ -56,6 +56,13 @@
                 SetRow(row, point);
             }
 
+            //Validation
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.Validate();
         }
 
@@ -85,9 +92,6 @@
         private void ClearSelectedRow(object sender, EventArgs e) =>
             SetRow(view.CurrentRow, new InputPoint());
 
-        private VariableValue GetVariableValue(DataGridViewRow row) =>
-            TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
-
         private void Save(object sender, EventArgs e)
         {
             if (!view.Validate())
@@ -105,7 +109,7 @@
                     var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
-                    point.Value = GetVariableValue(row);
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                     point.CalibrationL = row.GetValue<double>(CalibrationColumn);
                     point.CalibrationSign = row.GetValue<Sign>(SignColumn);
                     point.Filter = row.GetValue<int>(FilterColumn);
@@ -129,12 +133,6 @@
         {
             Close();
         }
-
-        #endregion
-        
-        #region User input handles
-
-
 
         #endregion
     }

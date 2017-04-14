@@ -7,8 +7,8 @@
     {
         private static Dictionary<Unit, UnitsNames> BaseDictionary { get; } =
             GetFilledDictionary();
-        private static Dictionary<Unit, UnitsNames> BaseAnalogDictionary { get; } =
-            GetFilledAnalogDictionary();
+        private static Dictionary<Unit, UnitsNames> BaseVariableAnalogDictionary { get; } =
+            GetFilledVariableAnalogDictionary();
         private static Dictionary<Unit, UnitsNames> BaseDigitalDictionary { get; } =
             GetFilledDigitalDictionary();
         private static Dictionary<Unit, UnitsNames> BaseInputAnalogDictionary { get; } =
@@ -110,9 +110,9 @@
             return names;
         }
 
-        private static Dictionary<Unit, UnitsNames> GetFilledAnalogDictionary(
+        private static Dictionary<Unit, UnitsNames> GetFilledVariableAnalogDictionary(
             CustomUnits customUnits = null) =>
-            GetFilledDictionary(customUnits, units => units.IsAnalog());
+            GetFilledDictionary(customUnits, units => units.IsVariableAnalog());
 
         private static Dictionary<Unit, UnitsNames> GetFilledDigitalDictionary(
             CustomUnits customUnits = null) =>
@@ -126,9 +126,9 @@
             CustomUnits customUnits = null) =>
             customUnits == null ? BaseDictionary : GetFilledDictionary(customUnits);
 
-        public static Dictionary<Unit, UnitsNames> GetAnalogNames(
+        public static Dictionary<Unit, UnitsNames> GetVariableAnalogNames(
             CustomUnits customUnits = null) =>
-            customUnits == null ? BaseAnalogDictionary : GetFilledAnalogDictionary(customUnits);
+            customUnits == null ? BaseVariableAnalogDictionary : GetFilledVariableAnalogDictionary(customUnits);
 
         public static Dictionary<Unit, UnitsNames> GetDigitalNames(
             CustomUnits customUnits = null) =>

@@ -174,28 +174,28 @@
     <Compile Include="Forms\T3000Form.Designer.cs">
       <DependentUpon>T3000Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomDigitalUnitForm.cs">
+    <Compile Include="Forms\HelpForms\EditCustomDigitalUnitForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomDigitalUnitForm.Designer.cs">
+    <Compile Include="Forms\HelpForms\EditCustomDigitalUnitForm.Designer.cs">
       <DependentUpon>EditCustomDigitalUnitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomAnalogUnitForm.cs">
+    <Compile Include="Forms\HelpForms\EditCustomAnalogUnitForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomAnalogUnitForm.Designer.cs">
+    <Compile Include="Forms\HelpForms\EditCustomAnalogUnitForm.Designer.cs">
       <DependentUpon>EditCustomAnalogUnitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomUnitsForm.cs">
+    <Compile Include="Forms\HelpForms\EditCustomUnitsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\EditCustomUnitsForm.Designer.cs">
+    <Compile Include="Forms\HelpForms\EditCustomUnitsForm.Designer.cs">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VariablesForm\SelectUnitsForm.cs">
+    <Compile Include="Forms\HelpForms\SelectUnitsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VariablesForm\SelectUnitsForm.Designer.cs">
+    <Compile Include="Forms\HelpForms\SelectUnitsForm.Designer.cs">
       <DependentUpon>SelectUnitsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VariablesForm\VariablesForm.cs">
@@ -322,16 +322,16 @@
       <DependentUpon>T3000Form.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\EditCustomDigitalUnitForm.resx">
+    <EmbeddedResource Include="Forms\HelpForms\EditCustomDigitalUnitForm.resx">
       <DependentUpon>EditCustomDigitalUnitForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\EditCustomAnalogUnitForm.resx">
+    <EmbeddedResource Include="Forms\HelpForms\EditCustomAnalogUnitForm.resx">
       <DependentUpon>EditCustomAnalogUnitForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\EditCustomUnitsForm.resx">
+    <EmbeddedResource Include="Forms\HelpForms\EditCustomUnitsForm.resx">
       <DependentUpon>EditCustomUnitsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VariablesForm\SelectUnitsForm.resx">
+    <EmbeddedResource Include="Forms\HelpForms\SelectUnitsForm.resx">
       <DependentUpon>SelectUnitsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VariablesForm\VariablesForm.de-DE.resx">
@@ -385,9 +385,7 @@
       <Name>PRGReaderLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\HelpForms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Properties\Icons\Default\Variables.ico" />
   </ItemGroup>

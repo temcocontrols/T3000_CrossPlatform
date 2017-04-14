@@ -25,7 +25,10 @@
 
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
-            view.AddEditHandler(UnitsColumn, EditUnitsColumn);
+            view.AddEditHandler(UnitsColumn, TViewUtilities.EditUnitsColumn,
+                ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
+                CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()),
+                RangeTextColumn.Name);
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
@@ -105,7 +108,7 @@
                     var point = Points[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
-                    point.Value = GetVariableValue(row);
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     ++i;
                 }
@@ -127,45 +130,5 @@
         }
 
         #endregion
-
-        #region User input handles
-
-        private VariableValue GetVariableValue(DataGridViewRow row) =>
-            TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
-
-        private void EditUnitsColumn(object sender, EventArgs e)
-        {
-            try
-            {
-                var row = view.CurrentRow;
-                var value = GetVariableValue(row);
-                var form = new SelectUnitsForm(value.Unit, value.CustomUnits);
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-
-                var newValue = value.ConvertValue(form.SelectedUnit, form.CustomUnits);
-                CustomUnits = form.CustomUnits;
-
-                view.ChangeValidationArguments(
-                    UnitsColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-                view.ChangeValidationArguments(
-                    ValueColumn, ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-
-                row.SetValue(UnitsColumn, form.SelectedUnit);
-                row.SetValue(ValueColumn, newValue);
-                //row.SetValue(RangeColumn, newValue.Va);
-
-                view.ValidateRow(row);
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
-        }
-
-        #endregion
-
     }
 }

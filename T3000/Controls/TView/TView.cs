@@ -4,6 +4,8 @@
     using System.Windows.Forms;
     using System.Collections.Generic;
 
+    using EditAction =
+        System.Action<object, System.EventArgs, object[]>;
     using ValidationFunc =
         System.Func<System.Windows.Forms.DataGridViewCell, object[], bool>;
     using CellAction =
@@ -23,7 +25,9 @@
 
         #region User input handles
 
-        private Dictionary<string, EventHandler> ColumnHandles = new Dictionary<string, EventHandler>();
+        private Dictionary<string, EditAction> InputHandles = new Dictionary<string, EditAction>();
+        private Dictionary<string, object[]> InputArguments { get; set; } =
+            new Dictionary<string, object[]>();
 
         private string ColumnIndexToName(int index) =>
             Columns[index].Name;
@@ -39,9 +43,12 @@
                         e.Handled = true;
 
                         var name = ColumnIndexToName(cell.ColumnIndex);
-                        if (ColumnHandles.ContainsKey(name))
+                        if (InputHandles.ContainsKey(name))
                         {
-                            ColumnHandles[name]?.Invoke(this, e);
+                            var arguments = InputArguments.ContainsKey(name)
+                                ? InputArguments[name] : new object[0];
+
+                            InputHandles[name]?.Invoke(this, e, arguments);
                             return;
                         }
 
@@ -58,19 +65,39 @@
         {
             var cell = CurrentCell;
             var name = ColumnIndexToName(cell.ColumnIndex);
-            if (!cell.ReadOnly && ColumnHandles.ContainsKey(name))
+            if (!cell.ReadOnly && InputHandles.ContainsKey(name))
             {
-                ColumnHandles[name]?.Invoke(this, e);
+                var arguments = InputArguments.ContainsKey(name)
+                    ? InputArguments[name] : new object[0];
+
+                InputHandles[name]?.Invoke(this, e, arguments);
                 return;
             }
 
             base.OnCellContentClick(e);
         }
 
-        public void AddEditHandler(DataGridViewColumn column, EventHandler handler)
+        public void AddEditHandler(string columnName, EditAction handler, params object[] arguments)
         {
-            ColumnHandles[column.Name] = handler;
+            InputHandles[columnName] = handler;
+            InputArguments[columnName] = arguments;
         }
+
+        public void AddEditHandler(DataGridViewColumn column, 
+            EditAction handler, params object[] arguments) =>
+            AddEditHandler(column.Name, handler, arguments);
+
+        public void ChangeEditHandler(string columnName, EditAction handler) =>
+            InputHandles[columnName] = handler;
+
+        public void ChangeEditHandler(DataGridViewColumn column, EditAction handler) =>
+            ChangeEditHandler(column.Name, handler);
+
+        public void ChangeEditArguments(string columnName, params object[] arguments) =>
+            InputArguments[columnName] = arguments;
+
+        public void ChangeEditArguments(DataGridViewColumn column, params object[] arguments) =>
+            ChangeEditArguments(column.Name, arguments);
 
         #endregion
 
@@ -147,21 +174,26 @@
             return isValidated;
         }
 
-        public void AddValidation(DataGridViewColumn column, ValidationFunc func, params object[] arguments)
+        public void AddValidation(string columnName, ValidationFunc func, params object[] arguments)
         {
-            ValidationHandles[column.Name] = func;
-            ValidationArguments[column.Name] = arguments;
+            ValidationHandles[columnName] = func;
+            ValidationArguments[columnName] = arguments;
         }
 
-        public void ChangeValidationFunc(DataGridViewColumn column, ValidationFunc func)
-        {
-            ValidationHandles[column.Name] = func;
-        }
+        public void AddValidation(DataGridViewColumn column, ValidationFunc func, params object[] arguments) =>
+            AddValidation(column.Name, func, arguments);
 
-        public void ChangeValidationArguments(DataGridViewColumn column, params object[] arguments)
-        {
-            ValidationArguments[column.Name] = arguments;
-        }
+        public void ChangeValidationFunc(string columnName, ValidationFunc func) =>
+            ValidationHandles[columnName] = func;
+
+        public void ChangeValidationFunc(DataGridViewColumn column, ValidationFunc func) =>
+            ChangeValidationFunc(column.Name, func);
+
+        public void ChangeValidationArguments(string columnName, params object[] arguments) =>
+            ValidationArguments[columnName] = arguments;
+
+        public void ChangeValidationArguments(DataGridViewColumn column, params object[] arguments) =>
+            ChangeValidationArguments(column.Name, arguments);
 
         #endregion
 

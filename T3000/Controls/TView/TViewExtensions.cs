@@ -14,6 +14,7 @@
         public static T GetValue<T>(this DataGridViewRow row, string columnName)
         {
             var value = row.Cells[columnName].Value;
+            /* Need, but slowly
             if (value.GetType() != typeof(T))
             {
                 throw new InvalidCastException($@"Invalid cast. 
@@ -21,6 +22,7 @@ ColumnName: {columnName}
 Actual type: {value.GetType()}
 Cast type: {typeof(T)}");
             }
+            */
 
             return (T)value;
         }

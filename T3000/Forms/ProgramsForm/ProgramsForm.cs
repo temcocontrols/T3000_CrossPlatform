@@ -129,7 +129,7 @@
 
         #region User input handles
 
-        private void EditCodeColumn(object sender, EventArgs e)
+        private void EditCodeColumn(object sender, EventArgs e, params object[] arguments)
         {
             try
             {

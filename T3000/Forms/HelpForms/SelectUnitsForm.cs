@@ -3,44 +3,60 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
+    using System.Linq;
     using System.Windows.Forms;
+    using System.Collections.Generic;
 
     public partial class SelectUnitsForm : Form
     {
         public Unit SelectedUnit { get; private set; } = Unit.Unused;
         public bool IsValidated { get; private set; } = true;
         public CustomUnits CustomUnits { get; set; } = null;
-        public bool IsInputAnalog { get; private set; } = false;
+        public Func<Unit, bool> AnalogPredicate { get; private set; }
+        public Dictionary<Unit, UnitsNames> AnalogDictionary { get; private set; }
 
         public SelectUnitsForm(
             Unit selectedUnit = Unit.Unused, 
             CustomUnits customUnits = null, 
-            bool isInputAnalog = false)
+            Func<Unit, bool> analogPredicate = null)
         {
             InitializeComponent();
 
             SelectedUnit = selectedUnit;
             CustomUnits = customUnits;
-            IsInputAnalog = isInputAnalog;
+            AnalogPredicate = analogPredicate;
 
             UpdateUnits();
         }
 
-        private int ToNumber(Unit unit) =>
-            (int)(unit + 1);
+        private List<Unit> NumberedUnits = new List<Unit>();
 
-        private Unit ToUnits(int units) =>
-            (Unit)(units - 1);
+        private int ToNumber(Unit unit)
+        {
+            if (!NumberedUnits.Contains(unit))
+            {
+                NumberedUnits.Add(unit);
+            }
+            
+            return NumberedUnits.IndexOf(unit) + 1;
+        }
+
+        private Unit ToUnits(int number) =>
+            NumberedUnits[number - 1];
 
         public void UpdateUnits()
         {
             try
             {
                 analogUnitsListBox.Items.Clear();
-                var analogDictionary = IsInputAnalog
-                    ? UnitsNamesUtilities.GetInputAnalogNames(CustomUnits)
-                    : UnitsNamesUtilities.GetAnalogNames(CustomUnits);
-                foreach (var name in analogDictionary)
+                AnalogDictionary = UnitsNamesUtilities.GetNames(CustomUnits);
+                if (AnalogPredicate != null)
+                {
+                    AnalogDictionary = AnalogDictionary
+                        .Where(pair => AnalogPredicate(pair.Key))
+                        .ToDictionary(pair => pair.Key, pair => pair.Value);
+                }
+                foreach (var name in AnalogDictionary)
                 {
                     analogUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
@@ -147,7 +163,7 @@
             messageLabel.Text = string.Format(Resources.SelectUnitsFormSelectedUnits, SelectedUnit.GetOffOnName(CustomUnits));
             if (SelectedUnit.IsAnalog())
             {
-                analogUnitsListBox.SelectedIndex = (int) SelectedUnit;
+                analogUnitsListBox.SelectedIndex = ToNumber(SelectedUnit) - 1;
                 digitalUnitsListBox.SelectedIndex = -1;
             }
             else
@@ -171,7 +187,7 @@
                     digitalUnitsListBox.SelectedIndex = -1;
 
                 var selectedIndex = analogUnitsListBox.SelectedIndex;
-                SelectedUnit = (Unit)selectedIndex;
+                SelectedUnit = ToUnits(selectedIndex + 1);
                 ShowSelectedItem();
             }
             catch (Exception exception)

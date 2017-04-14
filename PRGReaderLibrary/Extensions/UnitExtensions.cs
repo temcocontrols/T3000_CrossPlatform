@@ -3,19 +3,22 @@
     using System;
     using System.Collections.Generic;
 
-    public static class UnitsExtensions
+    public static class UnitExtensions
     {
-        public static bool IsAnalog(this Unit unit) =>
-            unit < Unit.DigitalUnused;
-
         public static bool IsInputAnalog(this Unit unit) =>
             unit >= Unit.InputAnalogUnused && unit < Unit.OutputAnalogUnused;
 
         public static bool IsOutputAnalog(this Unit unit) =>
             unit >= Unit.OutputAnalogUnused;
 
+        public static bool IsVariableAnalog(this Unit unit) =>
+            unit < Unit.DigitalUnused;
+
+        public static bool IsAnalog(this Unit unit) =>
+            unit.IsInputAnalog() || unit.IsOutputAnalog() || unit.IsVariableAnalog();
+
         public static bool IsDigital(this Unit unit) =>
-            !unit.IsAnalog() && !unit.IsInputAnalog() && !unit.IsOutputAnalog();
+            !unit.IsAnalog();
 
         public static UnitsNames GetUnitsNames(this Unit unit, CustomUnits customUnits = null)
         {

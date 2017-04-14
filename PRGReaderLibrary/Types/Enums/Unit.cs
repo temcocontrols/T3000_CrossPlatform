@@ -146,6 +146,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Input analog part
         /// </summary>
+        [UnitsNames("Unused", "Unused", "Unused")]
         InputAnalogUnused = 256,
 
         [UnitsNames("Y3K/-40 to 150 °C", "/")]
@@ -202,20 +203,26 @@ namespace PRGReaderLibrary
         [UnitsNames("%(4-20Ma)/0.0 to 100", "/")]
         PercentsMa20,
 
-        [UnitsNames("Pulses/Min")]
+        [UnitsNames("Pulses/Min", "Pulses/Min", "")]
         PulsesPerMin,
         /// <summary>
         /// Custom analog part
         /// </summary>
+        [UnitsNames("Custom1", "Custom1", "")]
         InputAnalogCustom1,
+        [UnitsNames("Custom2", "Custom2", "")]
         InputAnalogCustom2,
+        [UnitsNames("Custom3", "Custom3", "")]
         InputAnalogCustom3,
+        [UnitsNames("Custom4", "Custom4", "")]
         InputAnalogCustom4,
+        [UnitsNames("Custom5", "Custom5", "")]
         InputAnalogCustom5,
 
         /// <summary>
         /// Output analog part
         /// </summary>
+        [UnitsNames("Unused", "Unused", "Unused")]
         OutputAnalogUnused = 512,
 
         [UnitsNames("Volts/0.0 -> 10", "/")]
@@ -241,10 +248,15 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Custom analog part
         /// </summary>
+        [UnitsNames("Custom1", "Custom1", "")]
         OutputAnalogCustom1,
+        [UnitsNames("Custom2", "Custom2", "")]
         OutputAnalogCustom2,
+        [UnitsNames("Custom3", "Custom3", "")]
         OutputAnalogCustom3,
+        [UnitsNames("Custom4", "Custom4", "")]
         OutputAnalogCustom4,
+        [UnitsNames("Custom5", "Custom5", "")]
         OutputAnalogCustom5
     }
 }

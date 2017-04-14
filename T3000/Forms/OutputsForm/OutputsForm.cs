@@ -26,10 +26,10 @@
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditHandler(HOASwitchColumn, TViewUtilities.EditEnum<SwitchStatus>);
-
-            //Validation
-            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddEditHandler(UnitsColumn, TViewUtilities.EditUnitsColumn, 
+                ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
+                CustomUnits, new Func<Unit, bool>(unit => unit.IsOutputAnalog()),
+                RangeTextColumn.Name);
 
             //Cell changed handles
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue, 
@@ -42,55 +42,57 @@
             view.AddFormating(RangeTextColumn, o => ((Unit)o).GetRange(CustomUnits));
 
             //Show points
-
             view.Rows.Clear();
-
-            var i = 0;
-            foreach (var point in Points)
+            view.Rows.Add(Points.Count);
+            for (var i = 0; i < Points.Count; ++i)
             {
-                view.Rows.Add(new object[] {
-                    $"OUT{i + 1}",
-                    "?",
-                    point.Description,
-                    point.AutoManual,
-                    point.HwSwitchStatus,
-                    point.Value.ToString(),
-                    point.Value.Unit,
-                    point.Value.Value,
-                    point.Value.Unit,
-                    point.LowVoltage,
-                    point.HighVoltage,
-                    point.PwmPeriod,
-                    point.Control,
-                    point.Label
-                });
-                ++i;
+                var point = Points[i];
+                var row = view.Rows[i];
+                row.SetValue(OutputColumn, $"OUT{i + 1}");
+                row.SetValue(PanelColumn, "?");
+                SetRow(row, point);
             }
+
+            //Validation
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(RangeTextColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(LowVColumn, TViewUtilities.ValidateInteger);
+            view.AddValidation(HighVColumn, TViewUtilities.ValidateInteger);
+            view.AddValidation(PWMPeriodColumn, TViewUtilities.ValidateInteger);
             view.Validate();
         }
 
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e)
+        private void SetRow(DataGridViewRow row, OutputPoint point)
         {
-            var row = view.CurrentRow;
-            if (row == null)
+            if (row == null || point == null)
             {
                 return;
             }
 
-            row.SetValue(DescriptionColumn, string.Empty);
-            row.SetValue(AutoManualColumn, AutoManual.Automatic);
-            row.SetValue(HOASwitchColumn, SwitchStatus.Off);
-            row.SetValue(ValueColumn, "0");
-            row.SetValue(UnitsColumn, Unit.Unused);
-            row.SetValue(RangeColumn, 0);
-            row.SetValue(RangeTextColumn, Unit.Unused);
-            row.SetValue(LowVColumn, 0);
-            row.SetValue(HighVColumn, 0);
-            row.SetValue(PWMPeriodColumn, 0);
-            row.SetValue(LabelColumn, string.Empty);
+            row.SetValue(DescriptionColumn, point.Description);
+            row.SetValue(AutoManualColumn, point.AutoManual);
+            row.SetValue(HOASwitchColumn, point.HwSwitchStatus);
+            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetValue(UnitsColumn, point.Value.Unit);
+            row.SetValue(RangeColumn, point.Value.Value);
+            row.SetValue(RangeTextColumn, point.Value.Unit);
+            row.SetValue(LowVColumn, point.LowVoltage);
+            row.SetValue(HighVColumn, point.HighVoltage);
+            row.SetValue(PWMPeriodColumn, point.PwmPeriod);
+            row.SetValue(StatusColumn, point.Control);
+            row.SetValue(LabelColumn, point.Label);
         }
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e) =>
+            SetRow(view.CurrentRow, new OutputPoint());
 
         private void Save(object sender, EventArgs e)
         {
@@ -112,12 +114,8 @@
                     }
 
                     var point = Points[i];
-                    var range = row.GetValue<int>(RangeColumn);
                     point.Description = row.GetValue<string>(DescriptionColumn);
-                    point.Value = new VariableValue(
-                        row.GetValue<string>(ValueColumn),
-                        row.GetValue<Unit>(UnitsColumn),
-                        CustomUnits, range);
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.HwSwitchStatus = row.GetValue<SwitchStatus>(HOASwitchColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
@@ -141,6 +139,5 @@
         }
 
         #endregion
-
     }
 }
