@@ -14,6 +14,7 @@
         public CustomUnits CustomUnits { get; set; } = null;
         public Func<Unit, bool> AnalogPredicate { get; private set; }
         public Dictionary<Unit, UnitsNames> AnalogDictionary { get; private set; }
+        public Dictionary<Unit, UnitsNames> DigitalDictionary { get; private set; }
 
         public SelectUnitsForm(
             Unit selectedUnit = Unit.Unused, 
@@ -61,8 +62,9 @@
                     analogUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
 
+                DigitalDictionary = UnitsNamesUtilities.GetDigitalNames(CustomUnits);
                 digitalUnitsListBox.Items.Clear();
-                foreach (var name in UnitsNamesUtilities.GetDigitalNames(CustomUnits))
+                foreach (var name in DigitalDictionary)
                 {
                     digitalUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
@@ -112,6 +114,52 @@
             }
         }
 
+        private Unit GetDictionaryPrevValue(Unit unit)
+        {
+            var prev = unit.PrevValue();
+            while (!AnalogDictionary.ContainsKey(prev) && !DigitalDictionary.ContainsKey(prev))
+            {
+                prev = prev.PrevValue();
+            }
+
+            return prev;
+        }
+
+        private Unit GetDictionaryPrevValue(Unit unit, ref int i)
+        {
+            var prev = unit.PrevValue();
+            while (!AnalogDictionary.ContainsKey(prev) && !DigitalDictionary.ContainsKey(prev))
+            {
+                prev = prev.PrevValue();
+                ++i;
+            }
+
+            return prev;
+        }
+
+        private Unit GetDictionaryNextValue(Unit unit)
+        {
+            var next = unit.NextValue();
+            while (!AnalogDictionary.ContainsKey(next) && !DigitalDictionary.ContainsKey(next))
+            {
+                next = next.NextValue();
+            }
+
+            return next;
+        }
+
+        private Unit GetDictionaryNextValue(Unit unit, ref int i)
+        {
+            var next = unit.NextValue();
+            while (!AnalogDictionary.ContainsKey(next) && !DigitalDictionary.ContainsKey(next))
+            {
+                next = next.NextValue();
+                ++i;
+            }
+
+            return next;
+        }
+
         private void numberTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             var maxItemsInColumn = analogUnitsListBox.Height / analogUnitsListBox.ItemHeight;
@@ -125,7 +173,7 @@
                 case Keys.Up:
                 case Keys.PageUp:
                 case Keys.VolumeUp:
-                    SelectedUnit = SelectedUnit.PrevValue();
+                    SelectedUnit = GetDictionaryPrevValue(SelectedUnit);
                     ShowSelectedItem();
                     break;
 
@@ -133,7 +181,7 @@
                 case Keys.Down:
                 case Keys.PageDown:
                 case Keys.VolumeDown:
-                    SelectedUnit = SelectedUnit.NextValue();
+                    SelectedUnit = GetDictionaryNextValue(SelectedUnit);
                     ShowSelectedItem();
                     break;
 
@@ -141,7 +189,7 @@
                 case Keys.A:
                     for (var i = 0; i < maxItemsInColumn; ++i)
                     {
-                        SelectedUnit = SelectedUnit.PrevValue();
+                        SelectedUnit = GetDictionaryPrevValue(SelectedUnit, ref i);
                     }
                     ShowSelectedItem();
                     break;
@@ -150,7 +198,7 @@
                 case Keys.D:
                     for (var i = 0; i < maxItemsInColumn; ++i)
                     {
-                        SelectedUnit = SelectedUnit.NextValue();
+                        SelectedUnit = GetDictionaryNextValue(SelectedUnit, ref i);
                     }
                     ShowSelectedItem();
                     break;
