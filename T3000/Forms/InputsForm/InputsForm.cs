@@ -1,8 +1,8 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
-    using System;
     using Properties;
+    using System;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -45,56 +45,48 @@
             view.AddFormating(RangeTextColumn, o => ((Unit)o).GetRange(CustomUnits));
 
             //Show points
-
             view.Rows.Clear();
-
-            var i = 0;
-            foreach (var point in Points)
+            view.Rows.Add(Points.Count);
+            for (var i = 0; i < Points.Count; ++i)
             {
-                view.Rows.Add(new object[] {
-                    $"IN{i + 1}",
-                    "?",
-                    point.Description,
-                    point.AutoManual,
-                    point.Value.ToString(),
-                    point.Value.Unit,
-                    point.Value.Value,
-                    point.Value.Unit,
-                    point.CalibrationL,
-                    point.CalibrationSign,
-                    point.Filter,
-                    point.Status,
-                    point.Jumper,
-                    point.Label
-                });
-                ++i;
+                var point = Points[i];
+                var row = view.Rows[i];
+                row.SetValue(InputColumn, $"IN{i + 1}");
+                row.SetValue(PanelColumn, "?");
+                SetRow(row, point);
             }
+
             view.Validate();
         }
 
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e)
+        private void SetRow(DataGridViewRow row, InputPoint point)
         {
-            var row = view.CurrentRow;
-            if (row == null)
+            if (row == null || point == null)
             {
                 return;
             }
 
-            row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
-            row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Unit.Unused;
-            row.Cells[RangeColumn.Name].Value = 0;
-            row.Cells[RangeTextColumn.Name].Value = Unit.Unused;
-            row.Cells[CalibrationColumn.Name].Value = 0;
-            row.Cells[SignColumn.Name].Value = Sign.Positive;
-            row.Cells[FilterColumn.Name].Value = 0;
-            row.Cells[StatusColumn.Name].Value = InputStatus.Normal;
-            row.Cells[JumperColumn.Name].Value = Jumper.Thermistor;
-            row.Cells[LabelColumn.Name].Value = string.Empty;
+            row.SetValue(DescriptionColumn, point.Description);
+            row.SetValue(AutoManualColumn, point.AutoManual);
+            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetValue(UnitsColumn, point.Value.Unit);
+            row.SetValue(RangeColumn, point.Value.Value);
+            row.SetValue(RangeTextColumn, point.Value.Unit);
+            row.SetValue(CalibrationColumn, point.CalibrationL);
+            row.SetValue(SignColumn, point.CalibrationSign);
+            row.SetValue(FilterColumn, point.Filter);
+            row.SetValue(StatusColumn, point.Status);
+            row.SetValue(JumperColumn, point.Jumper);
+            row.SetValue(LabelColumn, point.Label);
         }
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e) =>
+            SetRow(view.CurrentRow, new InputPoint());
+
+        private VariableValue GetVariableValue(DataGridViewRow row) =>
+            TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
 
         private void Save(object sender, EventArgs e)
         {
@@ -107,25 +99,19 @@
 
             try
             {
-                var i = 0;
-                foreach (DataGridViewRow row in view.Rows)
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
                 {
-                    if (i >= Points.Count)
-                    {
-                        break;
-                    }
-
                     var point = Points[i];
-                    var range = (int)row.Cells[RangeColumn.Name].Value;
-                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
-                    point.Value = new VariableValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
-                        row.GetValue<Unit>(UnitsColumn),
-                        CustomUnits, range);
-                    point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;
-                    point.CalibrationSign = (Sign)row.Cells[SignColumn.Name].Value;
-                    ++i;
+                    var row = view.Rows[i];
+                    point.Description = row.GetValue<string>(DescriptionColumn);
+                    point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
+                    point.Value = GetVariableValue(row);
+                    point.CalibrationL = row.GetValue<double>(CalibrationColumn);
+                    point.CalibrationSign = row.GetValue<Sign>(SignColumn);
+                    point.Filter = row.GetValue<int>(FilterColumn);
+                    point.Status = row.GetValue<InputStatus>(StatusColumn);
+                    point.Jumper = row.GetValue<Jumper>(JumperColumn);
+                    point.Label = row.GetValue<string>(LabelColumn);
                 }
             }
             catch (Exception exception)
