@@ -28,36 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.analogListBox = new System.Windows.Forms.ListBox();
-            this.editButton = new System.Windows.Forms.Button();
-            this.digitalListBox = new System.Windows.Forms.ListBox();
-            this.statusStrip.SuspendLayout();
+            this.analogView = new T3000.Controls.TView();
+            this.AnalogNumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.digitalView = new T3000.Controls.TView();
+            this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OffNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OnNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DirectColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.analogView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.digitalView)).BeginInit();
             this.SuspendLayout();
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 269);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(458, 22);
-            this.statusStrip.TabIndex = 1;
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(200, 17);
-            this.statusLabel.Text = "Please, input values as Value1/Value2";
             // 
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveButton.Location = new System.Drawing.Point(188, 238);
+            this.saveButton.Location = new System.Drawing.Point(229, 237);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(137, 23);
             this.saveButton.TabIndex = 2;
@@ -69,7 +58,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(331, 238);
+            this.cancelButton.Location = new System.Drawing.Point(372, 237);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(115, 23);
             this.cancelButton.TabIndex = 3;
@@ -77,40 +66,73 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
-            // analogListBox
+            // analogView
             // 
-            this.analogListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.analogListBox.FormattingEnabled = true;
-            this.analogListBox.Location = new System.Drawing.Point(12, 10);
-            this.analogListBox.Name = "analogListBox";
-            this.analogListBox.Size = new System.Drawing.Size(205, 225);
-            this.analogListBox.TabIndex = 4;
-            this.analogListBox.DoubleClick += new System.EventHandler(this.Edit);
+            this.analogView.AllowUserToAddRows = false;
+            this.analogView.AllowUserToDeleteRows = false;
+            this.analogView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.analogView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.AnalogNumberColumn,
+            this.NameColumn});
+            this.analogView.Location = new System.Drawing.Point(12, 10);
+            this.analogView.Name = "analogView";
+            this.analogView.Size = new System.Drawing.Size(205, 220);
+            this.analogView.TabIndex = 8;
             // 
-            // editButton
+            // AnalogNumberColumn
             // 
-            this.editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.editButton.Location = new System.Drawing.Point(12, 238);
-            this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(137, 23);
-            this.editButton.TabIndex = 5;
-            this.editButton.Text = "Edit";
-            this.editButton.UseVisualStyleBackColor = true;
-            this.editButton.Click += new System.EventHandler(this.Edit);
+            this.AnalogNumberColumn.FillWeight = 20F;
+            this.AnalogNumberColumn.HeaderText = "N";
+            this.AnalogNumberColumn.Name = "AnalogNumberColumn";
+            this.AnalogNumberColumn.ReadOnly = true;
+            this.AnalogNumberColumn.Width = 20;
             // 
-            // digitalListBox
+            // NameColumn
             // 
-            this.digitalListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.digitalListBox.FormattingEnabled = true;
-            this.digitalListBox.Location = new System.Drawing.Point(223, 10);
-            this.digitalListBox.Name = "digitalListBox";
-            this.digitalListBox.Size = new System.Drawing.Size(223, 225);
-            this.digitalListBox.TabIndex = 6;
-            this.digitalListBox.DoubleClick += new System.EventHandler(this.Edit);
+            this.NameColumn.HeaderText = "Name";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.Width = 140;
+            // 
+            // digitalView
+            // 
+            this.digitalView.AllowUserToAddRows = false;
+            this.digitalView.AllowUserToDeleteRows = false;
+            this.digitalView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.digitalView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NumberColumn,
+            this.OffNameColumn,
+            this.OnNameColumn,
+            this.DirectColumn});
+            this.digitalView.Location = new System.Drawing.Point(223, 10);
+            this.digitalView.Name = "digitalView";
+            this.digitalView.Size = new System.Drawing.Size(264, 220);
+            this.digitalView.TabIndex = 7;
+            // 
+            // NumberColumn
+            // 
+            this.NumberColumn.FillWeight = 20F;
+            this.NumberColumn.HeaderText = "N";
+            this.NumberColumn.Name = "NumberColumn";
+            this.NumberColumn.ReadOnly = true;
+            this.NumberColumn.Width = 20;
+            // 
+            // OffNameColumn
+            // 
+            this.OffNameColumn.HeaderText = "OffName";
+            this.OffNameColumn.Name = "OffNameColumn";
+            this.OffNameColumn.Width = 80;
+            // 
+            // OnNameColumn
+            // 
+            this.OnNameColumn.HeaderText = "OnName";
+            this.OnNameColumn.Name = "OnNameColumn";
+            this.OnNameColumn.Width = 80;
+            // 
+            // DirectColumn
+            // 
+            this.DirectColumn.HeaderText = "Direct";
+            this.DirectColumn.Name = "DirectColumn";
+            this.DirectColumn.Width = 40;
             // 
             // EditCustomUnitsForm
             // 
@@ -118,29 +140,29 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(458, 291);
-            this.Controls.Add(this.digitalListBox);
-            this.Controls.Add(this.editButton);
-            this.Controls.Add(this.analogListBox);
+            this.ClientSize = new System.Drawing.Size(499, 272);
+            this.Controls.Add(this.analogView);
+            this.Controls.Add(this.digitalView);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.statusStrip);
             this.Name = "EditCustomUnitsForm";
             this.Text = "Change custom unit:";
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.analogView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.digitalView)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.ListBox analogListBox;
-        private System.Windows.Forms.Button editButton;
-        private System.Windows.Forms.ListBox digitalListBox;
+        private Controls.TView digitalView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OffNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OnNameColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn DirectColumn;
+        private Controls.TView analogView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AnalogNumberColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
     }
 }

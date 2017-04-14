@@ -1,100 +1,91 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
+    using Properties;
     using System;
     using System.Windows.Forms;
-    using System.Collections.Generic;
-    
+
     public partial class EditCustomUnitsForm : Form
     {
-        public static string Separator { get; } = "/";
-
         public CustomUnits CustomUnits { get; private set; }
-        public bool IsValidated { get; private set; } = true;
 
         public EditCustomUnitsForm(CustomUnits customUnits)
         {
             InitializeComponent();
 
-            CustomUnits = (CustomUnits)customUnits.Clone();
+            CustomUnits = customUnits;
 
-            //Clear selection
-            digitalListBox.SelectedIndexChanged +=
-                (sender, args) =>
-                {
-                    if (digitalListBox.SelectedIndex != -1)
-                    {
-                        analogListBox.SelectedIndex = -1;
-                    }
-                };
+            //User input handles
+            digitalView.AddEditHandler(DirectColumn, TViewUtilities.EditBoolean);
 
-            analogListBox.SelectedIndexChanged +=
-                (sender, args) =>
-                {
-                    if (analogListBox.SelectedIndex != -1)
-                    {
-                        digitalListBox.SelectedIndex = -1;
-                    }
-                };
-
-            Preview();
-        }
-
-        private void Preview()
-        {
-            analogListBox.Items.Clear();
-            var i = 0;
-            foreach (var name in CustomUnits.Analog)
+            digitalView.Rows.Clear();
+            digitalView.Rows.Add(CustomUnits.Digital.Count);
+            for (var i = 0; i < CustomUnits.Digital.Count; ++i)
             {
-                analogListBox.Items.Add($"{i + 1}. {name.Name}");
-                ++i;
+                var point = CustomUnits.Digital[i];
+                var row = digitalView.Rows[i];
+                row.SetValue(NumberColumn, $"{i + 1}");
+                row.SetValue(OffNameColumn, point.DigitalUnitsOff);
+                row.SetValue(OnNameColumn, point.DigitalUnitsOn);
+                row.SetValue(DirectColumn, point.Direct);
             }
 
-            digitalListBox.Items.Clear();
-            i = 0;
-            foreach (var name in CustomUnits.Digital)
+            //Validation
+            digitalView.AddValidation(OffNameColumn, TViewUtilities.ValidateString, 12);
+            digitalView.AddValidation(OnNameColumn, TViewUtilities.ValidateString, 12);
+            digitalView.Validate();
+
+            analogView.Rows.Clear();
+            analogView.Rows.Add(CustomUnits.Analog.Count);
+            for (var i = 0; i < CustomUnits.Analog.Count; ++i)
             {
-                digitalListBox.Items.Add($"{i + 1}. {name.DigitalUnitsOff}/{name.DigitalUnitsOn}");
-                ++i;
+                var point = CustomUnits.Analog[i];
+                var row = analogView.Rows[i];
+                row.SetValue(AnalogNumberColumn, $"{i + 1}");
+                row.SetValue(NameColumn, point.Name);
             }
 
+            //Validation
+            analogView.AddValidation(NameColumn, TViewUtilities.ValidateString, 20);
+            analogView.Validate();
         }
 
         #region Buttons
 
-        private void Edit(object sender, EventArgs e)
-        {
-            var selectedIndex = analogListBox.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < CustomUnits.Analog.Count)
-            {
-                var point = CustomUnits.Analog[selectedIndex];
-                var form = new EditCustomAnalogUnitForm(point);
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-
-                CustomUnits.Analog[selectedIndex] = form.Point;
-            }
-
-            selectedIndex = digitalListBox.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < CustomUnits.Digital.Count)
-            {
-                var point = CustomUnits.Digital[selectedIndex];
-                var form = new EditCustomDigitalUnitForm(point);
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-
-                CustomUnits.Digital[selectedIndex] = form.Point;
-            }
-
-            Preview();
-        }
-
         private void Save(object sender, EventArgs e)
         {
+            if (!analogView.Validate() || !digitalView.Validate())
+            {
+                MessageBoxUtilities.ShowWarning(Resources.EditCustomUnitsFormNotValid);
+                DialogResult = DialogResult.None;
+                return;
+            }
+
+            try
+            {
+                for (var i = 0; i < analogView.RowCount && i < CustomUnits.Analog.Count; ++i)
+                {
+                    var point = CustomUnits.Analog[i];
+                    var row = analogView.Rows[i];
+                    point.Name = row.GetValue<string>(NameColumn);
+                }
+                for (var i = 0; i < digitalView.RowCount && i < CustomUnits.Digital.Count; ++i)
+                {
+                    var point = CustomUnits.Digital[i];
+                    var row = digitalView.Rows[i];
+                    point.DigitalUnitsOff = row.GetValue<string>(OffNameColumn);
+                    point.DigitalUnitsOn = row.GetValue<string>(OnNameColumn);
+                    point.Direct = row.GetValue<bool>(DirectColumn);
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+                DialogResult = DialogResult.None;
+                return;
+            }
+
+            DialogResult = DialogResult.OK;
             Close();
         }
 

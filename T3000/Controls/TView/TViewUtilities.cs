@@ -32,6 +32,22 @@
             }
         }
 
+        public static void EditBoolean(object sender, EventArgs e, params object[] arguments)
+        {
+            try
+            {
+                var view = (TView)sender;
+                var cell = view.CurrentCell;
+                cell.Value = !((bool)cell.Value);
+
+                view.ValidateCell(cell);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
         public static void EditUnitsColumn(object sender, EventArgs e, params object[] arguments)
         {
             if (arguments.Length < 5)
