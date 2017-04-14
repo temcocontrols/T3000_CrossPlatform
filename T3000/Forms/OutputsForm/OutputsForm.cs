@@ -3,6 +3,7 @@
     using PRGReaderLibrary;
     using System;
     using Properties;
+    using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
     
@@ -30,12 +31,14 @@
                 ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsOutputAnalog()),
                 RangeTextColumn.Name);
+            view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
             //Cell changed handles
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue, 
                 AutoManualColumn.Name, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
 
             //Formating
             view.AddFormating(UnitsColumn, o => ((Unit)o).GetUnitName(CustomUnits));

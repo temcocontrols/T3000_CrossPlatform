@@ -30,10 +30,6 @@
             view.AddEditHandler(RunStatusColumn, TViewUtilities.EditEnum<NormalCom>);
             view.AddEditHandler(CodeColumn, EditCodeColumn);
 
-            //Validation
-            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.AddValidation(SizeColumn, TViewUtilities.ValidateInteger);
 
             //Value changed handles
             view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
@@ -56,10 +52,14 @@
                 ++i;
             }
 
+            //Validation
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(SizeColumn, TViewUtilities.ValidateInteger);
+            view.Validate();
+
             //For apply changed handlers
             view.SendChanged(StatusColumn);
-
-            view.Validate();
         }
 
         #region Buttons
