@@ -127,16 +127,11 @@
         }
 
         #endregion
-        
+
         #region User input handles
 
-        private VariableValue GetVariableValue(DataGridViewRow row) => 
-            new VariableValue(
-                        row.GetValue<string>(ValueColumn),
-                        row.GetValue<Unit>(UnitsColumn),
-                        CustomUnits,
-                        row.GetValue<int>(RangeColumn));
-
+        private VariableValue GetVariableValue(DataGridViewRow row) =>
+            TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
 
         private void EditUnitsColumn(object sender, EventArgs e)
         {

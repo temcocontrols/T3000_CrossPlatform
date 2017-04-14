@@ -209,5 +209,20 @@
         }
 
         #endregion
+
+        #region Other
+
+        public static VariableValue GetVariableValue(DataGridViewRow row,
+            DataGridViewColumn value,
+            DataGridViewColumn units,
+            DataGridViewColumn range,
+            CustomUnits customUnits) =>
+            new VariableValue(
+                        row.GetValue<string>(value),
+                        row.GetValue<Unit>(units),
+                        customUnits,
+                        row.GetValue<int>(range));
+
+        #endregion
     }
 }
