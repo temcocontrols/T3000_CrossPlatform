@@ -319,6 +319,35 @@ See console log for details.
                 ObjectAssert.AreEqual(expected, prg.Outputs[1]);
             }
 
+            //Variables
+            {
+                //VAR1
+                var expected = new VariablePoint()
+                {
+                    Description = "START TEST FLAG",
+                    AutoManual = AutoManual.Automatic,
+                    Value = new VariableValue(false, Unit.OffOn, null, 1000),
+                    Control = OffOn.Off,
+                    DigitalAnalog = DigitalAnalog.Digital,
+                    FileVersion = FileVersion.Rev6,
+                    Label = "INIT"
+                };
+                ObjectAssert.AreEqual(expected, prg.Variables[0]);
+
+                //VAR10
+                expected = new VariablePoint()
+                {
+                    Description = "NOW FILLING",
+                    AutoManual = AutoManual.Automatic,
+                    Value = new VariableValue(false, Unit.CustomDigital1, null, 2000),
+                    Control = OffOn.Off,
+                    DigitalAnalog = DigitalAnalog.Digital,
+                    FileVersion = FileVersion.Rev6,
+                    Label = "FILLTANK",
+                };
+                ObjectAssert.AreEqual(expected, prg.Variables[9]);
+            }
+
             //Program codes
             {
                 var expected = new ProgramCode()
