@@ -237,6 +237,15 @@
   <data name="UnitsColumn.HeaderText" xml:space="preserve">
     <value>Unit</value>
   </data>
+  <metadata name="RangeColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="RangeColumn.HeaderText" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="RangeColumn.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <metadata name="AutoManualColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -291,11 +300,11 @@
   <data name="TimeColumn.HeaderText" xml:space="preserve">
     <value>Time</value>
   </data>
-  <metadata name="Der.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="DerColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="Der.HeaderText" xml:space="preserve">
-    <value>DerColumn</value>
+  <data name="DerColumn.HeaderText" xml:space="preserve">
+    <value>Der</value>
   </data>
   <metadata name="BiasColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -647,6 +656,12 @@
   <data name="&gt;&gt;UnitsColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;RangeColumn.Name" xml:space="preserve">
+    <value>RangeColumn</value>
+  </data>
+  <data name="&gt;&gt;RangeColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;AutoManualColumn.Name" xml:space="preserve">
     <value>AutoManualColumn</value>
   </data>
@@ -701,10 +716,10 @@
   <data name="&gt;&gt;TimeColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Der.Name" xml:space="preserve">
-    <value>Der</value>
+  <data name="&gt;&gt;DerColumn.Name" xml:space="preserve">
+    <value>DerColumn</value>
   </data>
-  <data name="&gt;&gt;Der.Type" xml:space="preserve">
+  <data name="&gt;&gt;DerColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;BiasColumn.Name" xml:space="preserve">

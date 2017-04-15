@@ -1,8 +1,8 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
-    using System;
     using Properties;
+    using System;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -28,60 +28,61 @@
             view.AddEditHandler(ActionColumn, TViewUtilities.EditEnum<DirectReverse>);
             view.AddEditHandler(TimeColumn, TViewUtilities.EditEnum<Periodicity>);
 
-            //Validation
-
-
             //Cell changed handles
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
 
+            //Formating
+            view.AddFormating(ActionColumn, o => ((DirectReverse)o).GetName());
+
             //Show points
-
             view.Rows.Clear();
-
-            var i = 0;
-            
-            foreach (var point in Points)
+            view.Rows.Add(Points.Count);
+            for (var i = 0; i < Points.Count; ++i)
             {
-                view.Rows.Add(new object[] {
-                    i + 1,
-                    point.Input.Number,
-                    point.Value.ToString(),
-                    point.Unit.ToString(),
-                    point.AutoManual,
-                    "x.x %",
-                    "",
-                    "",
-                    "",
-                    point.Action,
-                    point.Proportional,
-                    0,
-                    point.Periodicity,
-                    0.00,
-                    point.Bias
-                });
-                ++i;
+                var point = Points[i];
+                var row = view.Rows[i];
+                row.SetValue(NumberColumn, $"{i + 1}");
+                SetRow(row, point);
             }
+
+            //Validation
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
+                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.Validate();
         }
 
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e)
+        private void SetRow(DataGridViewRow row, ControllerPoint point)
         {
-            var row = view.CurrentRow;
-            if (row == null)
+            if (row == null || point == null)
             {
                 return;
             }
 
-            row.Cells[InputColumn.Name].Value = string.Empty;
-            row.Cells[ValueColumn.Name].Value = "0";
-            row.Cells[UnitsColumn.Name].Value = Unit.Unused.GetOffOnName();
-            row.Cells[AutoManualColumn.Name].Value = AutoManual.Automatic;
+            row.SetValue(NumberColumn, point.Input.Number);
+            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetValue(UnitsColumn, point.Unit);
+            row.SetValue(AutoManualColumn, point.AutoManual);
+            row.SetValue(OutputColumn, "x.x %");
+            row.SetValue(SetPointColumn, "");
+            row.SetValue(SetValueColumn, "");
+            row.SetValue(UnitsColumn, "");
+            row.SetValue(ActionColumn, point.Action);
+            row.SetValue(PropColumn, point.Proportional);
+            row.SetValue(IntColumn, 0);
+            row.SetValue(TimeColumn, point.Periodicity);
+            row.SetValue(DerColumn, 0.0);
+            row.SetValue(BiasColumn, point.Bias);
         }
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e) =>
+            SetRow(view.CurrentRow, new ControllerPoint());
 
         private void Save(object sender, EventArgs e)
         {
@@ -94,25 +95,13 @@
 
             try
             {
-                var i = 0;
-                foreach (DataGridViewRow row in view.Rows)
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
                 {
-                    if (i >= Points.Count)
-                    {
-                        break;
-                    }
-
-                    var point = Points[i];/*
-                    var range = (int)row.Cells[RangeColumn.Name].Value;
-                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
-                    point.Value = new VariableValue(
-                        (string)row.Cells[ValueColumn.Name].Value,
-                        UnitsNamesConstants.UnitsFromName(
-                            (string)row.Cells[UnitsColumn.Name].Value, CustomUnits),
-                        CustomUnits, range);
-                    point.AutoManual = (AutoManual)row.Cells[AutoManualColumn.Name].Value;*/
-                    ++i;
+                    var point = Points[i];
+                    var row = view.Rows[i];
+                    point.Input.Number = row.GetValue<int>(NumberColumn);
+                    point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
+                    //point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
                 }
             }
             catch (Exception exception)

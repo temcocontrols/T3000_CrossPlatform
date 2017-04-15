@@ -37,6 +37,7 @@
             this.InputColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.OutputColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SetPointColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,7 +47,7 @@
             this.PropColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IntColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Der = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BiasColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
@@ -86,6 +87,7 @@
             this.InputColumn,
             this.ValueColumn,
             this.UnitsColumn,
+            this.RangeColumn,
             this.AutoManualColumn,
             this.OutputColumn,
             this.SetPointColumn,
@@ -95,7 +97,7 @@
             this.PropColumn,
             this.IntColumn,
             this.TimeColumn,
-            this.Der,
+            this.DerColumn,
             this.BiasColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
@@ -122,6 +124,11 @@
             resources.ApplyResources(this.UnitsColumn, "UnitsColumn");
             this.UnitsColumn.Name = "UnitsColumn";
             this.UnitsColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // RangeColumn
+            // 
+            resources.ApplyResources(this.RangeColumn, "RangeColumn");
+            this.RangeColumn.Name = "RangeColumn";
             // 
             // AutoManualColumn
             // 
@@ -173,10 +180,10 @@
             this.TimeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.TimeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // Der
+            // DerColumn
             // 
-            resources.ApplyResources(this.Der, "Der");
-            this.Der.Name = "Der";
+            resources.ApplyResources(this.DerColumn, "DerColumn");
+            this.DerColumn.Name = "DerColumn";
             // 
             // BiasColumn
             // 
@@ -209,6 +216,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn InputColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn OutputColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn SetPointColumn;
@@ -218,7 +226,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PropColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn IntColumn;
         private System.Windows.Forms.DataGridViewButtonColumn TimeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Der;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn BiasColumn;
     }
 }
