@@ -10,7 +10,7 @@
     {
         #region User input handles
 
-        public static void EditEnum<T>(object sender, EventArgs e, params object[] arguments) where T
+        public static void EditEnum<T>(object sender, EventArgs e) where T
             : struct, IConvertible
         {
             try
@@ -32,13 +32,36 @@
             }
         }
 
-        public static void EditBoolean(object sender, EventArgs e, params object[] arguments)
+        public static void EditBoolean(object sender, EventArgs e)
         {
             try
             {
                 var view = (TView)sender;
                 var cell = view.CurrentCell;
                 cell.Value = !((bool)cell.Value);
+
+                view.ValidateCell(cell);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        public static void EditColor(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = (TView)sender;
+                var cell = view.CurrentCell;
+                var dialog = new ColorDialog();
+                dialog.Color = (Color)cell.Value;
+                if (dialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                cell.Value = dialog.Color;
 
                 view.ValidateCell(cell);
             }
@@ -306,6 +329,29 @@
                     ? colorOff
                     : colorOn;
                 cell.Style.SelectionForeColor = cell.Style.ForeColor;
+            }
+            catch (Exception) { }
+        }
+
+        public static void ValueColor(object sender, DataGridViewCellEventArgs e, object[] arguments)
+        {
+            try
+            {
+                var view = (TView)sender;
+                var row = view.GetRow(e.RowIndex);
+                if (row == null)
+                {
+                    return;
+                }
+
+                var cell = row.Cells[e.ColumnIndex];
+                var color = (Color) cell.Value;
+                var isBrigtnesses = color.GetBrightness() < 0.5;
+                var foreColor = isBrigtnesses ? Color.White : Color.Black;
+                cell.Style.ForeColor = foreColor;
+                cell.Style.SelectionForeColor = foreColor;
+                cell.Style.BackColor = color;
+                cell.Style.SelectionBackColor = color;
             }
             catch (Exception) { }
         }

@@ -25,7 +25,8 @@
 
         #region User input handles
 
-        private Dictionary<string, EditAction> InputHandles = new Dictionary<string, EditAction>();
+        private Dictionary<string, EventHandler> InputHandles = new Dictionary<string, EventHandler>();
+        private Dictionary<string, EditAction> InputActions = new Dictionary<string, EditAction>();
         private Dictionary<string, object[]> InputArguments { get; set; } =
             new Dictionary<string, object[]>();
 
@@ -43,12 +44,17 @@
                         e.Handled = true;
 
                         var name = ColumnIndexToName(cell.ColumnIndex);
-                        if (InputHandles.ContainsKey(name))
+                        if (InputActions.ContainsKey(name))
                         {
                             var arguments = InputArguments.ContainsKey(name)
                                 ? InputArguments[name] : new object[0];
 
-                            InputHandles[name]?.Invoke(this, e, arguments);
+                            InputActions[name]?.Invoke(this, e, arguments);
+                            return;
+                        }
+                        if (InputHandles.ContainsKey(name))
+                        {
+                            InputHandles[name]?.Invoke(this, e);
                             return;
                         }
 
@@ -65,33 +71,46 @@
         {
             var cell = CurrentCell;
             var name = ColumnIndexToName(cell.ColumnIndex);
-            if (!cell.ReadOnly && InputHandles.ContainsKey(name))
+            if (!cell.ReadOnly && InputActions.ContainsKey(name))
             {
                 var arguments = InputArguments.ContainsKey(name)
                     ? InputArguments[name] : new object[0];
 
-                InputHandles[name]?.Invoke(this, e, arguments);
+                InputActions[name]?.Invoke(this, e, arguments);
+                return;
+            }
+            if (!cell.ReadOnly && InputHandles.ContainsKey(name))
+            {
+                InputHandles[name]?.Invoke(this, e);
                 return;
             }
 
             base.OnCellContentClick(e);
         }
 
-        public void AddEditHandler(string columnName, EditAction handler, params object[] arguments)
+        public void AddEditHandler(string columnName, EventHandler handler)
         {
             InputHandles[columnName] = handler;
+        }
+
+        public void AddEditHandler(DataGridViewColumn column, EventHandler handler)
+            => AddEditHandler(column.Name, handler);
+
+        public void AddEditAction(string columnName, EditAction handler, params object[] arguments)
+        {
+            InputActions[columnName] = handler;
             InputArguments[columnName] = arguments;
         }
 
-        public void AddEditHandler(DataGridViewColumn column, 
+        public void AddEditAction(DataGridViewColumn column, 
             EditAction handler, params object[] arguments) =>
-            AddEditHandler(column.Name, handler, arguments);
+            AddEditAction(column.Name, handler, arguments);
 
-        public void ChangeEditHandler(string columnName, EditAction handler) =>
-            InputHandles[columnName] = handler;
+        public void ChangeEditAction(string columnName, EditAction handler) =>
+            InputActions[columnName] = handler;
 
-        public void ChangeEditHandler(DataGridViewColumn column, EditAction handler) =>
-            ChangeEditHandler(column.Name, handler);
+        public void ChangeEditAction(DataGridViewColumn column, EditAction handler) =>
+            ChangeEditAction(column.Name, handler);
 
         public void ChangeEditArguments(string columnName, params object[] arguments) =>
             InputArguments[columnName] = arguments;
@@ -236,6 +255,18 @@
 
         public void AddChangedHandler(DataGridViewColumn column, CellAction handler, params object[] arguments) =>
             AddChangedHandler(column.Name, handler, arguments);
+
+        public void ChangeChangedHandler(string columnName, CellAction handler) =>
+            ValueChangedHandles[columnName] = handler;
+
+        public void ChangeChangedHandler(DataGridViewColumn column, CellAction handler) =>
+            ChangeChangedHandler(column.Name, handler);
+
+        public void ChangeChangedArguments(string columnName, params object[] arguments) =>
+            ValueChangedArguments[columnName] = arguments;
+
+        public void ChangeChangedArguments(DataGridViewColumn column, params object[] arguments) =>
+            ChangeChangedArguments(column.Name, arguments);
 
         public void SendChanged(DataGridViewColumn column)
         {

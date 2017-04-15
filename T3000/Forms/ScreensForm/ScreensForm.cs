@@ -124,7 +124,7 @@
 
         #region User input handles
 
-        private void EditScreenColumn(object sender, EventArgs e, params object[] arguments)
+        private void EditScreenColumn(object sender, EventArgs e)
         {
             try
             {
@@ -141,7 +141,7 @@
             }
         }
 
-        private void EditPictureColumn(object sender, EventArgs e, params object[] arguments)
+        private void EditPictureColumn(object sender, EventArgs e)
         {
             try
             {

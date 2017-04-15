@@ -24,7 +24,7 @@
 
             //User input
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
-            view.AddEditHandler(UnitsColumn, TViewUtilities.EditUnitsColumn,
+            view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
                 ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsInputAnalog()),
                 RangeTextColumn.Name);
