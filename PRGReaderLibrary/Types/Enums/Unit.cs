@@ -63,7 +63,7 @@ namespace PRGReaderLibrary
         /// Digital part
         /// </summary>
 
-        [UnitsNames("DigitalUnused", "False", "True")]
+        [UnitsNames("Unused", "False", "True")]
         DigitalUnused = 100,
 
         [UnitsNames("Off/On", "/")]

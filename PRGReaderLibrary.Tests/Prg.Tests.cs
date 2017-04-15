@@ -211,69 +211,113 @@ See console log for details.
 
             ObjectAssert.AreEqual(new CustomDigitalUnitsPoint(false, "TANK1", "TANK2"), prg.CustomUnits.Digital[0]);
 
-            //IN1
-            var expected = new InputPoint
+            //Inputs
             {
-                Description = "TANK2 TOP",
-                AutoManual = AutoManual.Automatic,
-                Value = new VariableValue(0.683, Unit.PercentsVolts5),
-                CalibrationH = 0.0,
-                CalibrationL = 0.0,
-                CalibrationSign = Sign.Negative,
-                Control = OffOn.On,
-                CustomUnits = null,
-                DigitalAnalog = DigitalAnalog.Analog,
-                FileVersion = FileVersion.Rev6,
-                Filter = 1,
-                Status = InputStatus.Normal,
-                Jumper = Jumper.To5V,
-                Label = "T2_TOP",
-                SubNumber = 0.1,
-                //Decom = 32
-            };
-            ObjectAssert.AreEqual(expected, prg.Inputs[0]);
+                //IN1
+                var expected = new InputPoint
+                {
+                    Description = "TANK2 TOP",
+                    AutoManual = AutoManual.Automatic,
+                    Value = new VariableValue(0.683, Unit.PercentsVolts5),
+                    CalibrationH = 0.0,
+                    CalibrationL = 0.0,
+                    CalibrationSign = Sign.Negative,
+                    Control = OffOn.On,
+                    CustomUnits = null,
+                    DigitalAnalog = DigitalAnalog.Analog,
+                    FileVersion = FileVersion.Rev6,
+                    Filter = 1,
+                    Status = InputStatus.Normal,
+                    Jumper = Jumper.To5V,
+                    Label = "T2_TOP",
+                    SubNumber = 0.1,
+                    //Decom = 32
+                };
+                ObjectAssert.AreEqual(expected, prg.Inputs[0]);
 
-            //IN2
-            expected = new InputPoint
-            {
-                Description = "TANK2 BOT",
-                AutoManual = AutoManual.Automatic,
-                Value = new VariableValue("High", Unit.LowHigh, null, 1000),
-                CalibrationH = 0.0,
-                CalibrationL = 0.0,
-                CalibrationSign = Sign.Negative,
-                Control = OffOn.On,
-                CustomUnits = null,
-                DigitalAnalog = DigitalAnalog.Digital,
-                FileVersion = FileVersion.Rev6,
-                Filter = 1,
-                Status = InputStatus.Normal,
-                Jumper = Jumper.Thermistor,
-                Label = "T2_BOT",
-                SubNumber = 0.1
-            };
-            ObjectAssert.AreEqual(expected, prg.Inputs[1]);
+                //IN2
+                expected = new InputPoint
+                {
+                    Description = "TANK2 BOT",
+                    AutoManual = AutoManual.Automatic,
+                    Value = new VariableValue("High", Unit.LowHigh, null, 1000),
+                    CalibrationH = 0.0,
+                    CalibrationL = 0.0,
+                    CalibrationSign = Sign.Negative,
+                    Control = OffOn.On,
+                    CustomUnits = null,
+                    DigitalAnalog = DigitalAnalog.Digital,
+                    FileVersion = FileVersion.Rev6,
+                    Filter = 1,
+                    Status = InputStatus.Normal,
+                    Jumper = Jumper.Thermistor,
+                    Label = "T2_BOT",
+                    SubNumber = 0.1
+                };
+                ObjectAssert.AreEqual(expected, prg.Inputs[1]);
 
-            //IN3
-            expected = new InputPoint
+                //IN3
+                expected = new InputPoint
+                {
+                    Description = "IN 3",
+                    AutoManual = AutoManual.Automatic,
+                    Value = new VariableValue(19.824, Unit.Psi20),
+                    CalibrationH = 0.0,
+                    CalibrationL = 0.0,
+                    CalibrationSign = Sign.Negative,
+                    Control = OffOn.On,
+                    CustomUnits = null,
+                    DigitalAnalog = DigitalAnalog.Analog,
+                    FileVersion = FileVersion.Rev6,
+                    Filter = 32,
+                    Status = InputStatus.Normal,
+                    Jumper = Jumper.Thermistor,
+                    Label = "IN3",
+                    SubNumber = 0.1
+                };
+                ObjectAssert.AreEqual(expected, prg.Inputs[2]);
+            }
+
+            //Outputs
             {
-                Description = "IN 3",
-                AutoManual = AutoManual.Automatic,
-                Value = new VariableValue(19.824, Unit.Psi20),
-                CalibrationH = 0.0,
-                CalibrationL = 0.0,
-                CalibrationSign = Sign.Negative,
-                Control = OffOn.On,
-                CustomUnits = null,
-                DigitalAnalog = DigitalAnalog.Analog,
-                FileVersion = FileVersion.Rev6,
-                Filter = 32,
-                Status = InputStatus.Normal,
-                Jumper = Jumper.Thermistor,
-                Label = "IN3",
-                SubNumber = 0.1
-            };
-            ObjectAssert.AreEqual(expected, prg.Inputs[2]);
+                //OUT1
+                var expected = new OutputPoint()
+                {
+                    Description = "VALVE LEFT",
+                    AutoManual = AutoManual.Manual,
+                    HwSwitchStatus = SwitchStatus.Auto,
+                    Value = new VariableValue(true, Unit.OffOn, null, 1000),
+                    LowVoltage = 0,
+                    HighVoltage = 0,
+                    PwmPeriod = 0,
+                    Control = OffOn.On,
+                    CustomUnits = null,
+                    DigitalAnalog = DigitalAnalog.Digital,
+                    FileVersion = FileVersion.Rev6,
+                    Label = "VAL_LEFT",
+                    SubNumber = 0.1
+                };
+                ObjectAssert.AreEqual(expected, prg.Outputs[0]);
+
+                //OUT2
+                expected = new OutputPoint()
+                {
+                    Description = "VALVE RIGHT",
+                    AutoManual = AutoManual.Automatic,
+                    HwSwitchStatus = SwitchStatus.Auto,
+                    Value = new VariableValue(true, Unit.OffOn, null, 1000),
+                    LowVoltage = 0,
+                    HighVoltage = 0,
+                    PwmPeriod = 0,
+                    Control = OffOn.On,
+                    CustomUnits = null,
+                    DigitalAnalog = DigitalAnalog.Digital,
+                    FileVersion = FileVersion.Rev6,
+                    Label = "VAL_RIT",
+                    SubNumber = 0.1
+                };
+                ObjectAssert.AreEqual(expected, prg.Outputs[1]);
+            }
         }
 
         [Test]
