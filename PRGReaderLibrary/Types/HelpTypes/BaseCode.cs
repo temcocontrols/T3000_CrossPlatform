@@ -31,7 +31,7 @@
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Code = bytes.ToBytes(0 + offset, Count);
+                    Code = bytes.ToBytes(ref offset, Count);
                     break;
 
                 default:

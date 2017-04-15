@@ -95,11 +95,7 @@ namespace PRGReaderLibrary
 
             Value = new VariableValue(valueRaw, unit);
 
-            var size = GetSize(FileVersion);
-            if (offset != size)
-            {
-                throw new OffsetException(offset, size);
-            }
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -135,11 +131,7 @@ namespace PRGReaderLibrary
                     throw new FileVersionNotImplementedException(FileVersion);
             }
 
-            var size = GetSize(FileVersion);
-            if (bytes.Count != size)
-            {
-                throw new OffsetException(bytes.Count, size);
-            }
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

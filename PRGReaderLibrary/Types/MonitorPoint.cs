@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace PRGReaderLibrary
 {
-    using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     public class MonitorPoint : Version, IBinaryObject
@@ -62,29 +60,31 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Label = bytes.GetString(0 + offset, 9).ClearBinarySymvols();
+                    Label = bytes.GetString(ref offset, 9).ClearBinarySymvols();
                     for (var i = 0; i < 14; ++i)
                     {
-                        var data = bytes.ToBytes(9 + i*5 + offset, 5);
+                        var data = bytes.ToBytes(ref offset, 5);
                         Inputs.Add(new NetPoint(data, 0, FileVersion));
                     }
                     for (var i = 0; i < 14; ++i)
                     {
-                        Ranges.Add(bytes.ToByte(79 + i + offset));
+                        Ranges.Add(bytes.ToByte(ref offset));
                     }
-                    Second = bytes.ToByte(93 + offset);
-                    Minute = bytes.ToByte(94 + offset);
-                    Hour = bytes.ToByte(95 + offset);
-                    MaxTimeLength = bytes.ToByte(96 + offset);
-                    InputsCount = bytes.ToByte(97 + offset);
-                    AnalogInputsCount = bytes.ToByte(98 + offset);
-                    Status = bytes.ToByte(99 + offset);
-                    NextSampleTime = bytes.ToInt32(100 + offset);
+                    Second = bytes.ToByte(ref offset);
+                    Minute = bytes.ToByte(ref offset);
+                    Hour = bytes.ToByte(ref offset);
+                    MaxTimeLength = bytes.ToByte(ref offset);
+                    InputsCount = bytes.ToByte(ref offset);
+                    AnalogInputsCount = bytes.ToByte(ref offset);
+                    Status = bytes.ToByte(ref offset);
+                    NextSampleTime = bytes.ToInt32(ref offset);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -124,6 +124,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

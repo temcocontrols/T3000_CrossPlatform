@@ -1,6 +1,5 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Linq;
     using System.Collections.Generic;
 
@@ -56,16 +55,18 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Name = bytes.GetString(0 + offset, 9).ClearBinarySymvols();
+                    Name = bytes.GetString(ref offset, 9).ClearBinarySymvols();
                     for (int i = 0; i < 16; ++i)
                     {
-                        Values.Add(new TableValue(bytes.ToBytes(9 + i * 6 + offset, 6), 0, FileVersion));
+                        Values.Add(new TableValue(bytes.ToBytes(ref offset, 6), 0, FileVersion));
                     }
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -91,6 +92,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

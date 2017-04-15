@@ -4,9 +4,8 @@
     using System.Linq;
     using System.Collections.Generic;
 
-    public class Prg
+    public class Prg : Version
     {
-        public FileVersion FileVersion { get; set; }
         public string DateTime { get; set; }
         public string Signature { get; set; }
         public ushort PanelNumber { get; set; }
@@ -347,10 +346,7 @@
                 CustomAnalogUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new CustomAnalogUnitsPoint(i, 0, FileVersion)));
 
-            if (offset != Length)
-            {
-                throw new OffsetException(offset, Length);
-            }
+            CheckOffset(offset, Length);
 
             UpdateCustomUnits();
         }
@@ -376,9 +372,9 @@
             }
         }
 
-        public Prg(byte[] bytes)
+        public Prg(byte[] bytes) 
+            : base(FileVersionUtilities.GetFileVersion(bytes))
         {
-            FileVersion = FileVersionUtilities.GetFileVersion(bytes);
             if (FileVersion == FileVersion.Unsupported)
             {
                 throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
@@ -601,9 +597,9 @@
                 bytes.AddRange(obj.ToBytes());
             }
 
-            if (!IsUpgraded && bytes.Count != Length)
+            if (!IsUpgraded)
             {
-                throw new OffsetException(bytes.Count, Length);
+                CheckSize(bytes.Count, Length);
             }
 
             return bytes.ToArray();

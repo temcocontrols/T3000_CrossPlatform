@@ -61,19 +61,21 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Name = bytes.GetString(0 + offset, 16).ClearBinarySymvols();
-                    Password = bytes.GetString(16 + offset, 9).ClearBinarySymvols();
-                    AccessLevel = bytes.ToByte(25 + offset);
-                    Rights = bytes.ToUInt32(26 + offset);
-                    DefaultPanel = bytes.ToByte(30 + offset);
-                    DefaultGroup = bytes.ToByte(31 + offset);
-                    ScreenRights = bytes.ToBytes(32 + offset, 8);
-                    ProgramRights = bytes.ToBytes(40 + offset, 8);
+                    Name = bytes.GetString(ref offset, 16).ClearBinarySymvols();
+                    Password = bytes.GetString(ref offset, 9).ClearBinarySymvols();
+                    AccessLevel = bytes.ToByte(ref offset);
+                    Rights = bytes.ToUInt32(ref offset);
+                    DefaultPanel = bytes.ToByte(ref offset);
+                    DefaultGroup = bytes.ToByte(ref offset);
+                    ScreenRights = bytes.ToBytes(ref offset, 8);
+                    ProgramRights = bytes.ToBytes(ref offset, 8);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -100,6 +102,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

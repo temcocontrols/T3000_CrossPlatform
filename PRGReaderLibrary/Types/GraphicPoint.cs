@@ -65,28 +65,30 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    LabelStatus = bytes.ToByte(0 + offset);
-                    SerialNumber = bytes.ToUInt32(1 + offset);
-                    ScreenIndex = bytes.ToByte(5 + offset);
-                    LabelIndex = bytes.ToUInt16(6 + offset);
-                    MainPanel = bytes.ToByte(8 + offset);
-                    SubPanel = bytes.ToByte(9 + offset);
-                    PointType = bytes.ToByte(10 + offset);
-                    PointNumber = bytes.ToByte(11 + offset);
-                    PointX = bytes.ToUInt16(12 + offset);
-                    PointY = bytes.ToUInt16(14 + offset);
-                    ClrTxt = bytes.ToUInt32(16 + offset);
-                    DisplayType = bytes.ToByte(20 + offset);
-                    IconSize = bytes.ToByte(21 + offset);
-                    IconPlace = bytes.ToByte(22 + offset);
-                    IconName1 = bytes.GetString(23 + offset, 20).ClearBinarySymvols();
-                    IconName2 = bytes.GetString(43 + offset, 20).ClearBinarySymvols();
-                    Unused = bytes.ToBytes(63 + offset, 7);
+                    LabelStatus = bytes.ToByte(ref offset);
+                    SerialNumber = bytes.ToUInt32(ref offset);
+                    ScreenIndex = bytes.ToByte(ref offset);
+                    LabelIndex = bytes.ToUInt16(ref offset);
+                    MainPanel = bytes.ToByte(ref offset);
+                    SubPanel = bytes.ToByte(ref offset);
+                    PointType = bytes.ToByte(ref offset);
+                    PointNumber = bytes.ToByte(ref offset);
+                    PointX = bytes.ToUInt16(ref offset);
+                    PointY = bytes.ToUInt16(ref offset);
+                    ClrTxt = bytes.ToUInt32(ref offset);
+                    DisplayType = bytes.ToByte(ref offset);
+                    IconSize = bytes.ToByte(ref offset);
+                    IconPlace = bytes.ToByte(ref offset);
+                    IconName1 = bytes.GetString(ref offset, 20).ClearBinarySymvols();
+                    IconName2 = bytes.GetString(ref offset, 20).ClearBinarySymvols();
+                    Unused = bytes.ToBytes(ref offset, 7);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -122,6 +124,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

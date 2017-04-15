@@ -42,6 +42,7 @@ namespace PRGReaderLibrary
         {
             switch (version)
             {
+                case FileVersion.Dos:
                 case FileVersion.Current:
                     return 25;
 
@@ -64,14 +65,16 @@ namespace PRGReaderLibrary
             {
                 case FileVersion.Dos:
                 case FileVersion.Current:
-                    Direct = bytes.ToByte(0 + offset).ToBoolean();
-                    DigitalUnitsOff = bytes.GetString(1 + offset, 12).ClearBinarySymvols();
-                    DigitalUnitsOn = bytes.GetString(13 + offset, 12).ClearBinarySymvols();
+                    Direct = bytes.ToByte(ref offset).ToBoolean();
+                    DigitalUnitsOff = bytes.GetString(ref offset, 12).ClearBinarySymvols();
+                    DigitalUnitsOn = bytes.GetString(ref offset, 12).ClearBinarySymvols();
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -95,6 +98,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

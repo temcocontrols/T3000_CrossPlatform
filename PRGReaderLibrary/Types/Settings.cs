@@ -1,6 +1,5 @@
 namespace PRGReaderLibrary
 {
-    using System;
     using System.Collections.Generic;
 
     public class Settings : Version, IBinaryObject
@@ -97,56 +96,59 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Ip = bytes.ToBytes(0 + offset, 4);
-                    SubNet = bytes.ToBytes(4 + offset, 4);
-                    Gate = bytes.ToBytes(8 + offset, 4);
-                    Mac = bytes.ToBytes(12 + offset, 6);
-                    TcpType = (TcpType)bytes.ToByte(18 + offset);
-                    MiniType = bytes.ToByte(19 + offset);
-                    Debug = bytes.ToByte(20 + offset);
-                    ProInfo = new ProInfo(bytes.ToBytes(21 + offset, 17), 0, FileVersion);
-                    Com0Config = bytes.ToByte(38 + offset);
-                    Com1Config = bytes.ToByte(39 + offset);
-                    Com2Config = bytes.ToByte(40 + offset);
-                    RefreshFlashTimer = bytes.ToByte(41 + offset);
-                    PlugNPlay = (NoYes)bytes.ToByte(42 + offset);
-                    ResetDefault = bytes.ToByte(43 + offset);
-                    ComBaudRate0 = bytes.ToByte(44 + offset);
-                    ComBaudRate1 = bytes.ToByte(45 + offset);
-                    ComBaudRate2 = bytes.ToByte(46 + offset);
-                    UserNameMode = (NoDisableEnable)bytes.ToByte(47 + offset);
-                    EnableCustomerUnit = (NoYes)bytes.ToByte(48 + offset);
-                    UsbMode = (UsbMode)bytes.ToByte(49 + offset);
-                    NetworkNumber = bytes.ToByte(50 + offset);
-                    PanelType = bytes.ToByte(51 + offset);
-                    PanelName = bytes.GetString(52 + offset, 20).ClearBinarySymvols();
-                    EnablePanelName = (NoYes)bytes.ToByte(72 + offset);
-                    PabelNumber = bytes.ToByte(73 + offset);
-                    DynDNSUser = bytes.GetString(74 + offset, 32).ClearBinarySymvols();
-                    DynDNSPassword = bytes.GetString(106 + offset, 32).ClearBinarySymvols();
-                    DynDNSDomain = bytes.GetString(138 + offset, 32).ClearBinarySymvols();
-                    DynDNSMode = (NoDisableEnable)bytes.ToByte(170 + offset);
-                    DynDNSProvider = (DynDNSProvider)bytes.ToByte(171 + offset);
-                    DynDNSUpdateTime = bytes.ToUInt16(172 + offset);
-                    SntpMode = (NoDisableEnable)bytes.ToByte(174 + offset);
-                    TimeZone = bytes.ToInt16(175 + offset);
-                    SerialNumber = bytes.ToUInt32(177 + offset);
-                    UpdateDynDNS = new UNTime(bytes.ToBytes(181 + offset, 10), 0, FileVersion);
-                    MstpNetworkNumber = bytes.ToUInt16(191 + offset);
-                    BBMDEn = bytes.ToByte(193 + offset);
-                    SdExist = bytes.ToByte(194 + offset);
-                    ModbusPort = bytes.ToUInt16(195 + offset);
-                    ModbusId = bytes.ToByte(197 + offset);
-                    ObjectInstance = bytes.ToUInt32(198 + offset);
-                    TimeUpdateSince1970 = bytes.ToUInt32(202 + offset);
-                    TimeZoneSummerDaytime = bytes.ToByte(206 + offset);
-                    SntpServer = bytes.GetString(207 + offset, 30).ClearBinarySymvols();
-                    ZegbeeExist = bytes.ToByte(237 + offset);
+                    Ip = bytes.ToBytes(ref offset, 4);
+                    SubNet = bytes.ToBytes(ref offset, 4);
+                    Gate = bytes.ToBytes(ref offset, 4);
+                    Mac = bytes.ToBytes(ref offset, 6);
+                    TcpType = (TcpType)bytes.ToByte(ref offset);
+                    MiniType = bytes.ToByte(ref offset);
+                    Debug = bytes.ToByte(ref offset);
+                    ProInfo = new ProInfo(bytes.ToBytes(ref offset, 17), 0, FileVersion);
+                    Com0Config = bytes.ToByte(ref offset);
+                    Com1Config = bytes.ToByte(ref offset);
+                    Com2Config = bytes.ToByte(ref offset);
+                    RefreshFlashTimer = bytes.ToByte(ref offset);
+                    PlugNPlay = (NoYes)bytes.ToByte(ref offset);
+                    ResetDefault = bytes.ToByte(ref offset);
+                    ComBaudRate0 = bytes.ToByte(ref offset);
+                    ComBaudRate1 = bytes.ToByte(ref offset);
+                    ComBaudRate2 = bytes.ToByte(ref offset);
+                    UserNameMode = (NoDisableEnable)bytes.ToByte(ref offset);
+                    EnableCustomerUnit = (NoYes)bytes.ToByte(ref offset);
+                    UsbMode = (UsbMode)bytes.ToByte(ref offset);
+                    NetworkNumber = bytes.ToByte(ref offset);
+                    PanelType = bytes.ToByte(ref offset);
+                    PanelName = bytes.GetString(ref offset, 20).ClearBinarySymvols();
+                    EnablePanelName = (NoYes)bytes.ToByte(ref offset);
+                    PabelNumber = bytes.ToByte(ref offset);
+                    DynDNSUser = bytes.GetString(ref offset, 32).ClearBinarySymvols();
+                    DynDNSPassword = bytes.GetString(ref offset, 32).ClearBinarySymvols();
+                    DynDNSDomain = bytes.GetString(ref offset, 32).ClearBinarySymvols();
+                    DynDNSMode = (NoDisableEnable)bytes.ToByte(ref offset);
+                    DynDNSProvider = (DynDNSProvider)bytes.ToByte(ref offset);
+                    DynDNSUpdateTime = bytes.ToUInt16(ref offset);
+                    SntpMode = (NoDisableEnable)bytes.ToByte(ref offset);
+                    TimeZone = bytes.ToInt16(ref offset);
+                    SerialNumber = bytes.ToUInt32(ref offset);
+                    UpdateDynDNS = new UNTime(bytes.ToBytes(ref offset, 10), 0, FileVersion);
+                    MstpNetworkNumber = bytes.ToUInt16(ref offset);
+                    BBMDEn = bytes.ToByte(ref offset);
+                    SdExist = bytes.ToByte(ref offset);
+                    ModbusPort = bytes.ToUInt16(ref offset);
+                    ModbusId = bytes.ToByte(ref offset);
+                    ObjectInstance = bytes.ToUInt32(ref offset);
+                    TimeUpdateSince1970 = bytes.ToUInt32(ref offset);
+                    TimeZoneSummerDaytime = bytes.ToByte(ref offset);
+                    SntpServer = bytes.GetString(ref offset, 30).ClearBinarySymvols();
+                    ZegbeeExist = bytes.ToByte(ref offset);
+                    offset += 162; //Unused
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -213,6 +215,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

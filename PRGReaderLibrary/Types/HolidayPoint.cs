@@ -53,17 +53,21 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
+            offset += BasePoint.GetSize(FileVersion);
+
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Control = (OffOn)bytes.ToByte(30 + offset);
-                    AutoManual = (AutoManual)bytes.ToByte(31 + offset);
-                    Unused = bytes.ToByte(32 + offset);
+                    Control = (OffOn)bytes.ToByte(ref offset);
+                    AutoManual = (AutoManual)bytes.ToByte(ref offset);
+                    Unused = bytes.ToByte(ref offset);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -86,6 +90,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

@@ -32,8 +32,8 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Value = bytes.ToUInt16(0 + offset);
-                    Units = bytes.ToInt32(2 + offset);
+                    Value = bytes.ToUInt16(ref offset);
+                    Units = bytes.ToInt32(ref offset);
                     break;
 
                 default:

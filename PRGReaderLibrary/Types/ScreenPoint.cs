@@ -52,19 +52,23 @@ namespace PRGReaderLibrary
             FileVersion version = FileVersion.Current)
             : base(bytes, offset, version)
         {
+            offset += BasePoint.GetSize(FileVersion);
+
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    PictureFile = bytes.GetString(30 + offset, 11).ClearBinarySymvols();
-                    RefreshTime = bytes.ToByte(41 + offset);
-                    GraphicMode = (TextGraphic)bytes.ToByte(42 + offset);
-                    X = bytes.ToByte(43 + offset);
-                    Y = bytes.ToUInt16(44 + offset);
+                    PictureFile = bytes.GetString(ref offset, 11).ClearBinarySymvols();
+                    RefreshTime = bytes.ToByte(ref offset);
+                    GraphicMode = (TextGraphic)bytes.ToByte(ref offset);
+                    X = bytes.ToByte(ref offset);
+                    Y = bytes.ToUInt16(ref offset);
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -89,6 +93,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }

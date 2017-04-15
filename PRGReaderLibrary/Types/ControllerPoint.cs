@@ -77,26 +77,28 @@ namespace PRGReaderLibrary
             switch (FileVersion)
             {
                 case FileVersion.Current:
-                    Input = new T3000Point(bytes.ToBytes(0 + offset, 3), 0, FileVersion);
-                    InputValue = bytes.ToInt32(3 + offset);
-                    Value = bytes.ToInt32(7 + offset);
-                    SetPoint = new T3000Point(bytes.ToBytes(11 + offset, 3), 0, FileVersion);
-                    SetPointValue = bytes.ToFloat(14 + offset);
-                    Unit = (Unit)bytes.ToByte(18 + offset);
-                    AutoManual = (AutoManual)bytes.ToByte(19 + offset);
-                    Action = (DirectReverse) bytes.ToByte(20 + offset);
-                    Periodicity = (Periodicity)bytes.ToByte(21 + offset);
-                    IsSample = bytes.ToByte(22 + offset);
-                    PropHigh = bytes.ToByte(23 + offset);
-                    Proportional = bytes.ToByte(24 + offset);
-                    Reset = bytes.ToByte(25 + offset);
-                    Bias = bytes.ToByte(26 + offset);
-                    Rate = bytes.ToByte(27 + offset) / 100.0;
+                    Input = new T3000Point(bytes.ToBytes(ref offset, 3), 0, FileVersion);
+                    InputValue = bytes.ToInt32(ref offset);
+                    Value = bytes.ToInt32(ref offset);
+                    SetPoint = new T3000Point(bytes.ToBytes(ref offset, 3), 0, FileVersion);
+                    SetPointValue = bytes.ToFloat(ref offset);
+                    Unit = (Unit)bytes.ToByte(ref offset);
+                    AutoManual = (AutoManual)bytes.ToByte(ref offset);
+                    Action = (DirectReverse) bytes.ToByte(ref offset);
+                    Periodicity = (Periodicity)bytes.ToByte(ref offset);
+                    IsSample = bytes.ToByte(ref offset);
+                    PropHigh = bytes.ToByte(ref offset);
+                    Proportional = bytes.ToByte(ref offset);
+                    Reset = bytes.ToByte(ref offset);
+                    Bias = bytes.ToByte(ref offset);
+                    Rate = bytes.ToByte(ref offset) / 100.0;
                     break;
 
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckOffset(offset, GetSize(FileVersion));
         }
 
         /// <summary>
@@ -132,6 +134,8 @@ namespace PRGReaderLibrary
                 default:
                     throw new FileVersionNotImplementedException(FileVersion);
             }
+
+            CheckSize(bytes.Count, GetSize(FileVersion));
 
             return bytes.ToArray();
         }
