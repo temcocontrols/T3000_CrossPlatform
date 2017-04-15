@@ -3,7 +3,6 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
-    using System.Linq;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -50,20 +49,14 @@
             try
             {
                 analogUnitsListBox.Items.Clear();
-                AnalogDictionary = UnitsNamesUtilities.GetNames(CustomUnits);
-                if (AnalogPredicate != null)
-                {
-                    AnalogDictionary = AnalogDictionary
-                        .Where(pair => AnalogPredicate(pair.Key))
-                        .ToDictionary(pair => pair.Key, pair => pair.Value);
-                }
+                AnalogDictionary = UnitsNamesUtilities.GetNames(CustomUnits, AnalogPredicate);
                 foreach (var name in AnalogDictionary)
                 {
                     analogUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");
                 }
 
-                DigitalDictionary = UnitsNamesUtilities.GetDigitalNames(CustomUnits);
                 digitalUnitsListBox.Items.Clear();
+                DigitalDictionary = UnitsNamesUtilities.GetNames(CustomUnits, unit => unit.IsDigital());
                 foreach (var name in DigitalDictionary)
                 {
                     digitalUnitsListBox.Items.Add($"{ToNumber(name.Key)}. {name.Value.OffOnName}");

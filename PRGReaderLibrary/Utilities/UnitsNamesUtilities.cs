@@ -1,18 +1,12 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     public static class UnitsNamesUtilities
     {
-        private static Dictionary<Unit, UnitsNames> BaseDictionary { get; } =
-            GetFilledDictionary();
-        private static Dictionary<Unit, UnitsNames> BaseVariableAnalogDictionary { get; } =
-            GetFilledVariableAnalogDictionary();
-        private static Dictionary<Unit, UnitsNames> BaseDigitalDictionary { get; } =
-            GetFilledDigitalDictionary();
-        private static Dictionary<Unit, UnitsNames> BaseInputAnalogDictionary { get; } =
-            GetFilledInputAnalogDictionary();
+        private static Dictionary<Unit, UnitsNames> BaseDictionary { get; } = FillDictionary();
 
         private static UnitsNames GetCustomDigitalName(int index,
             List<CustomDigitalUnitsPoint> customUnits = null,
@@ -92,7 +86,7 @@
             }
         }
 
-        private static Dictionary<Unit, UnitsNames> GetFilledDictionary(
+        private static Dictionary<Unit, UnitsNames> FillDictionary(
             CustomUnits customUnits = null,
             Func<Unit, bool> predicate = null)
         {
@@ -110,34 +104,23 @@
             return names;
         }
 
-        private static Dictionary<Unit, UnitsNames> GetFilledVariableAnalogDictionary(
-            CustomUnits customUnits = null) =>
-            GetFilledDictionary(customUnits, units => units.IsVariableAnalog());
-
-        private static Dictionary<Unit, UnitsNames> GetFilledDigitalDictionary(
-            CustomUnits customUnits = null) =>
-            GetFilledDictionary(customUnits, units => units.IsDigital());
-
-        private static Dictionary<Unit, UnitsNames> GetFilledInputAnalogDictionary(
-            CustomUnits customUnits = null) =>
-            GetFilledDictionary(customUnits, units => units.IsInputAnalog());
-
         public static Dictionary<Unit, UnitsNames> GetNames(
-            CustomUnits customUnits = null) =>
-            customUnits == null ? BaseDictionary : GetFilledDictionary(customUnits);
+            CustomUnits customUnits = null,
+            Func<Unit, bool> predicate = null)
+        {
+            if (customUnits != null)
+            {
+                return FillDictionary(customUnits, predicate);
+            }
 
-        public static Dictionary<Unit, UnitsNames> GetVariableAnalogNames(
-            CustomUnits customUnits = null) =>
-            customUnits == null ? BaseVariableAnalogDictionary : GetFilledVariableAnalogDictionary(customUnits);
+            var names = BaseDictionary;
+            if (predicate == null)
+            {
+                return names;
+            }
 
-        public static Dictionary<Unit, UnitsNames> GetDigitalNames(
-            CustomUnits customUnits = null) =>
-            customUnits == null ? BaseDigitalDictionary : GetFilledDigitalDictionary(customUnits);
-
-        public static Dictionary<Unit, UnitsNames> GetInputAnalogNames(
-            CustomUnits customUnits = null) =>
-            customUnits == null
-            ? BaseInputAnalogDictionary
-            : GetFilledInputAnalogDictionary(customUnits);
+            return names.Where(pair => predicate(pair.Key))
+                        .ToDictionary(pair => pair.Key, pair => pair.Value);
+        }
     }
 }

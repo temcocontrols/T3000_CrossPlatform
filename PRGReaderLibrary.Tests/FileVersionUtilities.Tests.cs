@@ -19,10 +19,10 @@
                 FileVersionUtilities.IsDosVersion(GetBytesFromName(name)),
                 $"{nameof(FileVersionUtilities.IsDosVersion)}: {name}");
 
-        public void IsRev6Version(string name, bool expected, int revision = FileVersionUtilities.CurrentFileRevision) =>
+        public void IsRev6Version(string name, bool expected) =>
             Assert.AreEqual(expected,
-                FileVersionUtilities.IsRev6Version(GetBytesFromName(name), revision),
-                $"{nameof(FileVersionUtilities.IsRev6Version)}: {name}. Rev: {revision}");
+                FileVersionUtilities.IsRev6Version(GetBytesFromName(name)),
+                $"{nameof(FileVersionUtilities.IsRev6Version)}: {name}");
 
         public void GetFileVersion(string name, FileVersion expected) =>
             Assert.AreEqual(expected,
@@ -76,8 +76,8 @@
 
             //Past revisions
             //The version number, apparently, was not yet supported
-            IsRev6Version("SelfTestRev3.prg", false, 3);
-            IsRev6Version("ChamberRev5.prg", false, 5);
+            IsRev6Version("SelfTestRev3.prg", false);
+            IsRev6Version("ChamberRev5.prg", false);
         }
 
         [Test]
