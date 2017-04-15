@@ -318,6 +318,25 @@ See console log for details.
                 };
                 ObjectAssert.AreEqual(expected, prg.Outputs[1]);
             }
+
+            //Program codes
+            {
+                var expected = new ProgramCode()
+                {
+                    Code = new byte[2000],
+                    FileVersion = FileVersion.Rev6
+                };
+                //ObjectAssert.AreEqual(expected, prg.ProgramCodes[0]);
+
+                //Console.WriteLine(prg.ProgramCodes[0].PropertiesText());
+                //foreach (var line in prg.ProgramCodes[0].Lines)
+                //{
+                    //Console.WriteLine(line.GetString());
+                //}
+
+                //Console.WriteLine(DebugUtilities.CompareBytes(prg.ProgramCodes[0].Code,
+                //    prg.ProgramCodes[0].Code, onlyDif: false));
+            }
         }
 
         [Test]
