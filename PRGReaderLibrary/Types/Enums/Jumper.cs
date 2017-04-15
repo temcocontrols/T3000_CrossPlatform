@@ -1,9 +1,5 @@
 namespace PRGReaderLibrary
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-
     public enum Jumper
     {
         [Name("Thermistor Dry Contact")]
@@ -14,15 +10,5 @@ namespace PRGReaderLibrary
         To5V,
         [Name("0-10 V")]
         To10V
-    }
-
-    public static class JumperExtensions
-    {
-        private static Dictionary<Jumper, string> Names { get; set; } =
-            Enum.GetValues(typeof(Jumper))
-                .Cast<Jumper>()
-                .ToDictionary(i => i, i => i.GetAttribute<NameAttribute>().Name);
-
-        public static string GetName(this Jumper value) => Names[value];
     }
 }
