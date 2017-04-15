@@ -30,7 +30,6 @@
             view.AddEditHandler(RunStatusColumn, TViewUtilities.EditEnum<NormalCom>);
             view.AddEditHandler(CodeColumn, EditCodeColumn);
 
-
             //Value changed handles
             view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
 

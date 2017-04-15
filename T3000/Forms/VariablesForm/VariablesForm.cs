@@ -1,8 +1,9 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
-    using System;
     using Properties;
+    using System;
+    using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
 
@@ -29,8 +30,10 @@
                 ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()),
                 RangeTextColumn.Name);
+            view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
-            //Cell changed handles
+            //Value changed handles
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn.Name, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
@@ -58,6 +61,9 @@
             view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
                 ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.Validate();
+
+            //For apply changed handlers
+            view.SendChanged(StatusColumn);
         }
 
         private void SetRow(DataGridViewRow row, VariablePoint point)
@@ -73,6 +79,7 @@
             row.SetValue(UnitsColumn, point.Value.Unit);
             row.SetValue(RangeColumn, point.Value.Value);
             row.SetValue(RangeTextColumn, point.Value.Unit);
+            row.SetValue(StatusColumn, point.Control);
             row.SetValue(LabelColumn, point.Label);
         }
 

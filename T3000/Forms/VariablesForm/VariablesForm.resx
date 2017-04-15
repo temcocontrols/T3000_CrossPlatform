@@ -261,6 +261,12 @@
   <data name="RangeTextColumn.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <metadata name="StatusColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="StatusColumn.HeaderText" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <metadata name="LabelColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -341,6 +347,12 @@
   </data>
   <data name="&gt;&gt;RangeTextColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StatusColumn.Name" xml:space="preserve">
+    <value>StatusColumn</value>
+  </data>
+  <data name="&gt;&gt;StatusColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;LabelColumn.Name" xml:space="preserve">
     <value>LabelColumn</value>

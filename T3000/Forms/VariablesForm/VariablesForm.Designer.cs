@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VariablesForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
@@ -40,6 +41,7 @@
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RangeTextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
@@ -82,6 +84,7 @@
             this.UnitsColumn,
             this.RangeColumn,
             this.RangeTextColumn,
+            this.StatusColumn,
             this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
@@ -126,6 +129,20 @@
             resources.ApplyResources(this.RangeTextColumn, "RangeTextColumn");
             this.RangeTextColumn.Name = "RangeTextColumn";
             // 
+            // StatusColumn
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            this.StatusColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.StatusColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            resources.ApplyResources(this.StatusColumn, "StatusColumn");
+            this.StatusColumn.Name = "StatusColumn";
+            this.StatusColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.StatusColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // LabelColumn
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
@@ -161,6 +178,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeTextColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
 }
