@@ -20,9 +20,9 @@
                     throw new ArgumentException("T must be an enumerated type");
                 }
 
-                var view = (TView)sender;
+                var view = (TView) sender;
                 var cell = view.CurrentCell;
-                cell.Value = ((T)cell.Value).NextValue();
+                cell.Value = ((T) cell.Value).NextValue();
 
                 view.ValidateCell(cell);
             }
@@ -36,9 +36,9 @@
         {
             try
             {
-                var view = (TView)sender;
+                var view = (TView) sender;
                 var cell = view.CurrentCell;
-                cell.Value = !((bool)cell.Value);
+                cell.Value = !((bool) cell.Value);
 
                 view.ValidateCell(cell);
             }
@@ -52,10 +52,10 @@
         {
             try
             {
-                var view = (TView)sender;
+                var view = (TView) sender;
                 var cell = view.CurrentCell;
                 var dialog = new ColorDialog();
-                dialog.Color = (Color)cell.Value;
+                dialog.Color = (Color) cell.Value;
                 if (dialog.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -69,6 +69,57 @@
             {
                 MessageBoxUtilities.ShowException(exception);
             }
+        }
+
+        public static void EditValue(object sender, EventArgs e, params object[] arguments)
+        {
+            if (arguments.Length < 3)
+            {
+                throw new ArgumentException("Objects less than 3", nameof(arguments));
+            }
+
+            try
+            {
+                var unitsColumnName = (string) arguments[0];
+                var rangeColumnName = (string) arguments[1];
+                var customUnits = (CustomUnits) arguments[2];
+
+                var view = (TView) sender;
+                var row = view.CurrentRow;
+                var cell = view.CurrentCell;
+                try
+                {
+                    var value = GetVariableValue(row, cell.OwningColumn.Name, unitsColumnName, rangeColumnName, customUnits);
+                    if (value.Unit.IsDigital())
+                    {
+                        cell.Value = value.GetInverted().ToString();
+                    }
+                    else
+                    {
+                        view.BeginEdit(false);
+                    }
+                }
+                catch (Exception)
+                {
+                    view.BeginEdit(false);
+                }
+
+                view.ValidateCell(cell);
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        public static DataGridViewCell GetValueCellForUnit(string value, Unit unit)
+        {
+            var cell = unit.IsDigital()
+                ? (DataGridViewCell)new DataGridViewButtonCell()
+                : new DataGridViewTextBoxCell();
+            cell.Value = value;
+
+            return cell;
         }
 
         public static void EditUnitsColumn(object sender, EventArgs e, params object[] arguments)
@@ -96,7 +147,8 @@
                     return;
                 }
 
-                var newValue = value.ConvertValue(form.SelectedUnit, form.CustomUnits);
+                var newUnit = form.SelectedUnit;
+                var newValue = value.ConvertValue(newUnit, form.CustomUnits);
                 customUnits = form.CustomUnits;
 
                 view.ChangeValidationArguments(
@@ -108,12 +160,18 @@
                     unitsColumnName, valueColumnName, unitsColumnName, rangeColumnName, 
                     customUnits, predicate, rangeTextColumnName);
 
-                row.SetValue(unitsColumnName, form.SelectedUnit);
+                row.SetValue(unitsColumnName, newUnit);
                 row.SetValue(valueColumnName, newValue);
-                row.SetValue(rangeColumnName, form.SelectedUnit);
+                row.SetValue(rangeColumnName, newUnit);
                 if (rangeTextColumnName != null)
                 {
-                    row.SetValue(rangeTextColumnName, form.SelectedUnit);
+                    row.SetValue(rangeTextColumnName, newUnit);
+                }
+
+                // If from analog to digital or from digital to analog
+                if (value.Unit.IsDigital() != newUnit.IsDigital())
+                {
+                    row.Cells[valueColumnName] = GetValueCellForUnit(newValue, newUnit);
                 }
 
                 view.ValidateRow(row);

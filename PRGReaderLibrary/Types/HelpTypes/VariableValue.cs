@@ -7,6 +7,9 @@
         public int Value { get; set; }
         public Unit Unit { get; set; }
         public CustomUnits CustomUnits { get; set; }
+        public int MaxRange { get; set; }
+
+        #region Static methods
 
         public static string BooleanToDigitalValue(bool value, Unit unit,
             CustomUnits customUnits = null) =>
@@ -29,7 +32,7 @@ CustomUnits: {customUnits}");
             return value.Equals(onName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string ConvertValue(string value, Unit fromUnit, Unit toUnit, 
+        public static string ConvertValue(string value, Unit fromUnit, Unit toUnit,
             CustomUnits fromCustomUnits = null,
             CustomUnits toCustomUnits = null)
         {
@@ -119,10 +122,10 @@ Value: {boolean}, Unit: {unit}");
             }
             else if (type == typeof(TimeSpan))
             {
-                var span = (TimeSpan) value;
+                var span = (TimeSpan)value;
                 return span.ToString(
                     $@"{(span.Days == 0 ? string.Empty : @"d\.")}" +
-                    @"hh\:mm\:ss" + 
+                    @"hh\:mm\:ss" +
                     $@"{(span.Milliseconds == 0 ? string.Empty : @"\.fff")}");
             }
             else if (type == typeof(double))
@@ -147,8 +150,8 @@ Supported types: bool, float, TimeSpan");
                     throw new ArgumentException($"Please select digital unit for boolean value or cast it." +
                                                 $"Value: {value}, Unit: {unit}, Type: {type}");
                 }
-                
-                return Convert.ToInt32(value) * maxRange;
+
+                return Convert.ToInt32(value) * Math.Max(1, maxRange);
             }
             else if (type == typeof(TimeSpan))
             {
@@ -175,16 +178,20 @@ Type: {type}, Value: {value}, Unit: {unit}
 Supported types: bool, float, TimeSpan");
         }
 
-        public VariableValue(int value, Unit unit, CustomUnits customUnits = null)
+        #endregion
+
+        public VariableValue(int value, Unit unit, CustomUnits customUnits = null,
+            int maxRange = 1)
         {
             Value = value;
             Unit = unit;
             CustomUnits = customUnits;
+            MaxRange = maxRange;
         }
 
         public VariableValue(object value, Unit unit, CustomUnits customUnits = null,
             int maxRange = 1)
-            : this(ToInt(value, unit, maxRange), unit, customUnits)
+            : this(ToInt(value, unit, maxRange), unit, customUnits, maxRange)
         { }
 
         public VariableValue(string value, Unit unit, CustomUnits customUnits = null,
@@ -192,13 +199,29 @@ Supported types: bool, float, TimeSpan");
             : this(ToObject(value, unit, customUnits), unit, customUnits, maxRange)
         { }
 
-        public object ToObject() => ToObject(Value, Unit);
         public string ConvertValue(Unit unit, CustomUnits customUnits = null) => 
             ConvertValue(ToString(), Unit, unit, CustomUnits, customUnits);
 
-        public override int GetHashCode() => Value.GetHashCode() ^ Unit.GetHashCode();
+        public VariableValue GetInverted()
+        {
+            var obj = ToObject();
+            if (obj.GetType() == typeof(bool))
+            {
+                return new VariableValue(!(bool)obj, Unit, CustomUnits, MaxRange);
+            }
+
+            return new VariableValue(obj, Unit, CustomUnits, MaxRange);
+        }
+
+        #region Overrided
+
+        public override int GetHashCode() => Value.GetHashCode() ^ Unit.GetHashCode() ^ MaxRange.GetHashCode();
         public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
+        public object ToObject() => ToObject(Value, Unit);
         public override string ToString() => ToString(ToObject(), Unit, CustomUnits);
+
+        #endregion
+
 
     }
 }

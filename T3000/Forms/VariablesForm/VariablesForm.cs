@@ -26,6 +26,8 @@
 
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
+                UnitsColumn.Name, RangeColumn.Name, CustomUnits);
             view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
                 ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()),
@@ -51,6 +53,10 @@
                 var row = view.Rows[i];
                 row.SetValue(NumberColumn, $"{i + 1}");
                 SetRow(row, point);
+                row.Cells[ValueColumn.Name] = 
+                    TViewUtilities.GetValueCellForUnit(
+                        point.Value.ToString(), 
+                        point.Value.Unit);
             }
 
             //Validation
@@ -61,9 +67,6 @@
             view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
                 ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.Validate();
-
-            //For apply changed handlers
-            view.SendChanged(StatusColumn);
         }
 
         private void SetRow(DataGridViewRow row, VariablePoint point)
