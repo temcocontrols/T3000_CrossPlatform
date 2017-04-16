@@ -30,7 +30,7 @@
         {
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.multipleMonthCalendar1 = new T3000.Controls.MultipleMonthCalendar();
+            this.calendar = new T3000.Controls.MultipleMonthCalendar();
             this.SuspendLayout();
             // 
             // saveButton
@@ -58,15 +58,15 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
-            // multipleMonthCalendar1
+            // calendar
             // 
-            this.multipleMonthCalendar1.DimensionX = 3;
-            this.multipleMonthCalendar1.DimensionY = 2;
-            this.multipleMonthCalendar1.Location = new System.Drawing.Point(12, 12);
-            this.multipleMonthCalendar1.Name = "multipleMonthCalendar1";
-            this.multipleMonthCalendar1.Size = new System.Drawing.Size(560, 309);
-            this.multipleMonthCalendar1.StartDate = new System.DateTime(2017, 4, 8, 0, 0, 0, 0);
-            this.multipleMonthCalendar1.TabIndex = 7;
+            this.calendar.DimensionX = 3;
+            this.calendar.DimensionY = 2;
+            this.calendar.Location = new System.Drawing.Point(12, 12);
+            this.calendar.Name = "calendar";
+            this.calendar.Size = new System.Drawing.Size(560, 309);
+            this.calendar.StartDate = new System.DateTime(2017, 4, 8, 0, 0, 0, 0);
+            this.calendar.TabIndex = 7;
             // 
             // SelectHolidaysForm
             // 
@@ -75,7 +75,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(584, 361);
-            this.Controls.Add(this.multipleMonthCalendar1);
+            this.Controls.Add(this.calendar);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Name = "SelectHolidaysForm";
@@ -87,6 +87,6 @@
         #endregion
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
-        private Controls.MultipleMonthCalendar multipleMonthCalendar1;
+        private Controls.MultipleMonthCalendar calendar;
     }
 }

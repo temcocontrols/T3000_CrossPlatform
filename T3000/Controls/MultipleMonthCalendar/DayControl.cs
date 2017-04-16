@@ -54,8 +54,13 @@
             UseVisualStyleBackColor = false;
             Margin = new Padding(0);
             Padding = new Padding(0);
-
+            
             ResizeRedraw = true;
+
+            GotFocus += (sender, args) => BackColor = Color.Silver;
+            LostFocus += (sender, args) => BackColor = IsSelected
+                ? Color.FromArgb(152, 194, 206)
+                : Color.White;
         }
     }
 }
