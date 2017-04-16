@@ -24,6 +24,8 @@
 
             //User input
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
+            view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
+                UnitsColumn.Name, RangeColumn.Name, CustomUnits);
             view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
                 ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsInputAnalog()),
@@ -54,6 +56,10 @@
                 row.SetValue(InputColumn, $"IN{i + 1}");
                 row.SetValue(PanelColumn, "?");
                 SetRow(row, point);
+                row.Cells[ValueColumn.Name] =
+                    TViewUtilities.GetValueCellForUnit(
+                        point.Value.ToString(),
+                        point.Value.Unit);
             }
 
             //Validation
