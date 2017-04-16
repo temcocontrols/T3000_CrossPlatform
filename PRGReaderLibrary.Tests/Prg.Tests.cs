@@ -350,11 +350,11 @@ See console log for details.
 
             //Program codes
             {
-                var expected = new ProgramCode()
-                {
-                    Code = new byte[2000],
-                    FileVersion = FileVersion.Rev6
-                };
+                //var expected = new ProgramCode()
+                //{
+                //    Code = new byte[2000],
+                //    FileVersion = FileVersion.Rev6
+                //};
                 //ObjectAssert.AreEqual(expected, prg.ProgramCodes[0]);
 
                 //Console.WriteLine(prg.ProgramCodes[0].PropertiesText());
