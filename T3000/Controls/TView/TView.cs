@@ -36,29 +36,30 @@
             {
                 case Keys.Enter:
                     var cell = CurrentCell;
-                    if (cell != null && !cell.ReadOnly)
+                    if (cell == null || cell.ReadOnly)
                     {
-                        e.Handled = true;
+                        break;
+                    }
 
-                        var name = cell.ColumnName();
-                        if (InputActions.ContainsKey(name))
-                        {
-                            var arguments = InputArguments.ContainsKey(name)
-                                ? InputArguments[name] : new object[0];
+                    e.Handled = true;
 
-                            InputActions[name]?.Invoke(this, e, arguments);
-                            return;
-                        }
-                        if (InputHandles.ContainsKey(name))
-                        {
-                            InputHandles[name]?.Invoke(this, e);
-                            return;
-                        }
+                    var name = cell.ColumnName();
+                    if (InputActions.ContainsKey(name))
+                    {
+                        var arguments = InputArguments.ContainsKey(name)
+                            ? InputArguments[name] : new object[0];
 
-                        BeginEdit(true);
+                        InputActions[name]?.Invoke(this, e, arguments);
                         return;
                     }
-                    break;
+                    if (InputHandles.ContainsKey(name))
+                    {
+                        InputHandles[name]?.Invoke(this, e);
+                        return;
+                    }
+
+                    BeginEdit(true);
+                    return;
             }
 
             base.OnKeyDown(e);
@@ -67,19 +68,22 @@
         protected override void OnCellContentClick(DataGridViewCellEventArgs e)
         {
             var cell = CurrentCell;
-            var name = cell.ColumnName();
-            if (!cell.ReadOnly && InputActions.ContainsKey(name))
+            if (cell != null)
             {
-                var arguments = InputArguments.ContainsKey(name)
-                    ? InputArguments[name] : new object[0];
+                var name = cell.ColumnName();
+                if (!cell.ReadOnly && InputActions.ContainsKey(name))
+                {
+                    var arguments = InputArguments.ContainsKey(name)
+                        ? InputArguments[name] : new object[0];
 
-                InputActions[name]?.Invoke(this, e, arguments);
-                return;
-            }
-            if (!cell.ReadOnly && InputHandles.ContainsKey(name))
-            {
-                InputHandles[name]?.Invoke(this, e);
-                return;
+                    InputActions[name]?.Invoke(this, e, arguments);
+                    return;
+                }
+                if (!cell.ReadOnly && InputHandles.ContainsKey(name))
+                {
+                    InputHandles[name]?.Invoke(this, e);
+                    return;
+                }
             }
 
             base.OnCellContentClick(e);
@@ -99,7 +103,7 @@
             InputArguments[columnName] = arguments;
         }
 
-        public void AddEditAction(DataGridViewColumn column, 
+        public void AddEditAction(DataGridViewColumn column,
             EditAction handler, params object[] arguments) =>
             AddEditAction(column.Name, handler, arguments);
 
@@ -156,6 +160,11 @@
 
         public bool ValidateCell(DataGridViewCell cell)
         {
+            if (cell == null)
+            {
+                return false;
+            }
+
             var name = cell.ColumnName();
             if (ValidationHandles.ContainsKey(name))
             {
@@ -170,6 +179,11 @@
 
         public bool ValidateRow(DataGridViewRow row)
         {
+            if (row == null)
+            {
+                return false;
+            }
+
             var isValidated = true;
             foreach (DataGridViewCell cell in row.Cells)
             {
@@ -181,8 +195,14 @@
 
         public bool Validate()
         {
+            var rows = Rows;
+            if (rows == null)
+            {
+                return false;
+            }
+
             var isValidated = true;
-            foreach (DataGridViewRow row in Rows)
+            foreach (DataGridViewRow row in rows)
             {
                 isValidated &= ValidateRow(row);
             }
@@ -215,7 +235,7 @@
 
         #region Value changed handles
 
-        private Dictionary<string, CellAction> ValueChangedHandles { get; set; } = 
+        private Dictionary<string, CellAction> ValueChangedHandles { get; set; } =
             new Dictionary<string, CellAction>();
         private Dictionary<string, object[]> ValueChangedArguments { get; set; } =
             new Dictionary<string, object[]>();
@@ -231,6 +251,11 @@
                 }
 
                 var cell = row.Cells[e.ColumnIndex];
+                if (cell == null)
+                {
+                    return;
+                }
+
                 var name = cell.ColumnName();
                 if (ValueChangedHandles.ContainsKey(name))
                 {
@@ -290,7 +315,17 @@
 
             try
             {
-                var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
+                var row = this.GetRow(e.RowIndex);
+                if (row == null)
+                {
+                    return;
+                }
+
+                var cell = row.Cells[e.ColumnIndex];
+                if (cell == null)
+                {
+                    return;
+                }
 
                 var name = cell.ColumnName();
                 if (FormattingHandles.ContainsKey(name))
