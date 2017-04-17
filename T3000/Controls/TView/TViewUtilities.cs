@@ -20,9 +20,9 @@
                     throw new ArgumentException("T must be an enumerated type");
                 }
 
-                var view = (TView) sender;
+                var view = (TView)sender;
                 var cell = view.CurrentCell;
-                cell.Value = ((T) cell.Value).NextValue();
+                cell.Value = ((T)cell.Value).NextValue();
 
                 view.ValidateCell(cell);
             }
@@ -36,9 +36,9 @@
         {
             try
             {
-                var view = (TView) sender;
+                var view = (TView)sender;
                 var cell = view.CurrentCell;
-                cell.Value = !((bool) cell.Value);
+                cell.Value = !((bool)cell.Value);
 
                 view.ValidateCell(cell);
             }
@@ -52,10 +52,10 @@
         {
             try
             {
-                var view = (TView) sender;
+                var view = (TView)sender;
                 var cell = view.CurrentCell;
                 var dialog = new ColorDialog();
-                dialog.Color = (Color) cell.Value;
+                dialog.Color = (Color)cell.Value;
                 if (dialog.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -80,16 +80,17 @@
 
             try
             {
-                var unitsColumnName = (string) arguments[0];
-                var rangeColumnName = (string) arguments[1];
-                var customUnits = (CustomUnits) arguments[2];
+                var unitsColumnName = (string)arguments[0];
+                var rangeColumnName = (string)arguments[1];
+                var customUnits = (CustomUnits)arguments[2];
 
-                var view = (TView) sender;
+                var view = (TView)sender;
                 var row = view.CurrentRow;
                 var cell = view.CurrentCell;
                 try
                 {
-                    var value = GetVariableValue(row, cell.OwningColumn.Name, unitsColumnName, rangeColumnName, customUnits);
+                    var value = GetVariableValue(row, cell.OwningColumn.Name, unitsColumnName, rangeColumnName,
+                        customUnits);
                     if (value.Unit.IsDigital())
                     {
                         cell.Value = value.GetInverted().ToString();
@@ -157,7 +158,7 @@
                     unitsColumnName, valueColumnName, unitsColumnName, customUnits);
 
                 view.ChangeEditArguments(
-                    unitsColumnName, valueColumnName, unitsColumnName, rangeColumnName, 
+                    unitsColumnName, valueColumnName, unitsColumnName, rangeColumnName,
                     customUnits, predicate, rangeTextColumnName);
 
                 row.SetValue(unitsColumnName, newUnit);
@@ -195,119 +196,150 @@
 
         public static bool ValidateValue(DataGridViewCell cell, object[] arguments)
         {
-            if (arguments.Length < 3)
-            {
-                throw new ArgumentException("Objects less than 3", nameof(arguments));
-            }
-
-            var valueColumn = (string)arguments[0];
-            var unitsColumn = (string)arguments[1];
-            var customUnits = (CustomUnits)arguments[2];
-
-            var isValidated = true;
-            var message = string.Empty;
             try
             {
-                var row = cell.OwningRow;
-                new VariableValue(
-                    row.GetValue<string>(valueColumn), 
-                    row.GetValue<Unit>(unitsColumn), 
-                    customUnits);
+                if (arguments.Length < 3)
+                {
+                    throw new ArgumentException("Arguments less than 3", nameof(arguments));
+                }
+
+                var valueColumn = (string)arguments[0];
+                var unitsColumn = (string)arguments[1];
+                var customUnits = (CustomUnits)arguments[2];
+
+                var isValidated = true;
+                var message = string.Empty;
+                try
+                {
+                    var row = cell.OwningRow;
+                    new VariableValue(
+                        row.GetValue<string>(valueColumn),
+                        row.GetValue<Unit>(unitsColumn),
+                        customUnits);
+                }
+                catch (Exception exception)
+                {
+                    message = exception.Message;
+                    isValidated = false;
+                }
+
+                SetCellErrorMessage(cell, isValidated, message);
+
+                return isValidated;
             }
             catch (Exception exception)
             {
-                message = exception.Message;
-                isValidated = false;
+                SetCellErrorMessage(cell, false, exception.Message);
+                return false;
             }
-
-            SetCellErrorMessage(cell, isValidated, message);
-
-            return isValidated;
         }
 
         public static bool ValidateString(DataGridViewCell cell, object[] arguments)
         {
-            if (arguments.Length < 1)
+            try
             {
-                throw new ArgumentException("Object less 1", nameof(arguments));
+                if (arguments.Length < 1)
+                {
+                    throw new ArgumentException("Arguments less 1", nameof(arguments));
+                }
+
+                var length = (int)arguments[0];
+                var description = cell.Value == null ? "" : (string)cell.Value;
+                var isValidated = description.Length <= length;
+                var message = $"Description too long. Maximum is {length} symbols. " +
+                              $"Current length: {description.Length}. " +
+                              $"Please, delete {description.Length - length} symbols.";
+                SetCellErrorMessage(cell, isValidated, message);
+
+                return isValidated;
             }
-
-            var length = (int)arguments[0];
-            var description = cell.Value == null ? "" : (string)cell.Value;
-            var isValidated = description.Length <= length;
-            var message = $"Description too long. Maximum is {length} symbols. " +
-                               $"Current length: {description.Length}. " +
-                               $"Please, delete {description.Length - length} symbols.";
-
-            SetCellErrorMessage(cell, isValidated, message);
-
-            return isValidated;
+            catch (Exception exception)
+            {
+                SetCellErrorMessage(cell, false, exception.Message);
+                return false;
+            }
         }
 
         public static bool ValidateInteger(DataGridViewCell cell, object[] arguments)
         {
-            var isValidated = true;
-            var message = string.Empty;
+            try
+            {
+                var isValidated = true;
+                var message = string.Empty;
 
-            if (cell.Value == null)
-            {
-                message = $"Value is null. Please input valid value.";
-                isValidated = false;
-            }
-            else if (cell.Value.GetType() == typeof(string))
-            {
-                try
+                if (cell.Value == null)
                 {
-                    int.Parse((string) cell.Value);
-                }
-                catch (Exception exception)
-                {
-                    message = exception.Message;
+                    message = $"Value is null. Please input valid value.";
                     isValidated = false;
                 }
+                else if (cell.Value.GetType() == typeof(string))
+                {
+                    try
+                    {
+                        int.Parse((string)cell.Value);
+                    }
+                    catch (Exception exception)
+                    {
+                        message = exception.Message;
+                        isValidated = false;
+                    }
+                }
+                else if (cell.Value.GetType() != typeof(int))
+                {
+                    message = $"Type is not int or string. Type: {cell.ValueType}";
+                    isValidated = false;
+                }
+
+                SetCellErrorMessage(cell, isValidated, message);
+
+                return isValidated;
             }
-            else if (cell.Value.GetType() != typeof(int))
+            catch (Exception exception)
             {
-                message = $"Type is not int or string. Type: {cell.ValueType}";
-                isValidated = false;
+                SetCellErrorMessage(cell, false, exception.Message);
+                return false;
             }
-
-            SetCellErrorMessage(cell, isValidated, message);
-
-            return isValidated;
         }
 
         public static bool ValidateDouble(DataGridViewCell cell, object[] arguments)
         {
-            var isValidated = true;
-            var message = string.Empty;
+            try
+            {
+                var isValidated = true;
+                var message = string.Empty;
 
-            if (cell.Value == null)
-            {
-                message = $"Value is null. Please input valid value.";
-                isValidated = false;
-            }
-            else if (cell.Value.GetType() == typeof(string))
-            {
-                try
+                if (cell.Value == null)
                 {
-                    double.Parse((string)cell.Value);
-                }
-                catch (Exception exception)
-                {
-                    message = exception.Message;
+                    message = $"Value is null. Please input valid value.";
                     isValidated = false;
                 }
+                else if (cell.Value.GetType() == typeof(string))
+                {
+                    try
+                    {
+                        double.Parse((string)cell.Value);
+                    }
+                    catch (Exception exception)
+                    {
+                        message = exception.Message;
+                        isValidated = false;
+                    }
+                }
+                else if (cell.Value.GetType() != typeof(double))
+                {
+                    message = $"Type is not double or string. Type: {cell.ValueType}";
+                    isValidated = false;
+                }
+
+                SetCellErrorMessage(cell, isValidated, message);
+
+                return isValidated;
             }
-            else if (cell.Value.GetType() != typeof(double))
+            catch (Exception exception)
             {
-                message = $"Type is not double or string. Type: {cell.ValueType}";
-                isValidated = false;
+                SetCellErrorMessage(cell, false, exception.Message);
+                return false;
             }
-
-            SetCellErrorMessage(cell, isValidated, message);
-
-            return isValidated;
         }
 
         #endregion
@@ -403,7 +435,7 @@
                 }
 
                 var cell = row.Cells[e.ColumnIndex];
-                var color = (Color) cell.Value;
+                var color = (Color)cell.Value;
                 var isBrigtnesses = color.GetBrightness() < 0.5;
                 var foreColor = isBrigtnesses ? Color.White : Color.Black;
                 cell.Style.ForeColor = foreColor;
