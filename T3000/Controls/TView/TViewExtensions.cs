@@ -13,6 +13,11 @@
 
         public static T GetValue<T>(this DataGridViewRow row, string columnName)
         {
+            if (row == null)
+            {
+                throw new ArgumentNullException(nameof(row));
+            }
+
             var value = row.Cells[columnName].Value;
             /* Need, but slowly
             if (value.GetType() != typeof(T))
@@ -29,6 +34,11 @@ Cast type: {typeof(T)}");
 
         public static void SetValue<T>(this DataGridViewRow row, string columnName, T value = default(T))
         {
+            if (row == null)
+            {
+                throw new ArgumentNullException(nameof(row));
+            }
+
             /* Need, but slowly
             var actualValue = row.Cells[columnName].Value;
             if (actualValue != null && actualValue.GetType() != typeof(T))
@@ -57,6 +67,11 @@ Value type: {typeof(T)}");
         /// <returns></returns>
         public static DataGridViewRow GetRow(this TView view, int index)
         {
+            if (view == null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+
             if (!view.RowIndexIsValid(index))
             {
                 return null;
@@ -67,6 +82,11 @@ Value type: {typeof(T)}");
 
         public static void Enable(this DataGridViewCell cell, bool enabled)
         {
+            if (cell == null)
+            {
+                throw new ArgumentNullException(nameof(cell));
+            }
+
             cell.ReadOnly = !enabled;
             cell.Style.BackColor = enabled
                 ? cell.OwningColumn.DefaultCellStyle.BackColor
@@ -79,6 +99,14 @@ Value type: {typeof(T)}");
                 : DisabledSelectionBackColor;
         }
 
-        public static string ColumnName(this DataGridViewCell cell) => cell.OwningColumn.Name;
+        public static string ColumnName(this DataGridViewCell cell)
+        {
+            if (cell == null)
+            {
+                throw new ArgumentNullException(nameof(cell));
+            }
+
+            return cell.OwningColumn?.Name;
+        }
     }
 }
