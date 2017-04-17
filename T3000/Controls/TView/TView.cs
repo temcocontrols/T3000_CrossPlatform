@@ -30,9 +30,6 @@
         private Dictionary<string, object[]> InputArguments { get; set; } =
             new Dictionary<string, object[]>();
 
-        private string ColumnIndexToName(int index) =>
-            Columns[index].Name;
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -43,7 +40,7 @@
                     {
                         e.Handled = true;
 
-                        var name = ColumnIndexToName(cell.ColumnIndex);
+                        var name = cell.ColumnName();
                         if (InputActions.ContainsKey(name))
                         {
                             var arguments = InputArguments.ContainsKey(name)
@@ -70,7 +67,7 @@
         protected override void OnCellContentClick(DataGridViewCellEventArgs e)
         {
             var cell = CurrentCell;
-            var name = ColumnIndexToName(cell.ColumnIndex);
+            var name = cell.ColumnName();
             if (!cell.ReadOnly && InputActions.ContainsKey(name))
             {
                 var arguments = InputArguments.ContainsKey(name)
@@ -159,7 +156,7 @@
 
         public bool ValidateCell(DataGridViewCell cell)
         {
-            var name = ColumnIndexToName(cell.ColumnIndex);
+            var name = cell.ColumnName();
             if (ValidationHandles.ContainsKey(name))
             {
                 var arguments = ValidationArguments.ContainsKey(name)
@@ -233,7 +230,8 @@
                     return;
                 }
 
-                var name = ColumnIndexToName(e.ColumnIndex);
+                var cell = row.Cells[e.ColumnIndex];
+                var name = cell.ColumnName();
                 if (ValueChangedHandles.ContainsKey(name))
                 {
                     var arguments = ValueChangedArguments.ContainsKey(name)
@@ -294,7 +292,7 @@
             {
                 var cell = Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-                var name = ColumnIndexToName(e.ColumnIndex);
+                var name = cell.ColumnName();
                 if (FormattingHandles.ContainsKey(name))
                 {
                     e.Value = FormattingHandles[name].Invoke(cell.Value);

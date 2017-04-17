@@ -78,5 +78,7 @@ Value type: {typeof(T)}");
                 ? cell.OwningColumn.DefaultCellStyle.SelectionBackColor
                 : DisabledSelectionBackColor;
         }
+
+        public static string ColumnName(this DataGridViewCell cell) => cell.OwningColumn.Name;
     }
 }
