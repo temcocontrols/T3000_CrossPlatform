@@ -233,7 +233,7 @@
             }
 
             var length = (int)arguments[0];
-            var description = (string)cell.Value ?? "";
+            var description = cell.Value == null ? "" : (string)cell.Value;
             var isValidated = description.Length <= length;
             var message = $"Description too long. Maximum is {length} symbols. " +
                                $"Current length: {description.Length}. " +
