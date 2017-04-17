@@ -81,9 +81,9 @@
             this.AutoManualColumn,
             this.ValueColumn,
             this.UnitsColumn,
-            this.RangeColumn,
             this.StatusColumn,
-            this.LabelColumn});
+            this.LabelColumn,
+            this.RangeColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             // 
