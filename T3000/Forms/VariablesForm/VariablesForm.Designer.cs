@@ -39,9 +39,9 @@
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,11 +117,6 @@
             this.UnitsColumn.Name = "UnitsColumn";
             this.UnitsColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // RangeColumn
-            // 
-            resources.ApplyResources(this.RangeColumn, "RangeColumn");
-            this.RangeColumn.Name = "RangeColumn";
-            // 
             // StatusColumn
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -140,6 +135,11 @@
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
+            // 
+            // RangeColumn
+            // 
+            resources.ApplyResources(this.RangeColumn, "RangeColumn");
+            this.RangeColumn.Name = "RangeColumn";
             // 
             // VariablesForm
             // 
@@ -169,9 +169,9 @@
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
         private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
     }
 }
 
