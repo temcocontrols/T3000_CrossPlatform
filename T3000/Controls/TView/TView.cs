@@ -30,6 +30,29 @@
         private Dictionary<string, object[]> InputArguments { get; set; } =
             new Dictionary<string, object[]>();
 
+        private void InvokeInputHandle(string name, EventArgs e)
+        {
+            if (name == null)
+            {
+                return;
+            }
+
+            if (InputActions.ContainsKey(name))
+            {
+                var arguments = InputArguments.ContainsKey(name)
+                    ? InputArguments[name] : new object[0];
+
+                InputActions[name]?.Invoke(this, e, arguments);
+            }
+            if (InputHandles.ContainsKey(name))
+            {
+                InputHandles[name]?.Invoke(this, e);
+            }
+        }
+
+        private bool InputHandleExists(string name) =>
+            InputHandles.ContainsKey(name) || InputActions.ContainsKey(name);
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -44,17 +67,9 @@
                     e.Handled = true;
 
                     var name = cell.ColumnName();
-                    if (InputActions.ContainsKey(name))
+                    if (name != null && InputHandleExists(name))
                     {
-                        var arguments = InputArguments.ContainsKey(name)
-                            ? InputArguments[name] : new object[0];
-
-                        InputActions[name]?.Invoke(this, e, arguments);
-                        return;
-                    }
-                    if (InputHandles.ContainsKey(name))
-                    {
-                        InputHandles[name]?.Invoke(this, e);
+                        InvokeInputHandle(name, e);
                         return;
                     }
 
@@ -71,17 +86,9 @@
             if (cell != null)
             {
                 var name = cell.ColumnName();
-                if (!cell.ReadOnly && InputActions.ContainsKey(name))
+                if (!cell.ReadOnly && name != null && InputHandleExists(name))
                 {
-                    var arguments = InputArguments.ContainsKey(name)
-                        ? InputArguments[name] : new object[0];
-
-                    InputActions[name]?.Invoke(this, e, arguments);
-                    return;
-                }
-                if (!cell.ReadOnly && InputHandles.ContainsKey(name))
-                {
-                    InputHandles[name]?.Invoke(this, e);
+                    InvokeInputHandle(name, e);
                     return;
                 }
             }
@@ -166,7 +173,7 @@
             }
 
             var name = cell.ColumnName();
-            if (ValidationHandles.ContainsKey(name))
+            if (name != null && ValidationHandles.ContainsKey(name))
             {
                 var arguments = ValidationArguments.ContainsKey(name)
                     ? ValidationArguments[name] : new object[0];
@@ -257,7 +264,7 @@
                 }
 
                 var name = cell.ColumnName();
-                if (ValueChangedHandles.ContainsKey(name))
+                if (name != null && ValueChangedHandles.ContainsKey(name))
                 {
                     var arguments = ValueChangedArguments.ContainsKey(name)
                         ? ValueChangedArguments[name] : new object[0];
@@ -328,7 +335,7 @@
                 }
 
                 var name = cell.ColumnName();
-                if (FormattingHandles.ContainsKey(name))
+                if (name != null && FormattingHandles.ContainsKey(name))
                 {
                     e.Value = FormattingHandles[name].Invoke(cell.Value);
                     e.FormattingApplied = true;

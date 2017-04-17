@@ -105,7 +105,7 @@ Value type: {typeof(T)}");
             {
                 throw new ArgumentNullException(nameof(cell));
             }
-
+            
             return cell.OwningColumn?.Name;
         }
     }
