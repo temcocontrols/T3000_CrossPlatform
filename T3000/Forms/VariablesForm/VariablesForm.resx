@@ -247,18 +247,9 @@
     <value>True</value>
   </metadata>
   <data name="RangeColumn.HeaderText" xml:space="preserve">
-    <value>RangeInteger</value>
-  </data>
-  <data name="RangeColumn.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <metadata name="RangeTextColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="RangeTextColumn.HeaderText" xml:space="preserve">
     <value>Range</value>
   </data>
-  <data name="RangeTextColumn.Visible" type="System.Boolean, mscorlib">
+  <data name="RangeColumn.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <metadata name="StatusColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -340,12 +331,6 @@
     <value>RangeColumn</value>
   </data>
   <data name="&gt;&gt;RangeColumn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RangeTextColumn.Name" xml:space="preserve">
-    <value>RangeTextColumn</value>
-  </data>
-  <data name="&gt;&gt;RangeTextColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;StatusColumn.Name" xml:space="preserve">

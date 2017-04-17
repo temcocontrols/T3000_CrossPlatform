@@ -30,8 +30,7 @@
                 UnitsColumn.Name, RangeColumn.Name, CustomUnits);
             view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
                 ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
-                CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()),
-                RangeTextColumn.Name);
+                CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
             //Value changed handles
@@ -81,7 +80,6 @@
             row.SetValue(ValueColumn, point.Value.ToString());
             row.SetValue(UnitsColumn, point.Value.Unit);
             row.SetValue(RangeColumn, point.Value.Value);
-            row.SetValue(RangeTextColumn, point.Value.Unit);
             row.SetValue(StatusColumn, point.Control);
             row.SetValue(LabelColumn, point.Label);
         }
