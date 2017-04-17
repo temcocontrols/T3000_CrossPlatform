@@ -7,21 +7,17 @@
     public class Bytes_Tests
     {
         [Test]
-        public void StringToFromBytes_Simple()
+        public void StringToFromBytes()
         {
-            var expected = "Text";
+            var expected = "Simple";
             var bytes = expected.ToBytes();
             var actual = bytes.GetString();
 
             Assert.AreEqual(expected, actual);
-        }
 
-        [Test]
-        public void StringToFromBytes_Cropped()
-        {
-            var expected = "CroppedDescription";
-            var bytes = expected.ToBytes(10);
-            var actual = bytes.GetString(0, 10);
+            expected = "CroppedDescription";
+            bytes = expected.ToBytes(10);
+            actual = bytes.GetString(0, 10);
 
             Assert.AreEqual(expected.Substring(0, 10), actual);
         }

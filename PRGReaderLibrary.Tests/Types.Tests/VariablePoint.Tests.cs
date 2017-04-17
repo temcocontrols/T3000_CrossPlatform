@@ -48,7 +48,7 @@
             list.Add(1);//Unit
 
             var expected = new VariablePoint("START TEST FLAG", "INIT");
-            expected.Value = new VariableValue("Off", Unit.OffOn);
+            expected.Value = new VariableValue(false, Unit.OffOn, null, 1000);
             expected.AutoManual = AutoManual.Automatic;
             expected.DigitalAnalog = DigitalAnalog.Digital;
             expected.Control = OffOn.Off;

@@ -10,7 +10,7 @@
     {
         public void VariableVariantToFromTest(VariableValue value, CustomUnits customUnits)
         {
-            var tempValue = new VariableValue(value.ToString(), value.Unit, customUnits, value.Value);
+            var tempValue = new VariableValue(value.ToString(), value.Unit, customUnits, value.MaxRange);
             ObjectAssert.AreEqual(value, tempValue,
                 $@"Variable value toFrom string test failed.
 Value.ToString(): {value.ToString()}
@@ -240,7 +240,7 @@ See console log for details.
                 {
                     Description = "TANK2 BOT",
                     AutoManual = AutoManual.Automatic,
-                    Value = new VariableValue("High", Unit.LowHigh, null, 1000),
+                    Value = new VariableValue(true, Unit.LowHigh, null, 1000),
                     CalibrationH = 0.0,
                     CalibrationL = 0.0,
                     CalibrationSign = Sign.Negative,

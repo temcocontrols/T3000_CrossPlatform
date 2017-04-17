@@ -181,25 +181,29 @@ Supported types: bool, float, TimeSpan");
         #endregion
 
         public VariableValue(int value, Unit unit, CustomUnits customUnits = null,
-            int maxRange = 1)
+            int maxRange = -1)
         {
             Value = value;
             Unit = unit;
             CustomUnits = customUnits;
-            MaxRange = maxRange;
+            MaxRange = !unit.IsDigital()
+                ? -1
+                : maxRange == -1
+                    ? value
+                    : maxRange;
         }
 
         public VariableValue(object value, Unit unit, CustomUnits customUnits = null,
-            int maxRange = 1)
+            int maxRange = -1)
             : this(ToInt(value, unit, maxRange), unit, customUnits, maxRange)
         { }
 
         public VariableValue(string value, Unit unit, CustomUnits customUnits = null,
-            int maxRange = 1)
+            int maxRange = -1)
             : this(ToObject(value, unit, customUnits), unit, customUnits, maxRange)
         { }
 
-        public string ConvertValue(Unit unit, CustomUnits customUnits = null) => 
+        public string ConvertValue(Unit unit, CustomUnits customUnits = null) =>
             ConvertValue(ToString(), Unit, unit, CustomUnits, customUnits);
 
         public VariableValue GetInverted()

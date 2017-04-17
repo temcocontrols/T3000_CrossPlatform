@@ -96,6 +96,16 @@ namespace PRGReaderLibrary
 
             Value = new VariableValue(valueRaw, unit);
 
+            //TODO: Fix for digital values
+            if (unit == Unit.OffOn)
+            {
+                Value.MaxRange = 1000;
+            }
+            else if (unit == Unit.CustomDigital1)
+            {
+                Value.MaxRange = 2000;
+            }
+
             CheckOffset(offset, GetSize(FileVersion));
         }
 
