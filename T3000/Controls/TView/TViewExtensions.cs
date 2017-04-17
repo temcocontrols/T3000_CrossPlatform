@@ -4,6 +4,7 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
+    using System.Collections.Generic;
 
     public static class TViewExtensions
     {
@@ -107,6 +108,21 @@ Value type: {typeof(T)}");
             }
             
             return cell.OwningColumn?.Name;
+        }
+        public static DataGridViewRow CreateRow(this DataGridView view, Dictionary<string, object> values = null)
+        {
+            var objects = new List<object>();
+
+            foreach (DataGridViewColumn column in view.Columns)
+            {
+                objects.Add(values != null && values.ContainsKey(column.Name)
+                    ? values[column.Name]
+                    : null);
+            }
+
+            view.Rows.Add(objects);
+
+            return view.Rows[view.RowCount - 1];
         }
     }
 }

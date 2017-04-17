@@ -45,11 +45,10 @@
 
             //Show points
             view.Rows.Clear();
-            view.Rows.Add(Points.Count);
             for (var i = 0; i < Points.Count; ++i)
             {
                 var point = Points[i];
-                var row = view.Rows[i];
+                var row = view.CreateRow();
                 row.SetValue(NumberColumn, $"{i + 1}");
                 SetRow(row, point);
                 row.Cells[ValueColumn.Name] = 
