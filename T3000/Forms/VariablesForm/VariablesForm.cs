@@ -23,7 +23,7 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
-            /*
+            
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             //view.AddEditAction(ValueColumn, TViewUtilities.EditValue);
@@ -41,34 +41,25 @@
 
             //Formating
             //view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
-            */
+            
             //Show points
             view.Rows.Clear();
-            //view.Rows.Add(Points.Count);
+            view.Rows.Add(Points.Count);
             for (var i = 0; i < Points.Count; ++i)
             {
                 var point = Points[i];
-
-                view.Rows.Add(
-                    $"{i + 1}", //NumberColumn
-                    point.Description, //DescriptionColumn
-                    point.AutoManual, //AutoManualColumn
-                    point.Value, //ValueColumn
-                    point.Control, //StatusColumn
-                    point.Label //LabelColumn
-                );
-
                 var row = view.Rows[i];
-                //row.SetValue(NumberColumn, $"{i + 1}");
-                //SetRow(row, point);
-                row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
-                        point.Value, point.Value.Unit));
+
+                //Read only
+                row.SetValue(NumberColumn, $"VAR{i + 1}");
+
+                SetRow(row, point);
             }
 
             //Validation
-            //view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            //view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            //view.Validate();
+            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.Validate();
         }
 
         private void SetRow(DataGridViewRow row, VariablePoint point)
@@ -78,16 +69,12 @@
                 return;
             }
 
-            view.Rows.Add(
-                point.Description, //DescriptionColumn
-                point.AutoManual, //AutoManualColumn
-                point.Value, //ValueColumn
-                point.Control, //StatusColumn
-                point.Label //LabelColumn
-            );
-
-            row = view.Rows[view.RowCount - 1];
-            view.Rows.RemoveAt(view.RowCount - 1);
+            row.SetValue(DescriptionColumn, point.Description);
+            row.SetValue(AutoManualColumn, point.AutoManual);
+            row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
+                point.Value, point.Value.Unit));
+            row.SetValue(StatusColumn, point.Control);
+            row.SetValue(LabelColumn, point.Label);
         }
 
         #region Buttons

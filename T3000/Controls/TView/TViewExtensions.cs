@@ -4,7 +4,6 @@
     using System;
     using System.Drawing;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
     public static class TViewExtensions
     {
@@ -12,13 +11,23 @@
         public static readonly Color DisabledForeColor = SystemColors.ControlDarkDark;
         public static readonly Color DisabledSelectionBackColor = SystemColors.ControlDark;
 
+        public static bool IsMono() => Type.GetType("Mono.Runtime") != null;
+
         public static DataGridViewCell GetCell(this DataGridViewRow row,
             DataGridViewColumn column) =>
             row.Cells[column.Index];
 
         public static void SetCell(this DataGridViewRow row,
-            DataGridViewColumn column, DataGridViewCell cell) =>
+            DataGridViewColumn column, DataGridViewCell cell)
+        {
+            //Mono fix
+            if (IsMono())
+            {
+                row.Cells.RemoveAt(column.Index);
+            }
+
             row.Cells[column.Index] = cell;
+        }
 
         public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column)
         {
@@ -115,7 +124,7 @@ Value type: {typeof(T)}");
             {
                 throw new ArgumentNullException(nameof(cell));
             }
-            
+
             return cell.OwningColumn?.Name;
         }
     }
