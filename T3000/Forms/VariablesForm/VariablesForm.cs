@@ -51,6 +51,8 @@
                 var row = view.Rows[i];
                 row.SetValue(NumberColumn, $"{i + 1}");
                 SetRow(row, point);
+                row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
+                        point.Value, point.Value.Unit));
             }
 
             //Validation
@@ -66,12 +68,16 @@
                 return;
             }
 
-            row.SetValue(DescriptionColumn, point.Description);
-            row.SetValue(AutoManualColumn, point.AutoManual);
-            row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
-                    point.Value, point.Value.Unit));
-            row.SetValue(StatusColumn, point.Control);
-            row.SetValue(LabelColumn, point.Label);
+            view.Rows.Add(
+                point.Description, //DescriptionColumn
+                point.AutoManual, //AutoManualColumn
+                point.Value, //ValueColumn
+                point.Control, //StatusColumn
+                point.Label //LabelColumn
+            );
+
+            row = view.Rows[view.RowCount - 1];
+            view.Rows.RemoveAt(view.RowCount - 1);
         }
 
         #region Buttons
