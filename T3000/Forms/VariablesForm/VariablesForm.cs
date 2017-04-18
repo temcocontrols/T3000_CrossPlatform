@@ -23,7 +23,7 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
-
+            /*
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             //view.AddEditAction(ValueColumn, TViewUtilities.EditValue);
@@ -41,7 +41,7 @@
 
             //Formating
             //view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
-
+            */
             //Show points
             view.Rows.Clear();
             view.Rows.Add(Points.Count);
@@ -54,9 +54,9 @@
             }
 
             //Validation
-            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.Validate();
+            //view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
+            //view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            //view.Validate();
         }
 
         private void SetRow(DataGridViewRow row, VariablePoint point)
