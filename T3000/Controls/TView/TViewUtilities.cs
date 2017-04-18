@@ -73,32 +73,21 @@
 
         public static void EditValue(object sender, EventArgs e, params object[] arguments)
         {
-            if (arguments.Length < 3)
-            {
-                throw new ArgumentException("Objects less than 3", nameof(arguments));
-            }
-
             try
             {
-                var unitsColumn = (DataGridViewColumn)arguments[0];
-                var rangeColumn = (DataGridViewColumn)arguments[1];
-                var customUnits = (CustomUnits)arguments[2];
-
                 var view = (TView)sender;
-                var row = view.CurrentRow;
                 var cell = view.CurrentCell;
                 try
                 {
-                    var value = GetVariableValue(row, cell.OwningColumn, unitsColumn, rangeColumn,
-                        customUnits);
+                    var value = (VariableValue)cell.Value;
                     if (value.Unit.IsDigital())
                     {
                         cell.Value = value.GetInverted().ToString();
                     }
-                    else
-                    {
-                        view.BeginEdit(false);
-                    }
+                    //else
+                    //{
+                    //    view.BeginEdit(false);
+                    //}
                 }
                 catch (Exception)
                 {
@@ -113,7 +102,7 @@
             }
         }
 
-        public static DataGridViewCell GetValueCellForUnit(string value, Unit unit)
+        public static DataGridViewCell GetValueCellForUnit(VariableValue value, Unit unit)
         {
             var cell = unit.IsDigital()
                 ? (DataGridViewCell)new DataGridViewButtonCell()
@@ -125,23 +114,18 @@
 
         public static void EditUnitsColumn(object sender, EventArgs e, params object[] arguments)
         {
-            if (arguments.Length < 5)
+            if (arguments.Length < 1)
             {
-                throw new ArgumentException("Objects less than 5", nameof(arguments));
+                throw new ArgumentException("Objects less than 1", nameof(arguments));
             }
 
             try
             {
-                var valueColumn = (DataGridViewColumn)arguments[0];
-                var unitsColumn = (DataGridViewColumn)arguments[1];
-                var rangeColumn = (DataGridViewColumn)arguments[2];
-                var customUnits = (CustomUnits)arguments[3];
-                var predicate = (Func<Unit, bool>)arguments[4];
-                var rangeTextColumn = arguments.Length >= 6 ? (DataGridViewColumn)arguments[5] : null; //Optional
+                var predicate = (Func<Unit, bool>)arguments[0];
 
                 var view = (TView)sender;
-                var row = view.CurrentRow;
-                var value = GetVariableValue(row, valueColumn, unitsColumn, rangeColumn, customUnits);
+                var cell = view.CurrentCell;
+                var value = (VariableValue)cell.Value;
                 var form = new Forms.SelectUnitsForm(value.Unit, value.CustomUnits, predicate);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
@@ -150,32 +134,22 @@
 
                 var newUnit = form.SelectedUnit;
                 var newValue = value.ConvertValue(newUnit, form.CustomUnits);
-                customUnits = form.CustomUnits;
+                value.CustomUnits = form.CustomUnits;
 
-                view.ChangeValidationArguments(
-                    unitsColumn, valueColumn, unitsColumn, customUnits);
-                view.ChangeValidationArguments(
-                    unitsColumn, valueColumn, unitsColumn, customUnits);
+                var newVariableValue = new VariableValue(newValue, newUnit, form.CustomUnits, value.MaxRange);
 
-                view.ChangeEditArguments(
-                    unitsColumn, valueColumn, unitsColumn, rangeColumn,
-                    customUnits, predicate, rangeTextColumn);
-
-                row.SetValue(unitsColumn, newUnit);
-                row.SetValue(valueColumn, newValue);
-                row.SetValue(rangeColumn, newUnit);
-                if (rangeTextColumn != null)
-                {
-                    row.SetValue(rangeTextColumn, newUnit);
-                }
 
                 // If from analog to digital or from digital to analog
                 if (value.Unit.IsDigital() != newUnit.IsDigital())
                 {
-                    row.SetCell(valueColumn, GetValueCellForUnit(newValue, newUnit));
+                    view.CurrentRow.SetCell(cell.OwningColumn, GetValueCellForUnit(newVariableValue, newUnit));
+                }
+                else
+                {
+                    cell.Value = newVariableValue;
                 }
 
-                view.ValidateRow(row);
+                view.ValidateCell(cell);
             }
             catch (Exception exception)
             {
@@ -192,46 +166,6 @@
             cell.ToolTipText = isValidated ? string.Empty : message;
             cell.ErrorText = cell.ToolTipText;
             cell.Style.BackColor = ColorConstants.GetValidationColor(isValidated);
-        }
-
-        public static bool ValidateValue(DataGridViewCell cell, object[] arguments)
-        {
-            try
-            {
-                if (arguments.Length < 3)
-                {
-                    throw new ArgumentException("Arguments less than 3", nameof(arguments));
-                }
-
-                var valueColumn = (DataGridViewColumn)arguments[0];
-                var unitsColumn = (DataGridViewColumn)arguments[1];
-                var customUnits = (CustomUnits)arguments[2];
-
-                var isValidated = true;
-                var message = string.Empty;
-                try
-                {
-                    var row = cell.OwningRow;
-                    new VariableValue(
-                        row.GetValue<string>(valueColumn),
-                        row.GetValue<Unit>(unitsColumn),
-                        customUnits);
-                }
-                catch (Exception exception)
-                {
-                    message = exception.Message;
-                    isValidated = false;
-                }
-
-                SetCellErrorMessage(cell, isValidated, message);
-
-                return isValidated;
-            }
-            catch (Exception exception)
-            {
-                SetCellErrorMessage(cell, false, exception.Message);
-                return false;
-            }
         }
 
         public static bool ValidateString(DataGridViewCell cell, object[] arguments)

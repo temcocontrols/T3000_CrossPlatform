@@ -58,19 +58,13 @@
                 SetRow(row, point);
                 row.Cells[ValueColumn.Name] =
                     TViewUtilities.GetValueCellForUnit(
-                        point.Value.ToString(),
+                        point.Value,
                         point.Value.Unit);
             }
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-            view.AddValidation(RangeTextColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.AddValidation(CalibrationColumn, TViewUtilities.ValidateDouble);
             view.AddValidation(FilterColumn, TViewUtilities.ValidateInteger);
             view.Validate();

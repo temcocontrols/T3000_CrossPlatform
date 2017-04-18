@@ -49,10 +49,6 @@
             }
 
             //Validation
-            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
-            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
             view.Validate();
         }
 

@@ -26,22 +26,21 @@
 
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
-            view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
-                UnitsColumn, RangeColumn, CustomUnits);
-            view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
-                ValueColumn, UnitsColumn, RangeColumn,
-                CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
+            //view.AddEditAction(ValueColumn, TViewUtilities.EditValue);
+            view.AddEditAction(ValueColumn, TViewUtilities.EditUnitsColumn,
+                new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
+            //view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
+            //    ValueColumn, UnitsColumn, RangeColumn,
+            //   CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
             //Value changed handles
             view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
-            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn, AutoManual.Manual);
 
             //Formating
-            view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
+            //view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
 
             //Show points
             view.Rows.Clear();
@@ -55,17 +54,13 @@
                 SetRow(row, point);
                 row.Cells[ValueColumn.Name] = 
                     TViewUtilities.GetValueCellForUnit(
-                        point.Value.ToString(), 
+                        point.Value, 
                         point.Value.Unit);
             }
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
-                ValueColumn, UnitsColumn, CustomUnits);
-            view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
-                ValueColumn, UnitsColumn, CustomUnits);
             view.Validate();
         }
 
@@ -78,28 +73,11 @@
 
             row.SetValue(DescriptionColumn, point.Description);
             row.SetValue(AutoManualColumn, point.AutoManual);
-            row.SetValue(ValueColumn, point.Value.ToString());
-            row.SetValue(UnitsColumn, point.Value.Unit);
-            row.SetValue(RangeColumn, point.Value.Value);
+            row.SetValue(ValueColumn, point.Value);
             row.SetValue(StatusColumn, point.Control);
             row.SetValue(LabelColumn, point.Label);
         }
-        /*
-        private Dictionary<string, object> ToValues(VariablePoint point, int number)
-        {
-            var values = new Dictionary<string, object>();
-            values[NumberColumn.Name] = $"{number}";
-            values[DescriptionColumn.Name] = point.Description;
-            values[AutoManualColumn.Name] = point.AutoManual;
-            values[ValueColumn.Name] = point.Value.ToString();
-            values[UnitsColumn.Name] = point.Value.Unit;
-            values[RangeColumn.Name] = point.Value.Value;
-            values[StatusColumn.Name] = point.Control;
-            values[LabelColumn.Name] = point.Label;
 
-            return values;
-        }
-        */
         #region Buttons
 
         private void ClearSelectedRow(object sender, EventArgs e) =>
@@ -122,7 +100,7 @@
                     var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
-                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
+                    point.Value = row.GetValue<VariableValue>(ValueColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
                 }
             }

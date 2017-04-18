@@ -37,9 +37,7 @@
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ValueColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
@@ -80,10 +78,8 @@
             this.DescriptionColumn,
             this.AutoManualColumn,
             this.ValueColumn,
-            this.UnitsColumn,
             this.StatusColumn,
-            this.LabelColumn,
-            this.RangeColumn});
+            this.LabelColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             // 
@@ -110,17 +106,8 @@
             // 
             resources.ApplyResources(this.ValueColumn, "ValueColumn");
             this.ValueColumn.Name = "ValueColumn";
-            // 
-            // RangeColumn
-            // 
-            resources.ApplyResources(this.RangeColumn, "RangeColumn");
-            this.RangeColumn.Name = "RangeColumn";
-            // 
-            // UnitsColumn
-            // 
-            resources.ApplyResources(this.UnitsColumn, "UnitsColumn");
-            this.UnitsColumn.Name = "UnitsColumn";
-            this.UnitsColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ValueColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // StatusColumn
             // 
@@ -167,9 +154,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn ValueColumn;
         private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
     }
