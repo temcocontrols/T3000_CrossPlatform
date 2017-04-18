@@ -3,6 +3,7 @@
     using PRGReaderLibrary;
     using Properties;
     using System;
+    using System.IO;
     using System.Reflection;
     using System.Windows.Forms;
     using System.Collections.Generic;
@@ -27,54 +28,51 @@
             view.AddEditHandler(PictureColumn, EditPictureColumn);
             view.AddEditHandler(ScreenColumn, EditScreenColumn);
 
+            //Value changed handles
+            view.AddChangedHandler(ModeColumn, TViewUtilities.ChangeEnabled,
+                PictureColumn, ModeColumn);
+
+            //Show points
+            view.Rows.Clear();
+            view.Rows.Add(Points.Count);
+            for (var i = 0; i < Points.Count; ++i)
+            {
+                var point = Points[i];
+                var row = view.Rows[i];
+
+                //Read only
+                row.SetValue(NumberColumn, $"SCR{i + 1}");
+
+                SetRow(row, point);
+            }
+
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
             view.AddValidation(RefreshColumn, TViewUtilities.ValidateInteger);
             view.AddValidation(CountColumn, TViewUtilities.ValidateInteger);
-
-            //Cell changed handles
-            view.AddChangedHandler(ModeColumn, TViewUtilities.ChangeEnabled,
-                PictureColumn.Name, ModeColumn.Name);
-
-            //Show points
-            view.Rows.Clear();
-            var i = 0;
-            foreach (var point in Points)
-            {
-                view.Rows.Add(new object[] {
-                    i + 1,
-                    point.Description,
-                    point.Label,
-                    point.PictureFile,
-                    0,
-                    point.GraphicMode,
-                    point.RefreshTime
-                });
-                ++i;
-            }
-
-            view.SendChanged(ModeColumn);
             view.Validate();
         }
 
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e)
+        private void SetRow(DataGridViewRow row, ScreenPoint point)
         {
-            var row = view.CurrentRow;
-
-            if (row == null)
+            if (row == null || point == null)
             {
                 return;
             }
 
-            row.Cells[DescriptionColumn.Name].Value = string.Empty;
-            row.Cells[LabelColumn.Name].Value = string.Empty;
-            row.Cells[PictureColumn.Name].Value = string.Empty;
-            row.Cells[ModeColumn.Name].Value = TextGraphic.Text;
-            row.Cells[RefreshColumn.Name].Value = 0;
+            row.SetValue(DescriptionColumn, point.Description);
+            row.SetValue(LabelColumn, point.Label);
+            row.SetValue(PictureColumn, point.PictureFile);
+            row.SetValue(ModeColumn, point.GraphicMode);
+            row.SetValue(RefreshColumn, point.RefreshTime);
+            row.SetValue(CountColumn, 0);
         }
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e) =>
+            SetRow(view.CurrentRow, new ScreenPoint());
 
         private void Save(object sender, EventArgs e)
         {
@@ -87,21 +85,15 @@
 
             try
             {
-                var i = 0;
-                foreach (DataGridViewRow row in view.Rows)
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
                 {
-                    if (i >= Points.Count)
-                    {
-                        break;
-                    }
-                    
                     var point = Points[i];
-                    point.Description = (string)row.Cells[DescriptionColumn.Name].Value;
-                    point.Label = (string)row.Cells[LabelColumn.Name].Value;
-                    point.PictureFile = (string)row.Cells[PictureColumn.Name].Value;
-                    point.GraphicMode = (TextGraphic)row.Cells[ModeColumn.Name].Value;
-                    point.RefreshTime = (int)row.Cells[ModeColumn.Name].Value;
-                    ++i;
+                    var row = view.Rows[i];
+                    point.Description = row.GetValue<string>(DescriptionColumn);
+                    point.PictureFile = row.GetValue<string>(PictureColumn);
+                    point.GraphicMode = row.GetValue<TextGraphic>(ModeColumn);
+                    point.Label = row.GetValue<string>(LabelColumn);
+                    point.RefreshTime = row.GetValue<int>(RefreshColumn);
                 }
             }
             catch (Exception exception)
@@ -128,7 +120,10 @@
         {
             try
             {
-                var path = view.CurrentRow.GetValue<string>(PictureColumn);
+                var name = view.CurrentRow.GetValue<string>(PictureColumn);
+                var building = "Default_Building";
+                var path = GetFullPathForPicture(name, building);
+
                 var form = new EditScreenForm(path);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
@@ -140,6 +135,9 @@
                 MessageBoxUtilities.ShowException(exception);
             }
         }
+
+        private string GetFullPathForPicture(string name, string building) =>
+            Path.Combine("Database", "Buildings", building, "image", name);
 
         private void EditPictureColumn(object sender, EventArgs e)
         {
@@ -155,9 +153,16 @@
                     return;
                 }
 
+                var building = "Default_Building";
+                var name = Path.GetFileName(dialog.FileName);
+                var path = GetFullPathForPicture(name, building);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                File.Copy(dialog.FileName, path, overwrite: true);
+
                 var row = view.CurrentRow;
                 var cell = row.Cells[PictureColumn.Name];
-                cell.Value = dialog.FileName;
+                cell.Value = name;
             }
             catch (Exception exception)
             {

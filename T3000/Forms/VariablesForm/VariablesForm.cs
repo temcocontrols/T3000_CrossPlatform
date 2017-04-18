@@ -36,7 +36,6 @@
             //Value changed handles
             view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
 
-
             //Formating
             view.AddFormating(UnitColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
 
