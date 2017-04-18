@@ -75,6 +75,9 @@
     <Compile Include="Controls\SliderControl\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TView\TLockCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TView\TView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -397,6 +400,8 @@
     <Content Include="Properties\Icons\Default\RemotePoints.ico" />
     <Content Include="Properties\Icons\Default\Schedules.ico" />
     <Content Include="Properties\Icons\Default\TrendLogs.ico" />
+    <None Include="Resources\unlock.png" />
+    <None Include="Resources\lock.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

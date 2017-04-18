@@ -117,32 +117,51 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AllFiles" xml:space="preserve">
-    <value>All files</value>
-  </data>
-  <data name="CurrentFile" xml:space="preserve">
-    <value>Current file: {0}</value>
-  </data>
-  <data name="Exception" xml:space="preserve">
-    <value>Exception: {0}{1}</value>
-  </data>
-  <data name="FileIsNotOpen" xml:space="preserve">
-    <value>.PRG file is not opened. Please, open a file with Ctrl-O or File -&gt; Open .PRG</value>
-  </data>
-  <data name="PrgFiles" xml:space="preserve">
-    <value>.PRG files</value>
-  </data>
-  <data name="Saved" xml:space="preserve">
-    <value>Saved: {0}</value>
-  </data>
-  <data name="SelectPrgFile" xml:space="preserve">
-    <value>Please select an .PRG file</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BluDiscoverIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\BluDiscover.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExceptionTitle" xml:space="preserve">
     <value>Exception:</value>
   </data>
+  <data name="HolidaysIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Holidays.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ConfigurationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlarmsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Alarms.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SchedulesIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Schedules.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Exception: {0}{1}</value>
+  </data>
+  <data name="SaveBeforeExitTitle" xml:space="preserve">
+    <value>Do you want to save the .PRG file?</value>
+  </data>
+  <data name="CurrentFile" xml:space="preserve">
+    <value>Current file: {0}</value>
+  </data>
+  <data name="VariablesIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Variables.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TrendLogsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\TrendLogs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveBeforeExit" xml:space="preserve">
+    <value>Do you want to save the .PRG file?</value>
+  </data>
+  <data name="BuildingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Buildings.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning: {0}</value>
+  </data>
+  <data name="ProgramsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Programs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WarningTitle" xml:space="preserve">
     <value>Warning:</value>
@@ -150,77 +169,64 @@
   <data name="SavePrgFile" xml:space="preserve">
     <value>Please enter name of the .PRG file</value>
   </data>
-  <data name="SaveBeforeExit" xml:space="preserve">
-    <value>Do you want to save the .PRG file?</value>
-  </data>
-  <data name="SaveBeforeExitTitle" xml:space="preserve">
-    <value>Do you want to save the .PRG file?</value>
-  </data>
-  <data name="EditCustomUnitsFormNotValid" xml:space="preserve">
-    <value>Custom unit is not valid. Please fix it before saving.</value>
-  </data>
-  <data name="SelectUnitsFormSelectedUnits" xml:space="preserve">
-    <value>Selected unit: {0}</value>
-  </data>
-  <data name="SelectUnitsFormNotValid" xml:space="preserve">
-    <value>Selected unit not valid. Please select valid item.</value>
-  </data>
-  <data name="SelectImageFile" xml:space="preserve">
-    <value>Please select an image(.PNG or .JPEG) file</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="MainHouseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\MainHouse.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="VariablesIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Variables.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AlarmsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Alarms.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BluDiscoverIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\BluDiscover.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BuildingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Buildings.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ConfigurationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GraphicsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Graphics.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="HolidaysIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Holidays.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ViewNotValidated" xml:space="preserve">
+    <value>View values not valid. Please fix it before saving.</value>
   </data>
   <data name="InputsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\Inputs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OutputsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Outputs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PrgFiles" xml:space="preserve">
+    <value>.PRG files</value>
   </data>
-  <data name="PIDsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\PIDs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProgramsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Programs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="EditCustomUnitsFormNotValid" xml:space="preserve">
+    <value>Custom unit is not valid. Please fix it before saving.</value>
   </data>
   <data name="RemotePointsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\RemotePoints.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SchedulesIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\Schedules.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TrendLogsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\Default\TrendLogs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Upgraded" xml:space="preserve">
     <value>Upgraded: {0}</value>
   </data>
-  <data name="ViewNotValidated" xml:space="preserve">
-    <value>View values not valid. Please fix it before saving.</value>
+  <data name="SelectUnitsFormSelectedUnits" xml:space="preserve">
+    <value>Selected unit: {0}</value>
+  </data>
+  <data name="SelectPrgFile" xml:space="preserve">
+    <value>Please select an .PRG file</value>
+  </data>
+  <data name="OutputsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Outputs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileIsNotOpen" xml:space="preserve">
+    <value>.PRG file is not opened. Please, open a file with Ctrl-O or File -&gt; Open .PRG</value>
+  </data>
+  <data name="SelectImageFile" xml:space="preserve">
+    <value>Please select an image(.PNG or .JPEG) file</value>
   </data>
   <data name="ImageFiles" xml:space="preserve">
     <value>Image files</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Saved: {0}</value>
+  </data>
+  <data name="SelectUnitsFormNotValid" xml:space="preserve">
+    <value>Selected unit not valid. Please select valid item.</value>
+  </data>
+  <data name="MainHouseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\MainHouse.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PIDsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\PIDs.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GraphicsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Default\Graphics.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

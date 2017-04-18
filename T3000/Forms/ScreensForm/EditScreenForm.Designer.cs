@@ -30,6 +30,7 @@
         {
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.lockCheckBox = new T3000.Controls.TLockCheckBox();
             this.SuspendLayout();
             // 
             // saveButton
@@ -57,6 +58,16 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
+            // lockCheckBox
+            // 
+            this.lockCheckBox.Location = new System.Drawing.Point(12, 12);
+            this.lockCheckBox.LockedImage = global::T3000.Properties.Resources._lock;
+            this.lockCheckBox.Name = "lockCheckBox";
+            this.lockCheckBox.Size = new System.Drawing.Size(64, 64);
+            this.lockCheckBox.TabIndex = 8;
+            this.lockCheckBox.UnlockedImage = global::T3000.Properties.Resources.unlock;
+            this.lockCheckBox.UseVisualStyleBackColor = true;
+            // 
             // EditScreenForm
             // 
             this.AcceptButton = this.saveButton;
@@ -64,6 +75,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.lockCheckBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Name = "EditScreenForm";
@@ -75,5 +87,6 @@
         #endregion
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private Controls.TLockCheckBox lockCheckBox;
     }
 }
