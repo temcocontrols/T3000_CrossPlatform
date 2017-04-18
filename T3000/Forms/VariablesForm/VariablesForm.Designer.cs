@@ -80,10 +80,10 @@
             this.DescriptionColumn,
             this.AutoManualColumn,
             this.ValueColumn,
-            this.RangeColumn,
             this.UnitsColumn,
             this.StatusColumn,
-            this.LabelColumn});
+            this.LabelColumn,
+            this.RangeColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             // 

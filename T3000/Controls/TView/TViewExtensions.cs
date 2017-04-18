@@ -12,6 +12,14 @@
         public static readonly Color DisabledForeColor = SystemColors.ControlDarkDark;
         public static readonly Color DisabledSelectionBackColor = SystemColors.ControlDark;
 
+        public static DataGridViewCell GetCell(this DataGridViewRow row,
+            DataGridViewColumn column) =>
+            row.Cells[column.Index];
+
+        public static void SetCell(this DataGridViewRow row,
+            DataGridViewColumn column, DataGridViewCell cell) =>
+            row.Cells[column.Index] = cell;
+
         public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column)
         {
             if (row == null)
@@ -19,7 +27,7 @@
                 throw new ArgumentNullException(nameof(row));
             }
 
-            var value = row.Cells[column.Index].Value;
+            var value = row.GetCell(column).Value;
             /* Need, but slowly
             if (value.GetType() != typeof(T))
             {
@@ -50,7 +58,7 @@ Actual type: {row.Cells[columnName].Value.GetType()}
 Value type: {typeof(T)}");
             }
             */
-            row.Cells[column.Index].Value = value;
+            row.GetCell(column).Value = value;
         }
 
         //public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column) =>
@@ -126,13 +134,5 @@ Value type: {typeof(T)}");
 
             return view.Rows[view.RowCount - 1];
         }
-
-        public static DataGridViewCell GetCell(this DataGridViewRow row,
-            DataGridViewColumn column) => 
-            row.Cells[column.Index];
-
-        public static void SetCell(this DataGridViewRow row,
-            DataGridViewColumn column, DataGridViewCell cell) =>
-            row.Cells[column.Index] = cell;
     }
 }
