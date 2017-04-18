@@ -44,13 +44,23 @@
             */
             //Show points
             view.Rows.Clear();
-            view.Rows.Add(Points.Count);
+            //view.Rows.Add(Points.Count);
             for (var i = 0; i < Points.Count; ++i)
             {
                 var point = Points[i];
+
+                view.Rows.Add(
+                    $"{i + 1}", //NumberColumn
+                    point.Description, //DescriptionColumn
+                    point.AutoManual, //AutoManualColumn
+                    point.Value, //ValueColumn
+                    point.Control, //StatusColumn
+                    point.Label //LabelColumn
+                );
+
                 var row = view.Rows[i];
-                row.SetValue(NumberColumn, $"{i + 1}");
-                SetRow(row, point);
+                //row.SetValue(NumberColumn, $"{i + 1}");
+                //SetRow(row, point);
                 row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
                         point.Value, point.Value.Unit));
             }
