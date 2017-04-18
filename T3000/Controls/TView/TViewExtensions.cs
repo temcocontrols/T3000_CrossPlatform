@@ -74,6 +74,7 @@ Value type: {typeof(T)}");
                 view.ValidationEnabled = false;
             }
 
+            column.ValueType = value.GetType();
             row.GetCell(column).Value = value;
 
             if (withoutValidation)
