@@ -23,25 +23,23 @@
             CustomUnits = customUnits;
 
             InitializeComponent();
-            
+
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
-            //view.AddEditAction(ValueColumn, TViewUtilities.EditValue);
-            view.AddEditAction(ValueColumn, TViewUtilities.EditUnitsColumn,
-                new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
-            //view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
-            //    ValueColumn, UnitsColumn, RangeColumn,
-            //   CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
+            view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
+                UnitColumn, RangeColumn, CustomUnits);
+            view.AddEditAction(UnitColumn, TViewUtilities.EditUnitsColumn,
+                ValueColumn, UnitColumn, RangeColumn,
+                CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
             //Value changed handles
             view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
-            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn, AutoManual.Manual);
+
 
             //Formating
-            //view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
-            
+            view.AddFormating(UnitColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
+
             //Show points
             view.Rows.Clear();
             view.Rows.Add(Points.Count);
@@ -56,9 +54,19 @@
                 SetRow(row, point);
             }
 
+            //Value changed handles
+            view.AddChangedHandler(UnitColumn, TViewUtilities.ChangeValue,
+                AutoManualColumn, AutoManual.Manual);
+            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
+                AutoManualColumn, AutoManual.Manual);
+
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
+                ValueColumn, UnitColumn, CustomUnits);
+            view.AddValidation(UnitColumn, TViewUtilities.ValidateValue,
+                ValueColumn, UnitColumn, CustomUnits);
             view.Validate();
         }
 
@@ -72,7 +80,9 @@
             row.SetValue(DescriptionColumn, point.Description);
             row.SetValue(AutoManualColumn, point.AutoManual);
             row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
-                point.Value, point.Value.Unit));
+                point.Value.ToString(), point.Value.Unit));
+            row.SetValue(UnitColumn, point.Value.Unit);
+            row.SetValue(RangeColumn, point.Value.Value);
             row.SetValue(StatusColumn, point.Control);
             row.SetValue(LabelColumn, point.Label);
         }

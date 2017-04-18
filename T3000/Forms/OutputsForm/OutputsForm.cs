@@ -58,7 +58,7 @@
                 SetRow(row, point);
                 row.Cells[ValueColumn.Name] =
                     TViewUtilities.GetValueCellForUnit(
-                        point.Value,
+                        point.Value.ToString(),
                         point.Value.Unit);
             }
 

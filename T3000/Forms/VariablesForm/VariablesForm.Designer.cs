@@ -37,9 +37,11 @@
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.ValueColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,8 +80,10 @@
             this.DescriptionColumn,
             this.AutoManualColumn,
             this.ValueColumn,
+            this.UnitColumn,
             this.StatusColumn,
-            this.LabelColumn});
+            this.LabelColumn,
+            this.RangeColumn});
             this.view.MultiSelect = false;
             this.view.Name = "view";
             // 
@@ -107,7 +111,13 @@
             resources.ApplyResources(this.ValueColumn, "ValueColumn");
             this.ValueColumn.Name = "ValueColumn";
             this.ValueColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ValueColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // UnitColumn
+            // 
+            resources.ApplyResources(this.UnitColumn, "UnitColumn");
+            this.UnitColumn.Name = "UnitColumn";
+            this.UnitColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.UnitColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // StatusColumn
             // 
@@ -127,6 +137,11 @@
             // 
             resources.ApplyResources(this.LabelColumn, "LabelColumn");
             this.LabelColumn.Name = "LabelColumn";
+            // 
+            // RangeColumn
+            // 
+            resources.ApplyResources(this.RangeColumn, "RangeColumn");
+            this.RangeColumn.Name = "RangeColumn";
             // 
             // VariablesForm
             // 
@@ -154,9 +169,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn ValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn UnitColumn;
         private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
     }
 }
 
