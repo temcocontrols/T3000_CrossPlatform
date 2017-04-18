@@ -12,14 +12,14 @@
         public static readonly Color DisabledForeColor = SystemColors.ControlDarkDark;
         public static readonly Color DisabledSelectionBackColor = SystemColors.ControlDark;
 
-        public static T GetValue<T>(this DataGridViewRow row, string columnName)
+        public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column)
         {
             if (row == null)
             {
                 throw new ArgumentNullException(nameof(row));
             }
 
-            var value = row.Cells[columnName].Value;
+            var value = row.Cells[column.Index].Value;
             /* Need, but slowly
             if (value.GetType() != typeof(T))
             {
@@ -33,7 +33,7 @@ Cast type: {typeof(T)}");
             return (T)value;
         }
 
-        public static void SetValue<T>(this DataGridViewRow row, string columnName, T value = default(T))
+        public static void SetValue<T>(this DataGridViewRow row, DataGridViewColumn column, T value = default(T))
         {
             if (row == null)
             {
@@ -50,14 +50,15 @@ Actual type: {row.Cells[columnName].Value.GetType()}
 Value type: {typeof(T)}");
             }
             */
-            row.Cells[columnName].Value = value;
+            row.Cells[column.Index].Value = value;
         }
 
-        public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column) =>
-            row.GetValue<T>(column.Name);
+        //public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column) =>
+        //    row.GetValue<T>(column.Name);
 
-        public static void SetValue<T>(this DataGridViewRow row, DataGridViewColumn column, T value = default(T)) =>
-            row.SetValue(column.Name, value);
+        //public static void SetValue<T>(this DataGridViewRow row, DataGridViewColumn column, 
+        //    T value = default(T)) =>
+        //    row.SetValue(column.Name, value);
 
 
         /// <summary>
@@ -109,6 +110,7 @@ Value type: {typeof(T)}");
             
             return cell.OwningColumn?.Name;
         }
+
         public static DataGridViewRow CreateRow(this DataGridView view, Dictionary<string, object> values = null)
         {
             var objects = new List<object>();
@@ -124,5 +126,13 @@ Value type: {typeof(T)}");
 
             return view.Rows[view.RowCount - 1];
         }
+
+        public static DataGridViewCell GetCell(this DataGridViewRow row,
+            DataGridViewColumn column) => 
+            row.Cells[column.Index];
+
+        public static void SetCell(this DataGridViewRow row,
+            DataGridViewColumn column, DataGridViewCell cell) =>
+            row.Cells[column.Index] = cell;
     }
 }

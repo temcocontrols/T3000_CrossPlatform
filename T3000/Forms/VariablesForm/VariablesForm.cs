@@ -27,28 +27,30 @@
             //User input handles
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
-                UnitsColumn.Name, RangeColumn.Name, CustomUnits);
+                UnitsColumn, RangeColumn, CustomUnits);
             view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
-                ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
+                ValueColumn, UnitsColumn, RangeColumn,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsVariableAnalog()));
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
             //Value changed handles
             view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
+                AutoManualColumn, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
+                AutoManualColumn, AutoManual.Manual);
 
             //Formating
             view.AddFormating(UnitsColumn, o => ((Unit)o).GetOffOnName(CustomUnits));
 
             //Show points
             view.Rows.Clear();
+            view.Rows.Add(Points.Count);
             for (var i = 0; i < Points.Count; ++i)
             {
                 var point = Points[i];
-                var row = view.CreateRow();
+                var row = view.Rows[i];
+                    //view.CreateRow(ToValues(point, i + 1));
                 row.SetValue(NumberColumn, $"{i + 1}");
                 SetRow(row, point);
                 row.Cells[ValueColumn.Name] = 
@@ -61,9 +63,9 @@
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
             view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+                ValueColumn, UnitsColumn, CustomUnits);
             view.AddValidation(UnitsColumn, TViewUtilities.ValidateValue,
-                ValueColumn.Name, UnitsColumn.Name, CustomUnits);
+                ValueColumn, UnitsColumn, CustomUnits);
             view.Validate();
         }
 
@@ -82,7 +84,22 @@
             row.SetValue(StatusColumn, point.Control);
             row.SetValue(LabelColumn, point.Label);
         }
+        /*
+        private Dictionary<string, object> ToValues(VariablePoint point, int number)
+        {
+            var values = new Dictionary<string, object>();
+            values[NumberColumn.Name] = $"{number}";
+            values[DescriptionColumn.Name] = point.Description;
+            values[AutoManualColumn.Name] = point.AutoManual;
+            values[ValueColumn.Name] = point.Value.ToString();
+            values[UnitsColumn.Name] = point.Value.Unit;
+            values[RangeColumn.Name] = point.Value.Value;
+            values[StatusColumn.Name] = point.Control;
+            values[LabelColumn.Name] = point.Label;
 
+            return values;
+        }
+        */
         #region Buttons
 
         private void ClearSelectedRow(object sender, EventArgs e) =>

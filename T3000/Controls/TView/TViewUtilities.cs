@@ -80,8 +80,8 @@
 
             try
             {
-                var unitsColumnName = (string)arguments[0];
-                var rangeColumnName = (string)arguments[1];
+                var unitsColumn = (DataGridViewColumn)arguments[0];
+                var rangeColumn = (DataGridViewColumn)arguments[1];
                 var customUnits = (CustomUnits)arguments[2];
 
                 var view = (TView)sender;
@@ -89,7 +89,7 @@
                 var cell = view.CurrentCell;
                 try
                 {
-                    var value = GetVariableValue(row, cell.OwningColumn.Name, unitsColumnName, rangeColumnName,
+                    var value = GetVariableValue(row, cell.OwningColumn, unitsColumn, rangeColumn,
                         customUnits);
                     if (value.Unit.IsDigital())
                     {
@@ -132,16 +132,16 @@
 
             try
             {
-                var valueColumnName = (string)arguments[0];
-                var unitsColumnName = (string)arguments[1];
-                var rangeColumnName = (string)arguments[2];
+                var valueColumn = (DataGridViewColumn)arguments[0];
+                var unitsColumn = (DataGridViewColumn)arguments[1];
+                var rangeColumn = (DataGridViewColumn)arguments[2];
                 var customUnits = (CustomUnits)arguments[3];
                 var predicate = (Func<Unit, bool>)arguments[4];
-                var rangeTextColumnName = arguments.Length >= 6 ? (string)arguments[5] : null; //Optional
+                var rangeTextColumn = arguments.Length >= 6 ? (DataGridViewColumn)arguments[5] : null; //Optional
 
                 var view = (TView)sender;
                 var row = view.CurrentRow;
-                var value = GetVariableValue(row, valueColumnName, unitsColumnName, rangeColumnName, customUnits);
+                var value = GetVariableValue(row, valueColumn, unitsColumn, rangeColumn, customUnits);
                 var form = new Forms.SelectUnitsForm(value.Unit, value.CustomUnits, predicate);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
@@ -153,26 +153,26 @@
                 customUnits = form.CustomUnits;
 
                 view.ChangeValidationArguments(
-                    unitsColumnName, valueColumnName, unitsColumnName, customUnits);
+                    unitsColumn, valueColumn, unitsColumn, customUnits);
                 view.ChangeValidationArguments(
-                    unitsColumnName, valueColumnName, unitsColumnName, customUnits);
+                    unitsColumn, valueColumn, unitsColumn, customUnits);
 
                 view.ChangeEditArguments(
-                    unitsColumnName, valueColumnName, unitsColumnName, rangeColumnName,
-                    customUnits, predicate, rangeTextColumnName);
+                    unitsColumn, valueColumn, unitsColumn, rangeColumn,
+                    customUnits, predicate, rangeTextColumn);
 
-                row.SetValue(unitsColumnName, newUnit);
-                row.SetValue(valueColumnName, newValue);
-                row.SetValue(rangeColumnName, newUnit);
-                if (rangeTextColumnName != null)
+                row.SetValue(unitsColumn, newUnit);
+                row.SetValue(valueColumn, newValue);
+                row.SetValue(rangeColumn, newUnit);
+                if (rangeTextColumn != null)
                 {
-                    row.SetValue(rangeTextColumnName, newUnit);
+                    row.SetValue(rangeTextColumn, newUnit);
                 }
 
                 // If from analog to digital or from digital to analog
                 if (value.Unit.IsDigital() != newUnit.IsDigital())
                 {
-                    row.Cells[valueColumnName] = GetValueCellForUnit(newValue, newUnit);
+                    row.SetCell(valueColumn, GetValueCellForUnit(newValue, newUnit));
                 }
 
                 view.ValidateRow(row);
@@ -203,8 +203,8 @@
                     throw new ArgumentException("Arguments less than 3", nameof(arguments));
                 }
 
-                var valueColumn = (string)arguments[0];
-                var unitsColumn = (string)arguments[1];
+                var valueColumn = (DataGridViewColumn)arguments[0];
+                var unitsColumn = (DataGridViewColumn)arguments[1];
                 var customUnits = (CustomUnits)arguments[2];
 
                 var isValidated = true;
@@ -362,10 +362,10 @@
                     return;
                 }
 
-                var columnName = (string)arguments[0];
+                var column = (DataGridViewColumn)arguments[0];
                 var value = arguments[1];
 
-                row.SetValue(columnName, value);
+                row.SetValue(column, value);
             }
             catch (Exception) { }
         }
@@ -386,11 +386,11 @@
                     return;
                 }
 
-                var columnName = (string)arguments[0];
-                var valueColumnName = (string)arguments[1];
+                var column = (DataGridViewColumn)arguments[0];
+                var valueColumn = (DataGridViewColumn)arguments[1];
 
-                var value = row.GetValue<int>(valueColumnName);
-                row.Cells[columnName].Enable(value != 0);
+                var value = row.GetValue<int>(valueColumn);
+                row.GetCell(column).Enable(value != 0);
             }
             catch (Exception) { }
         }
@@ -451,20 +451,15 @@
         #region Other
 
         public static VariableValue GetVariableValue(DataGridViewRow row,
-            string valueName, string unitsName, string rangeName,
-            CustomUnits customUnits) =>
-            new VariableValue(
-                        row.GetValue<string>(valueName),
-                        row.GetValue<Unit>(unitsName),
-                        customUnits,
-                        row.GetValue<int>(rangeName));
-
-        public static VariableValue GetVariableValue(DataGridViewRow row,
             DataGridViewColumn value,
             DataGridViewColumn units,
             DataGridViewColumn range,
             CustomUnits customUnits) =>
-            GetVariableValue(row, value.Name, units.Name, range.Name, customUnits);
+            new VariableValue(
+                        row.GetValue<string>(value),
+                        row.GetValue<Unit>(units),
+                        customUnits,
+                        row.GetValue<int>(range));
 
         #endregion
     }
