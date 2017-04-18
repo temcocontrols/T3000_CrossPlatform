@@ -38,7 +38,7 @@
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitsColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.UnitColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RangeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RangeTextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CalibrationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,7 +86,7 @@
             this.DescriptionColumn,
             this.AutoManualColumn,
             this.ValueColumn,
-            this.UnitsColumn,
+            this.UnitColumn,
             this.RangeColumn,
             this.RangeTextColumn,
             this.CalibrationColumn,
@@ -127,11 +127,11 @@
             resources.ApplyResources(this.ValueColumn, "ValueColumn");
             this.ValueColumn.Name = "ValueColumn";
             // 
-            // UnitsColumn
+            // UnitColumn
             // 
-            resources.ApplyResources(this.UnitsColumn, "UnitsColumn");
-            this.UnitsColumn.Name = "UnitsColumn";
-            this.UnitsColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            resources.ApplyResources(this.UnitColumn, "UnitColumn");
+            this.UnitColumn.Name = "UnitColumn";
+            this.UnitColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // RangeColumn
             // 
@@ -205,7 +205,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn UnitsColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn UnitColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RangeTextColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn CalibrationColumn;

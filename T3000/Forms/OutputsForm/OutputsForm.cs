@@ -28,9 +28,9 @@
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditHandler(HOASwitchColumn, TViewUtilities.EditEnum<SwitchStatus>);
             view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
-                UnitsColumn, RangeColumn, CustomUnits);
-            view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn, 
-                ValueColumn, UnitsColumn, RangeColumn,
+                UnitColumn, RangeColumn, CustomUnits);
+            view.AddEditAction(UnitColumn, TViewUtilities.EditUnitsColumn, 
+                ValueColumn, UnitColumn, RangeColumn,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsOutputAnalog()),
                 RangeTextColumn);
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
@@ -40,7 +40,7 @@
                 Color.Red, Color.Blue);
 
             //Formating
-            view.AddFormating(UnitsColumn, o => ((Unit)o).GetUnitName(CustomUnits));
+            view.AddFormating(UnitColumn, o => ((Unit)o).GetUnitName(CustomUnits));
             view.AddFormating(RangeTextColumn, o => ((Unit)o).GetRange(CustomUnits));
 
             //Show points
@@ -56,7 +56,7 @@
             }
 
             //Value changed handles
-            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
+            view.AddChangedHandler(UnitColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
                 AutoManualColumn, AutoManual.Manual);
@@ -64,6 +64,10 @@
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
+            view.AddValidation(ValueColumn, TViewUtilities.ValidateValue,
+                ValueColumn, UnitColumn, CustomUnits);
+            view.AddValidation(UnitColumn, TViewUtilities.ValidateValue,
+                ValueColumn, UnitColumn, CustomUnits);
             view.AddValidation(LowVColumn, TViewUtilities.ValidateInteger);
             view.AddValidation(HighVColumn, TViewUtilities.ValidateInteger);
             view.AddValidation(PWMPeriodColumn, TViewUtilities.ValidateInteger);
@@ -83,7 +87,7 @@
             row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
                     point.Value.ToString(),
                     point.Value.Unit));
-            row.SetValue(UnitsColumn, point.Value.Unit);
+            row.SetValue(UnitColumn, point.Value.Unit);
             row.SetValue(RangeColumn, point.Value.Value);
             row.SetValue(RangeTextColumn, point.Value.Unit);
             row.SetValue(LowVColumn, point.LowVoltage);
@@ -120,7 +124,7 @@
                     point.HighVoltage = row.GetValue<int>(HighVColumn);
                     point.PwmPeriod = row.GetValue<int>(PWMPeriodColumn);
                     point.Control = row.GetValue<OffOn>(StatusColumn);
-                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitsColumn, RangeColumn, CustomUnits);
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitColumn, RangeColumn, CustomUnits);
                     point.Label = row.GetValue<string>(LabelColumn);
                 }
             }

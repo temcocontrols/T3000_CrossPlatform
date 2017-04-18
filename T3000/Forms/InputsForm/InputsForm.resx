@@ -243,10 +243,10 @@
   <data name="ValueColumn.HeaderText" xml:space="preserve">
     <value>Value</value>
   </data>
-  <metadata name="UnitsColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="UnitColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="UnitsColumn.HeaderText" xml:space="preserve">
+  <data name="UnitColumn.HeaderText" xml:space="preserve">
     <value>Unit</value>
   </data>
   <metadata name="RangeColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -650,10 +650,10 @@
   <data name="&gt;&gt;ValueColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;UnitsColumn.Name" xml:space="preserve">
-    <value>UnitsColumn</value>
+  <data name="&gt;&gt;UnitColumn.Name" xml:space="preserve">
+    <value>UnitColumn</value>
   </data>
-  <data name="&gt;&gt;UnitsColumn.Type" xml:space="preserve">
+  <data name="&gt;&gt;UnitColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;RangeColumn.Name" xml:space="preserve">
