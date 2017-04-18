@@ -108,7 +108,7 @@
                     var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
-                    point.Value = row.GetValue<VariableValue>(ValueColumn);
+                    point.Value = TViewUtilities.GetVariableValue(row, ValueColumn, UnitColumn, RangeColumn, CustomUnits);
                     point.Label = row.GetValue<string>(LabelColumn);
                 }
             }
