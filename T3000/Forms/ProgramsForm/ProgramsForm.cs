@@ -31,54 +31,48 @@
             view.AddEditHandler(CodeColumn, EditCodeColumn);
 
             //Value changed handles
-            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, 
+                Color.Red, Color.Blue);
 
             //Show points
             view.Rows.Clear();
-            var i = 0;
-            foreach (var point in Points)
+            view.Rows.Add(Points.Count);
+            for (var i = 0; i < Points.Count; ++i)
             {
-                view.Rows.Add(new object[] {
-                    i + 1,
-                    point.Description,
-                    point.Control,
-                    point.AutoManual,
-                    point.Length,
-                    point.NormalCom,
-                    point.Label,
-                    $"Length: {codes[i].Code.GetString().ClearBinarySymvols().Length}"
-                });
-                ++i;
+                var point = Points[i];
+                var row = view.Rows[i];
+
+                //Read only
+                row.SetValue(NumberColumn, i + 1);
+
+                SetRow(row, point);
             }
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.AddValidation(SizeColumn, TViewUtilities.ValidateInteger);
             view.Validate();
-
-            //For apply changed handlers
-            view.SendChanged(StatusColumn);
         }
 
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e)
+        private void SetRow(DataGridViewRow row, ProgramPoint point)
         {
-            var row = view.CurrentRow;
-
-            if (row == null)
+            if (row == null || point == null)
             {
                 return;
             }
 
-            row.SetValue(DescriptionColumn, string.Empty);
-            row.SetValue(StatusColumn, OffOn.Off);
-            row.SetValue(AutoManualColumn, AutoManual.Automatic);
-            row.SetValue(SizeColumn, 0);
-            row.SetValue(RunStatusColumn, NormalCom.Normal);
-            row.SetValue(LabelColumn, string.Empty);
+            row.SetValue(DescriptionColumn, point.Description);
+            row.SetValue(StatusColumn, point.Control);
+            row.SetValue(AutoManualColumn, point.AutoManual);
+            row.SetValue(SizeColumn, point.Length);
+            row.SetValue(RunStatusColumn, point.NormalCom);
+            row.SetValue(LabelColumn, point.Label);
         }
+
+        #region Buttons
+
+        private void ClearSelectedRow(object sender, EventArgs e) =>
+            SetRow(view.CurrentRow, new ProgramPoint());
 
         private void Save(object sender, EventArgs e)
         {
@@ -91,15 +85,10 @@
 
             try
             {
-                for (var i = 0; i < view.Rows.Count; ++i)
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
                 {
-                    if (i >= Points.Count)
-                    {
-                        break;
-                    }
-
-                    var row = view.Rows[i];
                     var point = Points[i];
+                    var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.Control = row.GetValue<OffOn>(StatusColumn);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);

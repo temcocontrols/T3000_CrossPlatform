@@ -83,8 +83,12 @@
             this.RunStatusColumn,
             this.LabelColumn,
             this.CodeColumn});
+            this.view.FormattingEnabled = true;
             this.view.MultiSelect = false;
             this.view.Name = "view";
+            this.view.UserInputEnabled = true;
+            this.view.ValidationEnabled = true;
+            this.view.ValueChangedEnabled = true;
             // 
             // NumberColumn
             // 
@@ -120,6 +124,7 @@
             // 
             resources.ApplyResources(this.SizeColumn, "SizeColumn");
             this.SizeColumn.Name = "SizeColumn";
+            this.SizeColumn.ReadOnly = true;
             // 
             // RunStatusColumn
             // 
@@ -138,6 +143,8 @@
             this.CodeColumn.Name = "CodeColumn";
             this.CodeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.CodeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.CodeColumn.Text = "Edit";
+            this.CodeColumn.UseColumnTextForButtonValue = true;
             // 
             // ProgramsForm
             // 
