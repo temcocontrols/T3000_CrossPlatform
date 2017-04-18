@@ -49,13 +49,8 @@
             {
                 var point = Points[i];
                 var row = view.Rows[i];
-                    //view.CreateRow(ToValues(point, i + 1));
                 row.SetValue(NumberColumn, $"{i + 1}");
                 SetRow(row, point);
-                row.Cells[ValueColumn.Name] = 
-                    TViewUtilities.GetValueCellForUnit(
-                        point.Value, 
-                        point.Value.Unit);
             }
 
             //Validation
@@ -73,7 +68,8 @@
 
             row.SetValue(DescriptionColumn, point.Description);
             row.SetValue(AutoManualColumn, point.AutoManual);
-            row.SetValue(ValueColumn, point.Value);
+            row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
+                    point.Value, point.Value.Unit));
             row.SetValue(StatusColumn, point.Control);
             row.SetValue(LabelColumn, point.Label);
         }
