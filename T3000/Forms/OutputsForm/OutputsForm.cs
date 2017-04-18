@@ -28,19 +28,16 @@
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditHandler(HOASwitchColumn, TViewUtilities.EditEnum<SwitchStatus>);
             view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
-                UnitsColumn.Name, RangeColumn.Name, CustomUnits);
+                UnitsColumn, RangeColumn, CustomUnits);
             view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn, 
-                ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
+                ValueColumn, UnitsColumn, RangeColumn,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsOutputAnalog()),
-                RangeTextColumn.Name);
+                RangeTextColumn);
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
 
-            //Cell changed handles
-            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue, 
-                AutoManualColumn.Name, AutoManual.Manual);
-            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
-            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, Color.Red, Color.Blue);
+            //Value changed handles
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, 
+                Color.Red, Color.Blue);
 
             //Formating
             view.AddFormating(UnitsColumn, o => ((Unit)o).GetUnitName(CustomUnits));
@@ -56,11 +53,13 @@
                 row.SetValue(OutputColumn, $"OUT{i + 1}");
                 row.SetValue(PanelColumn, "?");
                 SetRow(row, point);
-                row.Cells[ValueColumn.Name] =
-                    TViewUtilities.GetValueCellForUnit(
-                        point.Value.ToString(),
-                        point.Value.Unit);
             }
+
+            //Value changed handles
+            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
+                AutoManualColumn, AutoManual.Manual);
+            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
+                AutoManualColumn, AutoManual.Manual);
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
@@ -81,7 +80,9 @@
             row.SetValue(DescriptionColumn, point.Description);
             row.SetValue(AutoManualColumn, point.AutoManual);
             row.SetValue(HOASwitchColumn, point.HwSwitchStatus);
-            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
+                    point.Value.ToString(),
+                    point.Value.Unit));
             row.SetValue(UnitsColumn, point.Value.Unit);
             row.SetValue(RangeColumn, point.Value.Value);
             row.SetValue(RangeTextColumn, point.Value.Unit);

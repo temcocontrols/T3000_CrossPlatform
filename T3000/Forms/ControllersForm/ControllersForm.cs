@@ -30,9 +30,9 @@
 
             //Cell changed handles
             view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
+                AutoManualColumn, AutoManual.Manual);
             view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
+                AutoManualColumn, AutoManual.Manual);
 
             //Formating
             view.AddFormating(ActionColumn, o => ((DirectReverse)o).GetName());
@@ -60,7 +60,9 @@
             }
 
             row.SetValue(NumberColumn, point.Input.Number);
-            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
+                    point.Value.ToString(),
+                    point.Unit));
             row.SetValue(UnitsColumn, point.Unit);
             row.SetValue(AutoManualColumn, point.AutoManual);
             row.SetValue(OutputColumn, "x.x %");

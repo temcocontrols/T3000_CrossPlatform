@@ -25,20 +25,14 @@
             //User input
             view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
             view.AddEditAction(ValueColumn, TViewUtilities.EditValue,
-                UnitsColumn.Name, RangeColumn.Name, CustomUnits);
+                UnitsColumn, RangeColumn, CustomUnits);
             view.AddEditAction(UnitsColumn, TViewUtilities.EditUnitsColumn,
-                ValueColumn.Name, UnitsColumn.Name, RangeColumn.Name,
+                ValueColumn, UnitsColumn, RangeColumn,
                 CustomUnits, new Func<Unit, bool>(unit => unit.IsInputAnalog()),
-                RangeTextColumn.Name);
+                RangeTextColumn);
             view.AddEditHandler(SignColumn, TViewUtilities.EditEnum<Sign>);
             view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<InputStatus>);
             view.AddEditHandler(JumperColumn, TViewUtilities.EditEnum<Jumper>);
-
-            //Cell changed
-            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
-            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
-                AutoManualColumn.Name, AutoManual.Manual);
 
             //Formating
             view.AddFormating(SignColumn, o => ((Sign)o).GetName());
@@ -56,11 +50,13 @@
                 row.SetValue(InputColumn, $"IN{i + 1}");
                 row.SetValue(PanelColumn, "?");
                 SetRow(row, point);
-                row.Cells[ValueColumn.Name] =
-                    TViewUtilities.GetValueCellForUnit(
-                        point.Value.ToString(),
-                        point.Value.Unit);
             }
+
+            //Value changed handles
+            view.AddChangedHandler(UnitsColumn, TViewUtilities.ChangeValue,
+                AutoManualColumn, AutoManual.Manual);
+            view.AddChangedHandler(ValueColumn, TViewUtilities.ChangeValue,
+                AutoManualColumn, AutoManual.Manual);
 
             //Validation
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
@@ -79,7 +75,9 @@
 
             row.SetValue(DescriptionColumn, point.Description);
             row.SetValue(AutoManualColumn, point.AutoManual);
-            row.SetValue(ValueColumn, point.Value.ToString());
+            row.SetCell(ValueColumn, TViewUtilities.GetValueCellForUnit(
+                    point.Value.ToString(),
+                    point.Value.Unit));
             row.SetValue(UnitsColumn, point.Value.Unit);
             row.SetValue(RangeColumn, point.Value.Value);
             row.SetValue(RangeTextColumn, point.Value.Unit);
