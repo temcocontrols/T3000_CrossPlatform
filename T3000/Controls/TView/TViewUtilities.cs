@@ -161,7 +161,7 @@
                     unitsColumn, valueColumn, unitsColumn, rangeColumn,
                     customUnits, predicate, rangeTextColumn);
 
-                row.SetValue(unitsColumn, newUnit);
+                row.SetValue(unitsColumn, newUnit, withoutValidation: true);
                 row.SetValue(valueColumn, newValue);
                 
                 if (rangeTextColumn != null)

@@ -25,6 +25,8 @@
 
         #region User input handles
 
+        public bool UserInputEnabled { get; set; } = true;
+
         private Dictionary<string, EventHandler> InputHandles = new Dictionary<string, EventHandler>();
         private Dictionary<string, EditAction> InputActions = new Dictionary<string, EditAction>();
         private Dictionary<string, object[]> InputArguments { get; set; } =
@@ -32,7 +34,7 @@
 
         private void InvokeInputHandle(string name, EventArgs e)
         {
-            if (name == null)
+            if (name == null || !UserInputEnabled)
             {
                 return;
             }
@@ -130,6 +132,8 @@
 
         #region Validation handles
 
+        public bool ValidationEnabled { get; set; } = true;
+
         private Dictionary<string, ValidationFunc> ValidationHandles { get; set; } =
             new Dictionary<string, ValidationFunc>();
         private Dictionary<string, object[]> ValidationArguments { get; set; } =
@@ -167,6 +171,11 @@
 
         public bool ValidateCell(DataGridViewCell cell)
         {
+            if (!ValidationEnabled)
+            {
+                return true;
+            }
+
             if (cell == null)
             {
                 return false;
@@ -242,6 +251,8 @@
 
         #region Value changed handles
 
+        public bool ValueChangedEnabled { get; set; } = true;
+
         private Dictionary<string, CellAction> ValueChangedHandles { get; set; } =
             new Dictionary<string, CellAction>();
         private Dictionary<string, object[]> ValueChangedArguments { get; set; } =
@@ -264,7 +275,9 @@
                 }
 
                 var name = cell.ColumnName();
-                if (name != null && ValueChangedHandles.ContainsKey(name))
+                if (ValueChangedEnabled && 
+                    name != null && 
+                    ValueChangedHandles.ContainsKey(name))
                 {
                     var arguments = ValueChangedArguments.ContainsKey(name)
                         ? ValueChangedArguments[name] : new object[0];
@@ -310,6 +323,8 @@
 
         #region Formatting handles
 
+        public bool FormattingEnabled { get; set; } = true;
+
         private Dictionary<string, FormatingFunc> FormattingHandles { get; set; } =
             new Dictionary<string, FormatingFunc>();
 
@@ -335,7 +350,9 @@
                 }
 
                 var name = cell.ColumnName();
-                if (name != null && FormattingHandles.ContainsKey(name))
+                if (FormattingEnabled &&
+                    name != null && 
+                    FormattingHandles.ContainsKey(name))
                 {
                     e.Value = FormattingHandles[name].Invoke(cell.Value);
                     e.FormattingApplied = true;

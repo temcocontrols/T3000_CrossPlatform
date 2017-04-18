@@ -50,7 +50,7 @@ Cast type: {typeof(T)}");
             return (T)value;
         }
 
-        public static void SetValue<T>(this DataGridViewRow row, DataGridViewColumn column, T value = default(T))
+        public static void SetValue<T>(this DataGridViewRow row, DataGridViewColumn column, T value = default(T), bool withoutValidation = false)
         {
             if (row == null)
             {
@@ -67,7 +67,19 @@ Actual type: {row.Cells[columnName].Value.GetType()}
 Value type: {typeof(T)}");
             }
             */
+            var view = ((TView) row.DataGridView);
+            var temp = view.ValidationEnabled;
+            if (withoutValidation)
+            {
+                view.ValidationEnabled = false;
+            }
+
             row.GetCell(column).Value = value;
+
+            if (withoutValidation)
+            {
+                view.ValidationEnabled = temp;
+            }
         }
 
         //public static T GetValue<T>(this DataGridViewRow row, DataGridViewColumn column) =>
