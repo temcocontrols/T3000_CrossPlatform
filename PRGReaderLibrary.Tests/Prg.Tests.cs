@@ -170,7 +170,7 @@ See console log for details.
             {
                 var offset = GetDifferOffset(exception);
                 Console.WriteLine(DebugUtilities.CompareBytes(File.ReadAllBytes(path),
-                    prg.ToBytes(), offset - 35, false, 1110, true));
+                    prg.ToBytes(), offset - 35, 70, onlyDif: false, toText: true));
                 throw;
             }
 
