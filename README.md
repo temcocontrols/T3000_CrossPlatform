@@ -35,5 +35,4 @@ T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 
 # Plan:
 
-1. Add support for Units range
-2. Add forms for Inputs, Outputs etc
+1. Support of the program code

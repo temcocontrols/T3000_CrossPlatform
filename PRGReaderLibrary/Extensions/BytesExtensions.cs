@@ -121,8 +121,17 @@
             return value;
         }
 
-        //Marasmus
-        public static byte ToByte(this byte[] bytes, int offset = 0) => bytes[offset];
+        public static byte ToByte(this byte[] bytes, int offset = 0)
+        {
+            if (offset < 0 || offset >= bytes.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset),
+                    $@"Offset can be from 0 to bytes.Length - 1.
+Offset: {offset}, bytes.Length: {bytes.Length}");
+            }
+
+            return bytes[offset];
+        }
 
         public static byte ToByte(this byte[] bytes, ref int offset)
         {
@@ -134,6 +143,11 @@
 
         public static byte[] ToBytes(this byte[] bytes, int offset = 0, int length = 0)
         {
+            if (bytes.Length == 0)
+            {
+                return new byte[0];
+            }
+
             if (offset < 0 || offset >= bytes.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(offset), 
