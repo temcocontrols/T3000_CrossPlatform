@@ -59,22 +59,22 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="TestFiles\90185.prg" />
-    <None Include="TestFiles\90880.prg" />
-    <None Include="TestFiles\97910.prg" />
-    <None Include="TestFiles\asy1.prg" />
-    <None Include="TestFiles\balsam2.prg" />
-    <None Include="TestFiles\BTUMeter.prg" />
-    <None Include="TestFiles\ChamberRev5.prg" />
-    <None Include="TestFiles\CustomAnalogRev6.prg" />
-    <None Include="TestFiles\panel1.prg" />
-    <None Include="TestFiles\panel11.prg" />
-    <None Include="TestFiles\panel2.prg" />
-    <None Include="TestFiles\SelfTestRev3.prg" />
-    <None Include="TestFiles\T3DemoRev6.prg" />
-    <None Include="TestFiles\temco.prg" />
-    <None Include="TestFiles\TemcoPanelRev6.prg" />
-    <None Include="TestFiles\testvariables.prg" />
+    <None Include="TestFiles\Prgs\90185.prg" />
+    <None Include="TestFiles\Prgs\90880.prg" />
+    <None Include="TestFiles\Prgs\97910.prg" />
+    <None Include="TestFiles\Prgs\asy1.prg" />
+    <None Include="TestFiles\Prgs\balsam2.prg" />
+    <None Include="TestFiles\Prgs\BTUMeter.prg" />
+    <None Include="TestFiles\Prgs\ChamberRev5.prg" />
+    <None Include="TestFiles\Prgs\CustomAnalogRev6.prg" />
+    <None Include="TestFiles\Prgs\panel1.prg" />
+    <None Include="TestFiles\Prgs\panel11.prg" />
+    <None Include="TestFiles\Prgs\panel2.prg" />
+    <None Include="TestFiles\Prgs\SelfTestRev3.prg" />
+    <None Include="TestFiles\Prgs\T3DemoRev6.prg" />
+    <None Include="TestFiles\Prgs\temco.prg" />
+    <None Include="TestFiles\Prgs\TemcoPanelRev6.prg" />
+    <None Include="TestFiles\Prgs\testvariables.prg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
@@ -84,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Types.Tests\AdditionalTypes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\ProgramCodes\BTUMeter.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,7 +5,7 @@
 
     public static class TestUtilities
     {
-        public static string GetFullPathForTestFile(string filename) =>
+        private static string PathToTestFiles =>
             Path.Combine(
                 Path.GetDirectoryName(
                     Path.GetDirectoryName(
@@ -13,7 +13,12 @@
                             Assembly.GetExecutingAssembly().Location
                         )
                     )
-                ),
-                "TestFiles", filename);
+                ), "TestFiles");
+
+        public static string GetFullPathForPrgFile(string filename) =>
+            Path.Combine(PathToTestFiles, "Prgs", filename);
+
+        public static string GetFullPathForProgramCodeFile(string filename) =>
+            Path.Combine(PathToTestFiles, "ProgramCodes", filename);
     }
 }

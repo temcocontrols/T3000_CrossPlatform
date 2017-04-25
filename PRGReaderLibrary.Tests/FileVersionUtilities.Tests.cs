@@ -9,7 +9,7 @@
     {
         public byte[] GetBytesFromName(string name)
         {
-            var path = TestUtilities.GetFullPathForTestFile(name);
+            var path = TestUtilities.GetFullPathForPrgFile(name);
 
             return File.ReadAllBytes(path);
         }

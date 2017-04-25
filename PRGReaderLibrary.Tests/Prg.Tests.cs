@@ -33,7 +33,7 @@ Value.ToFromToString(): {tempValue.ToString()}
 
         public void BaseTest(string name)
         {
-            var path = TestUtilities.GetFullPathForTestFile(name);
+            var path = TestUtilities.GetFullPathForPrgFile(name);
             var prg = Prg.Load(path);
 
             var temp = Path.GetTempFileName();
@@ -161,7 +161,7 @@ Value.ToFromToString(): {tempValue.ToString()}
             prg.Save(temp);
             try
             {
-                FileAssert.AreEqual(path, temp, 
+                FileAssert.AreEqual(path, temp,
                     $@"Name: {name}. 
 See console log for details.
 ");
@@ -196,7 +196,7 @@ See console log for details.
         {
             var exception = Assert.Catch(() =>
             {
-                var prg = Prg.Load(TestUtilities.GetFullPathForTestFile(name));
+                var prg = Prg.Load(TestUtilities.GetFullPathForPrgFile(name));
 
                 Console.WriteLine(prg.PropertiesText());
             });
@@ -206,7 +206,7 @@ See console log for details.
         [Test]
         public void Prg_BTUMeter()
         {
-            var path = TestUtilities.GetFullPathForTestFile("BTUMeter.prg");
+            var path = TestUtilities.GetFullPathForPrgFile("BTUMeter.prg");
             var prg = Prg.Load(path);
 
             ObjectAssert.AreEqual(new CustomDigitalUnitsPoint(false, "TANK1", "TANK2"), prg.CustomUnits.Digital[0]);
@@ -360,7 +360,7 @@ See console log for details.
                 //Console.WriteLine(prg.ProgramCodes[0].PropertiesText());
                 //foreach (var line in prg.ProgramCodes[0].Lines)
                 //{
-                    //Console.WriteLine(line.GetString());
+                //Console.WriteLine(line.GetString());
                 //}
 
                 //Console.WriteLine(DebugUtilities.CompareBytes(prg.ProgramCodes[0].Code,
@@ -395,7 +395,7 @@ See console log for details.
         [Test]
         public void Prg_TestVariables()
         {
-            var prg = Prg.Load(TestUtilities.GetFullPathForTestFile("testvariables.prg"));
+            var prg = Prg.Load(TestUtilities.GetFullPathForPrgFile("testvariables.prg"));
 
             var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription    ", variable1.Description);
