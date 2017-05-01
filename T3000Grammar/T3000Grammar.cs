@@ -21,10 +21,12 @@
             var Identifier = new IdentifierTerminal("Identifier");
 
             // Keywords
-            var RemKeyword = ToTerm("REM");
-            var IfKeyword = ToTerm("IF");
-            var ThenKeyword = ToTerm("THEN");
-            var AndKeyword = ToTerm("AND");
+            var RemKeyword = ToTerm("REM", "RemKeyword");
+            var IfKeyword = ToTerm("IF", "IfKeyword");
+            var IfPKeyword = ToTerm("IF+", "IfPKeyword");
+            var IfMKeyword = ToTerm("IF-", "IfMKeyword");
+            var ThenKeyword = ToTerm("THEN", "ThenKeyword");
+            var AndKeyword = ToTerm("AND", "AndKeyword");
 
             // Functions
             var TimeOnFunction = ToTerm("TIME-ON");
@@ -35,34 +37,56 @@
             var Statement = new NonTerminal("Statement");
             var CodeLine = new NonTerminal("CodeLine");
 
+            //Lines
             var RemLine = new NonTerminal("RemLine");
-            var IfLine = new NonTerminal("IfLine");
+            var IfLine = new NonTerminal("IfLine", typeof(IfNode));
+            var IfPLine = new NonTerminal("IfPLine", typeof(IfNode));
+            var IfMLine = new NonTerminal("IfMLine", typeof(IfNode));
             var AssignLine = new NonTerminal("AssignLine", typeof(AssignmentNode));
 
+            var IfKeywords = new NonTerminal("IfKeywords");
+
+            //Expressions
             var Expression = new NonTerminal("Expression");
             var AssignExpression = new NonTerminal("AssignExpression");
             var ConstExpression = new NonTerminal("ConstExpression");
             var VariableExpression = new NonTerminal("VariableExpression");
-            var Function = new NonTerminal("Function");
+            var FunctionExpression = new NonTerminal("FunctionExpression");
 
             // 3. BNF rules
             Program.Rule = MakeStarRule(Program, ProgramLine);
             ProgramLine.Rule = Statement + NewLine;
-            Statement.Rule = CodeLine | Empty;
+            Statement.Rule = ( Number + CodeLine ) | Empty;
+            Statement.NodeCaptionTemplate = "#{0} #{1}";
             CodeLine.Rule =
                 RemLine |
                 IfLine |
                 AssignLine;
 
-            RemLine.Rule = Number + Space + RemKeyword + Space + Text;
-            IfLine.Rule = Number + Space + IfKeyword + Expression + ThenKeyword + Expression;
-            AssignLine.Rule = Number + Space + Identifier + Space + AssignmentOperator + Space + Expression;
+            IfKeywords.Rule = 
+                IfPKeyword |
+                IfMKeyword + PreferShiftHere() | 
+                IfKeyword;
+            IfKeywords.NodeCaptionTemplate = "#{0}";
 
+            //Lines
+            RemLine.Rule = RemKeyword + Text;
+            RemLine.NodeCaptionTemplate = "REM #{1}";
+            IfLine.Rule = IfKeywords + ReduceHere() + Expression + ThenKeyword + Expression;
+            IfLine.NodeCaptionTemplate = "IF #{1} THEN #{3}";
+            AssignLine.Rule = Identifier + AssignmentOperator + Expression;
+            AssignLine.NodeCaptionTemplate = "#{0} = #{2}";
+
+            //Expressions
             VariableExpression.Rule = Identifier;
+            VariableExpression.NodeCaptionTemplate = "#{0}";
             ConstExpression.Rule = Number;
+            ConstExpression.NodeCaptionTemplate = "#{0}";
             Expression.Rule = Text;
-            AssignExpression.Rule = VariableExpression + Space + "/" + Space + ConstExpression;
-            //Function.Rule = TimeOnFunction + "(" + Text + ")";
+            Expression.NodeCaptionTemplate = "#{0}";
+            AssignExpression.Rule = VariableExpression + "/" + ConstExpression;
+            AssignExpression.NodeCaptionTemplate = "#{0} / #{2}";
+            //FunctionExpression.Rule = TimeOnFunction + "(" + Text + ")";
 
             //Set grammar root 
             Root = Program;
@@ -70,11 +94,10 @@
             // 4. Operators precedence
 
             // 5. Punctuation and transient terms
-            MarkPunctuation(
-                Number, RemKeyword, IfKeyword, 
-                ThenKeyword, String, Identifier, 
-                Text, AssignmentOperator);
-            MarkTransient(CodeLine, Statement, ProgramLine);
+            //MarkPunctuation(
+            //    Number, String, Identifier, 
+            //    Text, AssignmentOperator);
+            MarkTransient(CodeLine, ProgramLine);
 
             //automatically add NewLine before EOF
             //so that our BNF rules work correctly 
@@ -83,11 +106,19 @@
                 //LanguageFlags.CreateAst | 
                 LanguageFlags.NewLineBeforeEOF;
 
+
+            #region Define Keywords
+
+            //MarkReservedWords("REM", "IF");
+
+            #endregion
         }
 
         public override void SkipWhitespace(ISourceStream source)
         {
-            //base.SkipWhitespace(source);
+            //source.CreateToken()
+            //if (!MatchSymbol("IF"))
+                base.SkipWhitespace(source);
         }
     }
 }
