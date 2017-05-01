@@ -14,7 +14,7 @@
 
             Code = code;
 
-            editTextBox.Text = Code.Code.GetString().ClearBinarySymvols();
+            editTextBox.Text = Code.ToString();
         }
 
 
