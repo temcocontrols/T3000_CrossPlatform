@@ -11,18 +11,14 @@
         {
             // 1. Terminals
             var Text = new FreeTextLiteral("Text", 
-                FreeTextOptions.AllowEmpty, Environment.NewLine);
+                FreeTextOptions.AllowEmpty |
+                FreeTextOptions.AllowEof |
+                FreeTextOptions.IncludeTerminator, Environment.NewLine);
             //var String = new StringLiteral("String", "'", StringOptions.AllowsAllEscapes);
             var Number = new NumberLiteral("Number");
             //var Space = new RegexBasedTerminal("Space", "\\s+");
             var Time = new TimeTerminal("Time");
             var Identifier = new IdentifierTerminal("Identifier", "._", "1234567890");
-
-            // Keywords
-            var RemKeyword = ToTerm("REM", "RemKeyword");
-            var IfKeyword = ToTerm("IF", "IfKeyword");
-            var ThenKeyword = ToTerm("THEN", "ThenKeyword");
-            var AndKeyword = ToTerm("AND", "AndKeyword");
 
             // 2. Non-terminals
             var Program = new NonTerminal("Program", typeof(StatementListNode));
@@ -62,11 +58,11 @@
             Term.NodeCaptionTemplate = "#{0}";
 
             //Lines
-            RemLine.Rule = RemKeyword + Text;
+            RemLine.Rule = "REM" + Text;
             RemLine.NodeCaptionTemplate = "REM #{1}";
-            IfLine.Rule = IfKeyword + 
+            IfLine.Rule = "IF" + 
                 //CustomActionHere((i, j) => i.AddTrace("")) + 
-                Expression + ThenKeyword + Expression |
+                Expression + "THEN" + Expression |
                 "IF" + Expression + "THEN" + Expression + PreferShiftHere() + "ELSE" + Expression;
             IfLine.NodeCaptionTemplate = "IF #{1} THEN #{3}";
             AssignLine.Rule = Identifier + AssignmentOperator + Expression;
