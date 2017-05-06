@@ -86,7 +86,10 @@
     <Folder Include="Types.Tests\AdditionalTypes\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestFiles\ProgramCodes\BTUMeter.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter1.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter5.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter4.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter3.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
