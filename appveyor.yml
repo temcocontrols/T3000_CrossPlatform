@@ -14,3 +14,4 @@ build:
 test_script:
   - nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
   - nunit3-console.exe ./T3000.Tests/bin/Release/T3000.Tests.dll
+  - nunit3-console.exe ./T3000Grammar.Tests/bin/Release/T3000Grammar.Tests.dll
