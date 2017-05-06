@@ -129,10 +129,10 @@
 
             #endregion
 
-            var root = GetParserTreeRoot(text, grammar);
+            //var root = GetParserTreeRoot(text, grammar);
 
             //ShowTree(root);
-            var dictionary = ToDictionary(root);
+            //var dictionary = ToDictionary(root);
 
             //Assert.AreEqual("IF-", dictionary[220].ChildNodes[0].ChildNodes[0].Token.Value);
         }
