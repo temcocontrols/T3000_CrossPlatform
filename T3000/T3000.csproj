@@ -135,12 +135,6 @@
     <Compile Include="Forms\OutputsForm\OutputsForm.Designer.cs">
       <DependentUpon>OutputsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProgramsForm\EditCodeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ProgramsForm\EditCodeForm.Designer.cs">
-      <DependentUpon>EditCodeForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ProgramsForm\ProgramsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,9 +270,6 @@
     <EmbeddedResource Include="Forms\OutputsForm\OutputsForm.zh-Hant.resx">
       <DependentUpon>OutputsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProgramsForm\EditCodeForm.resx">
-      <DependentUpon>EditCodeForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProgramsForm\ProgramsForm.de-DE.resx">
       <DependentUpon>ProgramsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -374,13 +365,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
-      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
-      <Name>PRGReaderLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
     <None Include="Properties\Icons\Default\Variables.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +386,16 @@
     <Content Include="Properties\Icons\Default\TrendLogs.ico" />
     <None Include="Resources\unlock.png" />
     <None Include="Resources\lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
+      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
+      <Name>PRGReaderLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProgramEditor\ProgramEditor.csproj">
+      <Project>{e8507121-5342-46c9-a158-228a6870cdfd}</Project>
+      <Name>ProgramEditor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

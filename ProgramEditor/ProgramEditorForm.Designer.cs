@@ -1,6 +1,6 @@
 ﻿namespace T3000.Forms
 {
-    partial class EditCodeForm
+    partial class ProgramEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.editTextBox = new System.Windows.Forms.RichTextBox();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramEditorForm));
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
+            ((System.ComponentModel.ISupportInitialize)(this.editTextBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // editTextBox
-            // 
-            this.editTextBox.Location = new System.Drawing.Point(0, 0);
-            this.editTextBox.Name = "editTextBox";
-            this.editTextBox.Size = new System.Drawing.Size(580, 321);
-            this.editTextBox.TabIndex = 0;
-            this.editTextBox.Text = "";
             // 
             // saveButton
             // 
@@ -66,6 +61,36 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
+            // editTextBox
+            // 
+            this.editTextBox.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.editTextBox.BackBrush = null;
+            this.editTextBox.CharHeight = 14;
+            this.editTextBox.CharWidth = 8;
+            this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.editTextBox.IsReplaceMode = false;
+            this.editTextBox.Location = new System.Drawing.Point(12, 12);
+            this.editTextBox.Name = "editTextBox";
+            this.editTextBox.Paddings = new System.Windows.Forms.Padding(0);
+            this.editTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.editTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("editTextBox.ServiceColors")));
+            this.editTextBox.Size = new System.Drawing.Size(560, 309);
+            this.editTextBox.TabIndex = 7;
+            this.editTextBox.Zoom = 100;
+            // 
             // EditCodeForm
             // 
             this.AcceptButton = this.saveButton;
@@ -73,19 +98,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.editTextBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.editTextBox);
             this.Name = "EditCodeForm";
             this.Text = "Edit code:";
+            ((System.ComponentModel.ISupportInitialize)(this.editTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox editTextBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private FastColoredTextBoxNS.IronyFCTB editTextBox;
     }
 }

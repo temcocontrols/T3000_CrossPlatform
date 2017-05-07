@@ -1,20 +1,20 @@
 ﻿namespace T3000.Forms
 {
-    using PRGReaderLibrary;
     using System;
     using System.Windows.Forms;
 
-    public partial class EditCodeForm : Form
+    public partial class ProgramEditorForm : Form
     {
-        public ProgramCode Code { get; set; }
+        public string Code { get; set; }
 
-        public EditCodeForm(ProgramCode code)
+        public ProgramEditorForm(string code)
         {
             InitializeComponent();
 
             Code = code;
 
-            editTextBox.Text = Code.ToString();
+            editTextBox.Grammar = new T3000Grammar();
+            editTextBox.Text = Code;
         }
 
 
@@ -24,11 +24,11 @@
         {
             try
             {
-                Code.Code = editTextBox.Text.ToBytes(2000);
+                Code = editTextBox.Text;
             }
-            catch (Exception exception)
+            catch (Exception)// exception)
             {
-                MessageBoxUtilities.ShowException(exception);
+                //MessageBoxUtilities.ShowException(exception);
                 DialogResult = DialogResult.None;
                 return;
             }

@@ -123,13 +123,13 @@
             {
                 var row = view.CurrentRow;
                 var index = row.GetValue<int>(NumberColumn) - 1;
-                var form = new EditCodeForm(Codes[index]);
+                var form = new ProgramEditorForm(Codes[index].ToString());
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
 
-                Codes[index] = form.Code;
+                //Codes[index] = form.Code;
             }
             catch (Exception exception)
             {
