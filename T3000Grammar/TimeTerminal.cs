@@ -1,4 +1,4 @@
-﻿namespace T3000Grammar
+﻿namespace T3000
 {
     using Irony.Parsing;
 

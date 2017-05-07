@@ -1,4 +1,4 @@
-﻿namespace T3000Grammar
+﻿namespace T3000
 {
     using System;
     using Irony.Parsing;
@@ -63,6 +63,7 @@
             IfLine.Rule = "IF" + 
                 //CustomActionHere((i, j) => i.AddTrace("")) + 
                 Expression + "THEN" + Expression |
+                //"IF" + PreferShiftHere() + "-" + Expression + "THEN" + Expression |
                 "IF" + Expression + "THEN" + Expression + PreferShiftHere() + "ELSE" + Expression;
             IfLine.NodeCaptionTemplate = "IF #{1} THEN #{3}";
             AssignLine.Rule = Identifier + AssignmentOperator + Expression;

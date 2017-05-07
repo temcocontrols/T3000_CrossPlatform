@@ -1,4 +1,4 @@
-﻿namespace T3000Grammar.Tests
+﻿namespace T3000.Tests
 {
     using System;
     using System.Text;
