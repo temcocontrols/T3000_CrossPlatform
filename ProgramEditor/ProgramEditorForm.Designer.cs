@@ -33,6 +33,7 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
+            this.autocompleteMenu = new FastColoredTextBoxNS.AutocompleteMenu(this.editTextBox);
             ((System.ComponentModel.ISupportInitialize)(this.editTextBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,7 +92,22 @@
             this.editTextBox.TabIndex = 7;
             this.editTextBox.Zoom = 100;
             // 
-            // EditCodeForm
+            // autocompleteMenu
+            // 
+            this.autocompleteMenu.AllowTabKey = false;
+            this.autocompleteMenu.AppearInterval = 500;
+            this.autocompleteMenu.AutoClose = false;
+            this.autocompleteMenu.AutoSize = false;
+            this.autocompleteMenu.BackColor = System.Drawing.Color.White;
+            this.autocompleteMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.autocompleteMenu.MinFragmentLength = 1;
+            this.autocompleteMenu.Name = "autocompleteMenu";
+            this.autocompleteMenu.Padding = new System.Windows.Forms.Padding(0);
+            this.autocompleteMenu.SearchPattern = "[\\w\\.]";
+            this.autocompleteMenu.Size = new System.Drawing.Size(154, 154);
+            this.autocompleteMenu.ToolTipDuration = 3000;
+            // 
+            // ProgramEditorForm
             // 
             this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -101,7 +117,7 @@
             this.Controls.Add(this.editTextBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
-            this.Name = "EditCodeForm";
+            this.Name = "ProgramEditorForm";
             this.Text = "Edit code:";
             ((System.ComponentModel.ISupportInitialize)(this.editTextBox)).EndInit();
             this.ResumeLayout(false);
@@ -112,5 +128,6 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private FastColoredTextBoxNS.IronyFCTB editTextBox;
+        private FastColoredTextBoxNS.AutocompleteMenu autocompleteMenu;
     }
 }

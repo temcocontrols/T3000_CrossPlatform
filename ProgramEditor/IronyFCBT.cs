@@ -178,11 +178,8 @@ namespace FastColoredTextBoxNS
             }
         }
 
-        public virtual void OnStyleNeeded(StyleNeededEventArgs e)
-        {
-            if (StyleNeeded != null)
-                StyleNeeded(this, e);
-        }
+        public virtual void OnStyleNeeded(StyleNeededEventArgs e) =>
+            StyleNeeded?.Invoke(this, e);
 
         /// <summary>
         /// Returns range of token
