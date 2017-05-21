@@ -7,7 +7,8 @@
     [Language("T3000ProgrammingLanguage", "0.1", "T3000 Programming Language")]
     public class T3000Grammar : Grammar
     {
-        public T3000Grammar()
+        public T3000Grammar() : 
+            base(caseSensitive: false)
         {
             // 1. Terminals
             var Text = new FreeTextLiteral("Text", 
@@ -17,7 +18,7 @@
             //var String = new StringLiteral("String", "'", StringOptions.AllowsAllEscapes);
             var Number = new NumberLiteral("Number");
             //var Space = new RegexBasedTerminal("Space", "\\s+");
-            var Time = new TimeTerminal("Time");
+            var Time = new TimeTerminal("Time");//new DataLiteralBase("Time", TypeCode.DateTime);
             var Identifier = new IdentifierTerminal("Identifier", "._", "1234567890");
 
             // 2. Non-terminals
@@ -110,6 +111,7 @@
 
             // 4. Operators precedence
             RegisterOperators(1, ",");
+            //jarray.Rule = MakeStarRule(jarray, comma, jvalue);
             RegisterOperators(2, "AND", "OR");
             RegisterOperators(3, "<", ">");
             RegisterOperators(4, "+", "-");
