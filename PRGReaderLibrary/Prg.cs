@@ -336,10 +336,14 @@
                 HolidayCode.GetSize(FileVersion), ref offset)
                 .Select(i => new HolidayCode(i, 0, FileVersion)));
 
+            var firstProgramCode = bytes.ToBytes(offset, 2000);
             ProgramCodes.AddRange(GetArray(bytes,
                 ProgramCode.GetCount(FileVersion),
                 ProgramCode.GetSize(FileVersion), ref offset)
-                .Select(i => new ProgramCode(i, 0, FileVersion)));
+                //.Select(i => new ProgramCode(i, this, 0, FileVersion)));
+                .Select(i => new ProgramCode()));
+            ProgramCodes[0] = new ProgramCode(firstProgramCode, this, 0, FileVersion);
+
 
             CustomUnits.Analog.AddRange(GetArray(bytes,
                 CustomAnalogUnitsPoint.GetCount(FileVersion),

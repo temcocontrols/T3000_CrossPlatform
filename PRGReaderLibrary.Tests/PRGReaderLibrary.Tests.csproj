@@ -48,6 +48,7 @@
     <Compile Include="Bytes.Tests.cs" />
     <Compile Include="FileVersionUtilities.Tests.cs" />
     <Compile Include="Types.Tests\HelpTypes.Tests\VariableValue.Tests.cs" />
+    <Compile Include="Types.Tests\ProgramCode.Tests.cs" />
     <Compile Include="Types.Tests\VariablePoint.Tests.cs" />
     <Compile Include="Prg.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
