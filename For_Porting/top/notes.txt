@@ -1,0 +1,8 @@
+Top board aux CPU is: stm32f103ZE
+
+led -> control all leds of top board
+spi -> communication with bottom board.
+
+switch -> check stastus of switch
+timer -> count heartbeat LED 
+input.c -> read the value of the input channels
