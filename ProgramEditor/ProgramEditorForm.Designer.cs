@@ -64,6 +64,9 @@
             // 
             // editTextBox
             // 
+            this.editTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.editTextBox.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
@@ -81,7 +84,6 @@
             this.editTextBox.CharWidth = 8;
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.editTextBox.IsReplaceMode = false;
             this.editTextBox.Location = new System.Drawing.Point(12, 12);
             this.editTextBox.Name = "editTextBox";
