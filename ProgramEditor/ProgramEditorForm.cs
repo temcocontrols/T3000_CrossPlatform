@@ -16,11 +16,18 @@
 
             editTextBox.Grammar = new T3000Grammar();
             var items = new List<AutocompleteItem>();
-            var keywords = new[]
+            var keywords = new List<string>()
             {
                 "REM",
-                "IF"
+                "IF",
+                "IF-",
+                "IF+",
+                "THEN",
+                "ELSE",
+                "TIME-ON"
             };
+            keywords.AddRange(T3000Grammar.Functions);
+
             foreach (var item in keywords)
                 items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
 

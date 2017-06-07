@@ -1,12 +1,21 @@
 ﻿namespace T3000
 {
     using System;
+    using System.Collections.ObjectModel;
     using Irony.Parsing;
     using Irony.Interpreter.Ast;
 
     [Language("T3000ProgrammingLanguage", "0.1", "T3000 Programming Language")]
     public class T3000Grammar : Grammar
     {
+        public static readonly ReadOnlyCollection<string> Functions = 
+            new ReadOnlyCollection<string>(
+            new [] 
+            {
+                "INTERVAL", "COM1", "ABS", "MAX", "MIN"
+            }
+        );
+
         public T3000Grammar() : 
             base(caseSensitive: false)
         {
@@ -49,7 +58,7 @@
             // 3. BNF rules
             Program.Rule = MakeStarRule(Program, ProgramLine);
             ProgramLine.Rule = Statement + NewLine;
-            Statement.Rule = ( CodeLine ) | Empty; // Number +
+            Statement.Rule = CodeLine | Empty; // ( Number + )
             Statement.NodeCaptionTemplate = "#{0} #{1}";
             CodeLine.Rule =
                 RemLine |
@@ -89,10 +98,12 @@
                 "NOT" |
                 "STOP";
             UnaryOperator.NodeCaptionTemplate = "#{0}";
-            FunctionOperator.Rule = ToTerm("TIME") + "-" + "ON" |
-                "INTERVAL" |
-                "COM1" | "ABS" |
-                "MAX" | "MIN";
+            FunctionOperator.Rule = ToTerm("TIME") + "-" + "ON";
+            foreach (var function in Functions)
+            {
+                FunctionOperator.Rule |= function;
+            }
+
             FunctionOperator.NodeCaptionTemplate = "#{0}";
             BinaryOperator.Rule = ToTerm(",") |
                 "AND" | "OR" |
