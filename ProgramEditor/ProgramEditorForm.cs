@@ -2,6 +2,7 @@
 {
     using FastColoredTextBoxNS;
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Windows.Forms;
 
@@ -9,15 +10,11 @@
     {
         public string Code { get; set; }
 
-        public ProgramEditorForm(string code)
+        public ProgramEditorForm()
         {
             InitializeComponent();
 
-            Code = code;
-
             editTextBox.Grammar = new T3000Grammar();
-            editTextBox.Text = Code;
-
             var items = new List<AutocompleteItem>();
             var keywords = new[]
             {
@@ -41,6 +38,46 @@
             autocompleteMenu.Items.SetAutocompleteItems(items);
         }
 
+        public ProgramEditorForm(string code) : this()
+        {
+            SetCode(code);
+        }
+
+        private string RemoveInitialNumbers(string text)
+        {
+            var lines = text.ToLines();
+            for (var i = 0; i < lines.Count; ++i)
+            {
+                var words = lines[i].Split(' ');
+                if (words.Length < 2)
+                {
+                    continue;
+                }
+
+                words = words.Skip(1).ToArray();
+                lines[i] = string.Join(' '.ToString(), words);
+            }
+
+            return string.Join(Environment.NewLine, lines);
+        }
+
+        private string AddInitialNumbers(string text)
+        {
+            var lines = text.ToLines();
+            for (var i = 0; i < lines.Count; ++i)
+            {
+                lines[i] = $"{(i + 1) * 10} {lines[i]}";
+            }
+
+            return string.Join(Environment.NewLine, lines);
+        }
+
+        private void SetCode(string code)
+        {
+            Code = code;
+            editTextBox.Text = RemoveInitialNumbers(code);
+        }
+
 
         #region Buttons
 
@@ -48,7 +85,7 @@
         {
             try
             {
-                Code = editTextBox.Text;
+                Code = AddInitialNumbers(editTextBox.Text);
             }
             catch (Exception)// exception)
             {
