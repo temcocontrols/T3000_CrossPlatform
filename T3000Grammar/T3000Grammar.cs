@@ -49,7 +49,7 @@
             // 3. BNF rules
             Program.Rule = MakeStarRule(Program, ProgramLine);
             ProgramLine.Rule = Statement + NewLine;
-            Statement.Rule = ( Number + CodeLine ) | Empty;
+            Statement.Rule = ( CodeLine ) | Empty; // Number +
             Statement.NodeCaptionTemplate = "#{0} #{1}";
             CodeLine.Rule =
                 RemLine |
