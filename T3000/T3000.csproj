@@ -392,6 +392,10 @@
       <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
       <Name>PRGReaderLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProgramEditor\ProgramEditor.csproj">
+      <Project>{E8507121-5342-46C9-A158-228A6870CDFD}</Project>
+      <Name>ProgramEditor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
