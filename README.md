@@ -19,9 +19,9 @@ T3000 Building Automation System - for Linux-Win-Android deployment
 
 # Windows
 
-1. Run the .sln file(VS2015 Community Edition)
-2. Install the executable project(Right click on T3000 Project and select the "Set as StartUp Project" option)
-3. Start up(F5 or click to Start)
+1. Run the .sln file(VS2015 Community Edition)<details><summary>Image</summary>![](docs/run.png)</details>
+2. Install the executable project(Right click on T3000 Project and select the "Set as StartUp Project" option)<details><summary>Image</summary>![](docs/startup.png)</details>
+3. Start up(F5 or click to Start)<details><summary>Image</summary>![](docs/start.png)</details>
 
 # Linux
 
