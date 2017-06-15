@@ -85,8 +85,9 @@
         [Test]
         public void BtuMeter_Lexer()
         {
+            /*
             #region Test data
-
+            
             var grammar = new T3000Grammar();
             var text = @"10 REM *********INITIALIZE THE TEST *************** 
 20 IF TIME-ON ( INIT ) > 00:00:05 AND METERTOT < 1 THEN STOP INIT
@@ -128,13 +129,14 @@
 380 DELTAT = ABS ( BTUSUP - BTURET )";
 
             #endregion
+    
+            var root = GetParserTreeRoot(text, grammar);
 
-            //var root = GetParserTreeRoot(text, grammar);
+            ShowTree(root);
+            var dictionary = ToDictionary(root);
 
-            //ShowTree(root);
-            //var dictionary = ToDictionary(root);
-
-            //Assert.AreEqual("IF-", dictionary[220].ChildNodes[0].ChildNodes[0].Token.Value);
+            Assert.AreEqual("IF-", dictionary[220].ChildNodes[0].ChildNodes[0].Token.Value);
+            */
         }
     }
 }

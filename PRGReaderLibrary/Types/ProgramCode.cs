@@ -757,7 +757,7 @@ expressions: {expressions.Count}
             var type = (ExpressionType)bytes.ToByte(ref offset);
             Expression expression = new BinaryExpression(first, second, type, FileVersion);
 
-            var temp = offset;
+            //var temp = offset;
             var check = bytes.ToByte(ref offset);
             --offset;
             //Console.WriteLine($"{Number} {check} before");
