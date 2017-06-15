@@ -17,12 +17,19 @@ Travic CI(Mono) | AppVeyor
 
 T3000 Building Automation System - for Linux-Win-Android deployment
 
+# Windows
+
+1. Run the .sln file(VS2015 Community Edition)
+2. Install the executable project(Right click on T3000 Project and select the "Set as StartUp Project" option)
+3. Start up(F5 or click to Start)
+
 # Linux
 
 Preinstall:
 ```
 sudo apt install mono-complete git nuget
 ```
+It's install Mono(libraries), Mono-tools(like xbuild), git(for git clone) and nuget(for nuget restore)
 
 Launch:
 ```
@@ -32,6 +39,13 @@ nuget restore T3000_CrossPlatform/T3000_CrossPlatform.sln
 xbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
 T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
+
+Comments:
+1. Clean directory T3000_CrossPlatform(if exists). It's need for exclude some bugs with reinstall
+2. Clone the remote repository to the T3000_CrossPlatform directory
+3. Download all require libraries for the solution from Nuget
+4. Build project with Configuration=Release
+5. Run the obtained exe file
 
 # Plan:
 
