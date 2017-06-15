@@ -1,6 +1,0 @@
-led -> control all leds of top board
-spi -> communication with bottom board.
-
-switch -> check stastus of switch
-timer -> count heartbeat LED 
-input.c -> read input value of every channel
