@@ -145,6 +145,9 @@
   <data name="CurrentFile" xml:space="preserve">
     <value>Current file: {0}</value>
   </data>
+  <data name="SavePrgFile" xml:space="preserve">
+    <value>Please enter name of the .PRG file</value>
+  </data>
   <data name="VariablesIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\Variables.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -157,6 +160,9 @@
   <data name="BuildingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\Buildings.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning: {0}</value>
   </data>
@@ -166,8 +172,11 @@
   <data name="WarningTitle" xml:space="preserve">
     <value>Warning:</value>
   </data>
-  <data name="SavePrgFile" xml:space="preserve">
-    <value>Please enter name of the .PRG file</value>
+  <data name="1498190314_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1498190314_image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ViewNotValidated" xml:space="preserve">
     <value>View values not valid. Please fix it before saving.</value>
@@ -223,10 +232,7 @@
   <data name="GraphicsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\Graphics.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="101" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\101.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

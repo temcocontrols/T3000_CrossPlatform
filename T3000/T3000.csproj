@@ -35,8 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ColorConstants.cs" />
@@ -151,6 +153,8 @@
     <Compile Include="Forms\SchedulesForm\SchedulesForm.Designer.cs">
       <DependentUpon>SchedulesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ScreensForm\AtributosLabel.cs" />
+    <Compile Include="Forms\ScreensForm\ControlMover.cs" />
     <Compile Include="Forms\ScreensForm\EditScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +166,12 @@
     </Compile>
     <Compile Include="Forms\ScreensForm\EditScreenView.Designer.cs">
       <DependentUpon>EditScreenView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScreensForm\LinkLabel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScreensForm\LinkLabel.Designer.cs">
+      <DependentUpon>LinkLabel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ScreensForm\ScreensForm.cs">
       <SubType>Form</SubType>
@@ -295,6 +305,9 @@
     <EmbeddedResource Include="Forms\ScreensForm\EditScreenView.resx">
       <DependentUpon>EditScreenView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScreensForm\LinkLabel.resx">
+      <DependentUpon>LinkLabel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScreensForm\ScreensForm.de-DE.resx">
       <DependentUpon>ScreensForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -382,6 +395,8 @@
     <Content Include="Properties\Icons\Default\RemotePoints.ico" />
     <Content Include="Properties\Icons\Default\Schedules.ico" />
     <Content Include="Properties\Icons\Default\TrendLogs.ico" />
+    <None Include="Resources\101.jpg" />
+    <None Include="Resources\1498190314_image.png" />
     <None Include="Resources\unlock.png" />
     <None Include="Resources\lock.png" />
   </ItemGroup>
