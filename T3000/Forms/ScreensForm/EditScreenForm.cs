@@ -44,14 +44,25 @@
             //}
         }
 
-
-
+        
         #region Buttons
 
         private void Save(object sender, EventArgs e)
         {
             try
             {
+                foreach (Control contrl in this.Controls)
+                {
+                    if(contrl is Label)
+                    {
+                        // Getting all lables attributes 
+
+                        var x = Convert.ToString(contrl.Location.X);
+                        var y = Convert.ToString(contrl.Location.Y);
+                        var lbl_name = contrl.Name;
+                        var lbl_text = contrl.Text;
+                    }
+                }
             }
             catch (Exception exception)
             {
@@ -69,36 +80,27 @@
             Close();
         }
 
-
-        //private void EditScreenForm_MouseClick(object sender,MouseEventArgs e)
-        //{
-        //    ListLabels.Add(new AtributosLabel(new Label(), "Etiqueta " + counter, "Etiqueta " + counter,"null", "null", e.Location));
-            
-
-        //    this.Controls.Add(ListLabels[counter].Lbl);
-
-        //    counter++;
-        //}
         private void EditScreenForm_KeyDown(object send, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Insert && this.lockCheckBox.Checked)
             {
-                ListLabels.Add(new AtributosLabel(new Label(), "Etiqueta " + counter, "Etiqueta " + counter, "null", "null", new Point(GetRandomNumber(1, 800), GetRandomNumber(1, 800))));
-
-
+               
+                ListLabels.Add(new AtributosLabel(new Label(), "Etiqueta " + counter, "Etiqueta_" + counter, "null", "null", new Point(GetRandomNumber(1, 800), GetRandomNumber(1, 800))));
                 this.Controls.Add(ListLabels[counter].Lbl);
                 Init(ListLabels[counter].Lbl,counter);
                 counter++;
             }
         }
 
+      
 
         #endregion
 
         private void lockCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-
+       
         }
+
 
         public enum Direction
         {
@@ -123,7 +125,6 @@
 
         public  void Init(Control control, Control container, Direction direction,int param)
         {
-
 
             bool Dragging = false;
             Point DragStart = Point.Empty;
@@ -161,10 +162,9 @@
                     LinkLabel frmlink = new LinkLabel();
                     if (frmlink.ShowDialog() == DialogResult.OK)
                     {
-                        control.Text = frmlink.TextLabel;
-                        ListLabels[param].Lbl_text = frmlink.TextLabel;
-                        ListLabels[param].Next_path = frmlink.Path;
-
+                       control.Text = frmlink.TextLabel;
+                       ListLabels[param].Lbl_text = frmlink.TextLabel;
+                       ListLabels[param].Next_path = frmlink.Path;
                     }
                 }
                
@@ -185,7 +185,6 @@
 
         }
 
-
         //Function to get random number
         private static readonly Random getrandom = new Random();
         private static readonly object syncLock = new object();
@@ -197,5 +196,9 @@
             }
         }
 
+        private void EditScreenForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

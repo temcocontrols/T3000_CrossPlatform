@@ -85,6 +85,7 @@
             this.Name = "EditScreenForm";
             this.Text = "Edit screen:";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.EditScreenForm_Load);
             this.ResumeLayout(false);
 
         }
