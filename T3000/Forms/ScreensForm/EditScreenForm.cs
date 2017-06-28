@@ -12,6 +12,8 @@
     {
         public List<AtributosLabel> ListLabels = new List<AtributosLabel>();
         public int counter = 0;
+        public DataGridView Dgv { get; set; }
+        public int index_ = 0;
         public EditScreenForm(string path = null)
         {
             InitializeComponent();
@@ -104,21 +106,39 @@
             if ((e.KeyCode == Keys.PageUp)|| (e.KeyCode == Keys.PageDown))
             {
 
-
                 int courow = Dgv.RowCount - 1;
-                for (int i = 0; i < courow; i++)
-                {
-                    MessageBox.Show(Dgv.Rows[i].Cells[3].Value.ToString());
-                }
 
+                switch (e.KeyCode)
+                {
+                    case (Keys.PageUp):
+                        if (index_ == courow)
+                        {
+                            index_ = 0;
+                        }
+                        else
+                        {
+                            index_++;
+                        }
+                        MessageBox.Show(Dgv.Rows[index_].Cells[3].Value.ToString());
+                        break;
+                    case (Keys.PageDown):
+                        if (index_ == 0)
+                        {
+                            index_ = courow;
+                        }
+                        else
+                        {
+                            index_--;
+                        }
+                        MessageBox.Show(Dgv.Rows[index_].Cells[3].Value.ToString());
+                        break;
+                }
             }
 
             
 
           
         }
-
-        public DataGridView Dgv { get; set; }
 
         #endregion
 
