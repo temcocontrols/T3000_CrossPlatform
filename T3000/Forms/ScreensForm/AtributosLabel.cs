@@ -33,7 +33,7 @@ namespace T3000.Forms
             lbl.ForeColor = Color.Black;
             lbl.Enabled = true;
             lbl.BorderStyle = BorderStyle.Fixed3D;
-            lbl.Size = new System.Drawing.Size(60, 15);
+            lbl.Size = new System.Drawing.Size(140, 20);
         }
 
         // Setting variables 

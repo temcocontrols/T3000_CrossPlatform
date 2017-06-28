@@ -123,8 +123,12 @@
                 var name = view.CurrentRow.GetValue<string>(PictureColumn);
                 var building = "Default_Building";
                 var path = GetFullPathForPicture(name, building);
+               
 
                 var form = new EditScreenForm(path);
+                form.Dgv = view;
+
+
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -169,8 +173,12 @@
                 MessageBoxUtilities.ShowException(exception);
             }
         }
-        
+
         #endregion
 
+        private void view_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

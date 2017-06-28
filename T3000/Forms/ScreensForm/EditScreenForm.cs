@@ -80,25 +80,58 @@
             Close();
         }
 
+        
+        //private ScreensForm mainForm = null;
+
+        //public EditScreenForm(Form callingForm)
+        //{
+        //    mainForm = callingForm as ScreensForm;
+        //    InitializeComponent();
+        //}
+
+
         private void EditScreenForm_KeyDown(object send, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Insert && this.lockCheckBox.Checked)
             {
                
-                ListLabels.Add(new AtributosLabel(new Label(), "Etiqueta " + counter, "Etiqueta_" + counter, "null", "null", new Point(GetRandomNumber(1, 800), GetRandomNumber(1, 800))));
+                ListLabels.Add(new AtributosLabel(new Label(), "Label " + counter, "Label_" + counter, "null", "null", Cursor.Position));
                 this.Controls.Add(ListLabels[counter].Lbl);
                 Init(ListLabels[counter].Lbl,counter);
                 counter++;
             }
+
+            if ((e.KeyCode == Keys.PageUp)|| (e.KeyCode == Keys.PageDown))
+            {
+
+
+                int courow = Dgv.RowCount - 1;
+                for (int i = 0; i < courow; i++)
+                {
+                    MessageBox.Show(Dgv.Rows[i].Cells[3].Value.ToString());
+                }
+
+            }
+
+            
+
+          
         }
 
-      
+        public DataGridView Dgv { get; set; }
 
         #endregion
 
         private void lockCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-       
+            if (this.lockCheckBox.Checked)
+            {
+                this.Cursor = Cursors.Cross;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+            }
         }
 
 

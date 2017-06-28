@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreensForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.view = new T3000.Controls.TView();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.clearSelectedRowButton = new System.Windows.Forms.Button();
+            this.view = new T3000.Controls.TView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,25 +44,6 @@
             this.ScreenColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
             this.SuspendLayout();
-            // 
-            // view
-            // 
-            this.view.AllowUserToAddRows = false;
-            this.view.AllowUserToDeleteRows = false;
-            resources.ApplyResources(this.view, "view");
-            this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NumberColumn,
-            this.DescriptionColumn,
-            this.LabelColumn,
-            this.PictureColumn,
-            this.CountColumn,
-            this.ModeColumn,
-            this.RefreshColumn,
-            this.ScreenColumn});
-            this.view.MultiSelect = false;
-            this.view.Name = "view";
             // 
             // saveButton
             // 
@@ -85,6 +66,30 @@
             this.clearSelectedRowButton.Name = "clearSelectedRowButton";
             this.clearSelectedRowButton.UseVisualStyleBackColor = true;
             this.clearSelectedRowButton.Click += new System.EventHandler(this.ClearSelectedRow);
+            // 
+            // view
+            // 
+            this.view.AllowUserToAddRows = false;
+            this.view.AllowUserToDeleteRows = false;
+            resources.ApplyResources(this.view, "view");
+            this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NumberColumn,
+            this.DescriptionColumn,
+            this.LabelColumn,
+            this.PictureColumn,
+            this.CountColumn,
+            this.ModeColumn,
+            this.RefreshColumn,
+            this.ScreenColumn});
+            this.view.FormattingEnabled = true;
+            this.view.MultiSelect = false;
+            this.view.Name = "view";
+            this.view.UserInputEnabled = true;
+            this.view.ValidationEnabled = true;
+            this.view.ValueChangedEnabled = true;
+            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellContentClick);
             // 
             // NumberColumn
             // 

@@ -129,5 +129,10 @@
         }
 
         #endregion
+
+        private void view_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
