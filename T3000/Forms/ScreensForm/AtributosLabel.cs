@@ -33,7 +33,9 @@ namespace T3000.Forms
             lbl.ForeColor = Color.Black;
             lbl.Enabled = true;
             lbl.BorderStyle = BorderStyle.Fixed3D;
-            lbl.Size = new System.Drawing.Size(140, 20);
+            lbl.Size = new System.Drawing.Size(200, 40);
+            lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
         }
 
         // Setting variables 

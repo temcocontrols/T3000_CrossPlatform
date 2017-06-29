@@ -63,6 +63,7 @@
                         var y = Convert.ToString(contrl.Location.Y);
                         var lbl_name = contrl.Name;
                         var lbl_text = contrl.Text;
+
                     }
                 }
             }
@@ -82,16 +83,7 @@
             Close();
         }
 
-        
-        //private ScreensForm mainForm = null;
-
-        //public EditScreenForm(Form callingForm)
-        //{
-        //    mainForm = callingForm as ScreensForm;
-        //    InitializeComponent();
-        //}
-
-
+   
         private void EditScreenForm_KeyDown(object send, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Insert && this.lockCheckBox.Checked)
@@ -120,6 +112,10 @@
                             index_++;
                         }
                         MessageBox.Show(Dgv.Rows[index_].Cells[3].Value.ToString());
+
+
+
+
                         break;
                     case (Keys.PageDown):
                         if (index_ == 0)
@@ -134,9 +130,6 @@
                         break;
                 }
             }
-
-            
-
           
         }
 
