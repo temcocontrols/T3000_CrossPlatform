@@ -55,7 +55,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::T3000.Properties.Resources._1498190314_image;
+            this.pictureBox1.BackgroundImage = global::T3000.Properties.Resources.ChooseImage;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox1.Location = new System.Drawing.Point(12, 20);
             this.pictureBox1.Name = "pictureBox1";

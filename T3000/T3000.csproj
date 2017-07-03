@@ -395,8 +395,8 @@
     <Content Include="Properties\Icons\Default\RemotePoints.ico" />
     <Content Include="Properties\Icons\Default\Schedules.ico" />
     <Content Include="Properties\Icons\Default\TrendLogs.ico" />
-    <None Include="Resources\101.jpg" />
-    <None Include="Resources\1498190314_image.png" />
+    <None Include="Resources\scheme.jpg" />
+    <None Include="Resources\choose_image.png" />
     <None Include="Resources\unlock.png" />
     <None Include="Resources\lock.png" />
   </ItemGroup>

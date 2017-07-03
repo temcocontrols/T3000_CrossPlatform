@@ -160,7 +160,7 @@
   <data name="BuildingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\Buildings.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Warning" xml:space="preserve">
@@ -172,10 +172,10 @@
   <data name="WarningTitle" xml:space="preserve">
     <value>Warning:</value>
   </data>
-  <data name="1498190314_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1498190314_image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ChooseImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\choose_image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ViewNotValidated" xml:space="preserve">
@@ -232,7 +232,7 @@
   <data name="GraphicsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Default\Graphics.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="101" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\101.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Scheme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheme.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
