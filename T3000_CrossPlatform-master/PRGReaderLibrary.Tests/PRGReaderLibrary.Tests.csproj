@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{303CD7A2-07B6-4B8C-A38F-A570F42D9830}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PRGReaderLibrary.Tests</RootNamespace>
+    <AssemblyName>PRGReaderLibrary.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bytes.Tests.cs" />
+    <Compile Include="FileVersionUtilities.Tests.cs" />
+    <Compile Include="Types.Tests\HelpTypes.Tests\VariableValue.Tests.cs" />
+    <Compile Include="Types.Tests\ProgramCode.Tests.cs" />
+    <Compile Include="Types.Tests\VariablePoint.Tests.cs" />
+    <Compile Include="Prg.Tests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\BytesAssert.cs" />
+    <Compile Include="Utilities\ObjectAssert.cs" />
+    <Compile Include="Utilities\TestUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TestFiles\Prgs\90185.prg" />
+    <None Include="TestFiles\Prgs\90880.prg" />
+    <None Include="TestFiles\Prgs\97910.prg" />
+    <None Include="TestFiles\Prgs\asy1.prg" />
+    <None Include="TestFiles\Prgs\balsam2.prg" />
+    <None Include="TestFiles\Prgs\BTUMeter.prg" />
+    <None Include="TestFiles\Prgs\ChamberRev5.prg" />
+    <None Include="TestFiles\Prgs\CustomAnalogRev6.prg" />
+    <None Include="TestFiles\Prgs\panel1.prg" />
+    <None Include="TestFiles\Prgs\panel11.prg" />
+    <None Include="TestFiles\Prgs\panel2.prg" />
+    <None Include="TestFiles\Prgs\SelfTestRev3.prg" />
+    <None Include="TestFiles\Prgs\T3DemoRev6.prg" />
+    <None Include="TestFiles\Prgs\temco.prg" />
+    <None Include="TestFiles\Prgs\TemcoPanelRev6.prg" />
+    <None Include="TestFiles\Prgs\testvariables.prg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
+      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
+      <Name>PRGReaderLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Types.Tests\AdditionalTypes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\ProgramCodes\BTUMeter1.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter5.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter4.txt" />
+    <Content Include="TestFiles\ProgramCodes\BTUMeter3.txt" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

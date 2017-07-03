@@ -1,0 +1,17 @@
+version: 0.{build}
+skip_tags: true
+configuration: Release
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+before_build:
+  - nuget restore "./T3000_CrossPlatform.sln"
+build:
+  project: ./T3000_CrossPlatform.sln
+test_script:
+  - nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
+  - nunit3-console.exe ./T3000.Tests/bin/Release/T3000.Tests.dll
+  - nunit3-console.exe ./T3000Grammar.Tests/bin/Release/T3000Grammar.Tests.dll

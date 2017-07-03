@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{573991EF-5A2B-4BBF-8283-1307DA619967}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PRGReaderLibrary</RootNamespace>
+    <AssemblyName>PRGReaderLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Types\Enums\TcpType.cs" />
+    <Compile Include="Types\Enums\Periodicity.cs" />
+    <Compile Include="Types\Enums\DirectReverse.cs" />
+    <Compile Include="Types\Enums\NormalCom.cs" />
+    <Compile Include="Types\Enums\Sign.cs" />
+    <Compile Include="Types\Enums\SwitchStatus.cs" />
+    <Compile Include="Types\Enums\TextGraphic.cs" />
+    <Compile Include="Types\AdditionalTypes\UNTime.cs" />
+    <Compile Include="Types\AdditionalTypes\ProInfo.cs" />
+    <Compile Include="Types\CustomAnalogUnitsPoint.cs" />
+    <Compile Include="Types\HelpTypes\BaseCode.cs" />
+    <Compile Include="Types\HelpTypes\CustomUnits.cs" />
+    <Compile Include="Types\HelpTypes\TableValue.cs" />
+    <Compile Include="Types\HelpTypes\InoutPoint.cs" />
+    <Compile Include="Types\HelpTypes\UnitsNames.cs" />
+    <Compile Include="Types\HelpTypes\NameAttribute.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Types\Enums\Jumper.cs" />
+    <Compile Include="Utilities\UnitsNamesUtilities.cs" />
+    <Compile Include="Types\Enums\AnalogOutput.cs" />
+    <Compile Include="Types\Enums\CommandRequest.cs" />
+    <Compile Include="Types\Enums\FileVersion.cs" />
+    <Compile Include="Types\Enums\OffOn.cs" />
+    <Compile Include="Types\Enums\DigitalAnalog.cs" />
+    <Compile Include="Types\Enums\AutoManual.cs" />
+    <Compile Include="Types\Enums\VariableType.cs" />
+    <Compile Include="Types\Enums\PointType.cs" />
+    <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Extensions\IntegerExtensions.cs" />
+    <Compile Include="Extensions\UnitExtensions.cs" />
+    <Compile Include="IO\PrgWriter.cs" />
+    <Compile Include="Types\HelpTypes\Description.cs" />
+    <Compile Include="Types\HelpTypes\VariableValue.cs" />
+    <Compile Include="Types\HelpTypes\BasePoint.cs" />
+    <Compile Include="Types\HolidayCode.cs" />
+    <Compile Include="Types\ScheduleCode.cs" />
+    <Compile Include="Types\ProgramCode.cs" />
+    <Compile Include="Types\GraphicPoint.cs" />
+    <Compile Include="Types\MonitorPoint.cs" />
+    <Compile Include="Types\Settings.cs" />
+    <Compile Include="Types\TablePoint.cs" />
+    <Compile Include="Types\UserPoint.cs" />
+    <Compile Include="Types\ScreenPoint.cs" />
+    <Compile Include="Types\Interfaces\IBinaryObject.cs" />
+    <Compile Include="Types\AdditionalTypes\NetPoint.cs" />
+    <Compile Include="Types\Enums\PanelType.cs" />
+    <Compile Include="Types\HolidayPoint.cs" />
+    <Compile Include="Types\ControllerPoint.cs" />
+    <Compile Include="Types\InputPoint.cs" />
+    <Compile Include="Types\OutputPoint.cs" />
+    <Compile Include="Types\ProgramPoint.cs" />
+    <Compile Include="Types\VariablePoint.cs" />
+    <Compile Include="Types\SchedulePoint.cs" />
+    <Compile Include="Types\AdditionalTypes\T3000Point.cs" />
+    <Compile Include="Types\Enums\Unit.cs" />
+    <Compile Include="Prg.cs" />
+    <Compile Include="IO\PrgReader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\DigitalCustomUnitsPoint.cs" />
+    <Compile Include="Types\HelpTypes\Version.cs" />
+    <Compile Include="Extensions\BytesExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Utilities\Exceptions.cs" />
+    <Compile Include="Utilities\FileVersionUtilities.cs" />
+    <Compile Include="Utilities\DebugUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

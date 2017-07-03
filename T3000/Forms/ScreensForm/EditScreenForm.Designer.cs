@@ -72,11 +72,9 @@
             // 
             // EditScreenForm
             // 
-            this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(898, 418);
             this.Controls.Add(this.lockCheckBox);
             this.Controls.Add(this.cancelButton);
@@ -85,7 +83,6 @@
             this.Name = "EditScreenForm";
             this.Text = "Edit screen:";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.EditScreenForm_Load);
             this.ResumeLayout(false);
 
         }

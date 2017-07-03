@@ -10,62 +10,74 @@
 
     public partial class EditScreenForm : Form
     {
+        public DataGridView Dgv { get; set; }
+        public Panel pnl;
+        public Point p;
+        public TextBox txb;
+        public DataGridViewColumn PictureColumn { get; private set; }
+        public Boolean status = false;
         public List<AtributosLabel> ListLabels = new List<AtributosLabel>();
         public int counter = 0;
-        public DataGridView Dgv { get; set; }
         public int index_ = 0;
         public EditScreenForm(string path = null)
         {
+
             InitializeComponent();
+            
+            pnl = new Panel();
+            txb = new TextBox();
+            //###### Textbox properties #######
+            txb.Width = 314;
+            txb.Height = 44;
+            txb.Location = new Point(54, 12);
+            txb.Multiline = true;
+            txb.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.45F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            txb.BackColor = SystemColors.Control;
+            //###### Panel properties #######
+            pnl.Width = 387;
+            pnl.Height = 69;
+            pnl.BorderStyle = BorderStyle.None;
+            pnl.BackColor = SystemColors.Control;
+            //###### Label properties #######
+            Label lblpoint = new Label();
+            lblpoint.Width = 50;
+            lblpoint.Height = 18;
+            lblpoint.Location = new Point(4, 25);
+            lblpoint.Text = "Point:";
+            lblpoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
+            pnl.Controls.Add(lblpoint);
+            pnl.Controls.Add(txb);
+            pnl.Paint += pnl_Paint;
+            txb.KeyDown += new KeyEventHandler(txb_KeyDown); txb.Focus();
             //this.MouseClick += EditScreenForm_MouseClick;
             this.KeyDown += EditScreenForm_KeyDown;
            
             if (path != null && File.Exists(path))
             {
-                BackgroundImage = Image.FromFile(path);
+               BackgroundImage = Image.FromFile(path);
+               
             }
 
-            //for (var i = 0; i < 24; ++i)
-            //{
-            //    var x = i % 2;
-            //    var y = i / 2;
-            //    var width = (Width - 10)/2;
-            //    var height = (Height - 80) / 12;
 
-            //    var button = new Button();
-            //    button.FlatStyle = FlatStyle.Flat;
-            //    button.FlatAppearance.BorderSize = 0;
-            //    button.BackColor = Color.Transparent;
-            //    button.Left = 5 + x * width;
-            //    button.Top = 5 + y * height;
-            //    button.Size = new Size(width, height);
-            //    button.TextAlign = ContentAlignment.MiddleLeft;
-            //    button.Text = $"{i}. ";
-
-            //    Controls.Add(button);
-            //}
         }
 
-        
+        private void pnl_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawRectangle(Pens.Red,
+            e.ClipRectangle.Left,
+            e.ClipRectangle.Top,
+            e.ClipRectangle.Width - 1,
+            e.ClipRectangle.Height - 1);
+            base.OnPaint(e);
+        }
+
         #region Buttons
 
         private void Save(object sender, EventArgs e)
         {
             try
             {
-                foreach (Control contrl in this.Controls)
-                {
-                    if(contrl is Label)
-                    {
-                        // Getting all lables attributes 
-
-                        var x = Convert.ToString(contrl.Location.X);
-                        var y = Convert.ToString(contrl.Location.Y);
-                        var lbl_name = contrl.Name;
-                        var lbl_text = contrl.Text;
-
-                    }
-                }
             }
             catch (Exception exception)
             {
@@ -83,27 +95,90 @@
             Close();
         }
 
-   
+
+        //private void EditScreenForm_MouseClick(object sender,MouseEventArgs e)
+        //{
+        //    ListLabels.Add(new AtributosLabel(new Label(), "Etiqueta " + counter, "Etiqueta " + counter,"null", "null", e.Location));
+
+
+        //    this.Controls.Add(ListLabels[counter].Lbl);
+
+        //    counter++;
+        //}
+
+            //############## ENTER EN TEXTBOX ##################
+        private void txb_KeyDown(object sender, KeyEventArgs e)
+        {
+
+
+            switch (e.KeyCode)
+            {
+                case (Keys.Enter):
+                    this.Controls.Remove(pnl);
+                   
+                    status = false;
+                    if (txb.Text.Contains("prg"))
+                    {
+                        string[] result;
+                        string[] stringSeparators = new string[] { "prg" };
+                        result = txb.Text.Split(stringSeparators, StringSplitOptions.None);
+                        if (IsNumeric(result[1]) && int.Parse(result[1])>0 && int.Parse(result[1])<=16)
+                        {
+                            int temp;
+                            temp = int.Parse(result[1]);
+                            ListLabels.Add(new AtributosLabel(new Label(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), "null", "null", p));
+                            
+                            this.Controls.Add(ListLabels[counter].Lbl);
+                            Init(ListLabels[counter].Lbl, counter);
+                            counter++;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error no contiene prg #");
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error no contiene prg #");
+                    }
+
+                    break;
+                case (Keys.Escape):
+                    this.Controls.Remove(pnl);
+                    status = false;
+                    break;
+
+            }
+        }
+        //###################### KEY EVENTS #############################
         private void EditScreenForm_KeyDown(object send, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Insert && this.lockCheckBox.Checked)
             {
-               
-                ListLabels.Add(new AtributosLabel(new Label(), "Label " + counter, "Label_" + counter, "null", "null", Cursor.Position));
-                this.Controls.Add(ListLabels[counter].Lbl);
-                Init(ListLabels[counter].Lbl,counter);
-                counter++;
+
+                if (!status)
+                {
+                    status = true;//Textbox visible
+                    
+                    p = Cursor.Position;
+                    pnl.Location = p; //posicion del panel
+                    this.Controls.Add(pnl);                    
+                    txb.Focus();                     
+                    txb.Select();
+
+                    
+                }
+
             }
-
-            if ((e.KeyCode == Keys.PageUp)|| (e.KeyCode == Keys.PageDown))
+            if ((e.KeyCode == Keys.PageUp) || (e.KeyCode == Keys.PageDown))
             {
-
-                int courow = Dgv.RowCount - 1;
-
+                int courow = Dgv.RowCount-1;
+                
                 switch (e.KeyCode)
                 {
                     case (Keys.PageUp):
-                        if (index_ == courow)
+                        if (index_==courow)
                         {
                             index_ = 0;
                         }
@@ -111,11 +186,7 @@
                         {
                             index_++;
                         }
-                        MessageBox.Show(Dgv.Rows[index_].Cells[3].Value.ToString());
-
-
-
-
+                        
                         break;
                     case (Keys.PageDown):
                         if (index_ == 0)
@@ -126,12 +197,49 @@
                         {
                             index_--;
                         }
-                        MessageBox.Show(Dgv.Rows[index_].Cells[3].Value.ToString());
+                        
                         break;
+
+                       
                 }
+              
+                    try
+                    {
+                        var name = Dgv.Rows[index_].Cells[3].Value.ToString();
+                        var building = "Default_Building";
+                        var path = GetFullPathForPicture(name, building);
+                       
+                    if (path != null && File.Exists(path))
+                    {
+                        BackgroundImage = Image.FromFile(path);
+
+                    }
+                    else
+                    {
+                        BackgroundImage = null;
+                    }
+                }
+                    catch (Exception exception)
+                    {
+                        MessageBoxUtilities.ShowException(exception);
+                    }
+               
+                    
+
+                
+
+                
+             
+                
+
+
+
             }
-          
         }
+
+        private string GetFullPathForPicture(string name, string building) =>
+             Path.Combine("Database", "Buildings", building, "image", name);
+
 
         #endregion
 
@@ -145,8 +253,8 @@
             {
                 this.Cursor = Cursors.Default;
             }
+            
         }
-
 
         public enum Direction
         {
@@ -171,6 +279,7 @@
 
         public  void Init(Control control, Control container, Direction direction,int param)
         {
+
 
             bool Dragging = false;
             Point DragStart = Point.Empty;
@@ -208,9 +317,10 @@
                     LinkLabel frmlink = new LinkLabel();
                     if (frmlink.ShowDialog() == DialogResult.OK)
                     {
-                       control.Text = frmlink.TextLabel;
-                       ListLabels[param].Lbl_text = frmlink.TextLabel;
-                       ListLabels[param].Next_path = frmlink.Path;
+                        control.Text = frmlink.TextLabel;
+                        ListLabels[param].Lbl_text = frmlink.TextLabel;
+                        ListLabels[param].Next_path = frmlink.Path;
+
                     }
                 }
                
@@ -231,6 +341,7 @@
 
         }
 
+
         //Function to get random number
         private static readonly Random getrandom = new Random();
         private static readonly object syncLock = new object();
@@ -241,10 +352,15 @@
                 return getrandom.Next(min, max);
             }
         }
-
-        private void EditScreenForm_Load(object sender, EventArgs e)
+        public static bool IsNumeric(object Expression)
         {
+            double retNum;
 
+            bool isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            return isNum;
         }
+
+
+
     }
 }
