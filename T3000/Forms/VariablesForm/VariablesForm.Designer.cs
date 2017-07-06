@@ -84,13 +84,8 @@
             this.StatusColumn,
             this.LabelColumn,
             this.RangeColumn});
-            this.view.FormattingEnabled = true;
             this.view.MultiSelect = false;
             this.view.Name = "view";
-            this.view.UserInputEnabled = true;
-            this.view.ValidationEnabled = true;
-            this.view.ValueChangedEnabled = true;
-            this.view.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.view_CellContentClick);
             // 
             // NumberColumn
             // 
