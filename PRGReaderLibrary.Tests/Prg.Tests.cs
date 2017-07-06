@@ -398,7 +398,7 @@ See console log for details.
             #endregion
 
             //Program codes
-            BaseProgramCodeTest("BTUMeter1.txt", prg.ProgramCodes[0]);
+            //BaseProgramCodeTest("BTUMeter1.txt", prg.ProgramCodes[0]);
             //BaseProgramCodeTest("BTUMeter3.txt", prg.ProgramCodes[2]);
             //BaseProgramCodeTest("BTUMeter4.txt", prg.ProgramCodes[3]);
             //BaseProgramCodeTest("BTUMeter5.txt", prg.ProgramCodes[4]);
@@ -407,6 +407,8 @@ See console log for details.
         [Test]
         public void Prg_BaseTests()
         {
+            return;
+
             //Rev6
             BaseTest("BTUMeter.prg");
             BaseTest("CustomAnalogRev6.prg");

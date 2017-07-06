@@ -1,6 +1,7 @@
 ﻿namespace PRGReaderLibrary
 {
     using System;
+    using System.Globalization;
 
     public class VariableValue
     {
@@ -100,9 +101,10 @@ CustomUnits: {customUnits}");
                     return TimeSpan.Parse(value);
 
                 default:
+                    Console.WriteLine(value);
                     return unit.IsDigital()
                         ? DigitalValueToBoolean(value, unit, customUnits)
-                        : (object)Convert.ToDouble(value);
+                        : (object)double.Parse(value, CultureInfo.InvariantCulture);
             }
         }
 
