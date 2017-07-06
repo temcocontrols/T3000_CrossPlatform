@@ -2,8 +2,8 @@ language: csharp
 solution: T3000_CrossPlatform.sln
 script:
   - xbuild /p:Configuration=Release
-  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --labels=On --workers=1 ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
-  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --labels=On --workers=1 ./T3000.Tests/bin/Release/T3000.Tests.dll
-  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --labels=On --workers=1 ./T3000Grammar.Tests/bin/Release/T3000Grammar.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --labels=On --inprocess --agents=1 --dispose-runners --timeout=1000 --workers=1 ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --labels=On --inprocess --agents=1 --dispose-runners --timeout=1000 --workers=1 ./T3000.Tests/bin/Release/T3000.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe --labels=On --inprocess --agents=1 --dispose-runners --timeout=1000 --workers=1 ./T3000Grammar.Tests/bin/Release/T3000Grammar.Tests.dll
 notifications:
   email: false
