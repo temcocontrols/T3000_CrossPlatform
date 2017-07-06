@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace T3000.Forms
+﻿namespace T3000.Forms
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
 
     public class AtributosLabel
     {
         
         private Label lbl;
-        private String lbl_name;
-        private String lbl_text;
-        private String prev_path,next_path;
+        private string lbl_name;
+        private string lbl_text;
+        private string prev_path,next_path;
         private Point xy;
 
         public AtributosLabel(Label param_lbl,String param_lbl_name,String param_lbl_text,String param_prev_path,String param_next_path,Point param_xy)
@@ -41,11 +36,35 @@ namespace T3000.Forms
 
         }
 
-        public Label Lbl { get => lbl; set => lbl = value; }
-        public string Lbl_name { get => lbl_name; set => lbl_name = value; }
-        public string Lbl_text { get => lbl.Name; set => lbl.Name = value; }
-        public string Prev_path { get => prev_path; set => prev_path = value; }
-        public string Next_path { get => next_path; set => next_path = value; }
-        public Point Xy { get => xy; set => xy = value; }
+        public Label Lbl
+        {
+            get { return lbl; }
+            set { lbl = value; }
+        }
+
+        public string Lbl_name {
+            get { return lbl_name; }
+            set { lbl_name = value; }
+        }
+
+        public string Lbl_text {
+            get { return lbl.Name; }
+            set { lbl.Name = value; }
+        }
+
+        public string Prev_path {
+            get { return prev_path; }
+            set { prev_path = value; }
+        }
+
+        public string Next_path {
+            get { return next_path; }
+            set { next_path = value; }
+        }
+
+        public Point Xy {
+            get { return xy; }
+            set { xy = value; }
+        }
     }
 }
