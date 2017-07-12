@@ -2,15 +2,22 @@
 {
     //using PRGReaderLibrary;
     using System;
+
     using System.IO;
     using System.Drawing;
     using System.Windows.Forms;
     using System.Collections.Generic;
+    using System.Data.SQLite;
+    using System.Data;
+
     //using T3000.Forms.ScreensForm;
 
     public partial class EditScreenForm : Form
     {
         public DataGridView Dgv { get; set; }
+        public DataGridView Vars { get; set; }
+        public int Prfileid { get; set; }
+        public int Screenid { get; set; }
         public Panel pnl;
         public Point p;
         public TextBox txb;
@@ -18,12 +25,13 @@
         public Boolean status = false;
         public List<AtributosLabel> ListLabels = new List<AtributosLabel>();
         public int counter = 0;
-        public int index_ = 0;
-        public EditScreenForm(string path = null)
+        public int index_ = 0,temp_i=0;
+        public EditScreenForm(int pr_id,int row_id, string path = null)
         {
-
-            InitializeComponent();
             
+            InitializeComponent();
+            Prfileid = pr_id;
+            Screenid = row_id;
             pnl = new Panel();
             txb = new TextBox();
             //###### Textbox properties #######
@@ -58,7 +66,18 @@
                BackgroundImage = Image.FromFile(path);
                
             }
-
+            
+            LoadPoint lp = new LoadPoint(Prfileid, Screenid);
+            DataTable dt = lp.Tb;
+            // MessageBox.Show(dt.Rows[0]["lbl_name"].ToString());
+            for (int i=0;i<dt.Rows.Count;i++)
+            {
+                ListLabels.Add(new AtributosLabel(new Label(), dt.Rows[i]["lbl_name"].ToString(), dt.Rows[i]["lbl_text"].ToString(), new Point(int.Parse(dt.Rows[i]["point_x"].ToString()), int.Parse(dt.Rows[i]["point_y"].ToString())), int.Parse(dt.Rows[i]["type"].ToString())));
+                this.Controls.Add(ListLabels[counter].Lbl);
+                Init(ListLabels[counter].Lbl, counter);
+                counter++;
+            }
+            
 
         }
 
@@ -117,7 +136,7 @@
                     this.Controls.Remove(pnl);
                    
                     status = false;
-                    if (txb.Text.Contains("prg"))
+                    if (txb.Text.ToLower().Contains("prg"))
                     {
                         string[] result;
                         string[] stringSeparators = new string[] { "prg" };
@@ -126,8 +145,9 @@
                         {
                             int temp;
                             temp = int.Parse(result[1]);
-                            ListLabels.Add(new AtributosLabel(new Label(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), "null", "null", p));
-                            
+                            ListLabels.Add(new AtributosLabel(new Label(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), p,0));
+                            InsertPoint ist = new InsertPoint();
+                            ist.Insert_point(Prfileid, Dgv.Rows[temp - 1].Cells[2].Value.ToString(), Dgv.Rows[temp - 1].Cells[2].Value.ToString(),Screenid,p.X,p.Y,0);
                             this.Controls.Add(ListLabels[counter].Lbl);
                             Init(ListLabels[counter].Lbl, counter);
                             counter++;
@@ -140,7 +160,26 @@
                     }
                     else
                     {
-                        MessageBox.Show("Error no contiene prg #");
+                       //*****************
+                        if (searchVars(txb.Text.ToUpper()))
+                        {
+                            ListLabels.Add(new AtributosLabel(new Label(), Vars.Rows[temp_i].Cells[6].Value.ToString(), Vars.Rows[temp_i].Cells[6].Value.ToString(), p,1));
+                            InsertPoint ist = new InsertPoint();
+                            ist.Insert_point(Prfileid, Vars.Rows[temp_i].Cells[6].Value.ToString(), Vars.Rows[temp_i].Cells[6].Value.ToString(), Screenid, p.X, p.Y, 1);
+                            this.Controls.Add(ListLabels[counter].Lbl);
+                            Init(ListLabels[counter].Lbl, counter);
+                            counter++;
+                            txb.Text =txb.Text.Replace("\r\n", "");
+                            txb.Text = "";
+                            txb.Clear();
+
+                        }
+                        else
+                        {
+                            
+                            MessageBox.Show(Vars.RowCount.ToString());
+                        }
+
                     }
 
                     break;
@@ -151,11 +190,32 @@
 
             }
         }
+        
+        private Boolean searchVars(String TBox)
+        {
+            Boolean flag = false;
+            int indice = 0;
+            //MessageBox.Show("Error no contiene prg #");
+            while (!flag && indice < Vars.RowCount)
+            {
+                Console.WriteLine(indice.ToString()+" -- " +TBox+ " -- "+ Vars.Rows[indice].Cells[6].Value.ToString().ToUpper());
+                if (TBox.Trim().Equals(Vars.Rows[indice].Cells[6].Value.ToString().Trim().ToUpper()))
+                {
+                    flag = true;
+                    temp_i = indice;
+
+                }
+                indice++;
+            }
+            return flag;
+        }
         //###################### KEY EVENTS #############################
         private void EditScreenForm_KeyDown(object send, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Insert && this.lockCheckBox.Checked)
             {
+
+                //MessageBox.Show(Vars.RowCount.ToString());
 
                 if (!status)
                 {
@@ -319,7 +379,7 @@
                     {
                         control.Text = frmlink.TextLabel;
                         ListLabels[param].Lbl_text = frmlink.TextLabel;
-                        ListLabels[param].Next_path = frmlink.Path;
+                        
 
                     }
                 }
@@ -332,7 +392,7 @@
             {
                 if (!this.lockCheckBox.Checked)
                 {
-                    EditScreenForm frmedit = new EditScreenForm(ListLabels[param].Next_path);
+                    EditScreenForm frmedit = new EditScreenForm(Prfileid,Screenid,"");
                     frmedit.Show();
                 }
 

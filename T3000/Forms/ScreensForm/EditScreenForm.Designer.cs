@@ -62,11 +62,11 @@
             // 
             this.lockCheckBox.BackColor = System.Drawing.Color.Transparent;
             this.lockCheckBox.Location = new System.Drawing.Point(12, 12);
-            this.lockCheckBox.LockedImage = global::T3000.Properties.Resources.Lock;
+            this.lockCheckBox.LockedImage = global::T3000.Properties.Resources._lock;
             this.lockCheckBox.Name = "lockCheckBox";
             this.lockCheckBox.Size = new System.Drawing.Size(64, 64);
             this.lockCheckBox.TabIndex = 8;
-            this.lockCheckBox.UnlockedImage = global::T3000.Properties.Resources.Unlock;
+            this.lockCheckBox.UnlockedImage = global::T3000.Properties.Resources.unlock;
             this.lockCheckBox.UseVisualStyleBackColor = false;
             this.lockCheckBox.CheckedChanged += new System.EventHandler(this.lockCheckBox_CheckedChanged);
             // 

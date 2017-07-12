@@ -11,7 +11,8 @@
     public partial class ScreensForm : Form
     {
         public List<ScreenPoint> Points { get; set; }
-
+        public DataGridView Vars { get; set; }
+        public int Prfileid { get; set; }
         public ScreensForm(List<ScreenPoint> points)
         {
             if (points == null)
@@ -22,7 +23,8 @@
             Points = points;
 
             InitializeComponent();
-
+            //add key event to view
+            view.KeyDown += ScreenForm_KeyDown;
             //User input handles
             view.AddEditHandler(ModeColumn, TViewUtilities.EditEnum<TextGraphic>);
             view.AddEditHandler(PictureColumn, EditPictureColumn);
@@ -66,6 +68,7 @@
             row.SetValue(PictureColumn, point.PictureFile);
             row.SetValue(ModeColumn, point.GraphicMode);
             row.SetValue(RefreshColumn, point.RefreshTime);
+            
             row.SetValue(CountColumn, 0);
         }
 
@@ -94,6 +97,7 @@
                     point.GraphicMode = row.GetValue<TextGraphic>(ModeColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
                     point.RefreshTime = row.GetValue<int>(RefreshColumn);
+                    
                 }
             }
             catch (Exception exception)
@@ -120,13 +124,18 @@
         {
             try
             {
+                
                 var name = view.CurrentRow.GetValue<string>(PictureColumn);
                 var building = "Default_Building";
                 var path = GetFullPathForPicture(name, building);
                 
-                var form = new EditScreenForm(path);
-
+                var form = new EditScreenForm(Prfileid, view.CurrentRow.Index, path);
+                //form.Prfileid = Prfileid;
                 form.Dgv = view;
+                //form.Screenid = view.CurrentRow.Index;
+                form.Vars = Vars;
+               
+
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -171,7 +180,26 @@
                 MessageBoxUtilities.ShowException(exception);
             }
         }
+        //###################### KEY EVENTS #############################
+        private void ScreenForm_KeyDown(object send, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab)
+            {
+
+                Close();
+
+            }
+
+
+
+
+
+
+
+
+        }
         
+
         #endregion
 
     }

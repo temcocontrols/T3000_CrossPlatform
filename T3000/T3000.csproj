@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,10 +33,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\..\..\..\Program Files\System.Data.SQLite\2012\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -135,6 +140,7 @@
     <Compile Include="Forms\OutputsForm\OutputsForm.Designer.cs">
       <DependentUpon>OutputsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\prgfilename.cs" />
     <Compile Include="Forms\ProgramsForm\ProgramsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,18 +173,21 @@
     <Compile Include="Forms\ScreensForm\EditScreenView.Designer.cs">
       <DependentUpon>EditScreenView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ScreensForm\InsertPoint.cs" />
     <Compile Include="Forms\ScreensForm\LinkLabel.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ScreensForm\LinkLabel.Designer.cs">
       <DependentUpon>LinkLabel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ScreensForm\LoadPoint.cs" />
     <Compile Include="Forms\ScreensForm\ScreensForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ScreensForm\ScreensForm.Designer.cs">
       <DependentUpon>ScreensForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ScreensForm\SqliteConnect.cs" />
     <Compile Include="Forms\T3000Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -395,8 +404,8 @@
     <Content Include="Properties\Icons\Default\RemotePoints.ico" />
     <Content Include="Properties\Icons\Default\Schedules.ico" />
     <Content Include="Properties\Icons\Default\TrendLogs.ico" />
-    <None Include="Resources\scheme.jpg" />
-    <None Include="Resources\choose_image.png" />
+    <None Include="Resources\101.jpg" />
+    <None Include="Resources\1498190314_image.png" />
     <None Include="Resources\unlock.png" />
     <None Include="Resources\lock.png" />
   </ItemGroup>

@@ -4,14 +4,15 @@
     using Properties;
     using Utilities;
     using System;
+    using System.IO;
     using System.Linq;
     using System.Windows.Forms;
-
     public partial class T3000Form : Form
     {
         public Prg Prg { get; private set; }
         public string PrgPath { get; private set; }
         public bool IsOpened => Prg != null;
+        prgfilename p;
 
         public T3000Form()
         {
@@ -33,7 +34,8 @@
             try
             {
                 var path = dialog.FileName;
-
+                p = new prgfilename(Path.GetFileName(path));
+                
                 PrgPath = path;
                 Prg = Prg.Load(path);
 
@@ -280,8 +282,11 @@
                 {
                     return;
                 }
-
+                var f = new VariablesForm(Prg.Variables, Prg.CustomUnits);
                 var form = new ScreensForm(Prg.Screens);
+                form.Prfileid = p.Prgfileid;
+                form.Vars = f.Vars;
+                
                 form.Show();
             }
             catch (Exception exception)

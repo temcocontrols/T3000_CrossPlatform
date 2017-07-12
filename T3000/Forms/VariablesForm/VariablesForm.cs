@@ -11,6 +11,7 @@
     {
         public List<VariablePoint> Points { get; set; }
         public CustomUnits CustomUnits { get; private set; }
+        public DataGridView Vars { get; set; }
 
         public VariablesForm(List<VariablePoint> points, CustomUnits customUnits = null)
         {
@@ -67,6 +68,7 @@
             view.AddValidation(UnitColumn, TViewUtilities.ValidateValue,
                 ValueColumn, UnitColumn, CustomUnits);
             view.Validate();
+            Vars = view;
         }
 
         private void SetRow(DataGridViewRow row, VariablePoint point)

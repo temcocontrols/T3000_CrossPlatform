@@ -5,6 +5,7 @@ namespace PRGReaderLibrary
     public class ScreenPoint : BasePoint, IBinaryObject
     {
         public string PictureFile { get; set; } = string.Empty;
+       
         public int RefreshTime { get; set; }
         public TextGraphic GraphicMode { get; set; }
         public int X { get; set; }
@@ -22,7 +23,7 @@ namespace PRGReaderLibrary
             switch (version)
             {
                 case FileVersion.Current:
-                    return 16;
+                    return 16; //add 16
 
                 default:
                     throw new FileVersionNotImplementedException(version);
@@ -35,7 +36,7 @@ namespace PRGReaderLibrary
             switch (version)
             {
                 case FileVersion.Current:
-                    return size + 16;
+                    return size + 16;   //add 16
 
                 default:
                     throw new FileVersionNotImplementedException(version);

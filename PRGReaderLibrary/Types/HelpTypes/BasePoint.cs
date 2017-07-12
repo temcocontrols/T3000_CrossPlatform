@@ -6,10 +6,12 @@ namespace PRGReaderLibrary
     {
         public string Label { get; set; }
 
+                                                                   
         public BasePoint(string description = "", string label = "", FileVersion version = FileVersion.Current)
             : base(description, version)
         {
             Label = label;
+
         }
 
         public new static int GetSize(FileVersion version = FileVersion.Current)
@@ -40,6 +42,7 @@ namespace PRGReaderLibrary
                 case FileVersion.Current:
                 case FileVersion.Dos:
                     Label = bytes.GetString(ref offset, 9).ClearBinarySymvols();
+
                     break;
 
                 default:
@@ -59,6 +62,7 @@ namespace PRGReaderLibrary
                 case FileVersion.Dos:
                     bytes.AddRange(base.ToBytes());
                     bytes.AddRange(Label.ToBytes(9));
+
                     break;
 
                 default:
