@@ -11,6 +11,7 @@
     {
         public List<ProgramPoint> Points { get; set; }
         public List<ProgramCode> Codes { get; set; }
+        public DataGridView Progs { get; set; }
 
         public ProgramsForm(List<ProgramPoint> points, List<ProgramCode> codes)
         {
@@ -52,6 +53,8 @@
             view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
             view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
             view.Validate();
+
+            Progs = view;
         }
 
         private void SetRow(DataGridViewRow row, ProgramPoint point)
@@ -91,9 +94,9 @@
                     var row = view.Rows[i];
                     point.Description = row.GetValue<string>(DescriptionColumn);
                     point.Control = row.GetValue<OffOn>(StatusColumn);
+                    point.NormalCom = row.GetValue<NormalCom>(RunStatusColumn);
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.Length = row.GetValue<int>(SizeColumn);
-                    point.NormalCom = row.GetValue<NormalCom>(RunStatusColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
                 }
             }
@@ -106,6 +109,53 @@
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        public void ExternalSaveAutomanual(int pos, DataGridViewRow erow)
+        {
+            try
+            {
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
+                {
+                    var point = Points[i];
+                    var row = erow;
+                    if (i==pos)
+                    {
+                        point.AutoManual = ((AutoManual)row.Cells[3].Value).NextValue();
+
+                    }
+                    
+                   
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+              
+            }
+        }
+        public void ExternalSaveValue(int pos, DataGridViewRow erow)
+        {
+            try
+            {
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
+                {
+                    var point = Points[i];
+                    var row = erow;
+                    if (i == pos)
+                    {
+                        point.Control = ((OffOn)row.Cells[2].Value).NextValue();
+                     
+                    }
+
+
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+
+            }
         }
 
         private void Cancel(object sender, EventArgs e)

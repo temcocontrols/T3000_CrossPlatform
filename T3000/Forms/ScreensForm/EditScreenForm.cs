@@ -9,6 +9,7 @@
     using System.Collections.Generic;
     using System.Data.SQLite;
     using System.Data;
+    using PRGReaderLibrary;
 
     //using T3000.Forms.ScreensForm;
 
@@ -16,6 +17,7 @@
     {
         public DataGridView Dgv { get; set; }
         public DataGridView Vars { get; set; }
+        public DataGridView Progs { get; set; }
         public int Prfileid { get; set; }
         public int Screenid { get; set; }
         public Panel pnl;
@@ -24,8 +26,12 @@
         public DataGridViewColumn PictureColumn { get; private set; }
         public Boolean status = false;
         public List<AtributosLabel> ListLabels = new List<AtributosLabel>();
+        public Prg Prg { get; set; }
         public int counter = 0;
         public int index_ = 0,temp_i=0;
+        static int temp=0;
+        public List<ProgramPoint> PointsP { get; set; }
+        public List<ProgramCode> CodesP { get; set; }
         public EditScreenForm(int pr_id,int row_id, string path = null)
         {
             
@@ -34,6 +40,7 @@
             Screenid = row_id;
             pnl = new Panel();
             txb = new TextBox();
+            this.lockCheckBox.BackColor = Color.Transparent;
             //###### Textbox properties #######
             txb.Width = 314;
             txb.Height = 44;
@@ -66,21 +73,50 @@
                BackgroundImage = Image.FromFile(path);
                
             }
-            
-            LoadPoint lp = new LoadPoint(Prfileid, Screenid);
-            DataTable dt = lp.Tb;
-            // MessageBox.Show(dt.Rows[0]["lbl_name"].ToString());
-            for (int i=0;i<dt.Rows.Count;i++)
-            {
-                ListLabels.Add(new AtributosLabel(new Label(), dt.Rows[i]["lbl_name"].ToString(), dt.Rows[i]["lbl_text"].ToString(), new Point(int.Parse(dt.Rows[i]["point_x"].ToString()), int.Parse(dt.Rows[i]["point_y"].ToString())), int.Parse(dt.Rows[i]["type"].ToString())));
-                this.Controls.Add(ListLabels[counter].Lbl);
-                Init(ListLabels[counter].Lbl, counter);
-                counter++;
-            }
-            
+
+
+            ShowPoint();
 
         }
 
+
+        private void ShowPoint()
+        {
+            LoadPoint lp = new LoadPoint(Prfileid, Screenid);
+            DataTable dt = lp.Tb;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                /*
+                 types  values
+                 prg    0
+                 grp    1
+                 vars   2
+
+                 */
+
+                if ( int.Parse(dt.Rows[i]["type"].ToString()) == 1)
+                    ListLabels.Add(new AtributosLabel(new Label(), dt.Rows[i]["lbl_name"].ToString(), dt.Rows[i]["lbl_text"].ToString(), new Point(int.Parse(dt.Rows[i]["point_x"].ToString()), int.Parse(dt.Rows[i]["point_y"].ToString())), int.Parse(dt.Rows[i]["type"].ToString()), int.Parse(dt.Rows[i]["link"].ToString()), dt.Rows[i]["image"].ToString(), int.Parse(dt.Rows[i]["id_a"].ToString())));
+                if (int.Parse(dt.Rows[i]["type"].ToString()) == 0 || int.Parse(dt.Rows[i]["type"].ToString()) == 2)
+                    ListLabels.Add(new AtributosLabel(new Label(), dt.Rows[i]["lbl_name"].ToString(), dt.Rows[i]["lbl_text"].ToString(), new Point(int.Parse(dt.Rows[i]["point_x"].ToString()), int.Parse(dt.Rows[i]["point_y"].ToString())), int.Parse(dt.Rows[i]["type"].ToString()), int.Parse(dt.Rows[i]["id_a"].ToString()), int.Parse(dt.Rows[i]["link"].ToString())));
+               // if (int.Parse(dt.Rows[i]["type"].ToString()) == 1 || int.Parse(dt.Rows[i]["type"].ToString()) == 2)
+                this.Controls.Add(ListLabels[counter].Thumb);
+                this.Controls.Add(ListLabels[counter].Lbl);
+                Init2(ListLabels[counter].Lbl, ListLabels[counter].Thumb, counter);
+                //switch (int.Parse(dt.Rows[i]["type"].ToString()))
+                //{
+                //    case 0:
+                //        Init(ListLabels[counter].Lbl, counter);
+                //        break;
+                //    case 1:
+                //    case 2:
+                //        Init2(ListLabels[counter].Lbl, ListLabels[counter].Thumb, counter);
+                //        break;
+                //}
+
+
+                counter++;
+            }
+        }
         private void pnl_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawRectangle(Pens.Red,
@@ -128,7 +164,13 @@
             //############## ENTER EN TEXTBOX ##################
         private void txb_KeyDown(object sender, KeyEventArgs e)
         {
+            /*
+             types  values
+             prg    0
+             grp    1
+             vars   2
 
+             */
 
             switch (e.KeyCode)
             {
@@ -143,18 +185,55 @@
                         result = txb.Text.Split(stringSeparators, StringSplitOptions.None);
                         if (IsNumeric(result[1]) && int.Parse(result[1])>0 && int.Parse(result[1])<=16)
                         {
-                            int temp;
+                          
                             temp = int.Parse(result[1]);
-                            ListLabels.Add(new AtributosLabel(new Label(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), Dgv.Rows[temp-1].Cells[2].Value.ToString(), p,0));
+                            temp--;
                             InsertPoint ist = new InsertPoint();
-                            ist.Insert_point(Prfileid, Dgv.Rows[temp - 1].Cells[2].Value.ToString(), Dgv.Rows[temp - 1].Cells[2].Value.ToString(),Screenid,p.X,p.Y,0);
+
+                            ist.Insert_point(Prfileid, Progs.Rows[temp].Cells[6].Value.ToString(), Progs.Rows[temp].Cells[1].Value.ToString().Replace("PROGRAM", ""), Screenid, p.X, p.Y, 0,temp);
+                            ListLabels.Add(new AtributosLabel(new Label(), Progs.Rows[temp].Cells[6].Value.ToString(), Progs.Rows[temp].Cells[1].Value.ToString().Replace("PROGRAM", ""), p, 0, ist.Get_id, temp));
                             this.Controls.Add(ListLabels[counter].Lbl);
-                            Init(ListLabels[counter].Lbl, counter);
+                            this.Controls.Add(ListLabels[counter].Thumb);
+                            //Init(ListLabels[counter].Lbl, counter);
+                            Init2(ListLabels[counter].Lbl, ListLabels[counter].Thumb, counter);
+                            txb.Text = txb.Text.Replace("\r\n", "");
+                            txb.Text = "";
+                            txb.Clear();
+                            counter++;
+                        }
+                        else 
+                        {
+                            MessageBox.Show("Please insert the screen #");
+                        }
+
+                    }
+                   else if (txb.Text.ToLower().Contains("grp"))
+                    {
+                        string[] result;
+                        string[] stringSeparators = new string[] { "grp" };
+                        result = txb.Text.Split(stringSeparators, StringSplitOptions.None);
+                        if (IsNumeric(result[1]) && int.Parse(result[1]) > 0 && int.Parse(result[1]) <= 16)
+                        {
+                            
+                            temp = int.Parse(result[1]);
+                            temp--;
+                            string name = Dgv.Rows[temp].Cells[3].Value.ToString();
+                            var building = "Default_Building";
+                            string path = GetFullPathForPicture(name, building);
+                            InsertPoint ist = new InsertPoint();
+                            ist.Insert_point(Prfileid, Dgv.Rows[temp].Cells[2].Value.ToString(), Dgv.Rows[temp].Cells[2].Value.ToString(), Screenid, p.X, p.Y, 1,temp, path);
+                            ListLabels.Add(new AtributosLabel(new Label(), Dgv.Rows[temp].Cells[2].Value.ToString(), Dgv.Rows[temp].Cells[2].Value.ToString(), p, 1, temp, path,ist.Get_id));
+                            this.Controls.Add(ListLabels[counter].Thumb);
+                            this.Controls.Add(ListLabels[counter].Lbl);
+                            Init2(ListLabels[counter].Lbl, ListLabels[counter].Thumb, counter);
+                            txb.Text = txb.Text.Replace("\r\n", "");
+                            txb.Text = "";
+                            txb.Clear();
                             counter++;
                         }
                         else
                         {
-                            MessageBox.Show("Error no contiene prg #");
+                            MessageBox.Show("Please insert the screen #");
                         }
 
                     }
@@ -163,11 +242,13 @@
                        //*****************
                         if (searchVars(txb.Text.ToUpper()))
                         {
-                            ListLabels.Add(new AtributosLabel(new Label(), Vars.Rows[temp_i].Cells[6].Value.ToString(), Vars.Rows[temp_i].Cells[6].Value.ToString(), p,1));
                             InsertPoint ist = new InsertPoint();
-                            ist.Insert_point(Prfileid, Vars.Rows[temp_i].Cells[6].Value.ToString(), Vars.Rows[temp_i].Cells[6].Value.ToString(), Screenid, p.X, p.Y, 1);
+                            ist.Insert_point(Prfileid, Vars.Rows[temp_i].Cells[6].Value.ToString(),Vars.Rows[temp_i].Cells[1].Value.ToString()+" "+ Vars.Rows[temp_i].Cells[3].Value.ToString() , Screenid, p.X, p.Y, 2, temp_i);
+                            ListLabels.Add(new AtributosLabel(new Label(), Vars.Rows[temp_i].Cells[6].Value.ToString(), Vars.Rows[temp_i].Cells[1].Value.ToString() + " " + Vars.Rows[temp_i].Cells[3].Value.ToString(), p,2,ist.Get_id, temp_i));
+                            
                             this.Controls.Add(ListLabels[counter].Lbl);
-                            Init(ListLabels[counter].Lbl, counter);
+                            this.Controls.Add(ListLabels[counter].Thumb);
+                            Init2(ListLabels[counter].Lbl, ListLabels[counter].Thumb, counter);
                             counter++;
                             txb.Text =txb.Text.Replace("\r\n", "");
                             txb.Text = "";
@@ -177,7 +258,7 @@
                         else
                         {
                             
-                            MessageBox.Show(Vars.RowCount.ToString());
+                            MessageBox.Show("Variable not found");
                         }
 
                     }
@@ -266,7 +347,8 @@
                     try
                     {
                         var name = Dgv.Rows[index_].Cells[3].Value.ToString();
-                        var building = "Default_Building";
+                    
+                    var building = "Default_Building";
                         var path = GetFullPathForPicture(name, building);
                        
                     if (path != null && File.Exists(path))
@@ -283,14 +365,25 @@
                     {
                         MessageBoxUtilities.ShowException(exception);
                     }
-               
-                    
 
-                
+                Screenid = index_;
+                for (int x = 0; x < counter; x++)
+                {
+                  
+                    this.Controls.Remove(ListLabels[x].Thumb);
+                    this.Controls.Remove(ListLabels[x].Lbl);
+                }
+                counter = 0;
+                ListLabels = new List<AtributosLabel>();
+                ShowPoint();
 
-                
-             
-                
+
+
+
+
+
+
+
 
 
 
@@ -315,7 +408,10 @@
             }
             
         }
+        /*
+                Function to move elements (only labels)
 
+                     */
         public enum Direction
         {
             Any,
@@ -366,6 +462,16 @@
                         container.Left = Math.Max(0, e.X + container.Left - DragStart.X);
                     if (direction != Direction.Horizontal)
                         container.Top = Math.Max(0, e.Y + container.Top - DragStart.Y);
+
+                    UpdatePoint up = new UpdatePoint();
+                    if (up.Update_point(ListLabels[param].Id, container.Location.X, container.Location.Y))
+                    {
+                        Console.WriteLine("Update Success");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error");
+                    }
                 }
             };
             control.MouseMove += handler3;
@@ -374,33 +480,280 @@
             {
                 if (this.lockCheckBox.Checked)
                 {
-                    LinkLabel frmlink = new LinkLabel();
-                    if (frmlink.ShowDialog() == DialogResult.OK)
-                    {
-                        control.Text = frmlink.TextLabel;
-                        ListLabels[param].Lbl_text = frmlink.TextLabel;
-                        
+                    //LinkLabel frmlink = new LinkLabel();
+                    //if (frmlink.ShowDialog() == DialogResult.OK)
+                    //{
+                    //    control.Text = frmlink.TextLabel;
+                    //    ListLabels[param].Lbl_text = frmlink.TextLabel;
 
+
+                    //}
+
+                    switch (ListLabels[param].Type)
+                    {
+
+                        case 0:
+                            MessageBox.Show(CodesP.Count.ToString());
+                            LinkLabel frmlink0 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Progs.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), Progs.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), ListLabels[param].Type);
+                            frmlink0.dgv = Progs;
+                            frmlink0.Prg = Prg;
+                            frmlink0.CodesP = CodesP;
+                            
+                            frmlink0.PointsP = PointsP;
+                            frmlink0.Show();
+                            break;
+
+                        case 1:
+                            LinkLabel frmlink1 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, (ListLabels[param].Link+1).ToString()+"GRP"+ (ListLabels[param].Link + 1).ToString(), "AUTO", ListLabels[param].Type);
+                            
+                            frmlink1.Show();
+                            
+                            break;
+
+                        case 2:
+                            LinkLabel frmlink2 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Vars.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), Vars.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), ListLabels[param].Type);
+                            frmlink2.dgv = Vars;
+                            frmlink2.CodesP = CodesP;
+                            MessageBox.Show(CodesP.Count.ToString());
+                            frmlink2.PointsP = PointsP;
+                            frmlink2.Prg = Prg;
+                            frmlink2.Show();
+                            break;
                     }
+                    
+                   
                 }
                
             };
+
+
             control.DoubleClick += handler4;
 
 
             EventHandler handler5 = (sender, e) =>
             {
-                if (!this.lockCheckBox.Checked)
+                if (!this.lockCheckBox.Checked && (ListLabels[param].Type==1|| ListLabels[param].Type == 0))
                 {
-                    EditScreenForm frmedit = new EditScreenForm(Prfileid,Screenid,"");
-                    frmedit.Show();
+                //EditScreenForm frmedit = new EditScreenForm(Prfileid,Screenid,"");
+                //frmedit.Show();
+               
+                    try
+                    {
+                        var name = Dgv.Rows[ListLabels[param].Link].Cells[3].Value.ToString();
+                        var building = "Default_Building";
+                        var path = GetFullPathForPicture(name, building);
+                        index_ = ListLabels[param].Link;
+                        if (path != null && File.Exists(path))
+                        {
+                            BackgroundImage = Image.FromFile(path);
+
+                        }
+                        else
+                        {
+                            BackgroundImage = null;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBoxUtilities.ShowException(exception);
+                    }
+                    Screenid = ListLabels[param].Link;
+                    for (int x = 0; x < counter; x++)
+                    {
+                        if(ListLabels[x].Type == 1 || ListLabels[x].Type==2)
+                            this.Controls.Remove(ListLabels[x].Thumb);
+                        this.Controls.Remove(ListLabels[x].Lbl);
+                    }
+                    counter = 0;
+                    ListLabels = new List<AtributosLabel>();
+                    ShowPoint();
+
+
                 }
 
             };
             control.Click += handler5;
 
+            EventHandler handler6 = (sender, e) =>
+            {
+                if (this.lockCheckBox.Checked)
+                {
+
+                    ///
+                    
+                }
+
+            };
+
+            control.Click += handler6;
+
+        }
+        /*End function to move elements (only labels)
+                             */
+
+        /*function to move elements (labels & Picturebox)
+                             */
+        public void Init2(Control control1,Control control2, int param)
+        {
+            Init2(control1,control2, Direction.Any, param);
         }
 
+
+
+        public void Init2(Control control1, Control control2, Direction direction, int param)
+        {
+            Init2(control1, control1,control2,control2, direction, param);
+        }
+
+
+
+        public void Init2(Control control1, Control container1, Control control2, Control container2, Direction direction, int param)
+        {
+
+
+            bool Dragging = false;
+            Point DragStart = Point.Empty;
+            MouseEventHandler handler = (sender, e) =>
+            {
+                Dragging = true;
+                DragStart = new Point(e.X, e.Y);
+                control1.Capture = true;
+                control2.Capture = true;
+            };
+            control1.MouseDown += handler;
+            control2.MouseDown += handler;
+
+            MouseEventHandler handler2 = (sender, e) =>
+            {
+                Dragging = false;
+                control1.Capture = false;
+                control2.Capture = false;
+            };
+            control1.MouseUp += handler2;
+            control2.MouseUp += handler2;
+
+            MouseEventHandler handler3 = (sender, e) =>
+            {
+                if (Dragging && this.lockCheckBox.Checked)
+                {
+                    if (direction != Direction.Vertical)
+                        container1.Left = Math.Max(0, e.X + container1.Left - DragStart.X); container2.Left = Math.Max(0, e.X + container2.Left - DragStart.X);
+                    if (direction != Direction.Horizontal)
+                        container1.Top = Math.Max(0, e.Y + container1.Top - DragStart.Y); container2.Top = Math.Max(0, e.Y + container2.Top - DragStart.Y);
+
+                    UpdatePoint up = new UpdatePoint();
+                    if (up.Update_point(ListLabels[param].Id, container1.Location.X,container1.Location.Y))
+                    {
+                        Console.WriteLine("Update Success");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error");
+                    }
+                   
+                }
+            };
+            control1.MouseMove += handler3;
+            control2.MouseMove += handler3;
+
+            EventHandler handler4 = (sender, e) =>
+            {
+                if (this.lockCheckBox.Checked)
+                {
+                    switch (ListLabels[param].Type)
+                    {
+
+                        case 0:
+                            LinkLabel frmlink0 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Progs.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), Progs.Rows[ListLabels[param].Link].Cells[2].Value.ToString(),  ListLabels[param].Type);
+                            frmlink0.dgv = Progs;
+                            frmlink0.Prg = Prg;
+                            frmlink0.CodesP = CodesP;
+
+                            frmlink0.PointsP = PointsP;
+                            frmlink0.Show();
+                            break;
+
+                        case 1:
+                            LinkLabel frmlink1 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, (ListLabels[param].Link + 1).ToString() + "GRP" + (ListLabels[param].Link + 1).ToString(), "AUTO", ListLabels[param].Type);
+                            frmlink1.Show();
+                            break;
+
+                        case 2:
+                            LinkLabel frmlink2 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Vars.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), Vars.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), ListLabels[param].Type);
+                            frmlink2.dgv = Progs;
+                            frmlink2.Prg = Prg;
+                            frmlink2.CodesP = CodesP;
+
+                            frmlink2.PointsP = PointsP;
+                            frmlink2.Show();
+                            break;
+                    }
+                }
+
+            };
+
+
+            control1.DoubleClick += handler4;
+            control2.DoubleClick += handler4;
+
+
+            EventHandler handler5 = (sender, e) =>
+            {
+                if (!this.lockCheckBox.Checked && ListLabels[param].Type == 1)
+                {
+                    //EditScreenForm frmedit = new EditScreenForm(Prfileid,Screenid,"");
+                    //frmedit.Show();
+                    try
+                    {
+                        var name = Dgv.Rows[ListLabels[param].Link].Cells[3].Value.ToString();
+                        var building = "Default_Building";
+                        var path = GetFullPathForPicture(name, building);
+                        index_ = ListLabels[param].Link;
+                        if (path != null && File.Exists(path))
+                        {
+                            BackgroundImage = Image.FromFile(path);
+
+                        }
+                        else
+                        {
+                            BackgroundImage = null;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBoxUtilities.ShowException(exception);
+                    }
+                    Screenid = ListLabels[param].Link;
+                    for (int x = 0; x < counter; x++)
+                    {
+                        
+                        this.Controls.Remove(ListLabels[x].Thumb);
+                        this.Controls.Remove(ListLabels[x].Lbl);
+                    }
+                    counter = 0;
+                    ListLabels = new List<AtributosLabel>();
+                    ShowPoint();
+
+                }
+
+            };
+            control1.Click += handler5;
+            control2.Click += handler5;
+
+            EventHandler handler6 = (sender, e) =>
+            {
+                if (this.lockCheckBox.Checked)
+                {
+
+                    ///
+
+                }
+
+            };
+
+            control1.Click += handler6;
+
+        }
 
         //Function to get random number
         private static readonly Random getrandom = new Random();

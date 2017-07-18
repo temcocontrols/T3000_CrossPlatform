@@ -1,5 +1,6 @@
 ﻿using System.Data.SQLite;
 using System.Data;
+using System.Windows.Forms;
 
 namespace T3000.Forms
 {
@@ -16,8 +17,8 @@ namespace T3000.Forms
         {
             Prgfileid = param_fileid;
             Screenid = param_screen;
-            string query = "SELECT lbl_name, lbl_text, point_x, point_y,type FROM AtributosLabels WHERE id_prg = " + Prgfileid+" AND screen_id ="+Screenid;
-            
+            string query = "SELECT id_a,lbl_name, lbl_text, point_x, point_y,type,image,link FROM AtributosLabels WHERE id_prg = " + Prgfileid+" AND screen_id ="+Screenid;
+            //MessageBox.Show(query);
             conn = new SqliteConnect();
 
             if (conn.Sqlite_Connect())

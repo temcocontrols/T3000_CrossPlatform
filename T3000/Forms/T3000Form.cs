@@ -283,9 +283,15 @@
                     return;
                 }
                 var f = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+                var f2 = new ProgramsForm(Prg.Programs, Prg.ProgramCodes);
                 var form = new ScreensForm(Prg.Screens);
+                form.Prg = Prg;
+                form.PointsP=Prg.Programs;
+                form.CodesP = Prg.ProgramCodes;
+                form.PrgPath = PrgPath;
                 form.Prfileid = p.Prgfileid;
                 form.Vars = f.Vars;
+                form.Progs = f2.Progs;
                 
                 form.Show();
             }

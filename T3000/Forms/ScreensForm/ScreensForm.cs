@@ -12,14 +12,19 @@
     {
         public List<ScreenPoint> Points { get; set; }
         public DataGridView Vars { get; set; }
+        public DataGridView Progs { get; set; }
         public int Prfileid { get; set; }
+        public string PrgPath { get;  set; }
+        public Prg Prg { get;  set; }
+        public List<ProgramPoint> PointsP { get; set; }
+        public List<ProgramCode> CodesP { get; set; }
         public ScreensForm(List<ScreenPoint> points)
         {
             if (points == null)
             {
                 throw new ArgumentNullException(nameof(points));
             }
-
+            
             Points = points;
 
             InitializeComponent();
@@ -97,8 +102,23 @@
                     point.GraphicMode = row.GetValue<TextGraphic>(ModeColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
                     point.RefreshTime = row.GetValue<int>(RefreshColumn);
-                    
+
+                    string name = row.GetValue<string>(PictureColumn);
+                    var building = "Default_Building";
+                    string path = GetFullPathForPicture(name, building);
+                    UpdatePoint up = new UpdatePoint();
+                    if(up.Update_point(Prfileid, row.GetValue<string>(LabelColumn), path, i))
+                    {
+                        Console.WriteLine("Update Success");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error");
+                    }
+                        
+
                 }
+                Prg.Save(PrgPath);
             }
             catch (Exception exception)
             {
@@ -134,7 +154,11 @@
                 form.Dgv = view;
                 //form.Screenid = view.CurrentRow.Index;
                 form.Vars = Vars;
-               
+                form.Progs = Progs;
+                form.Prg = Prg;
+                form.PointsP = PointsP;
+                form.CodesP = CodesP;
+
 
                 if (form.ShowDialog() != DialogResult.OK)
                 {

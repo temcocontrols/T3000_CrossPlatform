@@ -43,6 +43,7 @@
             this.saveButton.TabIndex = 5;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Visible = false;
             this.saveButton.Click += new System.EventHandler(this.Save);
             // 
             // cancelButton
@@ -56,6 +57,7 @@
             this.cancelButton.TabIndex = 6;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Visible = false;
             this.cancelButton.Click += new System.EventHandler(this.Cancel);
             // 
             // lockCheckBox
