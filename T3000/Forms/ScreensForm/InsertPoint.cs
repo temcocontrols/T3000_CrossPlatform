@@ -12,7 +12,7 @@ namespace T3000.Forms
         private SqliteConnect conn;
         private int get_id;
 
-        public int Get_id { get => get_id; set => get_id = value; }
+        public int Get_id { get { return get_id; } set { get_id = value; } }
 
         public Boolean Insert_point(int param_idprg,String param_lblname,String param_lbltext, int param_screenid, int param_pointx, int param_pointy, int param_type,int param_link)
         {

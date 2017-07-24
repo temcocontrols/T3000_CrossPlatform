@@ -43,9 +43,9 @@ namespace T3000.Forms
         }
 
 
-        public int Prgfileid { get => Prgfileid1; set => Prgfileid1 = value; }
-        public int Screenid { get => __screenid; set => __screenid = value; }
-        public int Prgfileid1 { get => __prgfileid; set => __prgfileid = value; }
-        public DataTable Tb { get => tb; set => tb = value; }
+        public int Prgfileid { get { return Prgfileid1; } set { Prgfileid1 = value; } }
+        public int Screenid { get { return __screenid; } set { __screenid = value; } }
+        public int Prgfileid1 { get { return __prgfileid; } set { __prgfileid = value; } }
+        public DataTable Tb { get { return tb; } set { tb = value; } }
     }
 }

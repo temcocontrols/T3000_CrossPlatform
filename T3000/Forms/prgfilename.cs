@@ -56,8 +56,16 @@ namespace T3000.Forms
             
         }
 
-        public string Prgfilename { get => __prgfilename; set => __prgfilename = value; }
-        public int Prgfileid { get => __prgfileid; set => __prgfileid = value; }
+        public string Prgfilename {
+
+            get {
+                return __prgfilename;
+            }
+            set {
+                __prgfilename = value;
+            }
+        }
+        public int Prgfileid { get { return __prgfileid; } set { __prgfileid = value; } }
 
         private Boolean FindPrgFile()
         {

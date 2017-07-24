@@ -112,14 +112,14 @@ namespace T3000.Forms
 
         }
 
-        public Label Lbl { get => lbl; set => lbl = value; }
-        public string Lbl_name { get => lbl_name; set => lbl_name = value; }
-        public string Lbl_text { get => lbl_text; set => lbl_text = value; }
-        public Point Xy { get => xy; set => xy = value; }
-        public int Type { get => __type; set => __type = value; }
-        public int Link { get => __link; set => __link = value; }
-        public string Path { get => path; set => path = value; }
-        public int Id { get => id; set => id = value; }
-        public PictureBox Thumb { get => thumb; set => thumb = value; }
+        public Label Lbl { get {return  lbl; } set {lbl = value; } }
+        public string Lbl_name { get { return lbl_name; } set { lbl_name = value; } }
+        public string Lbl_text { get { return lbl_text; } set { lbl_text = value; } }
+        public Point Xy { get { return xy; } set { xy = value; } }
+        public int Type { get { return __type; } set { __type = value; } }
+        public int Link { get { return __link; } set {__link = value; }}
+        public string Path { get { return path; } set { path = value; } }
+        public int Id { get { return id; } set { id = value; } }
+        public PictureBox Thumb { get { return thumb; } set { thumb = value; } }
     }
 }

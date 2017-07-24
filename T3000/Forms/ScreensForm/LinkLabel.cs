@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,19 +37,20 @@ namespace T3000.Forms
             textBox1.Enabled = false;
 
             textBox2.MouseClick += textBox2_Click;
-
+            textBox1.KeyDown += textBox1_KeyDown;
         }
 
-        public int Pos { get => _pos; set => _pos = value; }
-        public string Label { get => _label; set => _label = value; }
-        public string Description { get => _description; set => _description = value; }
-        public string Mode { get => _mode; set => _mode = value; }
-        public string Value { get => _value; set => _value = value; }
-        public int Type { get => _type; set => _type = value; }
+        public int Pos { get { return _pos; } set { _pos = value; } }
+        public string Label { get { return _label; } set { _label = value; } }
+        public string Description { get { return _description; } set { _description = value; } }
+        public string Mode { get { return _mode; } set { _mode = value; } }
+        public string Value { get { return _value; } set { _value = value; } }
+        public int Type { get { return _type; } set { _type = value; } }
 
         private void LinkLabel_Load(object sender, EventArgs e)
         {
-
+             
+            
             switch (Type)
             {
                 case 0:
@@ -67,6 +69,9 @@ namespace T3000.Forms
                     this.label2.Text = (Pos+1).ToString() + "-VAR" + (Pos+1).ToString();
                     this.label3.Text = Description.Replace(Value, "");
                     textBox2.ReadOnly = true;
+                    textBox1.ReadOnly = true;
+                    textBox1.MouseClick += textBox1_ClickVars;
+                    
                     break;
             }
             
@@ -99,9 +104,32 @@ namespace T3000.Forms
             textBox2.Text=((textBox2.Text.Equals("Automatic"))?"Manual":"Automatic");
             Boolean flag= ((textBox2.Text.Equals("Automatic")) ? false : true);
             
+            
+            if (Type==0)
+            {
                 textBox1.Enabled = flag;
-         var form = new ProgramsForm(PointsP, CodesP);
-            form.ExternalSaveAutomanual(Pos,dgv.Rows[Pos]);
+                var form = new ProgramsForm(PointsP, CodesP);
+                dgv.Rows[Pos].Cells[3].Value = ((AutoManual)dgv.Rows[Pos].Cells[3].Value).NextValue();
+                form.ExternalSaveAutomanual(Pos, dgv.Rows[Pos]);
+            }
+            else if (Type ==2)
+            {
+                Regex Val = new Regex(@"^[+-]?\d+(\.\d+)?$");
+                if (IsNumeric(textBox1.Text) || Val.IsMatch(textBox1.Text))
+                {
+                    textBox1.Enabled = flag;
+                    textBox1.ReadOnly = false;
+                }
+                else
+                {
+                    textBox1.Enabled = flag;
+                    textBox1.ReadOnly = true;
+                }
+                var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+                dgv.Rows[Pos].Cells[2].Value = ((AutoManual)dgv.Rows[Pos].Cells[2].Value).NextValue();
+                form.ExternalSaveAutomanual(Pos, dgv.Rows[Pos]);
+            }
+           
 
 
         }
@@ -111,14 +139,81 @@ namespace T3000.Forms
            
            textBox1.Text = ((textBox1.Text.Equals("On")) ? "Off" : "On");
             var form = new ProgramsForm(PointsP, CodesP);
+            dgv.Rows[Pos].Cells[2].Value = ((OffOn)dgv.Rows[Pos].Cells[2].Value).NextValue();
             form.ExternalSaveValue(Pos, dgv.Rows[Pos]);
 
 
+        }
+
+        private void textBox1_ClickVars(object sender, MouseEventArgs e)
+        {
+
+
+            Regex Val = new Regex(@"^[+-]?\d+(\.\d+)?$");
+            if (IsNumeric(textBox1.Text) || Val.IsMatch(textBox1.Text))
+            {
+                textBox1.Enabled = true;
+                
+
+
+            }
+            else
+            {
+                if (textBox1.Text.ToLower().Contains("on") || textBox1.Text.ToLower().Contains("off"))
+                {
+                    dgv.Rows[Pos].Cells[3].Value = ((textBox1.Text.Equals("On")) ? "Off" : "On");
+                }
+                else if (textBox1.Text.ToLower().Contains("yes") || textBox1.Text.ToLower().Contains("no"))
+                {
+                    dgv.Rows[Pos].Cells[3].Value = ((textBox1.Text.Equals("Yes")) ? "No" : "Yes");
+
+                }
+
+
+
+                textBox1.Text = dgv.Rows[Pos].Cells[3].Value.ToString();
+                var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+
+                form.ExternalSaveValue(Pos, dgv.Rows[Pos]);
+            }
 
 
 
 
 
+
+
+
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case (Keys.Enter):
+                    Regex Val = new Regex(@"^[+-]?\d+(\.\d+)?$");
+                    if (IsNumeric(textBox1.Text) || Val.IsMatch(textBox1.Text))
+                    {
+
+                        dgv.Rows[Pos].Cells[3].Value = textBox1.Text;
+                        var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+
+                        form.ExternalSaveValue(Pos, dgv.Rows[Pos]);
+                        MessageBox.Show("Saved");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid parameter");
+                    }
+                    break;
+            }
+        }
+            public static bool IsNumeric(object Expression)
+        {
+            double retNum;
+
+            bool isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            return isNum;
         }
 
     }

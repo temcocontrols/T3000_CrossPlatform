@@ -125,6 +125,55 @@
             Close();
         }
 
+        public void ExternalSaveAutomanual(int pos, DataGridViewRow erow)
+        {
+            try
+            {
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
+                {
+                    var point = Points[i];
+                    var row = erow;
+                    if (i == pos)
+                    {
+                        point.AutoManual = ((AutoManual)row.Cells[2].Value);
+                        
+
+                    }
+
+
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+
+            }
+        }
+
+        public void ExternalSaveValue(int pos, DataGridViewRow erow)
+        {
+            try
+            {
+                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
+                {
+                    var point = Points[i];
+                    var row = erow;
+                    if (i == pos)
+                    {
+                        point.Value =  TViewUtilities.GetVariableValue(row, ValueColumn, UnitColumn, RangeColumn, CustomUnits);
+                        
+                    }
+
+
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+
+            }
+        }
+
         private void Cancel(object sender, EventArgs e)
         {
             Close();

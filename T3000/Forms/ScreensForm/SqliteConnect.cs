@@ -15,7 +15,7 @@ namespace T3000.Forms
             Boolean flag = false;
             try
             {
-                Conexion = new SQLiteConnection("Data Source=db.sqlite");
+                Conexion = new SQLiteConnection("URI=file:db.sqlite");
                 Conexion.Open();
                 flag = true;
 
@@ -30,6 +30,6 @@ namespace T3000.Forms
             return flag;
         }
 
-        public SQLiteConnection Conexion { get => conexion; private set =>  conexion = value; }
+        public SQLiteConnection Conexion { get { return conexion; } private set { conexion = value; } }
     }
 }

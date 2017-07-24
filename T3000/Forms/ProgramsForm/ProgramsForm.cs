@@ -121,7 +121,7 @@
                     var row = erow;
                     if (i==pos)
                     {
-                        point.AutoManual = ((AutoManual)row.Cells[3].Value).NextValue();
+                        point.AutoManual = ((AutoManual)row.Cells[3].Value);
 
                     }
                     
@@ -144,7 +144,7 @@
                     var row = erow;
                     if (i == pos)
                     {
-                        point.Control = ((OffOn)row.Cells[2].Value).NextValue();
+                        point.Control = ((OffOn)row.Cells[2].Value);
                      
                     }
 

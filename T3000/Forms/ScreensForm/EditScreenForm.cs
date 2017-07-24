@@ -656,45 +656,49 @@
             control1.MouseMove += handler3;
             control2.MouseMove += handler3;
 
-            EventHandler handler4 = (sender, e) =>
+            MouseEventHandler handler4 = (sender, e) =>
             {
-                if (this.lockCheckBox.Checked)
+                if(e.Button== MouseButtons.Right)
                 {
-                    switch (ListLabels[param].Type)
+                    if (this.lockCheckBox.Checked)
                     {
+                        switch (ListLabels[param].Type)
+                        {
 
-                        case 0:
-                            LinkLabel frmlink0 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Progs.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), Progs.Rows[ListLabels[param].Link].Cells[2].Value.ToString(),  ListLabels[param].Type);
-                            frmlink0.dgv = Progs;
-                            frmlink0.Prg = Prg;
-                            frmlink0.CodesP = CodesP;
+                            case 0:
+                                LinkLabel frmlink0 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Progs.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), Progs.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), ListLabels[param].Type);
+                                frmlink0.dgv = Progs;
+                                frmlink0.Prg = Prg;
+                                frmlink0.CodesP = CodesP;
 
-                            frmlink0.PointsP = PointsP;
-                            frmlink0.Show();
-                            break;
+                                frmlink0.PointsP = PointsP;
+                                frmlink0.Show();
+                                break;
 
-                        case 1:
-                            LinkLabel frmlink1 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, (ListLabels[param].Link + 1).ToString() + "GRP" + (ListLabels[param].Link + 1).ToString(), "AUTO", ListLabels[param].Type);
-                            frmlink1.Show();
-                            break;
+                            case 1:
+                                LinkLabel frmlink1 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, (ListLabels[param].Link + 1).ToString() + "GRP" + (ListLabels[param].Link + 1).ToString(), "AUTO", ListLabels[param].Type);
+                                frmlink1.Show();
+                                break;
 
-                        case 2:
-                            LinkLabel frmlink2 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Vars.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), Vars.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), ListLabels[param].Type);
-                            frmlink2.dgv = Progs;
-                            frmlink2.Prg = Prg;
-                            frmlink2.CodesP = CodesP;
-
-                            frmlink2.PointsP = PointsP;
-                            frmlink2.Show();
-                            break;
+                            case 2:
+                                LinkLabel frmlink2 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Vars.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), Vars.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), ListLabels[param].Type);
+                                frmlink2.dgv = Vars;
+                                frmlink2.Prg = Prg;
+                                frmlink2.Show();
+                                break;
+                        }
                     }
                 }
+                
+               
 
             };
 
+            /************Right Click*******************/
+            control1.MouseClick += handler4;
+            control2.MouseClick += handler4;
 
-            control1.DoubleClick += handler4;
-            control2.DoubleClick += handler4;
+            
 
 
             EventHandler handler5 = (sender, e) =>
@@ -754,6 +758,8 @@
             control1.Click += handler6;
 
         }
+
+ 
 
         //Function to get random number
         private static readonly Random getrandom = new Random();
