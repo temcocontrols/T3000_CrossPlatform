@@ -276,6 +276,7 @@
 
         private void ShowScreens(object sender, EventArgs e)
         {
+            
             try
             {
                 if (!CheckIsOpened())

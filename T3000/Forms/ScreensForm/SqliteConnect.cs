@@ -12,10 +12,12 @@ namespace T3000.Forms
         private SQLiteConnection conexion;
         public Boolean Sqlite_Connect()
         {
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            
             Boolean flag = false;
             try
             {
-                Conexion = new SQLiteConnection("URI=file:db.sqlite");
+                Conexion = new SQLiteConnection("URI=file:"+path+"db.sqlite");
                 Conexion.Open();
                 flag = true;
 
