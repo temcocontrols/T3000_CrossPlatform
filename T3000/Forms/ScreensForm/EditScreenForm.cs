@@ -15,6 +15,7 @@
 
     public partial class EditScreenForm : Form
     {
+        public string PrgPath { get; set; }
         public DataGridView Dgv { get; set; }
         public DataGridView Vars { get; set; }
         public DataGridView Progs { get; set; }
@@ -683,8 +684,26 @@
                             case 2:
                                 LinkLabel frmlink2 = new LinkLabel(ListLabels[param].Link, ListLabels[param].Lbl_name, ListLabels[param].Lbl_text, Vars.Rows[ListLabels[param].Link].Cells[2].Value.ToString(), Vars.Rows[ListLabels[param].Link].Cells[3].Value.ToString(), ListLabels[param].Type);
                                 frmlink2.dgv = Vars;
+                                frmlink2.id = ListLabels[param].Id;
                                 frmlink2.Prg = Prg;
-                                frmlink2.Show();
+                                frmlink2.PrgPath = PrgPath;
+                               
+                                if (frmlink2.ShowDialog() == DialogResult.OK)
+                                {
+                                    if (frmlink2.flag)
+                                    {
+                                        for (int x = 0; x < counter; x++)
+                                        {
+
+                                            this.Controls.Remove(ListLabels[x].Thumb);
+                                            this.Controls.Remove(ListLabels[x].Lbl);
+                                        }
+                                        counter = 0;
+                                        ListLabels = new List<AtributosLabel>();
+                                        ShowPoint();
+                                    }
+                                   
+                                }
                                 break;
                         }
                     }

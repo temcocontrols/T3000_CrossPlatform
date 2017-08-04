@@ -136,6 +136,7 @@
                     if (i == pos)
                     {
                         point.AutoManual = ((AutoManual)row.Cells[2].Value);
+
                         
 
                     }

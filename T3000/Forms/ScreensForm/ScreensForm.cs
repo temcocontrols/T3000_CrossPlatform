@@ -107,16 +107,16 @@
                     var building = "Default_Building";
                     string path = GetFullPathForPicture(name, building);
                     UpdatePoint up = new UpdatePoint();
-                    if(up.Update_point(Prfileid, row.GetValue<string>(LabelColumn), path, i))
+                    if(up.Update_point_image(Prfileid, path, i))
                     {
-                        Console.WriteLine("Update Success");
+                        Console.WriteLine("Image Update Success");
                     }
                     else
                     {
                         Console.WriteLine("Error");
                     }
                         
-
+                    
                 }
                 Prg.Save(PrgPath);
             }
@@ -153,13 +153,14 @@
                 //form.Prfileid = Prfileid;
                 form.Dgv = view;
                 //form.Screenid = view.CurrentRow.Index;
+                form.PrgPath = PrgPath;
                 form.Vars = Vars;
                 form.Progs = Progs;
                 form.Prg = Prg;
                 form.PointsP = PointsP;
                 form.CodesP = CodesP;
 
-
+                
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;

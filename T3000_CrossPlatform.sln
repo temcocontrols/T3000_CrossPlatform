@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramEditor", "ProgramEdi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBox", "FastColoredTextBox\FastColoredTextBox.csproj", "{6DD14A85-CCFC-4774-BD26-0F5772512319}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "T3000Setup", "T3000Setup\T3000Setup.vdproj", "{4C367DFB-FC16-4183-8679-5A9D2C65295C}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "T3000Setup", "T3000Setup\T3000Setup.vdproj", "{131781F1-E9B5-4D3A-9A82-7C6C706754D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,12 +135,12 @@ Global
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|x64.Build.0 = Release|Any CPU
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|x86.ActiveCfg = Release|Any CPU
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|x86.Build.0 = Release|Any CPU
-		{4C367DFB-FC16-4183-8679-5A9D2C65295C}.Debug|Any CPU.ActiveCfg = Debug
-		{4C367DFB-FC16-4183-8679-5A9D2C65295C}.Debug|x64.ActiveCfg = Debug
-		{4C367DFB-FC16-4183-8679-5A9D2C65295C}.Debug|x86.ActiveCfg = Debug
-		{4C367DFB-FC16-4183-8679-5A9D2C65295C}.Release|Any CPU.ActiveCfg = Release
-		{4C367DFB-FC16-4183-8679-5A9D2C65295C}.Release|x64.ActiveCfg = Release
-		{4C367DFB-FC16-4183-8679-5A9D2C65295C}.Release|x86.ActiveCfg = Release
+		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Debug|Any CPU.ActiveCfg = Debug
+		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Debug|x64.ActiveCfg = Debug
+		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Debug|x86.ActiveCfg = Debug
+		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Release|Any CPU.ActiveCfg = Release
+		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Release|x64.ActiveCfg = Release
+		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

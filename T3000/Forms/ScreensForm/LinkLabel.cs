@@ -14,13 +14,16 @@ namespace T3000.Forms
 {
     public partial class LinkLabel : Form
     {
+        public string PrgPath { get; set; }
         private int _pos;
         private String _label;
         private String _description;
         private String _mode;
         private String _value;
         private int _type;
+        public Boolean flag { get; set; }
         public DataGridView dgv { get; set; }
+        public int id { get; set; }
         public Prg Prg { get; set; }
         public List<ProgramPoint> PointsP { get; set; }
         public List<ProgramCode> CodesP { get; set; }
@@ -175,6 +178,24 @@ namespace T3000.Forms
                 var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
 
                 form.ExternalSaveValue(Pos, dgv.Rows[Pos]);
+
+
+                UpdatePoint up = new UpdatePoint();
+                if (up.Update_point(id, dgv.Rows[Pos].Cells[1].Value.ToString() + " " + textBox1.Text))
+                {
+                    Console.WriteLine("Name Update Success");
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+                Prg.Save(PrgPath);
+                MessageBox.Show("Saved");
+                flag = true;
+                DialogResult = DialogResult.OK;
+                
+
+
             }
 
 
@@ -199,7 +220,21 @@ namespace T3000.Forms
                         var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
 
                         form.ExternalSaveValue(Pos, dgv.Rows[Pos]);
+
+                        UpdatePoint up = new UpdatePoint();
+                        if (up.Update_point(id, dgv.Rows[Pos].Cells[1].Value.ToString() + " " + textBox1.Text))
+                        {
+                            Console.WriteLine("Name Update Success");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error");
+                        }
+                        Prg.Save(PrgPath);
                         MessageBox.Show("Saved");
+                        flag = true;
+                        DialogResult = DialogResult.OK;
+                        this.Close();
                     }
                     else
                     {
