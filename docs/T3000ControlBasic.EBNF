@@ -1,15 +1,71 @@
-CONTROL_BASIC = SentencesSequence |.
+CONTROL_BASIC = SentencesSequence | SubRoutine.
+
+SubRoutine = (LineNumber DECLARE EndLine SentencesSequence LineNumber END).
 SentencesSequence = ProgramLine {ProgramLine}.
 ProgramLine = EmptyLine  | LineNumber Sentence EndLine.
 Sentence = (Comment | (Commands| Assignment | Branch | Loop) [Comment]).
 EmptyLine = [LineNumber] EndLine.
 
-Comment = "REM" Space StringLiteral.
+Comment = "REM" {StringLiteral}.
 
 Commands = Command {";" Command}.
-Command = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT.
+
 
 Function = ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB.
+
+Command = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE \n | END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT.
+
+ABS = "ABS" PARIZQ EXPRESSION PARDER.
+ALARM = "ALARM" Term ComparisonOps Term "," Term "," {StringLiteral}.
+ALARMAT = "ALARM-AT" PANEL | "ALL".
+AVG =  "AVG" PARIZQ EXPRESSION {( Space "," Space EXPRESSION)} PARDER.
+CALL = "CALL" PRG ["=" ARG {Space "," Space ARG} ].
+CLEAR = "CLEAR".
+CLOSE = "CLOSE" Designator.
+CONPROP = "CONPROP" PARIZQ NonZeroDigit {Digit} "," Expression PARDER RANGE.
+CONRATE = "CONRATE" PARIZQ NonZeroDigit {Digit} "," Expression PARDER RANGE.
+CONRESET = "CONRESET" PARIZQ NonZeroDigit {Digit} "," Expression PARDER RANGE.
+DALARM = "DALARM" Expression "," NumberLiteral "," StringLiteral {StringLiteral}.
+DECLARE = "DECLARE" Identifier {("," Identifier)}.
+
+DISABLE = "DISABLE" Identifier.
+DOM = "DOM".
+DOW = "DOW".
+DOY  = "DOY".
+ENABLE = "ENABLE" Identifier.
+END = "END".
+HANGUP = "HANGUP".
+INT = "INT" PARIZQ Expression PARDER.
+INTERVAL = "INTERVAL" PARIZQ Expression PARDER.
+LET = "LET" Assignment.
+LN = "LN" PARIZQ Expression PARDER.
+LN1 = "LN-1" PARIZQ Expression PARDER.
+MAX = "MAX" PARIZQ Expression {(Space "," Space Expression)} PARDER.
+MIN = "MIN" PARIZQ Expression {(Space "," Space Expression)} PARDER.
+ONALARM = "ON-ALARM" LineNumber.
+ONERROR = "ON-ERROR" LineNumber.
+OPEN = "OPEN" Identifier.
+POWERLOSS = "POWER-LOSS".
+PHONE = "PHONE" (PhoneNumber | StringLiteral).
+PRINT = "PRINT" (EnclosedString | PrintableKeywords) {( ";" EnclosedString | PrintableKeywords )}.
+PrintableKeywords = "DATE"|"TIME"|"USER-A"|"USER-B"|"POINT/LOCAL VARIABLE VALUES"|"BEEP".
+EnclosedString = '"' StringLiteral {StringLiteral} '"'.
+PRINTAT = "PRINT-AT" PANELS.
+REMOTEGET = "REMOTE-GET" Designator "=" RemoteDesignator.
+REMOTESET = "REMOTE-SET" RemoteDesignator "=" Designator.
+RETURN = "RETURN".
+RUNMACRO = "RUN-SYSTEM" SYSPRG.
+SCANS = Identifier "=" "SCANS".
+SETPRINTER = PRINTEVERYTHING | ONLYPRINTCOMMANDS.
+PRINTEVERYTHING = "SET-PRINTER" ("A"|"B"|"0").
+ONLYPRINTCOMMANDS = "Set-Printer" ("a"|"b"|"0").
+SQR = "SQR" PARIZQ Expression PARDER.
+START = "START" Designator.
+STATUS = "STATUS" PARIZQ PANEL PARDER.
+START = "START" Designator.
+WAIT = "WAIT".
+
+
 
 Branch = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON.
 IF = "IF" Expression "THEN" IFCLAUSE [("ELSE" IFCLAUSE)].
@@ -36,7 +92,7 @@ Other = "*"|"_"|Parenthesis.
 
 LineNumber = ("1"|"2"|"3"|"4"|"5"|"6"|"6"|"7"|"8"|"9") Digit {Digit}.
 Literal = NumbersLiteral | DatesLiteral | DaysLiteral | TimeLiteral.
-
+PhoneNumber = Integer {("-" Integer)}.
 NumbersLiteral = ["-"] Integer [("."|"E") ["-"] Integer].
 DaysLiteral = "0"|"1"|"2"|"3"|"4"|"5"|"6".
 DatesLiteral = NonZeroDigit [Digit [Digit]].
@@ -67,8 +123,10 @@ IntegerTerm = Function | Designator.
 Assignment = Designator "=" Expression .
 
 Designator = Identifier | PointIdentifier.
-Identifier = Letter {"-" | Letter | Digit}.
+RemoteDesignator = Designator.
+Identifier = (Letter|Digit) {"-" | Letter | Digit}.
 PointIdentifier = VARS | CONS | WRS | ARS | OUTS | INS.
+
 VARS = "VAR" NonZeroDigit {Digit}.
 OUTS = "OUT" NonZeroDigit {Digit}.
 INS = "IN" NonZeroDigit {Digit}.
@@ -76,3 +134,10 @@ CONS = "CON" NonZeroDigit {Digit}.
 WRS = "WRS" NonZeroDigit {Digit}.
 ARS = "ARS" NonZeroDigit {Digit}.
 
+PANEL = (NonZeroDigit {Digit}).
+PANELS = (PANEL {PANEL}) | "ALL".
+
+PRG = "PRG" NonZeroDigit {Digit}.
+ARG = Designator | Expression.
+RANGE = "RANGE" Integer "TO" Integer.
+SYSPRG = ("1"|"2"|"3"|"4"|"5"|"6"|"6"|"7"|"8"|"9"|"10"|"11"|"12"|"13"|"14"|"15"|"16").
