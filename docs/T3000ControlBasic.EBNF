@@ -1,0 +1,78 @@
+CONTROL_BASIC = SentencesSequence |.
+SentencesSequence = ProgramLine {ProgramLine}.
+ProgramLine = EmptyLine  | LineNumber Sentence EndLine.
+Sentence = (Comment | (Commands| Assignment | Branch | Loop) [Comment]).
+EmptyLine = [LineNumber] EndLine.
+
+Comment = "REM" Space StringLiteral.
+
+Commands = Command {";" Command}.
+Command = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT.
+
+Function = ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB.
+
+Branch = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON.
+IF = "IF" Expression "THEN" IFCLAUSE [("ELSE" IFCLAUSE)].
+IFTRUE = "IF+" Expression "THEN" IFCLAUSE [("ELSE" IFCLAUSE)].
+IFFALSE = "IF-" Expression "THEN" IFCLAUSE [("ELSE" IFCLAUSE)].
+IFCLAUSE = (Sentence | LineNumber).
+ON = "ON" IntegerTerm (GOTO | GOSUB) {"," LineNumber}.
+GOSUB = "GOSUB" LineNumber.
+GOTO = "GOTO" LineNumber.
+
+Loop = FOR SentencesSequence ENDFOR.
+FOR = "FOR" LoopVariable "=" Integer "TO" Integer ["STEP" Integer] EndLine.
+ENDFOR = "NEXT" {LoopVariable {"," LoopVariable}}.
+LoopVariable = "A" | "B" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K".
+
+Space = " ".
+StringLiteral = NonCtlAsciiChar {NonCtlAsciiChar}.
+
+NonCtlAsciiChar = Space | Punctuation | Letter | Digit | Other. 
+
+Punctuation = "."|","|";".
+
+Other = "*"|"_"|Parenthesis.
+
+LineNumber = ("1"|"2"|"3"|"4"|"5"|"6"|"6"|"7"|"8"|"9") Digit {Digit}.
+Literal = NumbersLiteral | DatesLiteral | DaysLiteral | TimeLiteral.
+
+NumbersLiteral = ["-"] Integer [("."|"E") ["-"] Integer].
+DaysLiteral = "0"|"1"|"2"|"3"|"4"|"5"|"6".
+DatesLiteral = NonZeroDigit [Digit [Digit]].
+Integer = Digit {Digit}.
+Digit = "0"| NonZeroDigit.
+NonZeroDigit = "1"|"2"|"3"|"4"|"5"|"6"|"6"|"7"|"8"|"9".
+TimeLiteral = HH ":" MM ":" SS.
+HH = "0" Digit | "1" Digit | "2" ("0"|"1"|"2"|"3").
+MM = ("0"|"1"|"2"|"3"|"4"|"5") Digit.
+SS = ("0"|"1"|"2"|"3"|"4"|"5") Digit.
+
+LogicOps = "AND" | "OR" | "XOR".
+ArithmeticOps = "^" | "*" | "/" | "\" | "+" | "-" | "MOD".
+ComparisonOps = "<" | ">" | "<=" | ">=" | "<>" | "=".
+UnaryOps = "NOT".
+BinaryOps = ArithmeticOps | ComparisonOps.
+Parenthesis = ParIzq | ParDer.
+ParIzq = "(".
+ParDer = ")".
+Expression = EnclosableExpression [LogicOps EnclosableExpression].
+EnclosableExpression = SimpleExpression | (ParIzq SimpleExpression ParDer).
+SimpleExpression = UnaryExpression | BinaryExpression | Expression.
+UnaryExpression =  ([UnaryOps] Term).
+BinaryExpression = (Term BinaryOps Term).
+Term = Function | Designator | Literal.
+IntegerTerm = Function | Designator.
+
+Assignment = Designator "=" Expression .
+
+Designator = Identifier | PointIdentifier.
+Identifier = Letter {"-" | Letter | Digit}.
+PointIdentifier = VARS | CONS | WRS | ARS | OUTS | INS.
+VARS = "VAR" NonZeroDigit {Digit}.
+OUTS = "OUT" NonZeroDigit {Digit}.
+INS = "IN" NonZeroDigit {Digit}.
+CONS = "CON" NonZeroDigit {Digit}.
+WRS = "WRS" NonZeroDigit {Digit}.
+ARS = "ARS" NonZeroDigit {Digit}.
+

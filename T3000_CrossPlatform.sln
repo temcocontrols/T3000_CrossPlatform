@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRGReaderLibrary", "PRGReaderLibrary\PRGReaderLibrary.csproj", "{573991EF-5A2B-4BBF-8283-1307DA619967}"
 EndProject
@@ -26,8 +26,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramEditor", "ProgramEditor\ProgramEditor.csproj", "{E8507121-5342-46C9-A158-228A6870CDFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBox", "FastColoredTextBox\FastColoredTextBox.csproj", "{6DD14A85-CCFC-4774-BD26-0F5772512319}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "T3000Setup", "T3000Setup\T3000Setup.vdproj", "{131781F1-E9B5-4D3A-9A82-7C6C706754D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,12 +133,6 @@ Global
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|x64.Build.0 = Release|Any CPU
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|x86.ActiveCfg = Release|Any CPU
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|x86.Build.0 = Release|Any CPU
-		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Debug|Any CPU.ActiveCfg = Debug
-		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Debug|x64.ActiveCfg = Debug
-		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Debug|x86.ActiveCfg = Debug
-		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Release|Any CPU.ActiveCfg = Release
-		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Release|x64.ActiveCfg = Release
-		{131781F1-E9B5-4D3A-9A82-7C6C706754D9}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

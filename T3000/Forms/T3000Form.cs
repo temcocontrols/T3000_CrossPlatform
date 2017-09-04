@@ -12,7 +12,9 @@
         public Prg Prg { get; private set; }
         public string PrgPath { get; private set; }
         public bool IsOpened => Prg != null;
-        prgfilename p;
+
+        //TODO: Pendiente de averiguar la finalidad?! No encuentra el archivo SQLITE
+        //prgfilename p;
 
         public T3000Form()
         {
@@ -34,7 +36,9 @@
             try
             {
                 var path = dialog.FileName;
-                p = new prgfilename(Path.GetFileName(path));
+
+                //TODO: Pendiente de averiguar cual es era la finalidad.
+                //p = new prgfilename(Path.GetFileName(path));
                 
                 PrgPath = path;
                 Prg = Prg.Load(path);
@@ -290,7 +294,8 @@
                 form.PointsP=Prg.Programs;
                 form.CodesP = Prg.ProgramCodes;
                 form.PrgPath = PrgPath;
-                form.Prfileid = p.Prgfileid;
+                //TODO: Única referencia a las líneas con errores de carga de DB SQLITE
+                //form.Prfileid = p.Prgfileid;
                 form.Vars = f.Vars;
                 form.Progs = f2.Progs;
                 
