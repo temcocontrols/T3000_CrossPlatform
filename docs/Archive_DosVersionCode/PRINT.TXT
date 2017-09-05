@@ -1,0 +1,712 @@
+
+
+ [ Panel 1, PRG ]         PM 2 : 19 : 25  1998 . 8 . 21
+
+Num|Full_label          |Status|A/m |Size|Run_status|Label   |
+  1|WAREHOUSE PROGRAM   |ON    |AUTO| 279|Normal    |P1      |
+  2|WASHROOM  PROGRAM   |ON    |AUTO| 124|Normal    |P2      |
+  3|BASEBOARDS PROGRAM  |ON    |AUTO| 147|Normal    |P3      |
+  4|HEAT PUMP PROGRAM 1 |ON    |AUTO|1510|Normal    |P4      |
+  5|TIME                |ON    |AUTO|  19|Normal    |P5      |
+  6|TEMP PRED PRG 1     |OFF   |AUTO|1031|Normal    |P6      |
+  7|TEMP PRED PRG 2     |OFF   |AUTO|1157|Normal    |P7      |
+  8|OPTIMUM START PROG  |OFF   |AUTO| 757|Normal    |P8      |
+  9|TEST                |ON    |AUTO|  53|Normal    |P9      |
+ 10|TIMECLOCK PROGRAM   |OFF   |AUTO| 253|Normal    |P11     |
+ 11|TEMPERATURE CALC'S  |OFF   |AUTO| 713|Normal    |P12     |
+ 12|SECURITY CALCS      |ON    |AUTO| 460|Normal    |P13     |
+ 13|SECURITY SYSTEM PROG|ON    |AUTO| 999|Normal    |P14     |
+ 14|BUILDING MODE PROGRM|ON    |AUTO| 674|Normal    |P15     |
+
+
+ [ Panel 1, GRP ]         PM 2 : 19 : 25  1998 . 8 . 21
+
+Num|Full_label          |Label   |Pic file|Mode   |Refresh|
+  1|HEAT PUMP           |HP      |        |Text   |  1    |
+  2|SECURITY SYSTEM     |S       |        |Text   |  1    |
+  3|TEST                |        |        |Text   |  0    |
+  4|R&D AND WAREHOUSE   |SH      |        |Text   |  1    |
+  5|BASEBOARDS          |BB      |        |Text   | 15    |
+  6|HEA PUMP GRAPHIC    |HPG     |SOCIAL2 |Graphic|  1    |
+
+
+ [ Panel 1, IN ]         PM 2 : 19 : 25  1998 . 8 . 21
+
+Num|Full_label          |A/m |Value  |Units|Range       | cal |Fil|D|Label   |
+  1|WASHROOM TEMPERATURE|AUTO|  28.45|deg.C|10K -40->120|  0.0| 64|-|RTS4    |
+  2|SHOP TEMPERATURE    |AUTO|  24.12|deg.C|10K -40->120| -5.0| 64|-|RTS3    |
+  3|1ST FLOOR TEMP      |AUTO|  25.52|deg.C|10K -40->120| -1.0| 64|-|RTS1    |
+  4|FRESH AIR INTAKE    |AUTO|  24.30|deg.C|Y3K -40->150|  0.0| 64|-|FAT     |
+  5|MIXED AIR TEMP      |AUTO|  28.42|deg.C|10K -40->120|    0| 64|-|MAT     |
+  6|RETURN AIR TEMP     |AUTO|  25.40|deg.C|Y3K -40->150|  0.0| 64|-|RAT     |
+  7|SUPPLY AIR TEMP     |AUTO|  26.00|deg.C|Y3K -40->150|  0.0| 64|-|SAT     |
+  8|OUTSIDE AIR TEMP    |AUTO|  29.28|deg.C|Y3K -40->150| -2.0| 64|-|OAT     |
+  9|2ND FLOOR TEMP      |AUTO|  30.77|deg.C|10K -40->120|  2.0| 64|-|RTS2    |
+ 10|SHOP   DOOR         |AUTO|Alarm  |     |Norm/Alarm  |     | 64|Y|DOOR1   |
+ 11|SHOP   MOTION       |AUTO|Normal |     |Norm/Alarm  |     | 64|Y|MOTION1 |
+ 12|OFFICE FRONT DOOR2  |AUTO|Normal |     |Norm/Alarm  |     |  1|Y|DOOR2   |
+ 13|OFFICE MOTION       |AUTO|Normal |     |Norm/Alarm  |     | 64|Y|MOTION2 |
+ 14|KEYPAD SWITCH       |AUTO|On     |     |  Off/ On   |     | 64|-|KEYPAD  |
+
+
+ [ Panel 1, OUT ]         PM 2 : 19 : 25  1998 . 8 . 21
+
+Num|Full_label          |A/m |Value     |Units|Range       | 0% | 100|D|Label   |
+  1|WASHROOM BASEBOARD  |AUTO|Stop      |     |Stop/Start  |    |    |-|WBB     |
+  2|SHOP FURNACE        |AUTO|Stop      |     |Stop/Start  |    |    |-|GAS     |
+  3|RECEPTION BASEBOARD |AUTO|Stop      |     |Stop/Start  |    |    |-|RECEPBB |
+  4|EAST OFFICE BASEBOAD|AUTO|Stop      |     |Stop/Start  |    |    |-|EOFFBB  |
+  5|WEST OFFICE BASEBOAD|AUTO|Stop      |     |Stop/Start  |    |    |-|WOFFBB  |
+  6|SUPPLY FAN          |AUTO|Start     |     |Stop/Start  |    |    |-|FAN     |
+  7|HEAT PUMP COMPRESSOR|MAN |Stop      |     |Stop/Start  |    |    |-|COMPRESR|
+  8|HEAT PUMP REVERSINGV|AUTO|Heat      |     |  Heat/Cool |    |    |-|REVVLV  |
+  9|MIXED AIR DAMPER    |AUTO|On        |     |  Off/ On   |    |    |-|MAD     |
+ 10|ALARM BELL          |AUTO|Off       |     |  Off/ On   |    |    |-|ALARMBEL|
+ 11|ALARM ARMED LIGHT   |AUTO|On        |     |  Off/ On   |    |    |-|REDLED  |
+ 12|ALARM DISARMED LIGHT|AUTO|Off       |     |  Off/ On   |    |    |-|GREENLED|
+ 13|FRONT DOOR BUZZER   |AUTO|Off       |     |  Off/ On   |    |    |-|BUZZER  |
+ 14|12 VOLT POWER       |MAN |On        |     |  Off/ On   |    |    |-|12VOLT  |
+ 15|12 VOLT POWER       |MAN |On        |     |  Off/ On   |    |    |-|12VOLT2 |
+
+
+ [ Panel 1, VAR ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+Num|Full_label          |A/m |Value       |Units     |Label   |
+  1|WHSE SET POINT      |AUTO|      19.000|deg.C     |WH-SP   |
+  2|WAREHOUSE NITE STPT |MAN |       5.000|deg.C     |WHN-SP  |
+  3|OFFICE SETPOINT     |AUTO|      22.500|deg.C     |OFF-SP  |
+  4|OFFICE SETPOINT DAY |MAN |      18.000|deg.C     |SETPTDAY|
+  5|OFFICE SETPOINT NITE|MAN |      10.000|deg.C     |OFFN-SP |
+  6|OFFICE SETPOINT     |AUTO|      17.000|deg.C     |OFFSETP |
+  7|OFFICE AVERAGE TEMP |AUTO|      24.825|deg.C     |AVG-RTS |
+  8|HEAT PUMP SETPOINT  |AUTO|       5.000|deg.C     |HPC-SP  |
+  9|TIME                |AUTO|    14:19:25| Time     |TIMECLK |
+ 10|WAREHOUSE DAY SETPT |MAN |      19.000|deg.C     |WHD-SP  |
+ 11|WASHROOM SETPOINT   |AUTO|      17.000|deg.C     |WASH-SP |
+ 12|HEATING/COOLING MODE|AUTO|Cool        | Cool/Heat|HOT/COLD|
+ 13|WASHROOM DAY SETPT  |MAN |      17.000|deg.C     |WASHD-SP|
+ 14|ALARM ARMED MODE:   |AUTO|On          |  Off/ On |ARMED   |
+ 15|DAYS HIGH TEMP      |AUTO|      12.491|deg.C     |DHT     |
+ 16|HOUR OF THE HIGH    |AUTO|    00:00:00| Time     |HH      |
+ 17|DAYS LOW TEMP       |AUTO|      -4.640|deg.C     |DLT     |
+ 18|HOUR OF THE LOW     |AUTO|    10:33:32| Time     |HL      |
+ 19|PROJECTED HIGH TEMP |AUTO|      12.491|deg.C     |PHT     |
+ 20|PROJECTED LOW TEMP  |AUTO|       0.000|deg.C     |PLT     |
+ 21|COLD DAY            |AUTO|Yes         | No / Yes |CD      |
+ 22|BLDG OBJECTIVE TEMP |AUTO|      22.000|deg.C     |BOT     |
+ 23|BLDG LOW LIMIT TEMP |AUTO|      16.000|deg.C     |BLLT    |
+ 24|OUTSIDE AIR TEMP    |AUTO|      10.000|deg.C     |        |
+ 25|PREV DAYS TEMP RANGE|AUTO|      13.156|deg.C     |PDTR    |
+ 26|TEMP RANGE          |AUTO|       4.664|deg.C     |TR      |
+ 27|HOUR OF SUNRISE     |AUTO|     864.070|Hours     |HOS     |
+ 28|DEWPOINT TEMP       |AUTO|   25157.613|deg.C     |DEWTMP  |
+ 29|OAT LOWER LIMIT     |AUTO|    1532.366|deg.C     |OATLL   |
+ 30|REDUCING FACTOR     |AUTO|  -68456.000|          |RF      |
+ 31|HISTORICAL TEMP RISE|AUTO|       4.420|deg.C     |HTR     |
+ 32|ACTUAL TEMP RISE    |AUTO|       4.420|deg.C     |ATR     |
+ 33|FREE COOL AVAILABLE |AUTO|No          | No / Yes |FREECOOL|
+ 34|COOLING MODE        |AUTO|On          |  Off/ On |COOLMODE|
+ 35|HEATING MODE        |AUTO|Off         |  Off/ On |HEATMODE|
+ 36|VENTILLATION MODE   |AUTO|Off         |  Off/ On |VENTMODE|
+ 37|COLDDAY SWITCH TEMP |AUTO|      15.000|deg.C     |GCDST   |
+ 38|INTERMEDIATE CD FLAG|AUTO|Off         |  Off/ On |GCDF    |
+ 39|ACTUAL CD FLAG      |AUTO|Off         |  Off/ On |GCD     |
+ 40|OFFICE SETPNT ADJUST|MAN |      -1.000|deg.C     |SETPADJ |
+ 41|ALARM WARNING MODE  |MAN |Off         |  Off/ On |ALRMWM  |
+ 42|ALARM MODE          |MAN |Off         |  Off/ On |ALARMODE|
+ 43|PERIMETER ZONE 1    |AUTO|On          |  Off/ On |PER1OCC |
+ 44|INTERIOR ZONE 1     |AUTO|Off         |  Off/ On |INT1OCC |
+ 45|PERIMETER ZONE 2    |AUTO|Off         |  Off/ On |PER2OCC |
+ 46|INTERIOR ZONE 2     |AUTO|Off         |  Off/ On |INT2OCC |
+ 47|WARM-UP MODE        |AUTO|Disable     |Dis/Enable|WARM-UP |
+ 48|WARM-UP FACTOR      |AUTO|       3.000|          |WUF     |
+ 49|PRECOOL MODE        |AUTO|Disable     |Dis/Enable|PRECOOL |
+ 50|PRECOOL FACTOR      |AUTO|       0.000|          |PCF     |
+ 51|AVERAGE ROOM TEMP   |AUTO|      20.837|deg.C     |AVERAGE |
+ 52|MINIMUM ROOM TEMP   |AUTO|      19.825|deg.C     |MINIMUM |
+ 53|MAXIMUM ROOM TEMP   |AUTO|      21.850|deg.C     |MAXIMUM |
+ 54|HEAT PUMP MIN AIR(%)|MAN |      15.000|    %     |HPMINFA |
+ 55|HP DAMPER SETPNT    |AUTO|      12.000|deg.C     |HP-DSP  |
+ 56|HEAT/COOL ENABLE    |AUTO|INACTIVE    |INACT/ACTI|HEATCOOL|
+ 57|DAY'S HIGH TEMP     |AUTO|       3.852|deg.C     |OAT-HI  |
+ 58|DAY'S LOW TEMP      |AUTO|       0.000|deg.C     |OAT-LO  |
+ 59|DUTY CYCLE FAN ENABL|AUTO|Yes         | No / Yes |DC      |
+ 60|DUTY CYCLE ON TIME  |AUTO|    00:00:08| Time     |DCONTIME|
+ 61|BUILDING ACTIVITY   |AUTO|On          |  Off/ On |ACTIVITY|
+ 62|BUILDING LOWOCC MODE|AUTO|Off         |  Off/ On |BLOM    |
+ 63|ALARM GRACE PERIOD  |MAN |    00:00:20| Time     |ALRGRACE|
+ 64|TRIGGERS PER MINUTE |AUTO|       0.000|          |TRIGGERS|
+ 65|ALARM SYSTEM TRIGGER|AUTO|Off         |  Off/ On |TRIGGER |
+ 66|HORN BLAST COUNTER  |AUTO|      10.000|          |HORNCNT |
+ 67|BLDNG OVERRIDE MODE |AUTO|No          | No / Yes |OVERRIDE|
+ 68|BLDNG OVERRIDE TIMER|AUTO|    00:00:00| Time     |OVERIDET|
+ 69|EMERGENCY COUNTER   |AUTO|      96.000|          |EMCOUNT |
+ 70|BLDNG ACTIVITY TIMER|AUTO|    00:00:10| Time     |BATIMER |
+ 71|BUILDING HEAT REQD  |AUTO|       8.275|deg.C     |BHEATREQ|
+ 72|BUILDING COOLNG REQD|AUTO|       0.000|deg.C     |BCOOLREQ|
+ 73|BUILDING OVERIDE INT|MAN |    00:30:00| Time     |OVERINT |
+ 74|WAREHOUSE OCCUP INT |AUTO|Occupied    | Un/Occupy|WH-OCCUP|
+ 75|WAREHOUSE EMPTY INT |AUTO|    00:00:00| Time     |WH-EMPTY|
+ 76|SETPOINT TEST RTS   |AUTO|      23.000|deg.C     |SP-TEST |
+ 77|WAREHS PULSE STRETCH|AUTO|On          |  Off/ On |MOTION1B|
+ 78|TIME OF DAY         |AUTO|    14:19:25| Time     |DTIME   |
+ 79|CLOCK               |AUTO|    14:19:25| Time     |MYCLOCK |
+ 80|TEST                |AUTO|      18.000|          |        |
+ 81|CH-3 DAMPER VAR     |AUTO|On          |  Off/ On |CH-3VAR |
+
+
+ [ Panel 1, CON ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+Num|Input   |Value|Units|A/m |Output |Setpoint|Set_value|Units|Action|Prop|Reset|Rate|Bias|Num|
+  1|AVG-RTS | 24.8|deg.C|AUTO|  0.0 %|OFF-SP  |  22.5   |deg.C|-     |   1|   0 |1.00|   0|  1|
+  2|AVG-RTS | 24.8|deg.C|AUTO|100.0 %|OFFSETP |  17.0   |deg.C|+     |   2|  40 |0.00|   0|  2|
+  3|RTS4    | 28.4|deg.C|AUTO|  0.0 %|WH-SP   |  19.0   |deg.C|-     |   1|   0 |0.00|   0|  3|
+  4|RTS3    | 24.1|deg.C|AUTO|  0.0 %|WH-SP   |  19.0   |deg.C|-     |   0|   0 |0.00|   0|  4|
+
+
+ [ Panel 1, WR ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+No|Full_label          |A/m |Output|Holiday1|State1|Holiday2|State2|Label   |
+  1|OCCUPIED SCHEDULE   |AUTO|ON    |HOLIDAY |OFF   |        |OFF   |DAYTIME |
+
+
+ [ Panel 1 ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+   | mon | tue | wed | thu | fri | sat | sun |Holiday1|Holiday2|
+ON |07:30|07:45|07:45|07:30|07:30|     |     |        |
+OFF|18:00|18:00|18:00|18:00|18:00|     |     |        |
+
+
+ [ Panel 1, AR ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+Num|Full_label          |A/m |Value|Label   |
+  1|HOLIDAYS            |AUTO|OFF  |HOLIDAY |
+
+
+ [ Panel 1 ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+
+SU |MO|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |
+   |  |  | 1| 2| 3| | 1| 2| 3| 4| 5| 6| 7| | 1| 2| 3| 4| 5| 6| 7| |
+ 4 | 5| 7| 8| 9|10| | 8| 9|10|11|12|13|14| | 8| 9|10|11|12|13|14| |
+11 |12|14|15|16|17| |15|16|17|18|19|20|21| |15|16|17|18|19|20|21| |
+18 |19|21|22|23|24| |22|23|24|25|26|27|28| |22|23|24|25|26|27|28| |
+25 |26|28|29|30|31| |  |  |  |  |  |  |  | |29|30|31|  |  |  |  | |
+   |  |  |  |  |  | |  |  |  |  |  |  |  | |  |  |  |  |  |  |  | |
+
+
+ [ Panel 1 ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+
+SU |MO|TU|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |
+   |  |  | 1| 2| 3| 4| |  |  |  |  |  | 1| 2| |  | 1| 2| 3| 4| 5| 6| |
+ 5 | 6| 7| 8| 9|10|11| | 3| 4| 5| 6| 7| 8| 9| | 7| 8| 9|10|11|12|13| |
+12 |13|14|15|16|17|18| |10|11|12|13|14|15|16| |14|15|16|17|18|19|20| |
+19 |20|21|22|23|24|25| |17|18|19|20|21|22|23| |21|22|23|24|25|26|27| |
+26 |27|28|29|30|  |  | |24|25|26|27|28|29|30| |28|29|30|  |  |  |  | |
+   |  |  |  |  |  |  | |31|  |  |  |  |  |  | |  |  |  |  |  |  |  | |
+
+
+ [ Panel 1 ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+
+SU |MO|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |
+   |  | 1| 2| 3| 4| |  |  |  |  |  |  | 1| |  |  | 1| 2| 3| 4| 5| |
+ 5 | 6| 8| 9|10|11| | 2| 3| 4| 5| 6| 7| 8| | 6| 7| 8| 9|10|11|12| |
+12 |13|15|16|17|18| | 9|10|11|12|13|14|15| |13|14|15|16|17|18|19| |
+19 |20|22|23|24|25| |16|17|18|19|20|21|22| |20|21|22|23|24|25|26| |
+26 |27|29|30|31|  | |23|24|25|26|27|28|29| |27|28|29|30|  |  |  | |
+   |  |  |  |  |  | |30|31|  |  |  |  |  | |  |  |  |  |  |  |  | |
+
+
+ [ Panel 1 ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+
+SU |MO|TU|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |SU|MO|TU|WE|TH|FR|SA| |
+   |  |  |  | 1| 2| 3| | 1| 2| 3| 4| 5| 6| 7| |  |  | 1| 2| 3| 4| 5| |
+ 4 | 5| 6| 7| 8| 9|10| | 8| 9|10|11|12|13|14| | 6| 7| 8| 9|10|11|12| |
+11 |12|13|14|15|16|17| |15|16|17|18|19|20|21| |13|14|15|16|17|18|19| |
+18 |19|20|21|22|23|24| |22|23|24|25|26|27|28| |20|21|22|23|24|25|26| |
+25 |26|27|28|29|30|31| |29|30|  |  |  |  |  | |27|28|29|30|31|  |  | |
+   |  |  |  |  |  |  | |  |  |  |  |  |  |  | |  |  |  |  |  |  |  | |
+
+
+ [ Panel 1, AY ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+Num|Label   |Length|
+
+
+ [ Panel 1, AMON ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+Num|Label   |Interval|Length|Units |Size   |Status|
+  1|OFFICE  |00:01:00|  1   |days  |  28889|ON    |
+  2|R&D     |00:01:00|  2   |days  |  34649|ON    |
+  3|WASHRM  |00:01:00|  2   |days  |  34649|ON    |
+  4|MOTION  |00:01:00|  5   |days  |  28889|ON    |
+  5|SHOP    |00:15:00| 51   |days  |  39257|ON    |
+  6|TEST    |00:01:00|  1   |days  |   5849|ON    |
+  7|REV_VLV |00:00:01|166   |min   |  39929|OFF   |
+  8|OFFICE2 |00:05:00|232   |min   |    273|OFF   |
+
+
+ [ Panel 1, UNIT ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+Num|Dig off    |Dig on     |Direct_inv|
+  1|INACTIVE   |ACTIVE     |Direct    |
+
+
+ [ Panel 1, ALAR ]         PM 2 : 19 : 26  1998 . 8 . 21
+
+#  |Pan|Message                                                   |Time                      |Ack  |Res|Del|
+  1|  0|                                                          |                          |     |   |   |
+  2|  0|                                                          |                          |     |   |   |
+  3|  0|                                                          |                          |     |   |   |
+  4|  0|                                                          |                          |     |   |   |
+  5|  0|                                                          |                          |     |   |   |
+  6|  0|                                                          |                          |     |   |   |
+  7|  0|                                                          |                          |     |   |   |
+  8|  0|                                                          |                          |     |   |   |
+  9|  0|                                                          |                          |     |   |   |
+ 10|  0|                                                          |                          |     |   |   |
+ 11|  0|                                                          |                          |     |   |   |
+ 12|  0|                                                          |                          |     |   |   |
+ 13|  0|                                                          |                          |     |   |   |
+ 14|  0|                                                          |                          |     |   |   |
+ 15|  0|                                                          |                          |     |   |   |
+ 16|  0|                                                          |                          |     |   |   |
+ 17|  0|                                                          |                          |     |   |   |
+ 18|  0|                                                          |                          |     |   |   |
+ 19|  0|                                                          |                          |     |   |   |
+ 20|  0|                                                          |                          |     |   |   |
+ 21|  0|                                                          |                          |     |   |   |
+ 22|  0|                                                          |                          |     |   |   |
+ 23|  0|                                                          |                          |     |   |   |
+ 24|  0|                                                          |                          |     |   |   |
+ 25|  0|                                                          |                          |     |   |   |
+ 26|  0|                                                          |                          |     |   |   |
+ 27|  0|                                                          |                          |     |   |   |
+ 28|  0|                                                          |                          |     |   |   |
+ 29|  0|                                                          |                          |     |   |   |
+ 30|  0|                                                          |                          |     |   |   |
+ 31|  0|                                                          |                          |     |   |   |
+ 32|  0|                                                          |                          |     |   |   |
+ 33|  0|                                                          |                          |     |   |   |
+ 34|  0|                                                          |                          |     |   |   |
+ 35|  0|                                                          |                          |     |   |   |
+ 36|  0|                                                          |                          |     |   |   |
+ 37|  0|                                                          |                          |     |   |   |
+ 38|  0|                                                          |                          |     |   |   |
+ 39|  0|                                                          |                          |     |   |   |
+ 40|  0|                                                          |                          |     |   |   |
+ 41|  0|                                                          |                          |     |   |   |
+ 42|  0|                                                          |                          |     |   |   |
+ 43|  0|                                                          |                          |     |   |   |
+ 44|  0|                                                          |                          |     |   |   |
+ 45|  0|                                                          |                          |     |   |   |
+ 46|  0|                                                          |                          |     |   |   |
+ 47|  0|                                                          |                          |     |   |   |
+ 48|  0|                                                          |                          |     |   |   |
+
+
+P1
+----------
+
+
+10 REM ***********WAREHOUSE CONTROL ****************
+15  WH-SP = WHN-SP
+16 IF DAYTIME THEN  WH-SP = WHD-SP
+17 IF  NOT DAYTIME AND WH-OCCUP THEN  WH-SP = WHD-SP - 2
+20 IF INT2OCC THEN START WH-OCCUP
+27 IF TIME-OFF( INT2OCC ) > 00:30:10 THEN STOP WH-OCCUP
+50 IF RTS3 < WH-SP - 1.50 THEN START GAS
+70 IF RTS3 > WH-SP THEN STOP GAS
+80 IF OAT > 17 THEN STOP GAS
+90 REM IF TIME > 09:00:00 THEN STOP GAS
+100  DTIME = TIME
+110  MYCLOCK = DTIME
+
+
+P2
+----------
+
+
+60 REM WASHROOM CONTROL
+70 IF DAYTIME THEN  WASH-SP = WASHD-SP ELSE  WASH-SP = OFFN-SP
+80 IF RTS4 > WASH-SP + 1 THEN STOP WBB
+90 IF RTS4 < WASH-SP - 1 THEN START WBB
+100 IF COOLMODE THEN STOP WBB
+
+
+P3
+----------
+
+
+10 REM OFFICE BASEBOARD CONTROL
+20 IF RTS1 < OFFSETP - 1 THEN START EOFFBB , START WOFFBB , START RECEPBB
+30 IF RTS1 > OFFSETP THEN STOP EOFFBB , STOP WOFFBB , STOP RECEPBB
+40 IF  NOT HEATMODE THEN STOP EOFFBB , STOP WOFFBB , STOP RECEPBB
+50 IF COOLMODE THEN STOP RECEPBB , STOP EOFFBB , STOP WOFFBB , STOP RECEPBB
+
+
+P4
+----------
+
+
+10 REM ***************** HEAT PUMP CONTROL****************************
+20 IF DAYTIME THEN  OFFSETP = SETPTDAY + SETPADJ ELSE  OFFSETP = OFFN-SP
+20 REM IF OVERRIDE THEN  OFFSETP = SETPTDAY + SETPADJ
+21 IF HOLIDAY THEN  OFFSETP = OFFN-SP
+30  AVG-RTS = AVG( RTS1 , RTS3 )
+70 REM ******** COOLING MODE *****************
+100 IF OAT < 10 THEN GOTO 120
+110 IF RTS1 > OFFSETP + 3 THEN START COOLMODE
+120 IF RTS1 < OFFSETP + 1.50 THEN STOP COOLMODE
+130 IF  NOT 1-WR2 AND  NOT OVERRIDE THEN STOP COOLMODE
+140 REM ******** HEATING MODE ********
+150 IF COOLMODE THEN GOTO 190
+180 IF RTS1 < OFFSETP - 1.50 THEN START HEATMODE
+190 IF RTS1 > OFFSETP THEN STOP HEATMODE
+200 IF HEATMODE THEN STOP COOLMODE
+210 REM ******** FREE COOLING ********
+220 IF OAT < 17.50 AND COOLMODE THEN START FREECOOL
+230 IF OAT > 17.50 THEN STOP FREECOOL
+240 REM ****** DUTY CYCLE VARIABLE *******************
+250 IF TIME-OFF( DC ) > OVERIDET THEN START DC
+260 IF+ OVERRIDE THEN START DC
+270 IF TIME-ON( DC ) > DCONTIME THEN STOP DC
+280 REM ************ FAN *****************************
+284 IF- OVERRIDE THEN GOTO 300
+300 IF HEATMODE OR COOLMODE OR DC THEN START FAN ELSE STOP FAN
+320 IF  NOT DAYTIME AND  NOT OVERRIDE THEN STOP FAN
+330 IF  NOT DAYTIME AND HEATMODE THEN START FAN
+340 REM ******** COMPRESSOR *********
+350 REM IF TIME-OFF( COMPRESR ) < 00:02:00 THEN GOTO 380
+360 IF COOLMODE OR HEATMODE THEN START COMPRESR
+361 IF HEATMODE THEN STOP REVVLV
+375 IF COOLMODE THEN START REVVLV
+380 IF FREECOOL AND  NOT HEATMODE THEN STOP COMPRESR
+390 IF  NOT FAN THEN STOP COMPRESR
+400 IF  NOT HEATMODE AND TIME-ON( HEATMODE ) > 00:02:00 THEN STOP COMPRESR
+400 IF  NOT COOLMODE AND TIME-ON( COOLMODE ) > 00:02:00 THEN STOP COMPRESR
+410 REM ************ DAMPER ***********
+420  MAD = MAX( 5 , 1-CON2 )
+430 IF  NOT FREECOOL THEN  MAD = 5
+440 IF OAT < 10 THEN  MAD = 5
+450 IF AVERAGE < OFFSETP - 5 THEN  MAD = 0
+460 IF  NOT FAN THEN  MAD = 0
+470 REM ******HEAT VENTILATION AIR **********
+480 REM  IF RTS1 > HTP.SP + 1.5 THEN 500
+490 REM  IF SAT < HTP.SP - 1 AND SF.S/S AND TIME-OFF( HP.COM ) > 0:05 THEN   ` STOP 
+500 REM  IF SAT > HTP.SP + 8 THEN STOP HP.COM
+510 REM ********** SETPOINT ADJUST *********************
+520 IF+ SENSOR-ON( RTS1 ) THEN  SETPADJ = SETPADJ - 0.50
+530 IF+ SENSOR-OFF( RTS1 ) THEN  SETPADJ = SETPADJ + 0.50
+540  SETPADJ = MIN( 3 , MAX(  -3 , SETPADJ ) )
+550 REM IF+ TIME > 1 THEN SETPADJ = 0
+
+
+P5
+----------
+
+
+10  TIMECLK = TIME
+
+
+P6
+----------
+
+
+40 REM 
+50 IF TIME > 500 AND TIME < 1000 THEN  D = 1 - (TIME - 500) / 500 ELSE  D = 1
+60 IF (7.50 - DHT / 2) * D + 15 > OAT THEN  CD = 1 ELSE  CD = 0
+70 REM 
+80 REM 
+90  BOT = 22
+100  BLLT = 16
+120 REM *** TEMPERATURE PREDICTOR VERSION 1.0 ***
+130 REM *** BURKE PANEL ***
+140 REM *** PROGRAM 1 ***
+150 IF INTERVAL( 60 ) THEN GOTO 160 ELSE GOTO 360
+160 IF TIME > 1000 AND TIME < 1008 THEN  DHT = OAT
+170 IF TIME > 50 AND TIME < 58 THEN  DLT = OAT
+180 IF OAT >= DHT THEN  HH = TIME
+190 IF OAT <= DLT THEN  HL = TIME
+200  DHT = MAX( DHT , OAT )
+210  DLT = MIN( DLT , OAT )
+220 IF TIME > 2000 AND TIME < 2008 THEN  PDTR = DHT - DLT
+230 IF PDTR < OAT - DLT THEN  TR = (1500 - TIME) * (OAT - DLT) / 1000 ELSE  TR = PDTR - (OAT - DLT)
+240 IF DOY < 150 THEN  HOS = 436 + ABS( 150 - DOY ) * 286 / 100
+250 IF DOY >= 150 AND DOY < 190 THEN  HOS = 432
+260 IF DOY >= 190 THEN  HOS = 439 + ABS( 190 - DOY ) * 238 / 100
+270 IF HL > 500 AND HL < 1000 THEN  A = HL ELSE  A = HOS
+280  B = 1500 - MAX( TIME , A )
+290  C = 1500 - A
+300  DEWTMP = DLT + PDTR * (10 - B / C * B / C * 10) / 10 + B / C
+310  OATLL = DLT + PDTR * (10 - B * 10 / C) / 10 - B / C
+320 IF OAT >= OATLL AND OAT <= DEWTMP THEN  RF = (PDTR - (OAT - DLT)) * 1000 / PDTR , GOTO 360
+330 IF OAT < OATLL AND PDTR < HTR - 1.50 THEN  RF = (1500 - TIME) * 10 / 11 , GOTO 360
+340 IF OAT > DEWTMP AND PDTR > HTR + 1.50 THEN  RF = (1500 - TIME) * 9 / 10 , GOTO 360
+350  RF = 1500 - TIME
+360 END 
+
+
+P7
+----------
+
+
+10 REM *** TEMPERATURE PREDICTOR VERSION 1.0 ***
+20 REM *** BURKE PANEL ***
+30 REM *** PROGRAM 2 ***
+40 REM 
+50 IF INTERVAL( 300 ) THEN GOTO 60 ELSE GOTO 340
+60 IF TIME > 500 AND TIME < 1500 THEN  70 ELSE  320
+70 REM *** DAY CALCULATIONS ***
+80  A = PHT
+90 REM *** CALCULATE THE HISTORICAL TEMPERATURE RISE ***
+100 IF DOY < 135 THEN  HTR = 9.60 - ABS( 135 - DOY ) / 26
+110 IF DOY >= 135 AND DOY < 180 THEN  HTR = 10 + ABS( 180 - DOY ) / 130
+120 IF DOY >= 180 AND DOY < 256 THEN  HTR = 11.30 - ABS( 205 - DOY ) / 40
+130 IF DOY >= 256 AND DOY < 317 THEN  HTR = 10.18 - ABS( 256 - DOY ) / 12
+140 IF DOY >= 317 THEN  HTR = 4.69 + ABS( 352 - DOY ) / 90
+150 REM *** CALCULATE THE ACTUAL TEMPERATURE RISE ***
+160 IF TIME > 800 AND TIME - HL > 100 THEN  ATR = (OAT - DLT) * 1000 / (TIME - HL) ,  G = 12.39 ,  ATR = MIN( G , ATR ) ELSE  ATR = HTR
+170 REM *** CALCULATE THE PROJECTED HIGH ***
+180  D = OAT + TR / 3 + RF * (ATR + HTR) / 3000
+190 REM *** TIME AVERAGE THE PROJECTED HIGH ***
+200  PHT = (PHT + D) / 2
+210 REM *** KEEP THE PROJECTED HIGH WITHIN CERTAIN LIMITS ***
+220 IF TIME > 500 AND TIME < 1000 THEN  230 ELSE  260
+230 IF PHT - DHT > 3.50 THEN  PHT = DHT + 3.50
+240 IF PHT - DHT <  -3.50 THEN  PHT = DHT - 3.50
+250 REM *** KEEP THE PROJECTED HIGH ABOVE THE DAYS HIGH ***
+260 IF TIME > 1000 AND TIME < 1500 THEN  PHT = MAX( PHT , DHT )
+270 REM DO NOT ALLOW THE PROJECTED HIGH TO CHANGE RAPIDLY *** 
+280  B = A - 0.50
+320 REM *** NIGHT CALCUATION ***
+330  PHT = DHT
+340 END 
+
+
+P8
+----------
+
+
+10 REM A = OCCUPANCY START TIME
+20 REM B & C = TEMPERATURE DEVIATIONS
+30 REM Y & Z = CORRECTION FACTORS
+40 IF 1-WR2 THEN START 1-VAR49 ELSE STOP 1-VAR49
+50 REM *** WARM-UP OR PRECOOL ***
+60  A = WR-ON( 1 , 2 )
+70 IF TIME < A - 18000 THEN GOTO 360
+80 IF OAT-HI < 20 OR OAT < 15 THEN  90 ELSE  230
+90 REM *** WARM-UP ***
+100  B = 1-VAR50 - MINIMUM
+110 IF B / WUF < A - TIME THEN START WARM-UP
+120 IF TIME > A THEN STOP WARM-UP
+130 REM *** WARM-UP FACTOR ***
+140  WUF = 3 - Y
+150 IF WUF < 0 THEN  WUF = 0
+160 IF+ TIME < A - 60 AND MINIMUM > 1-VAR50 THEN GOTO 190
+170 IF+ TIME > A AND MINIMUM < 1-VAR50 THEN GOTO 210
+180 END 
+190  Y = Y - 0.25
+200 END 
+210  Y = Y + 0.25
+220 GOTO 360
+230 REM *** PRECOOL ***
+240  C = MAXIMUM - 1-VAR50
+250 IF C / PCF < A - TIME THEN START PRECOOL
+260 IF TIME > A THEN STOP PRECOOL
+270 REM *** PRECOOL FACTOR ***
+280  PCF = 3 - Z
+290 IF PCF < 0 THEN  PCF = 0
+300 IF+ TIME < A - 60 AND AVERAGE < 1-VAR50 THEN  330
+310 IF+ TIME > A AND AVERAGE > 1-VAR50 THEN  350
+320 END 
+330  Z = Z - 0.25
+340 END 
+350  Z = Z + 0.25
+360 END 
+
+
+P9
+----------
+
+
+10  1-VAR111 = 1-VAR111 + 1
+20 IF 1-VAR111 > 20 THEN  1-VAR111 = 0
+
+
+
+
+P11
+----------
+
+
+10 REM ***************** PROGRAM LOGS FIRST ENTRY EACH DAY **********
+20 IF TIME > 09:00:00 THEN GOTO 100
+40 IF+ KEYPAD THEN GOTO 70
+50 IF KEYPAD THEN GOTO 70
+55 IF TIME-OFF( KEYPAD ) < 3600 THEN GOTO 100
+60 GOTO 100
+70  A = INT( TIME / 100 ) * 100
+80  B = (TIME - INT( TIME / 100 ) * 100) * 0.60
+90 REM ARRIVAL[ DOM ] = A + B
+100 REM 
+
+
+P12
+----------
+
+
+10 REM *** HIGH & LOW TEMPS *******************************
+20 IF+ TIME > 23:55:00 THEN  OAT-HI = OAT
+30 IF+ TIME > 00:00:10 THEN  OAT-LO = OAT
+40 IF INTERVAL( 300 ) THEN  50 ELSE  130
+50  OAT-HI = MAX( OAT-HI , OAT )
+60  OAT-LO = MIN( OAT-LO , OAT )
+70 REM ********** HEAT MODE *******************************
+80 REM C = BASE TEMP
+90 REM HM = HEAT MODE
+100  C = 12
+110  D = (C - OAT-HI + C - OAT-LO) / 2
+120 IF OAT > D + C THEN START HEATCOOL ELSE STOP HEATCOOL
+130 REM *** MIN / MAX / AVG ******************************
+140  AVERAGE = AVG( RTS1 , RTS2 , RTS3 , RTS4 )
+150  MINIMUM = MIN( RTS1 , RTS2 , RTS3 , RTS4 )
+160  MAXIMUM = MAX( RTS1 , RTS2 , RTS3 , RTS4 )
+170 REM *** SETPNT'S *************************************
+180 IF INTERVAL( 120 ) THEN  190 ELSE  220
+190 IF MINIMUM < 1-VAR50 THEN  1-GRP8 = (1-VAR50 - MINIMUM) / 2 ELSE  1-GRP8 = 0
+200 IF MAXIMUM > 1-VAR50 THEN  F = (1-VAR50 - MAXIMUM) / 2 ELSE  F = 0
+210  G = 1-VAR50 + 15 - AVERAGE + 1-GRP8 + F
+220  HP-DSP = MAX( 12 , MIN( G , 22 ) )
+
+
+P13
+----------
+
+
+10 REM *** ACCUMULATE CONTACT CLOSURES DURING THE DAY ***
+20 REM  IF NOT ALRAM THEN GOTO 100
+30 IF+ DOOR1 THEN  TRIGGERS = TRIGGERS + 1
+40 IF+ MOTION1 THEN  TRIGGERS = TRIGGERS + 1
+50 IF+ DOOR2 THEN  TRIGGERS = TRIGGERS + 1
+60 IF+ MOTION2 THEN  TRIGGERS = TRIGGERS + 1
+70 IF+ INTERVAL( 60 ) THEN  TRIGGERS = TRIGGERS - 1
+80 IF TRIGGERS < 0 THEN  TRIGGERS = 0
+90 REM ************* RESET COUNTERS ************
+100 IF ARMED AND TIME-ON( ARMED ) < ALRGRACE THEN GOTO 110 ELSE GOTO 170
+110 STOP TRIGGER
+150  TRIGGERS = 0
+160 REM *************** HORN STATISTICS ***************
+170 IF+ ALARMBEL THEN  HORNCNT = HORNCNT + 1
+180 IF+ ALARMODE THEN  EMCOUNT = EMCOUNT + 1
+
+
+P14
+----------
+
+
+10 REM *************** KEYPAD *****************
+20 IF+ KEYPAD THEN  ARMED =  NOT ARMED
+30 IF+ TIME > 23:58:30 THEN START ARMED
+40 IF+ TIME > 07:30:00 AND DAYTIME THEN STOP ARMED
+50 IF ARMED THEN START REDLED ELSE STOP REDLED
+60  GREENLED =  NOT REDLED
+70 REM ****** WARNING MODE ******************
+80  BATIMER = TIME-ON( ACTIVITY )
+90 IF TIME-ON( ARMED ) < ALRGRACE THEN GOTO 110
+100 IF BATIMER > 00:00:04 THEN START ALRMWM
+110 IF  NOT ARMED THEN STOP ALRMWM
+120 IF- ALARMODE THEN STOP ALRMWM
+130 REM *** ALARM MODE *******************************
+140 IF+ TIME-ON( ALRMWM ) > ALRGRACE THEN START ALARMODE
+150 IF  NOT ARMED THEN STOP ALARMODE
+160 IF TIME-ON( ALARMODE ) > 00:05:00 THEN STOP ALARMODE
+170 REM ******** KEEP TRACK OF ALARMS ****************
+180 IF- ALARMODE THEN  TRIGGERS = 0
+190 IF+ ARMED THEN  TRIGGERS = 0
+200 REM *** OPERATE THE BELL *****************************
+210 IF ALARMODE THEN START ALARMBEL
+220 IF  NOT ALARMODE THEN STOP ALARMBEL
+230 REM *************************************************
+240 IF DAYTIME THEN STOP BLOM
+250 IF TIME > 12:00:00 AND TIME < 13:05:00 THEN START BLOM
+260 IF TIME > 15:30:00 THEN START BLOM
+270 REM ************** BUZZER ******************
+280 IF A > 3 THEN  A = 0
+290  A = A + 1
+300 IF BUZZER THEN STOP BUZZER
+310 IF ALRMWM AND A = 1 THEN START BUZZER
+320 IF+ DOOR2 THEN START BUZZER
+330 REM ************** DIALER PROGRAM ******************
+340 IF+ ALARMODE THEN GOTO 350 ELSE GOTO 370
+350 PHONE 439-6140,,,,,,,911-0000
+370 REM ********* END OF PROGRAM ************
+
+
+P15
+----------
+
+
+10 REM ********** WATCH OCCUPANCY SENSORS ********
+20 IF  NOT DOOR1 THEN STOP PER1OCC
+30 IF  NOT DOOR2 THEN STOP PER2OCC
+40 IF  NOT MOTION1 THEN STOP INT1OCC
+50 IF  NOT MOTION2 THEN STOP INT2OCC
+60 IF TIME-ON( DOOR1 ) > 00:00:02 THEN START PER1OCC
+70 IF TIME-ON( DOOR2 ) > 00:00:02 THEN START PER2OCC
+80 IF TIME-ON( MOTION1 ) > 00:00:03 THEN START INT1OCC
+90 IF TIME-ON( MOTION2 ) > 00:00:03 THEN START INT2OCC
+100 REM **** PUT BUILDING IN ACTIVE MODE *******
+120 IF PER1OCC THEN START ACTIVITY
+130 IF INT1OCC THEN START ACTIVITY
+140 IF PER2OCC THEN START ACTIVITY
+150 IF INT2OCC THEN START ACTIVITY
+160 IF TRIGGERS > 2 THEN START ACTIVITY
+165 IF  NOT PER1OCC AND  NOT PER2OCC AND  NOT INT1OCC AND  NOT INT2OCC THEN STOP ACTIVITY
+220 REM ** START THE HVAC OVERRIDE MODE AT NIGHT *******************
+230 IF ACTIVITY THEN START OVERRIDE
+240 IF OVERIDET > OVERINT THEN STOP OVERRIDE
+250 IF ARMED THEN STOP OVERRIDE
+260 REM ************ TIME THE OVERRIDE MODE *************
+270 IF INTERVAL( 00:00:01 ) THEN GOTO 280 ELSE GOTO 290
+280 IF OVERRIDE THEN  OVERIDET = OVERIDET + 00:00:01
+290 IF+ INT1OCC THEN  OVERIDET = 00:00:00
+300 IF+ INT2OCC THEN  OVERIDET = 00:00:00
+310 IF- OVERRIDE THEN  OVERIDET = 00:00:00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

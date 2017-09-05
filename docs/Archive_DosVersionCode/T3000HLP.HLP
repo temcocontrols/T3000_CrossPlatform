@@ -1,0 +1,906 @@
+NUMBERS		1001
+DAYS			1002
+DATES			1003
+TIMES			1004
+VARIABLES		1005
+NOT			1006
+^			1007
+*			1008
+/			1009
+\			1010
+MOD			1011
++			1012
+-			1013
+<			1014
+>			1015
+AND			1016
+OR			1017
+XOR			1018
+ABS			1019
+ALARM			1020
+ALARM-AT		1021
+AVG			1022
+CALL			1023
+CLEAR			1024
+CLOSE			1025
+CONPROP		1026
+CONRATE		1027
+CONREST		1028
+DALARM			1029
+DECLARE		1030
+DISABLE		1031
+DOM			1032
+DOW			1033
+DOY			1034
+ENABLE			1035
+END			1036
+FOR			1037
+GOSUB			1038
+GOTO			1039
+HANGUP			1040
+IF			1041
+IF+			1042
+IF-			1043
+INT			1044
+INTERVAL		1045
+LET			1046
+LN			1047
+LN-1			1048
+MAX			1049
+MIN			1050
+NEXT			1051
+ON			1052
+ON-ALARM		1053
+ON-ERROR		1054
+OPEN			1055
+PHONE			1056
+POWER-LOSS		1057
+PRINT			1058
+PRINT-AT		1059
+REM			1060
+REMOTE-GET		1061
+REMOTE-SET		1062
+RETURN			1063
+RUN-MACRO		1064
+SCANS			1065
+SET-PRINTER		1066
+SQR			1067
+START			1068
+STATUS			1069
+STOP			1070
+TBL			1071
+TIME			1072
+TIME-OFF		1073
+TIME-ON		1074
+WAIT			1075
+WR-ON			1076
+WR-OFF			1077
+UNACK			1078
+USER-A			1079
+USER-B			1080
+Connect      		000
+Disconnect		001
+About			002
+Info_screen		003
+File_transfer		004
+Load_descriptors	005
+Updata_mini		006
+Exit			007
+Logout			008
+File			010
+Select_panel		011
+Print_panel		012
+Clear_panel		013
+Screens		020
+Programs		021
+Inputs			022
+Outputs		023
+Variables		024
+Controllers		025
+Weekly_routines	026
+Annual_routines	027
+Arrays			028
+Monitors		030
+Tables			031
+Custom_units		032
+Alarm_log		033
+Setup			040
+User_list		041
+Hardware		042
+Load			100
+Save			101
+Prg->Flash		102
+Default_program	200
+File_paths		201
+Time_and_date   	202
+Operation_mode	203
+Print_alarms		204
+Com_ports		300
+Panel_configuration	301
+Screen_display	400
+Monitor_display	401
+@
+#NUMBERS$NUMBERS
+    TYPE           DATA 
+    Real numbers are handled by the T3000 in full floating point format 
+@
+#DAYS$DAYS
+    TYPE           DATA
+    Days are evaluated as an integer from 0 for SUNDAY to 6 for SATurday 
+@
+#DATES$DATES
+    TYPE           DATA
+    Dates are handled internally by the T3000 as a number from 1 to 365
+@
+#TIMES$TIMES
+    TYPE           DATA
+    Times are handled internally as hours, but can be typed HH:MM:SS in a program
+@
+#VARIABLES$VARIABLES
+    TYPE           DATA
+    Varialbes are handled internally as real numbers with full floating point notation
+@
+#NOT$NOT
+    TYPE           OPERATOR 
+    Evaluates to TRUE if the opposite is true. IF NOT HOT evaluates to true when COLD
+@
+#^$^
+    TYPE           OPERATOR 
+    Exponent, raises a number to a power as in 2^2 = 4 
+@
+#*$*
+    TYPE           OPERATOR 
+    Multiplicatio
+@
+#/$/
+    TYPE           OPERATOR 
+    Division
+@
+#\$\
+    TYPE           OPERATOR
+    Integer portion of a division
+@
+#MOD$MOD
+    Remained of a division
+@
+#+$+
+    TYPE           OPERATOR
+    Addition
+@
+#-$-
+    TYPE           OPERATOR
+    Subtraction 
+@
+#<$<
+    TYPE           OPERATOR
+    Less Than
+@
+#>$>
+    TYPE           OPERATOR
+    Greater than
+@
+#AND$AND
+    TYPE           LOGIC
+    Logical AND, both conditions must be TRUE for the expression to evaluate to TRUE 
+@
+#OR$OR
+    TYPE           LOGIC
+    Logical OR, if either expression is TRUE the result is TRUE 
+@
+#XOR$XOR
+    TYPE           LOGIC
+    Logical Exclusinve OR, evalutates to TRUE if the two expressions are different 
+@
+#ABS$ABS
+    TYPE           FUNCTION
+    Absolute Value, returns the positive equivalent of a negative or positive number
+@
+#ALARM$ALARM
+    TYPE           COMMAND
+    Causes an alarm, has built in hysterisis to avoid multiple alarms from the same event 
+@
+#ALARM-AT$ALARM_AT
+    TYPE           COMMAND
+    Selects which panel will annunciate alarms, default is ALL panels 
+@
+#AVG$AVG
+    TYPE           FUNCTION
+    Average of all numbers enclosed in the brackets following this command 
+@
+#CALL$CALL
+    TYPE           COMMAND
+    Calls another program which functions as a subroutine, takes arguments 
+@
+#CLEAR$CLEAR
+    TYPE           COMMAND
+    Clears all the local variables in a given program 
+@
+#CLOSE$CLOSE
+    TYPE           COMMAND
+    Sets a variable or output to 0, same as STOP but is more intuitive in some cases 
+@
+#CONPROP$CONPROP
+    TYPE           FUNCTION
+    Allows a Basic program to update the proportional term in a particular PID controller 
+@
+#CONRATE$CONRATE
+    TYPE           FUNCTION
+    Allows a Basic program to update the derivative term in a particular PID controller 
+@
+#CONREST$CONREST
+    TYPE           FUNCTION
+    Allows a Basic program to update the integral term in a particular PID controller 
+@
+#DALARM$DALARMD
+    TYPE           COMMAND
+    Delayed alarm, allows generation of alarms if a condition is true for a certain time 
+@
+#DECLARE$DECLAREDECL
+    TYPE           COMMAND
+    First line of a subroutine to accept the list of arguments from a CALL statement 
+@
+#DISABLE$DISABLE
+    TYPE           COMMAND
+    Same as STOP or CLOSE, sets an item to 0 
+@
+#DOM$DOM
+    TYPE           FUNCTION
+    Day of Month, returns the day of the month, starting with 1 on the first of the month 
+@
+#DOW$DOW
+    TYPE           FUNCTION
+    Day of week, returns a number from 0 to 6 starting with Sunday as zero 
+@
+#DOY$DOY
+    TYPE           FUNCTION
+    Day of the year, starting with Jan1 as 1 
+@
+#ENABLE$ENABLE
+    TYPE           COMMAND
+    Same as START or OPEN, sets the value of an item to 1. 
+@
+#END$END
+    TYPE           COMMAND
+    Ends execution of a program, T3000 assumes and end at the end of each program 
+@
+#FOR$FOR
+    TYPE           COMMAND
+    Loop control statement, FOR A =1 TO 10 ....PROGRAM LINES.....NEXT A 
+@
+#GOSUB$GOSUB
+    TYPE           COMMAND
+    Branches to subroutine, executes program till next RETURN statement, and loops back 
+@
+#GOTO$GOTO
+    TYPE           COMMAND
+    Unconditionally branches program execution to another line 
+@
+#HANGUP$HANGUP
+    TYPE           COMMAND
+    Ends a phone call in progress 
+@
+#IF$IF
+    TYPE           COMMAND
+    Logical decision, IF HEATMODE THEN START OUT1 
+@
+#IF+$IF+
+    TYPE           COMMAND
+    Executes the program line only once when the condition goes from FALSE to TRUE 
+@
+#IF-$IF-
+    TYPE           COMMAND
+    Opposite of IF+, executes the line only when a condition becomes FALSE 
+@
+#INT$INT
+    TYPE           FUNCTION
+    Returns the integer part of an expression 
+@
+#INTERVAL$INTERVAL
+    TYPE           FUNCTION
+    IF INTERVAL(0:01:00) executes the following programming once every minute 
+@
+#LET$LET
+    TYPE           COMMAND 
+    Assignment operator, LET B = 20, has the same effect as  B = 20 
+@
+#LN$LN
+    TYPE           FUNCTION
+    Natural logarithm of the argument 
+@
+#LN-1$LN-1
+    TYPE           FUNCTION
+    Inverse logarithm of the argument 
+@
+#MAX$MAX
+    TYPE           FUNCTION
+    Maximum of a list of arguments enclosed in brackets following the statement 
+@
+#MIN$MIN
+    TYPE           FUNCTION
+    Minimum of a list of arguments enclosed in brackets following the statement 
+@
+#NEXT$NEXT
+    TYPE           COMMAND
+    Used in conjunction with the FOR statement to increment the loop counter 
+@
+#ON$ON
+    TYPE           COMMAND
+    ON VAR1 GOTO 100 , 200 , 300 , controls program path depending on VAR1 
+@
+#ON-ALARM$ON-ALARM
+    TYPE           COMMAND
+    Evaluates to TRUE whenever there is an alarm in the system. 
+@
+#ON-ERROR$ON-ERROR
+    TYPE           COMMAND
+    Used with PHONE, REMOTE-GET, REMOTE-SET, and RUN-SYSTEM 
+@
+#OPEN$OPEN
+    TYPE           COMMAND
+    Sets an item to 1, OPEN OUT1 is the same as START OUT1 
+@
+#PHONE$PHONE
+    TYPE           COMMAND
+    Phones a number, allows T3000 to dial with a modem for numeric paging 
+@
+#POWER-LOSS$POWER-LOSS
+    TYPE           FUNCTION
+    Looks for loss of power, 1 the first time the function i s evaluated, o afterwards 
+@
+#PRINT$PRINT
+    TYPE           COMMAND
+    Print strings at a printer connected to the panel 
+@
+#PRINT-AT$PRINT-AT
+    TYPE           COMMAND
+    Print strigns at a printer connected to another panel on hte network 
+@
+#REM$REM
+    TYPE           COMMAND
+    Remark, used to add comments to a program 
+@
+#REMOTE-GET$REMOTE-GET
+    TYPE           COMMAND
+    10 REMOTE-GET VAR1 = 2IN1, gets a reading from another site via modem 
+@
+#REMOTE-SET$REMOTE-SET
+    TYPE           COMMAND
+    Sets a variable at a remote site via modem. 
+@
+#RETURN$RETURN
+    TYPE           COMMAND
+    Causes program execution to return from a subroutine 
+@
+#RUN-MACRO$RUN-MACRO
+    TYPE           COMMAND
+    Causes a macro command or series of keystrokes to be run 
+@
+#SCANS$SCANS
+    TYPE           FUNCTION
+    The number of scans a panel is performing in one second 
+@
+#SET-PRINTER$SET-PRINTER
+    TYPE           COMMAND
+    Tells a T3000 system there is a printer at a particular panel 
+@
+#SQR$SQR
+    TYPE           FUNCTION
+    Returns the square root of the argument 
+@
+#START$START
+    TYPE           COMMAND
+    Sets the value of an items to 1, same as OUT1 = 1 or OPEN OUT1 
+@
+#STATUS$STATUS
+    TYPE           FUNCTION
+    Status of a panel on the network, 0 = No Comm, 1 =OK, 2 = no program 
+@
+#STOP$STOP
+    TYPE           COMMAND
+    Sets the value of an items to 0, same as OUT1 = 0 or CLOSE OUT1 
+@
+#TBL$TBL
+    TYPE           FUNCTION
+    Looks up a value in a table 
+@
+#TIME$TIME
+    TYPE           FUNCTION
+    Finds  the current time 
+@
+#TIME-OFF$TIME-OFF
+    TYPE           FUNCTION
+    Finds the time a variable has been false 
+@
+#TIME-ON$TIME-ON
+    TYPE           FUNCTION
+    Finds the time a variable has been true 
+@
+#WAIT$WAIT
+    TYPE           COMMAND
+    pauses program execution 
+@
+#WR-ON$WR-ON
+    TYPE           FUNCTION
+    Finds when a weekly routine is set to come on 
+@
+#WR-OFF$WR-OFF
+    TYPE           FUNCTION
+    Finds when a weekly routine is set to go off 
+@
+#UNACK$UNACK
+    TYPE           FUNCTION
+    Determines if there are unackknowledged alarms in system 
+@
+#USER-A$USER-A
+    TYPE           FUNCTION
+    Finds the user logged on to the local port 
+@
+#USER-B$USER-B
+    TYPE           FUNCTION
+    Finds the user logged on to the remote port 
+@
+#Connect$Connect
+    This section is used to make calls to remote systems via the modem. It can be set up with the names and numbers of 42 remote systems. There must be an entry in the "System List" for the onsite system. Calls can be made by moving the cursor to the desired system and pressing the "INS" key. (mouse or keyboard)
+
+ System List setup fields: 
+
+1) Sys_name     Name of the system. 
+
+2) Phone_no     Systems modem number. 
+
+3) Directory    The field needed to access and save programs while on line to a system via a modem. 
+
+4) Menu_file    The Menu File to be auto-loaded when calling that particular system. 
+
+5) Baud_rate    The Baud Rate the remote panels modem is set at. 
+ 
+6) Link_no      If YES the phone number continues on to the next line down.
+@
+#Disconnect$Disconnect
+    This selections signs the operator off from a remote system that the operator has made a call to via the "System List" and hangs up the modem. The operator is then returned to the T3000 software.
+@
+#About$About
+    About details information on the current version of T3000 software that you are using.
+@
+#Info_screen$Info screen
+@
+#File_transfer$File_transfer
+    This option details the file operations that can be done by an operator on a local station and  a remote panel either on a network or on a modem that the operator has connected to. This selection differs from the "File" option in that it can access any type of file located on the remote station.
+    The "File" option only allows you to Load/Save/Rename/Delete *.PRG files.
+@
+#Read_file$Read File
+    This option allows you to copy a file from the remote station to the local operator station. 
+@
+#Send_file$Send File
+    This option allows you to copy a file from the local operator station to the remote station. 
+@
+#Delete_file$Delete File
+    This option allows you to delete a file on a remote station. 
+@
+#Rename_file$Rename File 
+    This option allows you to rename a file on a remote station. 
+@
+#Load_descriptors$Load descriptors
+It's help for Load decriptors !
+@
+#Updata_mini$Updata mini
+It's help for Updata mini !
+@
+#Print$Print
+It's help for Print !
+@
+#Exit$Exit
+    This selection ends the T3000 Operating System program and returns control to DOS. Upon selection of this command you will be asked to confirm if you wish to exit, type "Y" RETURN. If you do not wish to exit type "N" RETURN to remain in the system.  If you choose to exit, the system will ask you the enter the password that you logged in with. Once you exit from the system the T3000 application stops. Do not exit from the system if you wish to leave the building and have the building under control by the T3000.
+@
+#Logout$Logout
+     Logout allows you to leave the operator station and keep the T3000 application running. This option prevents any unauthorized access to the system as access to the system is limited only to those who can properly Sign-On.
+@
+#File$File
+    The "File" selection from the Panel menu operates on the T3000 panels complete programmed information.
+@
+#Select_panel$Select panel
+    This option prompts the user to select a panel which becomes the "Selected Panel". All operations that are specific to that panel, such as entering the various types of points, creating monitors or writing control basic are done using the selected panel.
+@
+#Print_panel$Print panel
+    Print produces a hardcopy of all the programmed information in the selected panel. It does this by first storing the print text in a file and then uses the DOS "PRINT" command to print the file.
+@
+#Clear_panel$Clear panel
+    This selection does a complete initialization of a panel. All programmed information is cleared from the selected panel. Upon selection of this option the system will ask to confirm that you want to "Clear Panel". Type "Y" for yes; "N" for NO is the default.
+@
+#Load$Load
+    The "Load" operation takes a file and sends it to a panel. This is the only operation that is required to restore a "blank" panel to normal operation. To select a program to load, make sure that the Drive and Directory information is correct. The system defaults to the information supplied in "File Paths". Then, either enter the program name at the blinking cursor, or hit RETURN and scroll to the appropriate program and hit RETURN again. When typing in the program name it is not necessary to include the .PRG extension. Upon selection of the program to "Load" the system will ask you to confirm that this is the program that you wish to load. Type "Y" for YES; "N" for NO is the default.
+@
+#Save$save
+    The "Save" operation saves the information in a file. This saved copy then becomes the backup file if the T3000 should lose its program for some reason.
+    To select a program to "Save", make sure that the Drive and Directory information is correct. The system defaults to the information supplied in "File Paths".Then, either enter the program name at the blinking cursor, or hit RETURN and scroll to the appropriate program and hit RETURN again. When typing in the program name it is not necessary to include the .PRG extension. Upon selection of the program to "Save" the system will ask you to confirm that this is the program that you wish to save. Type "Y" for YES ; "N" for NO is the default.
+@
+#Prg->Flash$Prg->Flash
+It's help for Prg->Flash !
+@
+#Screens$Screens
+    Screens are used to group points of all types into one logical unit for displaying information on the screen. Thus the operator is able to see how a change in one parameter is affecting other related parameters. This enables the operator to see and change the value and auto/manual status of points. The operator can also call up the history information of a point or the program associated with that group. The elements of a screen can be displayed on top of a graphic picture to augment the display of information.
+    A screen made up of other screens can be used as a menu. Screens may be nested indefinitely. The TAB key is used as a fast-exit key to the Main Menu. This is useful when many screens are nested and the operator does not want to escape through them  all. The "Page-Up" and "Page-Down" keys will take you through consecutive screens. A Screen can be programmed to load up automatically after signing on by entering the Default Screen number in the "User List" selection from Configuration. This screen then becomes that users Main Menu. 
+    Screens setup fields: 
+
+a)  Full_label
+    A 20 character descriptor. 
+
+b)  Label
+    An 8 character label. 
+
+C)  Pic file    
+The name of a graphic file to be used as an underlay for the group's data. 
+
+d)  Mode
+    The type of Screen display either Text or Graphic. If a graphic display is choosen, the graphic will be overlaid onto the Screen if the following two conditions are met: 
+
+1.The file is found in the drive and directory as specified in "File Paths" with the
+extension ".TIF". 
+
+2. The graphic file was drawn in the same format as the graphic capabilities of your
+system. 
+
+    To program or view an individual Screen press "Ins" while highlighting that group. The group is then loaded with its picture file (if it exists) and placed in modify mode. The work menu reappears if the cursor is moved to the top line of the display. If a graphic is loaded and you are using a mouse, the work menu appears when the mouse is moved to the top of the screen.
+@
+#Programs$Programs
+    Control Basic is the programming language of the T3000. To access an individual program press the "Ins" key while highlighting that program.
+    Control Basic setup fields: 
+a)  Full_label      
+    A 20 character descriptor of the point. 
+
+b)  Status
+    Indicates whether the program is running or not (ON/OFF). 
+
+c)  A/m
+    In "Auto" the running of the program can be controlled by either the program timer or another program. In "Manual" the program can be stopped and started by the operator by toggling the status field. 
+
+d)  Size
+    The length in bytes of the program, maximum size is 2500 bytes. 
+
+e)  Run_status
+    The time between each running of the program (mins: secs). 
+
+f)  Label
+    An 8 character descriptor of the point. 
+@
+#Inputs$Inputs
+    The T3000 system controls a process by reacting to temperature, light, flow or other physical properties. In order to measure the physical property, a signal must be fed into the T3000 panel which is referred to as an "INPUT"  throughout this manual. Inputs may be either digital (ie. only two states, on or off) or analog (infinite states, 0 - 5.0 Volts). The standard T3000 can accommodate up to 128 Inputs with expansion
+capabilities for a further 128 inputs. 
+    Input setup fields: 
+a)  Full_label
+    A 20 character descriptor which is usually used to associate a give point with the physical location. 
+
+b)  A/m
+    When in auto the input is operational and will read the value from the sensor. When in manual the input is not operational and will remain at a fixed value. To change from auto to manual or vice versa simply highlight the field and press ENTER. 
+
+c)  Value
+    This field contains the value of the input point which may be digital or analog depending on the range selected. To toggle a digital value highlight the field and press ENTER. To change an analog value highlight the field and press ENTER followed by the new value and ENTER. Note that it is only practical to change an input value when the point is in manual. 
+
+d)  Units
+    The scale with which the Value is to be read. 
+
+e)  Range
+    The range field is set to match the sensor that is connected to the input. 
+    To set the range highlight the field, press ENTER, and select either Analog, Digital or Custom Digital. Then enter the desired range number.
+
+f)  Cal.(Calibration). 
+    The value in this field is added into the measured value to adjust for sensor inaccuracy. The maximum correction is +/- 30. If the correction amount is between -3.0 and +3.0 there is 1 decimal point in the correction, otherwise there is no decimal point. 
+
+g)  Filter 
+    Filter is the number of samples that are averaged to give the value. A larger filter will slow the response of the system to a change at the input, but will filter out fluctuations that are not wanted. 
+
+h)  D(Decommissioned) 
+    This field is a flag indicating if the point has been taken out of service. The normal indicator is a dash (-), if decommissioned this field will have a Y (Yes) in it. If a point is decommissioned it will be flagged as such when displayed in control groups. 
+
+i)  Label 
+    An 8 character descriptor. 
+@
+#Outputs$Outputs
+    Outputs are those points which output a signal from the T3000. They correspond directly with the physical outputs wired to the panel. Outputs may be either digital (only 2 states, on/off) or analog (infinite states, 0-10 Volts). Each T3000 has the capacity to handle 128 outputs with expansion capabilities for a further 128 outputs. 
+    Output setup fields: 
+a)  Full_label
+    A 20 character descriptor which is usually used to associate a give point with the
+physical location. 
+
+b)  A/m 
+    When in auto the output will accept commands from Control Basic. When in manual the
+output will  remain at a fixed value. To change from auto to manual or vice versa simply
+highlight the field and press " 
+
+c)  Value 
+    This field contains the value of the output point which may be digital or analog
+depending on the range selected. To toggle a digital value highlight the field and press
+ENTER. To change an analog value highlight the field and press ENTER followed by
+the new value and ENTER. Note that it is only practical to change an input value when
+the point is in manual. 
+
+d)  Units 
+    The scale with which the Value is to be read 
+    To set the range highlight the field, press ENTER, and select either Analog, Digital or Custom Digital. Then enter the desired range number. 
+e)  Range
+    The range field is set to match the sensor that is connected to the input. 
+    To set the range highlight the field, press ENTER, and select either Analog, Digital or Custom Digital. Then enter the desired range number. 
+
+f)  0% 
+    When the range selected is 0-100% or 0-100 % open, "Low" sets the output voltage when the value is 0.00%. Note that when the value is 1% the voltage output will be either 0V (if Low is less than High) or 12V (if Low is greater than High). This is to ensure that the output transducer is driven fully to the 0% position. 
+
+g)  100% 
+    When the range selected is 0-100% or 0-100 % open, "High" sets the output voltage when the value is 100%. Note that when the value is 101.0 % the voltage output will be either 12V (if High" is greater than "Low") or 0V (if "High" is less than "Low"). This is to ensure that the output transducer is driven fully to the 100% position. 
+
+h)  D (Decommissioned) 
+    This field is a flag indicating if the point has been taken out of service. The normal indicator is a dash (-), if decommissioned this field will have a Y (Yes) in it. If a point is decommissioned it will be flagged as such when displayed in Control Groups. 
+
+i)  Label 
+    An 8 character descriptor. 
+@
+#Variables$Variables
+    Variables are points that store a value. They can be either analog or digital. The T3000 can accommodate up to 128 variables. Variables are used by the T3000 operating system for the storage of user defined settings such as room setpoints. 
+    Variable setup fields: 
+a)  Full_label 
+    A 20 character descriptor. 
+
+b)  A/m 
+    When in "Auto" the variable can be changed from Control Basic. When in "Manual" the variable cannot be changed, except by operator input. 
+
+c)  Value
+    The value of the variable. 
+
+d)  Units 
+    The units field sets the Engineering units of the variable from the following analog units: 
+
+e)  Label 
+    An 8 character descriptor. 
+@
+#Controllers$Controllers
+    There are 64 Controllers in the basic T3000. These are 3 mode Controllers (Proportional, Integral, and Derivative - PID). See section 5.4.1 for the details of Controller operation.
+    Controller setup fields: 
+
+a)  Input 
+    The measured variable being controlled. 
+
+b)  Value 
+     The value of the measured variable. 
+
+c)  Units 
+
+d)  A/m 
+    When in "Auto" the controller is operational. When in "Manual" the controller is not running and the output will remain at the last value. 
+
+e)  Output 
+    The output value of the controller between 0 and 100%. 
+
+f)  Setpoint 
+    The point used as a setpoint. Setpoints are often set up as variables and changed within Burke Basic programs or they can be entered directly. 
+
+g)  Set_value 
+    The value of the setpoint. A number can also be entered directly here. CBAS can control this field if a setpoint is not entered in the Setpoint field. 
+
+h)  Units 
+    "Action". "+" is direct acting, "-" is reverse acting. 
+
+i)  Action 
+
+j)  Prop 
+    The proportional band in units of the measured variable. 
+
+    For example, suppose we have the following settings: 
+
+    In this example, we are controlling a damper to maintain 10 Deg C supply air temperature as specified by "AHU4.SP" or the Air Handling Unit 4 Setpoint. The proportional band is set at 1, the controller will vary from 0 to 100% over a range of 1 Deg C. (neglecting the Reset and Rate terms which are set to zero for simplicity). 
+
+    The proportional term can be thought of as the "rigidity" with which a valve or damper will react to being away from its setpoint. A large value will tend to make the valve or damper "Lazy", while a small term will cause the actuator to react quickly over a smaller temperature deviation. 
+
+k)  Rset 
+    The "Reset" in repeats per hour. The Reset action (also called Integral) works to correct for a steady state error between the input and setpoint. It "repeats" (adds in) the error to the  output of the controller at the "Reset" times per hour. 
+
+     A controller with a large reset term will accumulate error faster and therefore cause the actuator to react quickly over time. A small term will cause the controller to accumulate error more slowly, therefore causing the acutator to react more slowly over time. 
+
+l)  Rate 
+    The derivative component in minutes. The Rate action (also called Derivative) works to
+correct for a quickly changing error. It can only be used when the process is "fast" and no time lags are in the control loop (i.e. sensors, outputs devices, process). 
+
+m)  Bias 
+    Output bias in %. This is the value which the controller will reach at equilibrium if no reset is used. 
+
+n)  Num 
+    CONTROLLER OUTPUT CALCULATION DISCUSSION 
+@
+#Weekly_routines$Weekly routines
+    Weekly Routines are essentially time clocks with 4 ON/OFF times per day of the week. The week has 9 days to allow for two overrides in addition to the weekly schedule. These are used for holiday schedules, and are specified by the Annual Routines Menu. 
+    Weekly Routine setup fields: 
+a)  Full_label 
+    A 20 character descriptor. 
+
+b)  A/m
+    Controls whether the routine is operational or not. 
+
+c)  Output 
+    The state of the routine (ON/OFF). 
+
+d)  Holiday1
+     When point entered here is *On", the day will be the eighth day of the week. 
+
+e)  State1 
+    The state of Holiday1(ON/OFF). 
+
+f)  Holiday2 
+    When point entered here is "On", the day will be the ninth day of the week. Note that in the case of both Holidays being on, Holiday1 is regarded. 
+
+g)  State2 
+    The state of Holiday2(ON/OFF). 
+
+h)  Label        An 8 character descriptor. 
+
+    To program the times for an individual routine press the "Ins" key while highlighting the Weekly Routine to be set up. The 9 day week will be displayed with the standard work menu operations. The desired start and stop times are then simply entered in the appropriate fields. 
+    Note that the times in Weekly Routines can be accessed from Control Basic using the WR-ON and WR-OFF functions. This is useful for programs that need to look ahead and see when an event is to start. 
+    The times specified must be in increasing order throughout each day. 
+    If no time is in a day column the Weekly Routine will maintain its current value. 
+@
+#Annual_routines$Annual routines
+    Annual Routines mark holidays, or days for special action throughout the calender year.
+    Annual Routine setup fields: 
+a)  Full_label 
+    A 20 character descriptor. 
+
+b)  A/m 
+    Controls whether the routine is operational or not. 
+
+c)  Value 
+    The state of the routine (ON/OFF). 
+
+d)  Label 
+    An 8 character descriptor. 
+
+    To program the times for an individual routine press the "INS" key while highlighting that point. The year is then displayed in 4 calender format pages (use PgUp and PgDn keys to change page) with months available on each page. Work menu operations are again available. To set a day as a holiday move the cursor to the desired day and press "ENTER". 
+    The Annual Routines defined here are the special event overrides which appeared in the previous section which described setting up the ON and OFF times for Weekly Routines (repeated below). 
+    When the annual overrides are defined, they can be entered into the "AR1" and "AR2" fields of the Weekly Routine setup area shown above, in order to let the Annual Routines override the weekly routines. In the example above, we have entered "AR-1" or Mnnual Routine 1" to override the Weekly Routine defined by "AR-1" or Weekly Routine 1. 
+@
+#Arrays$Arrays
+    Arrays are a table of variables that share a common name. The array elements can be accessed in Burke Basic by specifying the array name, followed by the index of the element. For example if there are twenty rooms for which we would like to perform some statistical calculations on, we could store the room temperatures in an array called ROOMTEMP. 
+    To build the array, move the cursor to a clear area in the "Arrays" work screen and type in the name for the array(e.g. KWHMONTH or ROOMTEMP shown below). Give the array a dimension which will be the number of rooms you wish to store in the array  The array is now configured and can be viewed by pressing the insert key.  This will bring you to the array variable screen, as shown below. Arrays can be used in Control Basic and in groups. When specifying an index in Control Basic it is often useful to use an expression so that the variable selected is dynamic. Arrays are for use currently only in the T3000 panel. 
+    Array setup fields: 
+a)  Label 
+    An 8 character descriptor for name the array. 
+
+b)  Length 
+    The number of variables in the array. Can be from 1 to 128. 
+@
+#Monitors$Monitors
+    Monitors are used to collect historical data for any point defined in the system regardless of their nature (either Analog or Digital). A base T3000 system can handle up to 16 separate monitors. The number of monitors available is dependent on the amount of memory that your system has. With enough memory the system can easily handle up to 128 monitors. Each of these separate monitors can trend up to 14 points.
+    Monitors setup fields:
+a)  Label
+    An 8 character descriptor.
+
+b)  Interval
+    The time between samples in hours : minutes : seconds.
+
+c)  Length
+    Time interval for which dates are maintained by the monitor. Expressed in the units of time defined by the “Units" field.
+
+d)  Units
+    The units of time the interval is being measured by.
+
+e)  Size
+    The size of the file needed to store the monitor's data.
+
+f)  Status
+    "ON" indicates the monitor is running, "OFF" indicates that it is stopped.
+
+g)  Input 
+    The name of the points to be included on the monitor. The TAB key is used to move the cursor to this section. The TAB or ESC key is used to return to the main monitor work screen. Up to 14 points can be monitored here per monitor. Of these 14 points only 5 may be digital, i.e. On/Off or Start/Stop. If more than 5 Digital points are entered onto the monitor than a warning flashes on the screen to indicate that you have entered too many Digital points. If this happens the Digital points over 5 will be deleted from the monitor.
+    An Analog Monitor can also be commanded to sample from Control Basic by setting it to On or OFF ( i.e. amon1 = ON ). When this occurs the monitor samples all its inputs and restarts the interval time. In using this feature it is best to stop the monitor (s = 0), and control all the sampling from Control Basic.
+    To access monitor data and view the graph, press the "INS" key while highlighting the desired monitor.
+@
+#Tables$Tables
+    "Tables" are used to program up to 5 custom input ranges, or for use with the TBL function in Programs. To program an input range, enter the input voltage from 0 - 5 VDC in the left column, and the corresponding value in the right column. The units for each table are set in the Custom Units section of Configuration (see chapter 8  for more info). The tables do a straight line interpolation between points.Note: the numbers which appear in the "Value" column must be entered in ascending order and should cover the entire 0-5 volt range.
+@
+#Custom_units$Custom units
+    This selection allows for eight unique digital units to be entered. These units show up in the Custom Digital list when entering ranges for Input, Outputs and Variables. All panels in a given network share the information given in the units table.
+@
+#Alarm_log$Alarm Log
+    Alarms annunciate problem conditions in the system. They are generated by the ALARM and DALARM statements in Programs. The ALARM statement generates analog alarms and the DALARM statement generates an alarm only if the condition persists for more than a defined period of time. These statements allow for a custom alarm message which can contain a maximum of 69 characters. When an alarm occurs, the alarm message is sent to the printer along with the panel number from which the alarm originated, as well as the date and time. This message is also displayed on the alarm line at the bottom of the screen. This alarm line alternatively displays each alarm currently in the system. 
+    The event of an alarm restoring (going out of alarm condition) or being acknowledged is printed with the time of their occurence. When an alarm is both acknowledged and restored it disappears from the system. The "Alarms" selection from the Main Menu show all the alarms currently in the system. It is from this selection that alarms are acknowledged.
+    To acknowledge an alarm, select the "Acknowlege" operation and enter the desired alarm ID number shown along the leftmost edge of the display. Restoring an alarm is done in the same manner. The time at which an alarm occured can be seen by selecting the "Time" operation and highlighting that particular alarm. Alarms can be cleared from the system with the "Clear" operation by an operator with an access level of 5. 
+    If there is any alarm in the system that is neither acknowledged or restored the beeper in the PC is activated. The beeping can be stopped by acknowledging the alarm or by pressing Ctrl A. The UNACK function in Programs can be used to trigger an event if there are any unacknowledged alarms. Alarms can be directed to specific panels with the ALARM-AT statement. The default is to alarm all panels. 
+    For information on the programming of ALARM and DALARM statements see Chapter 10 on Control Basic Programming.
+
+@
+#Setup$Setup
+    The Setup option deals with setting up the software end of the system. This information is saved in CONFIG.CNF and is loaded when B3000 is run.
+@
+#User_list$User List
+    user List provides the means for system security and individual access to the system. Each user has to Sign-On with his name and give his password to gain access to the system.  There is space to allow for 32 different users and passwords.
+    User List setup fields:
+a)  Name 
+    An eight character name of the user. First step for gaining system access when Signing-On.
+
+b)  Access level
+    The access  level the above user is working at.
+    The system has 3 different access levels as follows:
+    Level 0. Full Access    Full access to the system.
+    Level 1. View Only      Not allowed to make any changes.
+    Level 2/3/4..Custom    Access to different parts of the system is determined by system supervisor.
+
+    To set the Custom Access, hit the *, * arrow keys on Access Level with the cursor pad. This will take you to the "Access Rights" screen. Here choose either "View", "Edit" or "NoAcc" for the 14 different parts of the system listed. This is what determines  the custom Access. Each of the 32 Users can have his own Custom Access. 
+
+c)  Default panel
+
+d)  Default screen
+    The screen, the above user, first sees when signing on to the system. If the "Default screen" field is 0, then the default Work Menu is displayed after signing on. If the "Default screen" field is non-zero, that screen becomes the Main Menu for that particular operator. This can be either a text or graphic based display. 
+
+e)  Password
+    An eight character name of the user. Second step for gaining system access when Signing-On. If all is correct, then that user is logged on to the system according to the above parameters. 
+
+    When entering your "Password" the characters entered are not echoed to the screen. The system first asks you to "Type new Password" and then to "Retype new Password". If both passwords are the same then you will be allowed to exit the User List. If however two different passwords are entered then the message "Password Unchanged " will appear. The password will then have entered and retyped again correctly before you will be granted access to leave the User List.
+@
+#Hardware$Hardware
+    The Hardware option deals with setting up the hardware end of the system This information is saved in CONFIG.CNF and is loaded when B3000 is run.
+@
+#Default_program$Default program
+    The Default Program is the program that the panel you are talking to is currently using. Once you have loaded a program into the panel, enter the name of that program here. To do this simply enter the name, there is no need to hit RETURN to enter edit mode in this option. ESC exits you from this option.
+@
+#File_paths$File Paths
+    The file paths displayed are the file paths that DOS uses to access each type of file. This allows the operator to specify in which drive and directory each type of file resides (i.e.: C:\B3000\PRG\). This information is saved in CONFIG.CNF and is loaded when B3000 is run. The trailing backslash "\" is optional. 
+    The operator has the option of putting all files into a "Common Directory" or to split the different types of files into "Separate Directory's". If "Common Directory" is selected then after entering the directory name, this file path will be displayed after each of the different types of files. Or each type of file can have a different file path listed after it. 
+    To exit from this option hit ESC.
+@
+#Time_and_date$Time and Data
+    The time and date is set through this selection. This is the only time in the entire system. It is sent to all panels and also sets the internal clock in the personal computer. 
+    You are prompted to reset the time in hours: minutes: seconds - i.e. 14:32:34. 
+    Next, you are first prompted to reset the date by month-day-year - i.e. 10-29-95. 
+    To exit from this option hit ESC.
+@
+#Operation_mode$Operation Mode
+    Operation Mode asks if you want to be in "Console Mode" or not. 
+    You would choose "Console Mode" if you were working remotely from a PC either across a network or a modem and did not have any controller cards attached. By doing this you free up memory on your machine and increase communications speed, and also the user interface's speed as certain tasks that the B3000 system performs need not be run on your remote station. 
+    You would not choose "Console Mode" if you work on a panel.
+@
+#Print_alarms$Print Alarms
+    This option is still under development and does not work on V1.1 or less.
+@
+#Com_ports$Com Ports
+It's help for Com Ports !
+
+#Panel_configuration$Panel configuration
+It's help for Mini configuration !
+
+@
+#Screen_display$Screen
+    A screen made up of other screens can be used as a menu. Screens may be nested indefinitely. The TAB key is used as a fast-exit key to the Main Menu. This is useful when many screens are nested and the operator does not want to escape through them  all. The "Page-Up" and "Page-Down" keys will take you through consecutive screens. A Screen can be programmed to load up automatically after signing on by entering the Default Screen number in the "User List" selection from Configuration. This screen then becomes that users Main Menu.
+    The work menu reappears if the cursor is moved to the top line of the display. If a graphic is loaded and you are using a mouse, the work menu appears when the mouse is moved to the top of the screen. 
+
+@
+#Monitor_display$Monitor
+    Graph Display work options: 
+a)  eXit
+    Exit the graph and return to the Monitor Work screen.
+
+b)  Load.
+    Loads a previously saved View from the list.
+
+c)  Save 
+    Saves the current view setup parameters to memory. If the screen is too cluttered, any of the points monitored can be disabled by clicking on the name of the item appearing at the bottom of the screen. The graph will then be redisplayed with the disabled point or points not shown. The disabled points can then be toggled back on by clicking on the blank space occupied by the name of the item before it was toggled off. A point that is disabled will appear in a gray box. A point that is displayed will appear in a colored box. A View entails displaying only certain points available on the monitor. For example, you may have 10 points on the monitor but wish only to see 4 of them displayed on the graph. This would be considered a View and can be saved for the next time you need to view it.
+
+d)  Delete
+    Removes a previously saved View from the list.
+
+f)  Reset
+    Resets the graph to display as many samples as possible based on the size of the graph and erases the new Time Base opened by operator. 
+
+g)  Time Base
+    The period of time displayed on a full screen. This time base can be altered to change the graphs perspective. For example the Time Base can be changed from hours to minutes.
+
+h)  (Move Left)
+    The graph can be shifted 1/2 screen left at the current zoom level by clicking on the "<-" symbol at the top of the screen, or use the corresponding keyboard key.
+
+i)  (Move Righit)
+    The graph can be shifted 1/2 screen right at the current zoom level by clicking on the  "->" symbol at the top of the screen, or use the corresponding keyboard key.
+
+j)  (Zoom Out)
+    While in the graphing mode, you can "zoom In" on the data to view the data from a closer perspective. The Zoom range must first be set below.
+
+k)  (Zoom Out)
+    "Zoom Out" resets the monitor back one zoom level. This can only be used after Zoom In has been used to restore the graph to its original display mode.
+
+l)  (Zoom.)
+    When you select "Zoom" you will be prompted for the two end points over which the new graph will span. Once this is done when you zoom in or out this is the span it will increase or decrease by.
+@
