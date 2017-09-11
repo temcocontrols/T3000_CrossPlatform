@@ -29,20 +29,36 @@
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
             //var Space = new RegexBasedTerminal("Space", "\\s+");
             var Time = new TimeTerminal("Time");//new DataLiteralBase("Time", TypeCode.DateTime);
-            var Identifier = new IdentifierTerminal("Identifier"); //, "._", "1234567890");
+
+            //Non Control Points Identifiers TESTED
+            //Validated to be Non Keywords.
+            //Only UpperCase
+            var Identifier = new IdentifierTerminal("Identifier", ".-_");
+            Identifier.CaseRestriction = CaseRestriction.AllUpper;
+            Identifier.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            Identifier.Options = IdOptions.IsNotKeyword;
+
+            var LoopVariable = new IdentifierTerminal("LoopVariable");
+            LoopVariable.AllFirstChars = "ABCDEFGHIJK";
+            LoopVariable.Options = IdOptions.IsNotKeyword;
+
+
 
             //Starting with primitive Terminals
             var NonZeroDigit = new RegexBasedTerminal("[1-9]");
             var SingleDigit = new RegexBasedTerminal("[0-9]");
-            
+
             var Letter = new RegexBasedTerminal("[A-Z]");
-            var LoopVariable = new RegexBasedTerminal("[A-K]");
+
+
             var StringLiteral = new FreeTextLiteral("Text",
                 FreeTextOptions.AllowEmpty |
                 FreeTextOptions.AllowEof |
                 FreeTextOptions.IncludeTerminator, Environment.NewLine);
             var CommandSeparator = ToTerm(";");
             var Comma = ToTerm(",");
+
+            var AssignOp = ToTerm("=");
 
             // 2. Non-terminals
 
@@ -53,18 +69,24 @@
             var ENDStatement = new NonTerminal("ENDStatement");
             var ProgramLine = new NonTerminal("ProgramLine");
             var Subroutine = new NonTerminal("Subroutine");
+            var SubroutineSentences = new NonTerminal("SubRoutineSentences");
+
             var LineNumber = new NonTerminal("LineNumber");
             var EmptyLine = new NonTerminal("EmptyLine");
-            
+
             var Statement = new NonTerminal("Statement");
             var Comment = new NonTerminal("Comment");
             var Commands = new NonTerminal("Commands");
             var Command = new NonTerminal("Command");
             var NextCommand = new NonTerminal("NextCommand");
-            
+
             var Assignment = new NonTerminal("Assignment");
             var Branch = new NonTerminal("Branch");
-            var Loop = new NonTerminal("Loop");
+
+            //var Loop = new NonTerminal("Loop");
+            var FOR = new NonTerminal("FOR");
+            var ENDFOR = new NonTerminal("ENDFOR");
+            var STEPFOR = new NonTerminal("STEPFOR");
 
             //var CodeLine = new NonTerminal("CodeLine");
             //var Term = new NonTerminal("Term");
@@ -87,39 +109,51 @@
             //var BinaryOperator = new NonTerminal("BinaryOperator", "operator");
             //var AssignmentOperator = new NonTerminal("AssignmentOperator", "assignment operator");
 
-
+            // LISTAS 
             var IdentifierList = new NonTerminal("IdentifierList");
-            
+            var LoopVariableList = new NonTerminal("LoopVariableList");
             // 3. BNF rules
             //CONTROL_BASIC ::= SentencesSequence | SubRoutine
             CONTROL_BASIC.Rule = SentencesSequence | Subroutine;
             //SubRoutine ::= (LineNumber DECLARE EndLine SentencesSequence LineNumber END)
-            Subroutine.Rule = DECLAREStatement + SentencesSequence + ENDStatement ;
+            Subroutine.Rule = DECLAREStatement + SubroutineSentences;
+
             //DECLARE::= 'DECLARE' Identifier(',' Identifier) *
             DECLAREStatement.Rule = LineNumber + ToTerm("DECLARE") + IdentifierList + NewLine;
-            ENDStatement.Rule = LineNumber + ToTerm("END") + NewLine;
+            SubroutineSentences.Rule = SentencesSequence;
+            ENDStatement.Rule = LineNumber + ToTerm("END");
             IdentifierList.Rule = MakePlusRule(IdentifierList, Comma, Identifier);
-           //SentencesSequence ::= ProgramLine+
-           SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
+            //SentencesSequence ::= ProgramLine+
+            SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
             //ProgramLine ::= EmptyLine | (LineNumber Sentence EndLine)
             ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + NewLine);
-
+            ProgramLine.NodeCaptionTemplate = "#{0} #{1}";
             //EmptyLine ::= LineNumber? EndLine
             EmptyLine.Rule = LineNumber.Q() + NewLine;
 
             //Sentence ::= (Comment | (Commands| Assignment | Branch | Loop) Comment?)
-            Sentence.Rule = Comment | ( Commands  | Assignment | Branch | Loop ) +  Comment.Q();
+            Sentence.Rule = Comment | (( ToTerm("END") | Commands  | Assignment | Branch | FOR | ENDFOR   ) +  Comment.Q());
             //Statement.NodeCaptionTemplate = "#{0} #{1}";
             //Comment ::= 'REM' StringLiteral+
-            Comment.Rule = ToTerm("REM") + StringLiteral;
+            Comment.Rule = ToTerm("REM") + Text ;
+            Comment.NodeCaptionTemplate = "REM #{1}";
             //Commands::= Command (';' Command) *
             Commands.Rule = MakeStarRule(Command, CommandSeparator, Command);
 
             Command.Rule = "Command";
             Assignment.Rule  = "Assignment";
             Branch.Rule  = "Branch";
-            Loop.Rule  = "Loop";
-            
+
+            //Loop::= FOR SentencesSequence ENDFOR
+            //FOR::= 'FOR' LoopVariable AssignOp Integer 'TO' Integer('STEP' Integer) ? EndLine
+            //ENDFOR::= 'NEXT'(LoopVariable(',' LoopVariable) *) ?
+            //Loop.Rule  = FOR + SentencesSequence | ENDFOR ;
+            FOR.Rule = ToTerm("FOR") + LoopVariable + AssignOp + IntegerNumber + ToTerm("TO") + IntegerNumber + STEPFOR;
+            STEPFOR.Rule = Empty | (ToTerm("STEP") + IntegerNumber);
+            ENDFOR.Rule = ToTerm("NEXT") + LoopVariableList;
+            LoopVariableList.Rule  = MakePlusRule(LoopVariableList, Comma, LoopVariable);
+
+
             LineNumber.Rule = IntegerNumber;
           
            
