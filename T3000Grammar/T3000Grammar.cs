@@ -8,13 +8,13 @@
     [Language("Control Basic", "1.0", "T3000 Programming Language")]
     public class T3000Grammar : Grammar
     {
-        public static readonly ReadOnlyCollection<string> Functions = 
-            new ReadOnlyCollection<string>(
-            new [] 
-            {
-                "INTERVAL", "COM1", "ABS", "MAX", "MIN"
-            }
-        );
+        //public static readonly ReadOnlyCollection<string> Functions = 
+        //    new ReadOnlyCollection<string>(
+        //    new [] 
+        //    {
+        //        "INTERVAL", "COM1", "ABS", "MAX", "MIN"
+        //    }
+        //);
 
         public T3000Grammar() :
             base(caseSensitive: true) //Changed, Control Basic is Case Sensitive: SET-PRINTER vs Set-Printer
@@ -29,20 +29,59 @@
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
             //var Space = new RegexBasedTerminal("Space", "\\s+");
             var Time = new TimeTerminal("Time");//new DataLiteralBase("Time", TypeCode.DateTime);
-            var Identifier = new IdentifierTerminal("Identifier"); //, "._", "1234567890");
 
-            //Starting with primitive Terminals
-            var NonZeroDigit = new RegexBasedTerminal("[1-9]");
-            var SingleDigit = new RegexBasedTerminal("[0-9]");
-            
-            var Letter = new RegexBasedTerminal("[A-Z]");
-            var LoopVariable = new RegexBasedTerminal("[A-K]");
-            var StringLiteral = new FreeTextLiteral("Text",
-                FreeTextOptions.AllowEmpty |
-                FreeTextOptions.AllowEof |
-                FreeTextOptions.IncludeTerminator, Environment.NewLine);
+            //Non Control Points Identifiers TESTED
+            //Validated to be Non Keywords.
+            //Only UpperCase
+            var Identifier = new IdentifierTerminal("Identifier", ".-_");
+            Identifier.CaseRestriction = CaseRestriction.AllUpper;
+            Identifier.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            Identifier.Options = IdOptions.IsNotKeyword;
+
+            var LoopVariable = new IdentifierTerminal("LoopVariable");
+            LoopVariable.AllFirstChars = "ABCDEFGHIJK";
+            LoopVariable.Options = IdOptions.IsNotKeyword;
+
+            var LocalVariable = new IdentifierTerminal("LocalVariable");
+            LoopVariable.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            LoopVariable.Options = IdOptions.IsNotKeyword;
+
+            var VARS = new IdentifierTerminal("VARS");
+            VARS.AddPrefix("VAR", IdOptions.NameIncludesPrefix);
+
+
+            //Puctuation
+            var PARIZQ = ToTerm("(");
+            var PARDER = ToTerm(")");
             var CommandSeparator = ToTerm(";");
             var Comma = ToTerm(",");
+
+            //Operators
+            //Comparisson Operators
+            var AssignOp = ToTerm("=");
+            var LT = ToTerm("<");
+            var GT = ToTerm(">");
+            var LTE = ToTerm("<=");
+            var GTE = ToTerm(">=");
+            var NEQ = ToTerm("<>");
+            var EQ = ToTerm("=");
+
+            var NOT = ToTerm("NOT");
+
+            //Logical Operators
+            var AND = ToTerm("AND");
+            var XOR = ToTerm("XOR");
+            var OR = ToTerm("OR");
+
+            //Arithmetic Operators
+            var SUM = ToTerm("+");
+            var SUB = ToTerm("-");
+            var MUL = ToTerm("*");
+            var DIV = ToTerm("/");
+            var EXP = ToTerm("^");
+            var MOD = ToTerm("MOD");
+
+
 
             // 2. Non-terminals
 
@@ -53,21 +92,42 @@
             var ENDStatement = new NonTerminal("ENDStatement");
             var ProgramLine = new NonTerminal("ProgramLine");
             var Subroutine = new NonTerminal("Subroutine");
+            var SubroutineSentences = new NonTerminal("SubRoutineSentences");
+
             var LineNumber = new NonTerminal("LineNumber");
             var EmptyLine = new NonTerminal("EmptyLine");
-            
+
             var Statement = new NonTerminal("Statement");
             var Comment = new NonTerminal("Comment");
             var Commands = new NonTerminal("Commands");
+
+            //TODO : Add all commands as terms
             var Command = new NonTerminal("Command");
             var NextCommand = new NonTerminal("NextCommand");
-            
-            var Assignment = new NonTerminal("Assignment");
-            var Branch = new NonTerminal("Branch");
-            var Loop = new NonTerminal("Loop");
 
-            //var CodeLine = new NonTerminal("CodeLine");
-            //var Term = new NonTerminal("Term");
+        }   //TODO: Create Assignment statement
+            var Assignment = new NonTerminal("Assignment");
+
+            //TODO: Add all branch statements
+            var Branch = new NonTerminal("Branch");
+
+            //var Loop = new NonTerminal("Loop");
+            var FOR = new NonTerminal("FOR");
+            var ENDFOR = new NonTerminal("ENDFOR");
+            var STEPFOR = new NonTerminal("STEPFOR");
+
+            //Operators
+            var LogicOps = new NonTerminal("LogicOps");
+            var ArithmeticOps = new NonTerminal("ArithmeticOps");
+            var ComparisonOps = new NonTerminal("ComparisonOps");
+
+            var UnaryOps = new NonTerminal("UnaryOps");
+            var BinaryOps = new NonTerminal("BinaryOps");
+
+            var Designator = new NonTerminal("Designator");
+            var RemoteDesignator = new NonTerminal("RemoteDesignator");
+
+          
 
             ////Lines
             //var RemLine = new NonTerminal("RemLine");
@@ -87,51 +147,66 @@
             //var BinaryOperator = new NonTerminal("BinaryOperator", "operator");
             //var AssignmentOperator = new NonTerminal("AssignmentOperator", "assignment operator");
 
-
+            // LISTAS 
             var IdentifierList = new NonTerminal("IdentifierList");
-            
+            var LoopVariableList = new NonTerminal("LoopVariableList");
             // 3. BNF rules
             //CONTROL_BASIC ::= SentencesSequence | SubRoutine
             CONTROL_BASIC.Rule = SentencesSequence | Subroutine;
             //SubRoutine ::= (LineNumber DECLARE EndLine SentencesSequence LineNumber END)
-            Subroutine.Rule = DECLAREStatement + SentencesSequence + ENDStatement ;
+            Subroutine.Rule = DECLAREStatement + SubroutineSentences;
+
             //DECLARE::= 'DECLARE' Identifier(',' Identifier) *
             DECLAREStatement.Rule = LineNumber + ToTerm("DECLARE") + IdentifierList + NewLine;
-            ENDStatement.Rule = LineNumber + ToTerm("END") + NewLine;
+            SubroutineSentences.Rule = SentencesSequence;
+            ENDStatement.Rule = LineNumber + ToTerm("END");
             IdentifierList.Rule = MakePlusRule(IdentifierList, Comma, Identifier);
-           //SentencesSequence ::= ProgramLine+
-           SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
+            //SentencesSequence ::= ProgramLine+
+            SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
             //ProgramLine ::= EmptyLine | (LineNumber Sentence EndLine)
             ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + NewLine);
-
+            ProgramLine.NodeCaptionTemplate = "#{0} #{1}";
             //EmptyLine ::= LineNumber? EndLine
             EmptyLine.Rule = LineNumber.Q() + NewLine;
 
             //Sentence ::= (Comment | (Commands| Assignment | Branch | Loop) Comment?)
-            Sentence.Rule = Comment | ( Commands  | Assignment | Branch | Loop ) +  Comment.Q();
+            Sentence.Rule = Comment | ((ToTerm("END") | Commands | Assignment | Branch | FOR | ENDFOR) + Comment.Q());
             //Statement.NodeCaptionTemplate = "#{0} #{1}";
             //Comment ::= 'REM' StringLiteral+
-            Comment.Rule = ToTerm("REM") + StringLiteral;
+            Comment.Rule = ToTerm("REM") + Text;
+            Comment.NodeCaptionTemplate = "REM #{1}";
             //Commands::= Command (';' Command) *
             Commands.Rule = MakeStarRule(Command, CommandSeparator, Command);
 
             Command.Rule = "Command";
-            Assignment.Rule  = "Assignment";
-            Branch.Rule  = "Branch";
-            Loop.Rule  = "Loop";
+            Assignment.Rule = "Assignment";
+            Branch.Rule = "Branch";
+
+            //Loop::= FOR SentencesSequence ENDFOR
+            //FOR::= 'FOR' LoopVariable AssignOp Integer 'TO' Integer('STEP' Integer) ? EndLine
+            //ENDFOR::= 'NEXT'(LoopVariable(',' LoopVariable) *) ?
+            //Loop.Rule  = FOR + SentencesSequence | ENDFOR ;
+            FOR.Rule = ToTerm("FOR") + LoopVariable + AssignOp + IntegerNumber + ToTerm("TO") + IntegerNumber + STEPFOR;
+            STEPFOR.Rule = Empty | (ToTerm("STEP") + IntegerNumber);
+            ENDFOR.Rule = ToTerm("NEXT") + LoopVariableList;
+            LoopVariableList.Rule = MakePlusRule(LoopVariableList, Comma, LoopVariable);
+
+
+            LogicOps.Rule = AND | OR | XOR;
+            ArithmeticOps.Rule = SUM | SUB | MUL | DIV | MOD | EXP;
+            ComparisonOps.Rule = EQ | NEQ | GT | LT | LTE | GTE;
+
+            UnaryOps.Rule  = NOT;
+            BinaryOps.Rule = ArithmeticOps | ComparisonOps | LogicOps;
             
+
             LineNumber.Rule = IntegerNumber;
+
+
+
+
+
           
-           
-            
-           
-            
-            //CodeLine.Rule =
-            //    RemLine |
-            //    IfLine |
-            //    AssignLine;
-            //Term.Rule = Number | ParentExpression | Identifier | Time;
-            //Term.NodeCaptionTemplate = "#{0}";
 
             ////Lines
             //RemLine.Rule = "REM" + Text;
@@ -170,34 +245,45 @@
             //    FunctionOperator.Rule |= function;
             //}
 
-            //FunctionOperator.NodeCaptionTemplate = "#{0}";
-            //BinaryOperator.Rule = ToTerm(",") |
-            //    "AND" | "OR" |
-            //    "<" | ">" |
-            //    "+" | "-" |
-            //    "*" | "/" |
-            //    "**";
-            //BinaryOperator.NodeCaptionTemplate = "#{0}";
-            //AssignmentOperator.Rule = ToTerm("=") | 
-            //    "+=" | "-=" | 
-            //    "*=" | "/=";
-            //AssignmentOperator.NodeCaptionTemplate = "#{0}";
+ 
+         
 
             //Set grammar root 
-            Root = CONTROL_BASIC ;
+            Root = CONTROL_BASIC;
 
-            //// 4. Operators precedence
-            //RegisterOperators(1, ",");
+
+            //EXample
             ////jarray.Rule = MakeStarRule(jarray, comma, jvalue);
-            //RegisterOperators(2, "AND", "OR");
-            //RegisterOperators(3, "<", ">");
-            //RegisterOperators(4, "+", "-");
-            //RegisterOperators(5, "*", "/");
-            //RegisterOperators(6, Associativity.Right, "**");
+
+            RegisterBracePair(PARIZQ.ToString(), PARDER.ToString());
+            
+            // 4. Operators precedence
+            RegisterOperators(100, Associativity.Right, EXP);
+            RegisterOperators(90, MUL);
+            RegisterOperators(90, DIV);
+            RegisterOperators(80, MOD);
+            RegisterOperators(70, SUM);
+            RegisterOperators(70, SUB);
+
+            RegisterOperators(60, NEQ);
+            RegisterOperators(60, LT);
+            RegisterOperators(60, GT);
+            RegisterOperators(60, LTE);
+            RegisterOperators(60, GTE);            
+            RegisterOperators(60, EQ);
+
+            RegisterOperators(55, Associativity.Right, NOT);
+            RegisterOperators(50, AND);
+            RegisterOperators(50, OR);
+            RegisterOperators(50, XOR);
+
+            RegisterOperators(10, AssignOp);
+
+
 
             //// 5. Punctuation and transient terms
-            MarkPunctuation("(", ")",CommandSeparator.ToString() );
-            //RegisterBracePair("(", ")");
+            MarkPunctuation( PARIZQ.ToString()  , PARDER.ToString()  ,CommandSeparator.ToString() );
+            
 
             //MarkTransient(CodeLine, ProgramLine, 
             //    Term, Expression,
