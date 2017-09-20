@@ -9,16 +9,18 @@ Comment ::= 'REM' StringLiteral+
 Commands ::= Command (';' Command)*
 Function ::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
 Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT
-ABS ::= 'ABS' PARIZQ EXPRESSION PARDER
-ALARM ::= 'ALARM' Term ComparisonOps Term ',' Term ',' StringLiteral*
+ABS ::= 'ABS' PARIZQ Expression PARDER
+ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
 ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
-AVG ::=  'AVG' PARIZQ EXPRESSION ( Space ',' Space EXPRESSION)* PARDER
+AVG ::=  'AVG' PARIZQ Expression ExpressionListOpt PARDER
 CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
 CLEAR ::= 'CLEAR'
 CLOSE ::= 'CLOSE' Designator
-CONPROP ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER RANGE
-CONRATE ::= 'CONRATE' PARIZQ Ordinal ',' Expression PARDER RANGE
-CONRESET ::= 'CONRESET' PARIZQ Ordinal ',' Expression PARDER RANGE
+CONPROP ::= 'CONPROP' PARIZQ CON ',' Expression PARDER 
+CONRATE ::= 'CONRATE' PARIZQ CON ',' Expression PARDER 
+CONRESET ::= 'CONRESET' PARIZQ CON ',' Expression PARDER 
+CON ::= UPTO64
+
 DALARM ::= 'DALARM' Expression ',' NumberLiteral ',' StringLiteral+
 DECLARE ::= 'DECLARE' Identifier (',' Identifier)*
 DISABLE ::= 'DISABLE' Identifier
@@ -48,18 +50,18 @@ REMOTEGET ::= 'REMOTE-GET' Designator AssignOp RemoteDesignator
 REMOTESET ::= 'REMOTE-SET' RemoteDesignator AssignOp Designator
 RETURN ::= 'RETURN'
 RUNMACRO ::= 'RUN-SYSTEM' SYSPRG
-SCANS ::= Identifier AssignOp 'SCANS'
+SCANS ::= 'SCANS'
 SETPRINTER ::= PRINTEVERYTHING | ONLYPRINTCOMMANDS
 PRINTEVERYTHING ::= 'SET-PRINTER' ('A'|'B'|'0')
 ONLYPRINTCOMMANDS ::= 'Set-Printer' ('a'|'b'|'0')
 SQR ::= 'SQR' PARIZQ Expression PARDER
 START ::= 'START' Designator
-STATUS ::= 'STATUS' PARIZQ PANEL PARDER
+STATUS ::= 'STATUS' PARIZQ Expression PARDER
 STOP ::= 'STOP' Designator
 TBL ::= 'TBL' PARIZQ Expression ',' TABLENUMBER PARDER
 TIME ::= 'TIME'
-TIMEON ::= 'TIME-ON' Designator
-TIMEOFF ::= 'TIME-OFF' Designator
+TIMEON ::= 'TIME-ON' PARIZQ Designator PARDER 
+TIMEOFF ::= 'TIME-OFF' PARIZQ Designator PARDER
 UNACK ::= 'UNACK'
 USERA ::= 'USER-A'
 USERB ::= 'USER-B'
@@ -97,21 +99,23 @@ TimeLiteral ::= HH ':' MM ':' SS
 HH ::= [0-1] Digit | [2] [0-3]
 MM ::= [0-5] Digit
 SS ::= [0-5] Digit
+
 LogicOps ::= 'AND' | 'OR' | 'XOR'
 ArithmeticOps ::= '^' | '*' | '/' | '\' | '+' | '-' | 'MOD'
 ComparisonOps ::= '<' | '>' | '<=' | '>=' | '<>' | AssignOp
 AssingOp ::= '='
 UnaryOps ::= 'NOT'|'-'
-BinaryOps ::= ArithmeticOps | ComparisonOps
+BinaryOps ::= ArithmeticOps | ComparisonOps | LogicOps
 Parenthesis ::= ParIzq | ParDer
 ParIzq ::= '('
 ParDer ::= ')'
-Expression ::= EnclosableExpression (LogicOps EnclosableExpression)?
-EnclosableExpression ::= SimpleExpression | (ParIzq SimpleExpression ParDer)
-SimpleExpression ::= UnaryExpression | BinaryExpression | Expression
-UnaryExpression ::=  (UnaryOps? Term)
-BinaryExpression ::= (Term BinaryOps Term)
-Term ::= Function | Designator | Literal
+
+Expression ::= Fucntion | Literal | Designator | BinaryExpression | EnclosableExpression | UnaryExpression
+EnclosableExpression ::= ParIzq Expression ParDer
+UnaryExpression ::=  UnaryOps Expression
+BinaryExpression ::= Expression BinaryOps Expression
+ExpressionListOpt ::= (',' Expression)*
+
 IntegerTerm ::= Function | Designator
 Assignment ::= Designator AssignOp Expression 
 Designator ::= Identifier | PointIdentifier | LocalVariable
@@ -139,11 +143,11 @@ Letter ::= [A-Z]
 PANEL ::= Ordinal
 PANELS ::= PANEL (Space PANEL)* | 'ALL'
 ARG ::= Designator | Expression
-RANGE ::= 'RANGE' Ordinal 'TO' Ordinal
+
 Ordinal ::= NonZeroDigit Digit*
 
 SYSPRG ::= UPTO16
-TABLENUMBER ::= UPTO16
+TABLENUMBER ::= UPTO5
 TIMER ::= UPTO4
 
 UPTO128 ::= NonZeroDigit Digit? | [1] ( ([0-1] Digit ) | ([2] [0-8]))
@@ -154,3 +158,4 @@ UPTO32 ::= NonZeroDigit | [1-2] Digit | [3] [0-2]
 UPTO16 ::= NonZeroDigit | [1] [0-6]
 UPTO8 ::= [1-8]
 UPTO4 ::= [1-4]
+UPTO5 ::= [1-5]
