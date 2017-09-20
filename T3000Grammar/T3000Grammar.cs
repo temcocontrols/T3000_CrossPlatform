@@ -8,29 +8,34 @@ namespace T3000
     [Language("Control Basic", "1.0", "T3000 Programming Language")]
     public class T3000Grammar : Grammar
     {
-        //public static readonly ReadOnlyCollection<string> Functions = 
-        //    new ReadOnlyCollection<string>(
-        //    new [] 
-        //    {
-        //        "INTERVAL", "COM1", "ABS", "MAX", "MIN"
-        //    }
-        //);
+        public static readonly ReadOnlyCollection<string> Functions =
+            new ReadOnlyCollection<string>(
+            new[]
+            {
+               // "INTERVAL", "COM1", "ABS", "MAX", "MIN"
+                "INTERVAL", "COM1", "MAX", "MIN"
+            }
+        );
 
         public T3000Grammar() :
             base(caseSensitive: true) //Changed, Control Basic is Case Sensitive: SET-PRINTER vs Set-Printer
         {
             // 1. Terminals
-            var Text = new FreeTextLiteral("Text",
-                FreeTextOptions.AllowEmpty |
-                FreeTextOptions.AllowEof |
-                FreeTextOptions.IncludeTerminator, Environment.NewLine);
-            //var String = new StringLiteral("String", "'", StringOptions.AllowsAllEscapes);
+
+            //Comentarios
+            CommentTerminal Comment = new CommentTerminal("Comment", "REM", "\n", "\r\n");
+
+
+            //var Text = new FreeTextLiteral("Text",
+            //    FreeTextOptions.AllowEmpty |
+            //    FreeTextOptions.AllowEof |
+            //    FreeTextOptions.IncludeTerminator, Environment.NewLine);
+            
             var Number = new NumberLiteral("Number");
+
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
+
             //var Space = new RegexBasedTerminal("Space", "\\s+");
-            var Time = new TimeTerminal("Time");//new DataLiteralBase("Time", TypeCode.DateTime);
-
-
 
 
             //Non Control Points Identifiers TESTED
@@ -40,6 +45,7 @@ namespace T3000
             Identifier.CaseRestriction = CaseRestriction.AllUpper;
             Identifier.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             Identifier.Options = IdOptions.IsNotKeyword;
+            Identifier.Precedence = 2;
 
             var LoopVariable = new IdentifierTerminal("LoopVariable");
             LoopVariable.AllFirstChars = "ABCDEFGHIJK";
@@ -48,6 +54,12 @@ namespace T3000
             var LocalVariable = new IdentifierTerminal("LocalVariable");
             LoopVariable.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             LoopVariable.Options = IdOptions.IsNotKeyword;
+            LoopVariable.Precedence = 1;
+
+
+            ////Redesign of LocalVariable to RegExBasedTerminal
+            //var LocalVariable = new RegexBasedTerminal("LocalVariable", "[A-Z]");
+            //LocalVariable.Flags = TermFlags.IsLiteral;
 
             //RegEx Tested Strings, for ending valid Control Points
             string UPTO128 = "12[0-8]|1[0-1][0-9]|[1-9][0-9]?";
@@ -75,6 +87,8 @@ namespace T3000
             var PIDS = new RegexBasedTerminal("PIDS", UPTO64, "PID");
 
             var ARR = new RegexBasedTerminal("ARR", UPTO48, "AY");
+            //Controllers
+            var CON = new RegexBasedTerminal("CON", UPTO64);
 
             //WRS ::= 'WR' UPTO32
 
@@ -87,12 +101,15 @@ namespace T3000
 
             //Other sub-literals
 
-            
+
             var DayNumber = new RegexBasedTerminal("DayNumber", UPTO31);
 
             var HH = new RegexBasedTerminal("HH", UPTO23);
             var MM = new RegexBasedTerminal("MM", UPTO59);
             var SS = new RegexBasedTerminal("SS", UPTO59);
+
+
+            var Ordinal = new RegexBasedTerminal("Ordinal", UPTO64);
 
 
             //KEYWORDS
@@ -165,7 +182,8 @@ namespace T3000
             var USERA = ToTerm("USER-A");
             var USERB = ToTerm("USER-B");
 
-           
+            
+
 
 
 
@@ -178,6 +196,8 @@ namespace T3000
             var DECLAREStatement = new NonTerminal("DECLAREStatement");
             var ENDStatement = new NonTerminal("ENDStatement");
             var ProgramLine = new NonTerminal("ProgramLine");
+            var BasicLine = new NonTerminal("BasicLine");
+
             var Subroutine = new NonTerminal("Subroutine");
             var SubroutineSentences = new NonTerminal("SubRoutineSentences");
 
@@ -185,7 +205,8 @@ namespace T3000
             var EmptyLine = new NonTerminal("EmptyLine");
 
             var Statement = new NonTerminal("Statement");
-            var Comment = new NonTerminal("Comment");
+            var EndProgLine = new NonTerminal("CommentOpt");
+
             var Commands = new NonTerminal("Commands");
 
             //TODO : Add all commands names as terms
@@ -194,9 +215,14 @@ namespace T3000
 
             //TDDO: Add all function names as terms
             var Function = new NonTerminal("Function");
+            var ABS = new NonTerminal("ABS");
+            var AVG = new NonTerminal("AVG");
+            var CONPROP = new NonTerminal("CONPROP");
+         
+            var CONRATE = new NonTerminal("CONRATE");
+            var CONRESET = new NonTerminal("CONRESET");
 
-
-           //TODO: Create Assignment statement
+            //Create Assignment statement
             var Assignment = new NonTerminal("Assignment");
 
             //TODO: Add all branch statements
@@ -223,16 +249,29 @@ namespace T3000
             var MonthLiteral = new NonTerminal("MonthLiteral");
             var DayLiteral = new NonTerminal("DayLiteral");
             var TimeLiteral = new NonTerminal("TimeLiteral");
-            
+
 
             //Terms to Expressions 
-            var Term = new NonTerminal("Term");
-
+          
+            var UnaryExpression = new NonTerminal("UnaryExpression");
+            var BinaryExpression = new NonTerminal("BinaryExpression");
+            var EnclosableExpression = new NonTerminal("EnclosableExpression");
+            var Expression = new NonTerminal("Expression");
+            
+            
 
             // LISTAS 
             var IdentifierList = new NonTerminal("IdentifierList");
             var LoopVariableList = new NonTerminal("LoopVariableList");
+            var ExpressionListOpt = new NonTerminal("ExpressionList");
+
             // 3. BNF rules
+
+            /////////////////////
+            //Set grammar root 
+            /////////////////////
+            Root = CONTROL_BASIC;
+
             //CONTROL_BASIC ::= SentencesSequence | SubRoutine
             CONTROL_BASIC.Rule = SentencesSequence | Subroutine;
             //SubRoutine ::= (LineNumber DECLARE EndLine SentencesSequence LineNumber END)
@@ -246,22 +285,27 @@ namespace T3000
             //SentencesSequence ::= ProgramLine+
             SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
             //ProgramLine ::= EmptyLine | (LineNumber Sentence EndLine)
-            ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + NewLine);
-            ProgramLine.NodeCaptionTemplate = "#{0} #{1}";
+            ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + EndProgLine);
+
+            EndProgLine.Rule = Comment.Q() | NewLine;
+
             //EmptyLine ::= LineNumber? EndLine
             EmptyLine.Rule = LineNumber.Q() + NewLine;
 
             //Sentence ::= (Comment | (Commands| Assignment | Branch | Loop) Comment?)
-            Sentence.Rule = Comment | ((ToTerm("END") | Commands | Assignment | Branch | FOR | ENDFOR) + Comment.Q());
-            //Statement.NodeCaptionTemplate = "#{0} #{1}";
-            //Comment ::= 'REM' StringLiteral+
-            Comment.Rule = ToTerm("REM") + Text;
-            Comment.NodeCaptionTemplate = "REM #{1}";
+            //Sentence.Rule = Comment | ((ToTerm("END") + ReduceHere() | Commands | Assignment | Branch | FOR | ENDFOR) + Comment.Q()  );
+            Sentence.Rule = ToTerm("END") | Commands | Assignment | Branch | FOR | ENDFOR;
+
+
             //Commands::= Command (';' Command) *
             Commands.Rule = MakeStarRule(Command, CommandSeparator, Command);
 
             Command.Rule = "Command";
-            Assignment.Rule = "Assignment";
+
+
+            //Assignment ::= Designator AssignOp Expression 
+            Assignment.Rule = Designator + AssignOp + Expression;
+
             Branch.Rule = "Branch";
 
             //Loop::= FOR SentencesSequence ENDFOR
@@ -278,13 +322,14 @@ namespace T3000
             ArithmeticOps.Rule = SUM | SUB | MUL | DIV | MOD | EXP;
             ComparisonOps.Rule = EQ | NEQ | GT | LT | LTE | GTE;
 
-            UnaryOps.Rule  = NOT;
+            UnaryOps.Rule = NOT;
             BinaryOps.Rule = ArithmeticOps | ComparisonOps | LogicOps;
-            
+
 
             LineNumber.Rule = IntegerNumber;
             //PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
             PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR;
+            PointIdentifier.Precedence = 3;
             //Designator ::= Identifier | PointIdentifier | LocalVariable
             Designator.Rule = PointIdentifier | Identifier | LocalVariable;
             RemoteDesignator.Rule = Designator;
@@ -297,53 +342,61 @@ namespace T3000
             //TimeLiteral ::= HH ':' MM ':' SS
             TimeLiteral.Rule = HH + DDOT + MM + DDOT + SS;
             //Literal ::= NumbersLiteral | DatesLiteral | DaysLiteral | TimeLiteral
-            Literal.Rule = Number | DatesLiteral | DayLiteral | TimeLiteral ;
-            //Term ::= Function | Designator | Literal
-            Term.Rule = Designator | Literal | Function;
+            Literal.Rule = Number | DatesLiteral | DayLiteral | TimeLiteral;
+
 
             //Functions
             //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
-            Function.Rule = DOY | DOM | DOW | POWERLOSS | TIME | UNACK | USERA | USERB;
+            Function.Rule = ABS | AVG | CONPROP | CONRATE |  DOY | DOM | DOW | POWERLOSS | TIME | UNACK | USERA | USERB;
+            ABS.Rule = "ABS" + PARIZQ + Expression + PARDER;
+            //AVG      ::= 'AVG' PARIZQ EXPRESSION ( Space ',' Space EXPRESSION )* PARDER
+            AVG.Rule = "AVG" + PARIZQ + Expression + ExpressionListOpt + PARDER;
+            //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
+            //TODO: Verify MAX value for integer values of CONPROP
+            CONPROP.Rule = "CONPROP" + PARIZQ + CON + Comma + Expression + PARDER;
+            
+            //CONRATE  ::= 'CONRATE' PARIZQ Ordinal ',' Expression PARDER RANGE
+            CONRATE.Rule = "CONRATE" + PARIZQ + CON + Comma + Expression + PARDER;
+
+            //CONRESET ::= 'CONRESET' PARIZQ Ordinal ',' Expression PARDER RANGE
+            CONRESET.Rule = "CONRESET" + PARIZQ + CON + Comma + Expression + PARDER;
 
 
-            /////////////////////
-            //Set grammar root 
-            /////////////////////
-            Root = CONTROL_BASIC;
 
 
-            //EXample
-            ////jarray.Rule = MakeStarRule(jarray, comma, jvalue);
+            //EXPR.Rule = number | variable | FUN_CALL | stringLiteral | BINARY_EXPR 
+            //          | "(" + EXPR + ")" | UNARY_EXPR;
+            Expression.Rule = Function | Literal | Designator | BinaryExpression |  EnclosableExpression | UnaryExpression;
+                        
+            //UnaryExpression ::=  UnaryOps Term
+            UnaryExpression.Rule = UnaryOps + Expression;
+            //BinaryExpression::= Expression BinaryOps Expression
+            BinaryExpression.Rule = Expression + BinaryOps + Expression;
+            
+            //EnclosableExpression ::= ParIzq SimpleExpression ParDer
+            EnclosableExpression.Rule = PARIZQ + Expression + PARDER;
 
+            ExpressionListOpt.Rule = MakeStarRule(ExpressionListOpt, Comma + Expression);
+
+                                   
             RegisterBracePair(PARIZQ.ToString(), PARDER.ToString());
             
             // 4. Operators precedence
             RegisterOperators(100, Associativity.Right, EXP);
-            RegisterOperators(90, MUL);
-            RegisterOperators(90, DIV);
+            RegisterOperators(90, MUL,DIV);
             RegisterOperators(80, MOD);
-            RegisterOperators(70, SUM);
-            RegisterOperators(70, SUB);
-
-            RegisterOperators(60, NEQ);
-            RegisterOperators(60, LT);
-            RegisterOperators(60, GT);
-            RegisterOperators(60, LTE);
-            RegisterOperators(60, GTE);            
-            RegisterOperators(60, EQ);
-
+            RegisterOperators(70, SUM, SUB);
+            
+            RegisterOperators(60, LT,GT,LTE,GTE,EQ,NEQ);
+            
             RegisterOperators(55, Associativity.Right, NOT);
-            RegisterOperators(50, AND);
-            RegisterOperators(50, OR);
-            RegisterOperators(50, XOR);
-
-            RegisterOperators(10, AssignOp);
-
-
-
+            RegisterOperators(50, AND,OR,XOR);
+            
+            
             //// 5. Punctuation and transient terms
             MarkPunctuation( PARIZQ.ToString()  , PARDER.ToString()  ,CommandSeparator.ToString() );
-            
+
+            MarkTransient(LineNumber);
 
             //MarkTransient(CodeLine, ProgramLine, 
             //    Term, Expression,
@@ -358,7 +411,7 @@ namespace T3000
             #region Define Keywords
 
             //??
-            //MarkReservedWords("");
+            MarkReservedWords("DECLARE","FOR");
 
             #endregion
         }
