@@ -24,18 +24,26 @@ namespace T3000
 
             //Comentarios
             CommentTerminal Comment = new CommentTerminal("Comment", "REM", "\n", "\r\n");
-
+            
 
             //var Text = new FreeTextLiteral("Text",
             //    FreeTextOptions.AllowEmpty |
             //    FreeTextOptions.AllowEof |
             //    FreeTextOptions.IncludeTerminator, Environment.NewLine);
-            
-            var Number = new NumberLiteral("Number", NumberOptions.AllowStartEndDot);
+
+            var Number = new NumberLiteral("Number", NumberOptions.AllowStartEndDot | NumberOptions.AllowSign);
             Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64 };
             Number.DefaultFloatType = TypeCode.Single;
             Number.AddExponentSymbols("E", TypeCode.Double);
+            Number.AddExponentSymbols("E-", TypeCode.Double);
             Number.Priority = 20;
+
+            //string MyNumberLiteral = "(\\-?\\d+)\\.?\\d+(E\\-|E\\+|E|\\d+)\\d+";
+            //var Number = new RegexBasedTerminal("MyNumber", MyNumberLiteral);
+            //Number.Priority = 20;
+
+
+
 
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
             IntegerNumber.Priority = 10;
@@ -208,12 +216,8 @@ namespace T3000
             var USERA = ToTerm("USER-A");
             var USERB = ToTerm("USER-B");
             var SCANS = ToTerm("SCANS");
+
             
-
-
-
-
-
 
             // 2. Non-terminals
 
@@ -240,7 +244,7 @@ namespace T3000
             var Command = new NonTerminal("Command");
             var NextCommand = new NonTerminal("NextCommand");
 
-            //TDDO: Add all function names as terms
+            
             var Function = new NonTerminal("Function");
             var ABS = new NonTerminal("ABS");
             var AVG = new NonTerminal("AVG");
@@ -266,6 +270,10 @@ namespace T3000
             var WRON = new NonTerminal("WRON");
             var WROFF = new NonTerminal("WROFF");
 
+            //Commands
+            var START = new NonTerminal("START");
+            var STOP = new NonTerminal("STOP");
+            var LET = new NonTerminal("LET");
 
 
 
@@ -274,6 +282,18 @@ namespace T3000
 
             //TODO: Add all branch statements
             var Branch = new NonTerminal("Branch");
+            //BRANCH
+            //Branch ::= IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON
+            var IF = new NonTerminal("IF");
+            var IFTRUE = new NonTerminal("IFTRUE");
+            var IFFALSE = new NonTerminal("IFFALSE");
+            var GOSUB = new NonTerminal("GOSUB");
+            var GOTO = new NonTerminal("GOTO");
+            var ON = new NonTerminal("ON");
+            var IFCLAUSE = new NonTerminal("IFCLAUSE");
+            var ELSEOPT = new NonTerminal("ELSEOPT");
+            var GOSELECTOR = new NonTerminal("GOSELECTOR");
+            
 
             //var Loop = new NonTerminal("Loop");
             var FOR = new NonTerminal("FOR");
@@ -310,7 +330,8 @@ namespace T3000
             // LISTAS 
             var IdentifierList = new NonTerminal("IdentifierList");
             var LoopVariableList = new NonTerminal("LoopVariableList");
-            var ExpressionListOpt = new NonTerminal("ExpressionList");
+            var ExpressionListOpt = new NonTerminal("ExpressionListOpt");
+            var LineNumberListOpt = new NonTerminal("LineNumberListOpt");
 
             // 3. BNF rules
 
@@ -334,12 +355,14 @@ namespace T3000
             //SentencesSequence ::= ProgramLine+
             SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
             //ProgramLine ::= EmptyLine | (LineNumber Sentence EndLine)
-            ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + EndProgLine);
+            //ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + ReduceHere() + EndProgLine);
+            ProgramLine.Rule = LineNumber + Sentence + EndProgLine;
 
-            EndProgLine.Rule = Comment.Q() | NewLine;
+            EndProgLine.Rule = Comment.Q() + NewLine;
 
             //EmptyLine ::= LineNumber? EndLine
-            EmptyLine.Rule = LineNumber.Q() + NewLine;
+            //EmptyLine.Rule = LineNumber.Q() + NewLine;
+            EmptyLine.Rule = Empty;
 
             //Sentence ::= (Comment | (Commands| Assignment | Branch | Loop) Comment?)
             //Sentence.Rule = Comment | ((ToTerm("END") + ReduceHere() | Commands | Assignment | Branch | FOR | ENDFOR) + Comment.Q()  );
@@ -349,13 +372,42 @@ namespace T3000
             //Commands::= Command (';' Command) *
             Commands.Rule = MakeStarRule(Command, CommandSeparator, Command);
 
-            Command.Rule = "Command";
+            Command.Rule = START | STOP;
+            START.Rule = "START" + Designator;
+            STOP.Rule = "STOP" + Designator;
 
 
             //Assignment ::= Designator AssignOp Expression 
-            Assignment.Rule = Designator + AssignOp + Expression;
+            LET.Rule = "LET";
+            Assignment.Rule = LET.Q() + Designator + AssignOp + Expression;
 
-            Branch.Rule = "Branch";
+
+            //Branch ::= IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON
+            //   IF::= 'IF' Expression 'THEN' IFCLAUSE('ELSE' IFCLAUSE) ?
+            //  IFTRUE::= 'IF+' Expression 'THEN' IFCLAUSE('ELSE' IFCLAUSE) ?
+            // IFFALSE::= 'IF-' Expression 'THEN' IFCLAUSE('ELSE' IFCLAUSE) ?
+            //IFCLAUSE::= (Sentence | LineNumber)
+
+            Branch.Rule = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON;
+            IF.Rule = "IF" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q() ;
+
+            IFTRUE.Rule = "IF+" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
+            IFFALSE.Rule = "IF-" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
+            IFCLAUSE.Rule = Commands | Assignment | GOSELECTOR | LineNumber;
+            ELSEOPT.Rule = "ELSE" + IFCLAUSE;
+            
+            //ON ::= 'ON' IntegerTerm (GOTO | GOSUB) (',' LineNumber)*
+            ON.Rule = "ON" + Expression + GOSELECTOR + LineNumberListOpt ;
+            GOSELECTOR.Rule = GOTO | GOSUB;
+            LineNumberListOpt.Rule = MakeStarRule(LineNumberListOpt, Comma + LineNumber);
+            //GOSUB::= 'GOSUB' LineNumber
+            GOSUB.Rule = "GOSUB" + LineNumber;
+            //GOTO ::= 'GOTO' LineNumber
+            GOTO.Rule = "GOTO" + LineNumber;
+
+
+
+
 
             //Loop::= FOR SentencesSequence ENDFOR
             //FOR::= 'FOR' LoopVariable AssignOp Integer 'TO' Integer('STEP' Integer) ? EndLine
@@ -419,11 +471,11 @@ namespace T3000
             //INTERVAL::= 'INTERVAL' PARIZQ Expression PARDER
             INTERVAL.Rule = "INTERVAL" + PARIZQ + Expression + PARDER;
             //LN::= 'LN' PARIZQ Expression PARDER
-            LN.Rule = "LN" + PARIZQ + ReduceHere() + Expression  + PARDER;
+            LN.Rule = "LN" + PARIZQ +  Expression  + PARDER;
             //LN1 ::= 'LN-1' PARIZQ Expression PARDER
-            LN1.Rule = "LN-1" + PARIZQ + ReduceHere() + Expression + PARDER;
+            LN1.Rule = "LN-1" + PARIZQ + Expression + PARDER;
             //MAX ::= 'MAX' PARIZQ Expression (Space ',' Space Expression)*PARDER
-            MAX.Rule = "MAX" + PARIZQ + ReduceHere() + Expression + ExpressionListOpt + PARDER;
+            MAX.Rule = "MAX" + PARIZQ   + Expression + ExpressionListOpt + PARDER;
             //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
             MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
             //SQR ::= 'SQR' PARIZQ Expression PARDER
@@ -441,16 +493,13 @@ namespace T3000
             //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
             WROFF.Rule = "WR-OFF" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
 
-
-
-
-
+            
             //EXPR.Rule = number | variable | FUN_CALL | stringLiteral | BINARY_EXPR 
             //          | "(" + EXPR + ")" | UNARY_EXPR;
-            Expression.Rule = Function | Literal | Designator | BinaryExpression |  EnclosableExpression | UnaryExpression;
+            Expression.Rule = Function | Literal | Designator | UnaryExpression | BinaryExpression |  EnclosableExpression ;
                         
             //UnaryExpression ::=  UnaryOps Term
-            UnaryExpression.Rule = UnaryOps + Expression;
+            UnaryExpression.Rule = UnaryOps  + Expression;
             //BinaryExpression::= Expression BinaryOps Expression
             BinaryExpression.Rule = Expression + BinaryOps + Expression;
             
@@ -470,7 +519,7 @@ namespace T3000
             
             RegisterOperators(60, LT,GT,LTE,GTE,EQ,NEQ);
             
-            RegisterOperators(55, Associativity.Right, NOT);
+            RegisterOperators(50, Associativity.Right ,NOT);
             RegisterOperators(50, AND,OR,XOR);
             
             
@@ -494,7 +543,7 @@ namespace T3000
             #region Define Keywords
 
             //GENERAL KEYWORDS
-            MarkReservedWords("DECLARE","END", "FOR","NEXT","TO", "STEP");
+            MarkReservedWords("DECLARE","END", "FOR","NEXT","TO", "STEP","NOT");
             //27 FUNCTIONS
             //9 Non parenthesis enclosed functions
             MarkReservedWords("DOY", "DOM", "DOW", "POWER-LOSS", "TIME", "UNACK", "USER-A", "USER-B", "SCANS");
@@ -502,7 +551,10 @@ namespace T3000
             MarkReservedWords("ABS", "AVG", "CONPROP", "CONRATE", "CONRESET", "INT", "INTERVAL");
             MarkReservedWords("LN", "LN-1", "MAX", "MIN","SQR","STATUS","TBL","TIME-ON","TIME-OFF");
             MarkReservedWords("WR-ON", "WR-OFF");
-
+            //Branches
+            MarkReservedWords("IF", "IF+", "IF-", "ON", "GOTO", "GOSUB", "ELSE","THEN");
+            //Commands
+            MarkReservedWords("START", "STOP","LET");
 
 
             #endregion
