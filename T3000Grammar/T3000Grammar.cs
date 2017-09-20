@@ -89,6 +89,7 @@ namespace T3000
             string UPTO31 = "3[0-1]|[1-2][0-9]?";
             string UPTO23 = "2[0-3]|[0-1][0-9]";
             string UPTO59 = "[0-5][0-9]";
+            string UPTO5 = "[1-5]";
 
 
             //Control Points
@@ -99,6 +100,7 @@ namespace T3000
             //TODO: Set appropiate priority and suffix based on Regular Expression all ControlPoints
             var INS = new RegexBasedTerminal("INS", UPTO128, "IN");
             var PRG = new RegexBasedTerminal("PRG", UPTO128, "PRG");
+
             var DMON = new RegexBasedTerminal("DMON", UPTO128, "DMON");
 
             var AMON = new RegexBasedTerminal("AMON", UPTO96, "AMON");
@@ -130,6 +132,11 @@ namespace T3000
             TimeLiteral.Priority = 100;
             var Ordinal = new RegexBasedTerminal("Ordinal", UPTO64);
 
+            //v3 Manual states that only exists 5 customs tables.
+            var TABLENUMBER = new RegexBasedTerminal("TABLENUMBER", UPTO5);
+            //Same, up to 16 program codes (control Basic)
+            var SYSPRG = new RegexBasedTerminal("SYSPRG", UPTO16);
+            var TIMER = new RegexBasedTerminal("TIMER", UPTO4);
 
             //KEYWORDS
 
@@ -200,8 +207,9 @@ namespace T3000
             var UNACK = ToTerm("UNACK");
             var USERA = ToTerm("USER-A");
             var USERB = ToTerm("USER-B");
-
+            var SCANS = ToTerm("SCANS");
             
+
 
 
 
@@ -242,6 +250,21 @@ namespace T3000
             var CONRESET = new NonTerminal("CONRESET");
             var INT = new NonTerminal("INT");
             var INTERVAL = new NonTerminal("INVERVAL");
+            var LN = new NonTerminal("LN");
+            var LN1 = new NonTerminal("LN1");
+            var MAX = new NonTerminal("MAX");
+            var MIN = new NonTerminal("MIN");
+            //SQR | STATUS | TBL
+           
+            var SQR = new NonTerminal("SQR");
+            var STATUS = new NonTerminal("STATUS");
+            var TBL = new NonTerminal("TBL");
+            //TIMEOFF | TIMEON | WRON | WROFF 
+
+            var TIMEOFF = new NonTerminal("TIMEOFF");
+            var TIMEON = new NonTerminal("TIMEON");
+            var WRON = new NonTerminal("WRON");
+            var WROFF = new NonTerminal("WROFF");
 
 
 
@@ -371,9 +394,14 @@ namespace T3000
             Literal.Rule = IntegerNumber | Number | DatesLiteral | DayLiteral | TimeLiteral;
 
 
-            //Functions
-            //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
-            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET |  DOY | DOM | DOW | INT | INTERVAL | POWERLOSS | TIME | UNACK | USERA | USERB;
+            //27 Functions
+            //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY |
+            //INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL |
+            //TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
+            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET |  DOY | DOM | 
+                DOW | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS 
+                | TBL | TIME | TIMEON | TIMEOFF | WRON | WROFF | UNACK | USERA | USERB;
+
             ABS.Rule = "ABS" + PARIZQ + Expression + PARDER;
             //AVG      ::= 'AVG' PARIZQ EXPRESSION ( Space ',' Space EXPRESSION )* PARDER
             AVG.Rule = "AVG" + PARIZQ + Expression + ExpressionListOpt + PARDER;
@@ -390,6 +418,30 @@ namespace T3000
             INT.Rule = "INT" + PARIZQ + Expression + PARDER;
             //INTERVAL::= 'INTERVAL' PARIZQ Expression PARDER
             INTERVAL.Rule = "INTERVAL" + PARIZQ + Expression + PARDER;
+            //LN::= 'LN' PARIZQ Expression PARDER
+            LN.Rule = "LN" + PARIZQ + ReduceHere() + Expression  + PARDER;
+            //LN1 ::= 'LN-1' PARIZQ Expression PARDER
+            LN1.Rule = "LN-1" + PARIZQ + ReduceHere() + Expression + PARDER;
+            //MAX ::= 'MAX' PARIZQ Expression (Space ',' Space Expression)*PARDER
+            MAX.Rule = "MAX" + PARIZQ + ReduceHere() + Expression + ExpressionListOpt + PARDER;
+            //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
+            MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
+            //SQR ::= 'SQR' PARIZQ Expression PARDER
+            SQR.Rule = "SQR" + PARIZQ + Expression + PARDER;
+            //STATUS ::= 'STATUS' PARIZQ Expression PARDER
+            STATUS.Rule = "STATUS" + PARIZQ + Expression + PARDER;
+            //TBL ::= 'TBL' PARIZQ Expression ',' TABLENUMBER PARDER
+            TBL.Rule = "TBL" + PARIZQ + Expression + Comma + TABLENUMBER + PARDER;
+            //TIMEON ::= 'TIME-ON' PARIZQ Designator PARDER
+            TIMEON.Rule = "TIME-ON" + PARIZQ + Designator + PARDER;
+            //TIMEOFF::= 'TIME-OFF' PARIZQ Designator PARDER
+            TIMEOFF.Rule = "TIME-OFF" + PARIZQ + Designator + PARDER;
+            //WRON ::= 'WR-ON' PARIZQ SYSPRG ',' TIMER PARDER
+            WRON.Rule = "WR-ON" + PARIZQ + SYSPRG  + Comma + TIMER + PARDER;
+            //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
+            WROFF.Rule = "WR-OFF" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+
+
 
 
 
@@ -424,6 +476,8 @@ namespace T3000
             
             //// 5. Punctuation and transient terms
             MarkPunctuation( PARIZQ.ToString()  , PARDER.ToString()  ,CommandSeparator.ToString() );
+            PARIZQ.IsPairFor = PARDER;
+
 
             MarkTransient(LineNumber);
 
@@ -439,9 +493,18 @@ namespace T3000
 
             #region Define Keywords
 
-            //??
+            //GENERAL KEYWORDS
             MarkReservedWords("DECLARE","END", "FOR","NEXT","TO", "STEP");
-            MarkReservedWords("ABS","AVG","CONPROP","CONRATE","CONRESET","INT","INTERVAL");
+            //27 FUNCTIONS
+            //9 Non parenthesis enclosed functions
+            MarkReservedWords("DOY", "DOM", "DOW", "POWER-LOSS", "TIME", "UNACK", "USER-A", "USER-B", "SCANS");
+            //18 Parenthesis enclosed functions
+            MarkReservedWords("ABS", "AVG", "CONPROP", "CONRATE", "CONRESET", "INT", "INTERVAL");
+            MarkReservedWords("LN", "LN-1", "MAX", "MIN","SQR","STATUS","TBL","TIME-ON","TIME-OFF");
+            MarkReservedWords("WR-ON", "WR-OFF");
+
+
+
             #endregion
         }
     }

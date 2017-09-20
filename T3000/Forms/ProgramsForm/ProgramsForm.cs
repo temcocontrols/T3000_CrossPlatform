@@ -179,7 +179,8 @@
                     return;
                 }
 
-                //Codes[index] = form.Code;
+                
+                //Codes[index].Code = form.Code.ToBytes() ;
             }
             catch (Exception exception)
             {
