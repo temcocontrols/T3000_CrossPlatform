@@ -13,7 +13,7 @@ namespace T3000
             new[]
             {
                // "INTERVAL", "COM1", "ABS", "MAX", "MIN"
-                "INTERVAL", "COM1", "MAX", "MIN"
+                "INTERVAL", "COM1", "MAX", "MIN","CONRATE"
             }
         );
 
@@ -31,31 +31,47 @@ namespace T3000
             //    FreeTextOptions.AllowEof |
             //    FreeTextOptions.IncludeTerminator, Environment.NewLine);
             
-            var Number = new NumberLiteral("Number");
+            var Number = new NumberLiteral("Number", NumberOptions.AllowStartEndDot);
+            Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64 };
+            Number.DefaultFloatType = TypeCode.Single;
+            Number.AddExponentSymbols("E", TypeCode.Double);
+            Number.Priority = 20;
 
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
-
+            IntegerNumber.Priority = 10;
             //var Space = new RegexBasedTerminal("Space", "\\s+");
 
 
             //Non Control Points Identifiers TESTED
             //Validated to be Non Keywords.
             //Only UpperCase
-            var Identifier = new IdentifierTerminal("Identifier", ".-_");
-            Identifier.CaseRestriction = CaseRestriction.AllUpper;
-            Identifier.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            Identifier.Options = IdOptions.IsNotKeyword;
-            Identifier.Precedence = 2;
+            ////var Identifier = new IdentifierTerminal("Identifier", ".-_");
+            ////Identifier.CaseRestriction = CaseRestriction.AllUpper;
+            ////Identifier.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            ////Identifier.Options = IdOptions.IsNotKeyword;
+            ////Identifier.Precedence = 2;
 
-            var LoopVariable = new IdentifierTerminal("LoopVariable");
-            LoopVariable.AllFirstChars = "ABCDEFGHIJK";
-            LoopVariable.Options = IdOptions.IsNotKeyword;
+            string IDTYPE1 = "[A-Z0-9]+?[\\.\\-_A-Z0-9]*(([A-Z]+[\\.]?[0-9]*)+?)";
+            var Identifier = new RegexBasedTerminal("Identifier", IDTYPE1);
+            Identifier.Priority = 30;
+            
 
-            var LocalVariable = new IdentifierTerminal("LocalVariable");
-            LoopVariable.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            LoopVariable.Options = IdOptions.IsNotKeyword;
-            LoopVariable.Precedence = 1;
+            //123.25BAC_NET 1245.4A
+            //12.3.FLOOR
+            //FLOOR
+            //FLOOR_A2
+            //12.A 15.0A
+            // VAR1 VAR2 OUT12 IN1 THRU IN128 AY1 TRHU AY64
+            //12.5E23    <-- POSSIBLE CONFLICT BUT CORRECT NUMBER SciNotation SHOULD BE 12.5E+23
+            //19.253.REG136
+            //SCALTOT2
+            //A12 A23.3  <-- NOT SUPPORTED BY IDTYPE1
 
+
+            var LoopVariable = new RegexBasedTerminal("LoopVariable", "[A-K]");
+
+            var LocalVariable = new RegexBasedTerminal("LocalVariable", "[A-Z]{1}");
+            
 
             ////Redesign of LocalVariable to RegExBasedTerminal
             //var LocalVariable = new RegexBasedTerminal("LocalVariable", "[A-Z]");
@@ -76,8 +92,11 @@ namespace T3000
 
 
             //Control Points
-            var VARS = new RegexBasedTerminal("VARS", UPTO128, "VAR");
-            var OUTS = new RegexBasedTerminal("OUTS", UPTO128, "OUT");
+            var VARS = new RegexBasedTerminal("VARS", "VAR(" + UPTO128 + ")");
+            VARS.Priority = 40;
+            var OUTS = new RegexBasedTerminal("OUTS", "OUT("+ UPTO128 +")");
+            OUTS.Priority = 40;
+            //TODO: Set appropiate priority and suffix based on Regular Expression all ControlPoints
             var INS = new RegexBasedTerminal("INS", UPTO128, "IN");
             var PRG = new RegexBasedTerminal("PRG", UPTO128, "PRG");
             var DMON = new RegexBasedTerminal("DMON", UPTO128, "DMON");
@@ -104,11 +123,11 @@ namespace T3000
 
             var DayNumber = new RegexBasedTerminal("DayNumber", UPTO31);
 
-            var HH = new RegexBasedTerminal("HH", UPTO23);
-            var MM = new RegexBasedTerminal("MM", UPTO59);
-            var SS = new RegexBasedTerminal("SS", UPTO59);
-
-
+            //var HH = new RegexBasedTerminal("HH", UPTO23);
+            //var MM = new RegexBasedTerminal("MM", UPTO59);
+            //var SS = new RegexBasedTerminal("SS", UPTO59);
+            var TimeLiteral = new RegexBasedTerminal("TimeLiteral", "(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9]");
+            TimeLiteral.Priority = 100;
             var Ordinal = new RegexBasedTerminal("Ordinal", UPTO64);
 
 
@@ -221,6 +240,11 @@ namespace T3000
          
             var CONRATE = new NonTerminal("CONRATE");
             var CONRESET = new NonTerminal("CONRESET");
+            var INT = new NonTerminal("INT");
+            var INTERVAL = new NonTerminal("INVERVAL");
+
+
+
 
             //Create Assignment statement
             var Assignment = new NonTerminal("Assignment");
@@ -244,13 +268,13 @@ namespace T3000
             var Designator = new NonTerminal("Designator");
             var RemoteDesignator = new NonTerminal("RemoteDesignator");
             var PointIdentifier = new NonTerminal("PointIdentifier");
+            
             var Literal = new NonTerminal("Literal");
             var DatesLiteral = new NonTerminal("DatesLiteral");
             var MonthLiteral = new NonTerminal("MonthLiteral");
             var DayLiteral = new NonTerminal("DayLiteral");
-            var TimeLiteral = new NonTerminal("TimeLiteral");
-
-
+            //var TimeLiteral = new NonTerminal("TimeLiteral");
+           
             //Terms to Expressions 
           
             var UnaryExpression = new NonTerminal("UnaryExpression");
@@ -281,6 +305,8 @@ namespace T3000
             DECLAREStatement.Rule = LineNumber + ToTerm("DECLARE") + IdentifierList + NewLine;
             SubroutineSentences.Rule = SentencesSequence;
             ENDStatement.Rule = LineNumber + ToTerm("END");
+
+            
             IdentifierList.Rule = MakePlusRule(IdentifierList, Comma, Identifier);
             //SentencesSequence ::= ProgramLine+
             SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
@@ -329,7 +355,7 @@ namespace T3000
             LineNumber.Rule = IntegerNumber;
             //PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
             PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR;
-            PointIdentifier.Precedence = 3;
+            
             //Designator ::= Identifier | PointIdentifier | LocalVariable
             Designator.Rule = PointIdentifier | Identifier | LocalVariable;
             RemoteDesignator.Rule = Designator;
@@ -340,14 +366,14 @@ namespace T3000
             //DatesLiteral ::= MonthLiteral Space ([1-2] [1-9] | [3] [0-1])
             DatesLiteral.Rule = MonthLiteral + DayNumber;
             //TimeLiteral ::= HH ':' MM ':' SS
-            TimeLiteral.Rule = HH + DDOT + MM + DDOT + SS;
+            //TimeLiteral.Rule = HH + DDOT + MM + DDOT + SS;
             //Literal ::= NumbersLiteral | DatesLiteral | DaysLiteral | TimeLiteral
-            Literal.Rule = Number | DatesLiteral | DayLiteral | TimeLiteral;
+            Literal.Rule = IntegerNumber | Number | DatesLiteral | DayLiteral | TimeLiteral;
 
 
             //Functions
             //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
-            Function.Rule = ABS | AVG | CONPROP | CONRATE |  DOY | DOM | DOW | POWERLOSS | TIME | UNACK | USERA | USERB;
+            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET |  DOY | DOM | DOW | INT | INTERVAL | POWERLOSS | TIME | UNACK | USERA | USERB;
             ABS.Rule = "ABS" + PARIZQ + Expression + PARDER;
             //AVG      ::= 'AVG' PARIZQ EXPRESSION ( Space ',' Space EXPRESSION )* PARDER
             AVG.Rule = "AVG" + PARIZQ + Expression + ExpressionListOpt + PARDER;
@@ -360,7 +386,10 @@ namespace T3000
 
             //CONRESET ::= 'CONRESET' PARIZQ Ordinal ',' Expression PARDER RANGE
             CONRESET.Rule = "CONRESET" + PARIZQ + CON + Comma + Expression + PARDER;
-
+            //INT      ::= 'INT' PARIZQ Expression PARDER
+            INT.Rule = "INT" + PARIZQ + Expression + PARDER;
+            //INTERVAL::= 'INTERVAL' PARIZQ Expression PARDER
+            INTERVAL.Rule = "INTERVAL" + PARIZQ + Expression + PARDER;
 
 
 
@@ -411,8 +440,8 @@ namespace T3000
             #region Define Keywords
 
             //??
-            MarkReservedWords("DECLARE","FOR");
-
+            MarkReservedWords("DECLARE","END", "FOR","NEXT","TO", "STEP");
+            MarkReservedWords("ABS","AVG","CONPROP","CONRATE","CONRESET","INT","INTERVAL");
             #endregion
         }
     }
