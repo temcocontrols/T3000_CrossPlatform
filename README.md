@@ -13,7 +13,7 @@ Travic CI(Mono) | AppVeyor
 + msvc14+/mono4.5+/.NET Framework 4.5
 
 # Contacts
-* [mail](mailto:register3 (at) temcocontrols (dot) com)
+* [mail] register3 (at) temcocontrols (dot) com)
 
 # Website
 * [Temco Controls](http://www.temcocontrols.com/) 
