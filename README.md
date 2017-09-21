@@ -13,7 +13,10 @@ Travic CI(Mono) | AppVeyor
 + msvc14+/mono4.5+/.NET Framework 4.5
 
 # Contacts
-* [mail](mailto:havendv@gmail.com)
+* [mail](mailto:register3 (at) temcocontrols (dot) com)
+
+# Website
+* [Temco Controls](http://www.temcocontrols.com/) 
 
 T3000 Building Automation System - for Linux-Win-Android deployment
 
