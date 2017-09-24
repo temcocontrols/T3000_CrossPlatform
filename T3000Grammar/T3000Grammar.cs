@@ -24,12 +24,7 @@ namespace T3000
 
             //Comentarios
             CommentTerminal Comment = new CommentTerminal("Comment", "REM", "\n", "\r\n");
-            
 
-            //var Text = new FreeTextLiteral("Text",
-            //    FreeTextOptions.AllowEmpty |
-            //    FreeTextOptions.AllowEof |
-            //    FreeTextOptions.IncludeTerminator, Environment.NewLine);
 
             var Number = new NumberLiteral("Number", NumberOptions.AllowStartEndDot | NumberOptions.AllowSign);
             Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64 };
@@ -41,23 +36,18 @@ namespace T3000
             //string MyNumberLiteral = "(\\-?\\d+)\\.?\\d+(E\\-|E\\+|E|\\d+)\\d+";
             //var Number = new RegexBasedTerminal("MyNumber", MyNumberLiteral);
             //Number.Priority = 20;
-
-
-
+                        
 
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
             IntegerNumber.Priority = 10;
             //var Space = new RegexBasedTerminal("Space", "\\s+");
 
+            //var AlarmMessage = new RegexBasedTerminal("AlarmMessage", "(\\w| |\\.|-|,|;|:|!|\\?|¡|¿|\\|\\/){1,69}");
+            var String_or_Message = new FreeTextLiteral("Text",
+                FreeTextOptions.AllowEmpty |
+                FreeTextOptions.AllowEof, Environment.NewLine);
+            String_or_Message.Priority = 5;
 
-            //Non Control Points Identifiers TESTED
-            //Validated to be Non Keywords.
-            //Only UpperCase
-            ////var Identifier = new IdentifierTerminal("Identifier", ".-_");
-            ////Identifier.CaseRestriction = CaseRestriction.AllUpper;
-            ////Identifier.AllFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            ////Identifier.Options = IdOptions.IsNotKeyword;
-            ////Identifier.Precedence = 2;
 
             string IDTYPE1 = "[A-Z0-9]+?[\\.\\-_A-Z0-9]*(([A-Z]+[\\.]?[0-9]*)+?)";
             var Identifier = new RegexBasedTerminal("Identifier", IDTYPE1);
@@ -106,28 +96,32 @@ namespace T3000
             var OUTS = new RegexBasedTerminal("OUTS", "OUT("+ UPTO128 +")");
             OUTS.Priority = 40;
             //TODO: Set appropiate priority and suffix based on Regular Expression all ControlPoints
-            var INS = new RegexBasedTerminal("INS", UPTO128, "IN");
-            var PRG = new RegexBasedTerminal("PRG", UPTO128, "PRG");
-
-            var DMON = new RegexBasedTerminal("DMON", UPTO128, "DMON");
-
-            var AMON = new RegexBasedTerminal("AMON", UPTO96, "AMON");
-
-            var PIDS = new RegexBasedTerminal("PIDS", UPTO64, "PID");
-
-            var ARR = new RegexBasedTerminal("ARR", UPTO48, "AY");
+            var INS = new RegexBasedTerminal("INS", "IN("+UPTO128+")");
+            INS.Priority = 40;
+            var PRG = new RegexBasedTerminal("PRG", "PRG(" + UPTO128 + ")");
+            PRG.Priority = 40;
+            var DMON = new RegexBasedTerminal("DMON", "DMON("+ UPTO128 + ")");
+            DMON.Priority = 40;
+            var AMON = new RegexBasedTerminal("AMON", "AMON(" +UPTO96 + ")");
+            AMON.Priority = 40;
+            var PIDS = new RegexBasedTerminal("PIDS", "PID(" + UPTO64 + ")");
+            PIDS.Priority = 40;
+            var ARR = new RegexBasedTerminal("ARR", "AY("+ UPTO48 + ")" );
+            ARR.Priority = 40;
             //Controllers
-            var CON = new RegexBasedTerminal("CON", UPTO64);
-
+            var CON = new RegexBasedTerminal("CON", "CON(" + UPTO64 +")");
+            CON.Priority = 40;
             //WRS ::= 'WR' UPTO32
 
-            var WRS = new RegexBasedTerminal("WRS", UPTO32, "WR");
-            var GRP = new RegexBasedTerminal("GRP", UPTO32, "GRP");
+            var WRS = new RegexBasedTerminal("WRS", "WR(" + UPTO32 +")");
+            WRS.Priority = 40;
+            var GRP = new RegexBasedTerminal("GRP", "GRP(" + UPTO32 +")");
+            GRP.Priority = 40;
 
             //ARS ::= 'AR' UPTO8
 
-            var ARS = new RegexBasedTerminal("ARS", UPTO8, "AR");
-
+            var ARS = new RegexBasedTerminal("ARS", "AR(" + UPTO8 + ")");
+            ARS.Priority = 40;
             //Other sub-literals
 
 
@@ -140,6 +134,9 @@ namespace T3000
             TimeLiteral.Priority = 100;
             var Ordinal = new RegexBasedTerminal("Ordinal", UPTO64);
 
+            String Phone = "(\\+\\d{1,2}[\\s\\.\\-])?(\\(?\\d{3}\\)?[\\s\\.\\-]?)?\\d{3,4}[\\s.-]?\\d{3,4}";
+            var PhoneNumber = new RegexBasedTerminal("PhoneNumber", Phone);
+            PhoneNumber.Priority = 1;
             //v3 Manual states that only exists 5 customs tables.
             var TABLENUMBER = new RegexBasedTerminal("TABLENUMBER", UPTO5);
             //Same, up to 16 program codes (control Basic)
@@ -239,17 +236,34 @@ namespace T3000
             var EndProgLine = new NonTerminal("CommentOpt");
 
             var Commands = new NonTerminal("Commands");
-
-            //TODO : Add all commands names as terms
             var Command = new NonTerminal("Command");
             var NextCommand = new NonTerminal("NextCommand");
 
-            
+            //Commands
+            var START = new NonTerminal("START");
+            var STOP = new NonTerminal("STOP");
+            var LET = new NonTerminal("LET");
+            var ALARM = new NonTerminal("ALARM");
+            var ALARMAT = new NonTerminal("ALARMAT");
+            var CALL = new NonTerminal("CALL");
+            var CALLARGS = new NonTerminal("CALLARGS");
+            var CALLARGSLIST = new NonTerminal ("CALLARGLIST");
+            var ARG = new NonTerminal("ARG");
+            var CLEAR = new NonTerminal("CLEAR");
+            var DALARM = new NonTerminal("DALARM");
+            var DISABLE = new NonTerminal("DISABLE");
+            var ENABLE = new NonTerminal("ENABLE");
+            var HANGUP = new NonTerminal("HANGUP");
+            var PHONE = new NonTerminal("PHONE");
+            var PRINT = new NonTerminal("PRINT");
+
+
+
+
             var Function = new NonTerminal("Function");
             var ABS = new NonTerminal("ABS");
             var AVG = new NonTerminal("AVG");
             var CONPROP = new NonTerminal("CONPROP");
-         
             var CONRATE = new NonTerminal("CONRATE");
             var CONRESET = new NonTerminal("CONRESET");
             var INT = new NonTerminal("INT");
@@ -270,13 +284,7 @@ namespace T3000
             var WRON = new NonTerminal("WRON");
             var WROFF = new NonTerminal("WROFF");
 
-            //Commands
-            var START = new NonTerminal("START");
-            var STOP = new NonTerminal("STOP");
-            var LET = new NonTerminal("LET");
-
-
-
+            
             //Create Assignment statement
             var Assignment = new NonTerminal("Assignment");
 
@@ -293,7 +301,8 @@ namespace T3000
             var IFCLAUSE = new NonTerminal("IFCLAUSE");
             var ELSEOPT = new NonTerminal("ELSEOPT");
             var GOSELECTOR = new NonTerminal("GOSELECTOR");
-            
+            var ONALARM = new NonTerminal("ONALARM");
+            var ONERROR = new NonTerminal("ONERROR");
 
             //var Loop = new NonTerminal("Loop");
             var FOR = new NonTerminal("FOR");
@@ -366,13 +375,40 @@ namespace T3000
 
             //Sentence ::= (Comment | (Commands| Assignment | Branch | Loop) Comment?)
             //Sentence.Rule = Comment | ((ToTerm("END") + ReduceHere() | Commands | Assignment | Branch | FOR | ENDFOR) + Comment.Q()  );
-            Sentence.Rule = ToTerm("END") | Commands | Assignment | Branch | FOR | ENDFOR;
+            Sentence.Rule = ToTerm("END") | Commands  | Assignment | Branch | FOR | ENDFOR | Comment;
 
 
             //Commands::= Command (';' Command) *
-            Commands.Rule = MakeStarRule(Command, CommandSeparator, Command);
+            Commands.Rule = Command + NextCommand;
 
-            Command.Rule = START | STOP;
+            //Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | 
+            //END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET 
+            //| REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT
+            Command.Rule = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE| ENABLE | HANGUP 
+            | PHONE | PRINT| START | STOP;
+
+            NextCommand.Rule = MakeStarRule(NextCommand, CommandSeparator + Command);
+
+            //ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
+            ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + String_or_Message ;
+            
+            //ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
+            ALARMAT.Rule = "ALARM-AT" + (IntegerNumber | "ALL");
+            //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
+            CALL.Rule = "CALL" + PRG + CALLARGS.Q();
+            CALLARGS.Rule = AssignOp + ARG + CALLARGSLIST;
+            CALLARGSLIST.Rule = MakeStarRule(CALLARGSLIST, Comma + ARG);
+            ARG.Rule = Designator | Expression;
+
+            CLEAR.Rule = ToTerm("CLEAR");
+            //DALARM ::= 'DALARM' Expression ',' NumberLiteral ',' StringLiteral+
+            DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + String_or_Message;
+            //DISABLE ::= 'DISABLE' Identifier
+            DISABLE.Rule = "DISABLE" + Designator;
+            ENABLE.Rule = "ENABLE" + Designator;
+            HANGUP.Rule = ToTerm("HANGUP");
+            PHONE.Rule = "PHONE" + PhoneNumber;
+            PRINT.Rule = "PRINT" + String_or_Message;
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
 
@@ -388,7 +424,7 @@ namespace T3000
             // IFFALSE::= 'IF-' Expression 'THEN' IFCLAUSE('ELSE' IFCLAUSE) ?
             //IFCLAUSE::= (Sentence | LineNumber)
 
-            Branch.Rule = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON;
+            Branch.Rule = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON | ONALARM | ONERROR ;
             IF.Rule = "IF" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q() ;
 
             IFTRUE.Rule = "IF+" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
@@ -397,7 +433,7 @@ namespace T3000
             ELSEOPT.Rule = "ELSE" + IFCLAUSE;
             
             //ON ::= 'ON' IntegerTerm (GOTO | GOSUB) (',' LineNumber)*
-            ON.Rule = "ON" + Expression + GOSELECTOR + LineNumberListOpt ;
+            ON.Rule = ToTerm("ON") +  Expression + GOSELECTOR + LineNumberListOpt ;
             GOSELECTOR.Rule = GOTO | GOSUB;
             LineNumberListOpt.Rule = MakeStarRule(LineNumberListOpt, Comma + LineNumber);
             //GOSUB::= 'GOSUB' LineNumber
@@ -405,9 +441,8 @@ namespace T3000
             //GOTO ::= 'GOTO' LineNumber
             GOTO.Rule = "GOTO" + LineNumber;
 
-
-
-
+            ONALARM.Rule = ToTerm("ON-ALARM") + LineNumber;
+            ONERROR.Rule = ToTerm("ON-ERROR") + LineNumber;
 
             //Loop::= FOR SentencesSequence ENDFOR
             //FOR::= 'FOR' LoopVariable AssignOp Integer 'TO' Integer('STEP' Integer) ? EndLine
@@ -429,7 +464,7 @@ namespace T3000
 
             LineNumber.Rule = IntegerNumber;
             //PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
-            PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR;
+            PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR |CON;
             
             //Designator ::= Identifier | PointIdentifier | LocalVariable
             Designator.Rule = PointIdentifier | Identifier | LocalVariable;
@@ -552,11 +587,13 @@ namespace T3000
             MarkReservedWords("LN", "LN-1", "MAX", "MIN","SQR","STATUS","TBL","TIME-ON","TIME-OFF");
             MarkReservedWords("WR-ON", "WR-OFF");
             //Branches
-            MarkReservedWords("IF", "IF+", "IF-", "ON", "GOTO", "GOSUB", "ELSE","THEN");
+            MarkReservedWords("IF", "IF+", "IF-","ON-ALARM", "ON-ERROR", "ON", "GOTO", "GOSUB", "ELSE","THEN");
             //Commands
-            MarkReservedWords("START", "STOP","LET");
+            MarkReservedWords("START", "STOP","LET", "ALARM", "ALARM-AT", "CALL","ALL");
+            MarkReservedWords("CLEAR", "DALARM","DISABLE","ENABLE", "HANGUP","PHONE","PRINT");
+               
 
-
+            MarkReservedWords("AND", "OR", "XOR");
             #endregion
         }
     }
