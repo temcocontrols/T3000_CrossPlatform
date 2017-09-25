@@ -23,7 +23,7 @@ namespace T3000
             // 1. Terminals
 
             //Comentarios
-            CommentTerminal Comment = new CommentTerminal("Comment", "REM", "\n", "\r\n");
+            CommentTerminal Comment = new CommentTerminal("Comment", "REM ", "\n", "\r\n");
 
 
             var Number = new NumberLiteral("Number", NumberOptions.AllowStartEndDot | NumberOptions.AllowSign);
@@ -43,11 +43,14 @@ namespace T3000
             //var Space = new RegexBasedTerminal("Space", "\\s+");
 
             //var AlarmMessage = new RegexBasedTerminal("AlarmMessage", "(\\w| |\\.|-|,|;|:|!|\\?|¡|¿|\\|\\/){1,69}");
-            var String_or_Message = new FreeTextLiteral("Text",
+
+            var StringMessage = new FreeTextLiteral("Text",
                 FreeTextOptions.AllowEmpty |
                 FreeTextOptions.AllowEof, Environment.NewLine);
-            String_or_Message.Priority = 5;
+            StringMessage.Priority = 5;
 
+            var EnclosedString = new StringLiteral ("EnclosedString","\"", StringOptions.NoEscapes  );       
+            EnclosedString.Priority = 5;
 
             string IDTYPE1 = "[A-Z0-9]+?[\\.\\-_A-Z0-9]*(([A-Z]+[\\.]?[0-9]*)+?)";
             var Identifier = new RegexBasedTerminal("Identifier", IDTYPE1);
@@ -85,8 +88,6 @@ namespace T3000
             string UPTO8 = "[1-8]";
             string UPTO4 = "[1-4]";
             string UPTO31 = "3[0-1]|[1-2][0-9]?";
-            string UPTO23 = "2[0-3]|[0-1][0-9]";
-            string UPTO59 = "[0-5][0-9]";
             string UPTO5 = "[1-5]";
 
 
@@ -104,32 +105,34 @@ namespace T3000
             DMON.Priority = 40;
             var AMON = new RegexBasedTerminal("AMON", "AMON(" +UPTO96 + ")");
             AMON.Priority = 40;
+            //ARRAYS ELEMENTS
+            var ARR = new RegexBasedTerminal("ARR", "AY("+ UPTO48 + ")\\[\\d+\\]" );
+            ARR.Priority = 40;
+
+            //Controllers, now known as PIDS
             var PIDS = new RegexBasedTerminal("PIDS", "PID(" + UPTO64 + ")");
             PIDS.Priority = 40;
-            var ARR = new RegexBasedTerminal("ARR", "AY("+ UPTO48 + ")" );
-            ARR.Priority = 40;
-            //Controllers
+            //Controllers, for backwards compatibility
             var CON = new RegexBasedTerminal("CON", "CON(" + UPTO64 +")");
             CON.Priority = 40;
-            //WRS ::= 'WR' UPTO32
-
-            var WRS = new RegexBasedTerminal("WRS", "WR(" + UPTO32 +")");
+            
+            //Weekly Routines, now known as Schedules
+            var WRS = new RegexBasedTerminal("WRS", "SCH(" + UPTO64 +")");
             WRS.Priority = 40;
+            //Anual routines, now known as Holidays
+            var ARS = new RegexBasedTerminal("ARS", "HOL(" + UPTO64 + ")");
+            ARS.Priority = 40;
+
             var GRP = new RegexBasedTerminal("GRP", "GRP(" + UPTO32 +")");
             GRP.Priority = 40;
 
-            //ARS ::= 'AR' UPTO8
-
-            var ARS = new RegexBasedTerminal("ARS", "AR(" + UPTO8 + ")");
-            ARS.Priority = 40;
+            
             //Other sub-literals
 
 
             var DayNumber = new RegexBasedTerminal("DayNumber", UPTO31);
 
-            //var HH = new RegexBasedTerminal("HH", UPTO23);
-            //var MM = new RegexBasedTerminal("MM", UPTO59);
-            //var SS = new RegexBasedTerminal("SS", UPTO59);
+
             var TimeLiteral = new RegexBasedTerminal("TimeLiteral", "(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9]");
             TimeLiteral.Priority = 100;
             var Ordinal = new RegexBasedTerminal("Ordinal", UPTO64);
@@ -208,10 +211,12 @@ namespace T3000
             var DOM = ToTerm("DOM");
             var DOW = ToTerm("DOW");
             var POWERLOSS = ToTerm("POWER-LOSS");
+            var DATE = ToTerm("DATE");
             var TIME = ToTerm("TIME");
             var UNACK = ToTerm("UNACK");
             var USERA = ToTerm("USER-A");
             var USERB = ToTerm("USER-B");
+            var BEEP = ToTerm("BEEP");
             var SCANS = ToTerm("SCANS");
 
             
@@ -256,8 +261,17 @@ namespace T3000
             var HANGUP = new NonTerminal("HANGUP");
             var PHONE = new NonTerminal("PHONE");
             var PRINT = new NonTerminal("PRINT");
-
-
+            var PRINTAT = new NonTerminal("PRINTAT");
+            var PANELS = new NonTerminal("PANELS");
+            var PrintableKeywords = new NonTerminal("PrintableKeywords");
+            var REMOTEGET = new NonTerminal("REMOTEGET");
+            var REMOTESET = new NonTerminal("REMOTESET");
+            var RETURN = new NonTerminal("RETURN");
+            var RUNMACRO = new NonTerminal("RUNMACRO");
+            var SETPRINTER = new NonTerminal("SETPRINTER");
+            var PrintEverything = new NonTerminal("FULLPRINTING");
+            var PrintOnlyCommands = new NonTerminal("ONLYCOMMANDSPRINTING");
+            var WAIT = new NonTerminal("WAIT");
 
 
             var Function = new NonTerminal("Function");
@@ -341,6 +355,7 @@ namespace T3000
             var LoopVariableList = new NonTerminal("LoopVariableList");
             var ExpressionListOpt = new NonTerminal("ExpressionListOpt");
             var LineNumberListOpt = new NonTerminal("LineNumberListOpt");
+            var PrintableListOpt = new NonTerminal("PrintableListOpt");
 
             // 3. BNF rules
 
@@ -383,14 +398,15 @@ namespace T3000
 
             //Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | 
             //END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET 
-            //| REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT
+            //| REMOTESET | RETURN | RUNMACRO | SETPRINTER | START | STOP | WAIT
             Command.Rule = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE| ENABLE | HANGUP 
-            | PHONE | PRINT| START | STOP;
+            | PHONE | PRINT| PRINTAT| REMOTEGET| REMOTESET| RETURN | RUNMACRO | SETPRINTER 
+            | START | STOP | WAIT;
 
             NextCommand.Rule = MakeStarRule(NextCommand, CommandSeparator + Command);
 
             //ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
-            ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + String_or_Message ;
+            ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + StringMessage ;
             
             //ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
             ALARMAT.Rule = "ALARM-AT" + (IntegerNumber | "ALL");
@@ -402,15 +418,30 @@ namespace T3000
 
             CLEAR.Rule = ToTerm("CLEAR");
             //DALARM ::= 'DALARM' Expression ',' NumberLiteral ',' StringLiteral+
-            DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + String_or_Message;
+            DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + StringMessage;
             //DISABLE ::= 'DISABLE' Identifier
             DISABLE.Rule = "DISABLE" + Designator;
             ENABLE.Rule = "ENABLE" + Designator;
             HANGUP.Rule = ToTerm("HANGUP");
             PHONE.Rule = "PHONE" + PhoneNumber;
-            PRINT.Rule = "PRINT" + String_or_Message;
+            PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
+            PrintableKeywords.Rule = DATE | TIME | USERA | USERB | BEEP | PointIdentifier | EnclosedString ;
+            PrintableListOpt.Rule  = MakeStarRule(PrintableListOpt, CommandSeparator + PrintableKeywords);
+            PRINTAT.Rule = "PRINT-AT" + (PANELS | "ALL");
+            PANELS.Rule = MakePlusRule(PANELS, Comma.Q() + IntegerNumber);
+            //REMOTEGET ::= 'REMOTE-GET' Designator AssignOp RemoteDesignator
+            //REMOTESET::= 'REMOTE-SET' RemoteDesignator AssignOp Designator
+            REMOTEGET.Rule = "REMOTE-GET" + Designator  + AssignOp + RemoteDesignator;
+            REMOTESET.Rule = "REMOTE-SET" + RemoteDesignator + AssignOp + Designator;
+            RETURN.Rule = ToTerm("RETURN");
+            //RUNMACRO::= 'RUN-SYSTEM' SYSPRG
+            RUNMACRO.Rule = "RUN-SYSTEM" + SYSPRG;
+            SETPRINTER.Rule = PrintEverything | PrintOnlyCommands;
+            PrintEverything.Rule = "SET-PRINTER" + (ToTerm("A") | ToTerm("B") | ToTerm("0"));
+            PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
+            WAIT.Rule = "WAIT" + Expression ;
 
 
             //Assignment ::= Designator AssignOp Expression 
@@ -581,7 +612,7 @@ namespace T3000
             MarkReservedWords("DECLARE","END", "FOR","NEXT","TO", "STEP","NOT");
             //27 FUNCTIONS
             //9 Non parenthesis enclosed functions
-            MarkReservedWords("DOY", "DOM", "DOW", "POWER-LOSS", "TIME", "UNACK", "USER-A", "USER-B", "SCANS");
+            MarkReservedWords("DOY", "DOM", "DOW", "POWER-LOSS", "DATE", "TIME", "UNACK", "USER-A", "USER-B", "SCANS");
             //18 Parenthesis enclosed functions
             MarkReservedWords("ABS", "AVG", "CONPROP", "CONRATE", "CONRESET", "INT", "INTERVAL");
             MarkReservedWords("LN", "LN-1", "MAX", "MIN","SQR","STATUS","TBL","TIME-ON","TIME-OFF");
@@ -590,7 +621,9 @@ namespace T3000
             MarkReservedWords("IF", "IF+", "IF-","ON-ALARM", "ON-ERROR", "ON", "GOTO", "GOSUB", "ELSE","THEN");
             //Commands
             MarkReservedWords("START", "STOP","LET", "ALARM", "ALARM-AT", "CALL","ALL");
-            MarkReservedWords("CLEAR", "DALARM","DISABLE","ENABLE", "HANGUP","PHONE","PRINT");
+            MarkReservedWords("CLEAR", "DALARM","DISABLE","ENABLE", "HANGUP","PHONE","PRINT",
+                "PRINT-AT","REMOTE-GET","REMOTE-SET","RETURN","RUN-SYSTEM","WAIT",
+                "SET-PRINTER","Set-Printer");
                
 
             MarkReservedWords("AND", "OR", "XOR");

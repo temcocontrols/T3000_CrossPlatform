@@ -8,7 +8,7 @@ EndLine ::=  #xD | #xA
 Comment ::= 'REM' StringLiteral+
 Commands ::= Command (';' Command)*
 Function ::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL | TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
-Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | END | HANGUP | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER | WAIT
+Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | END | HANGUP | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER | START | STOP | WAIT
 ABS ::= 'ABS' PARIZQ Expression PARDER
 ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
 ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
@@ -42,8 +42,9 @@ ONERROR ::= 'ON-ERROR' LineNumber
 OPEN ::= 'OPEN' Identifier
 POWERLOSS ::= 'POWER-LOSS'
 PHONE ::= 'PHONE' PhoneNumber
-PRINT ::= 'PRINT' (EnclosedString | PrintableKeywords) ( ';' EnclosedString | PrintableKeywords )*
-PrintableKeywords ::= 'DATE'|'TIME'|'USER-A'|'USER-B'|'POINT/LOCAL VARIABLE VALUES'|'BEEP'
+PRINT ::= 'PRINT' PrintableKeywords PrintListOpt
+PrintListOpt ::= (';' PrintableKeywords) *
+PrintableKeywords ::= 'DATE'|'TIME'|'USER-A'|'USER-B'| PointIdentifier| 'BEEP' | EnclosedString
 EnclosedString ::= '"' StringLiteral+ '"'
 PRINTAT ::= 'PRINT-AT' PANELS
 REMOTEGET ::= 'REMOTE-GET' Designator AssignOp RemoteDesignator
@@ -123,25 +124,26 @@ RemoteDesignator ::= Designator
 Identifier ::= (Letter | Digit ) ValidSymbol+
 ValidSymbol ::= ('-')? ( Letter | Digit )+
 
-PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
+PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR | PIDS
 
 VARS ::= 'VAR' UPTO128
 OUTS ::= 'OUT' UPTO128
 INS ::= 'IN' UPTO128
 CONS ::= 'CON' UPTO64
-WRS ::= 'WR' UPTO32
-ARS ::= 'AR' UPTO8
+PIDS ::= 'PID' UPTO64
+WRS ::= 'SCH' UPTO64
+ARS ::= 'HOL' UPTO64
 PRG ::= 'PRG' UPTO128
 GRP ::= 'GRP' UPTO32
 DMON ::= 'DMON' UPTO128
 AMON ::= 'AMON' UPTO96
-ARR ::= 'AY' UPTO48
+ARR ::= 'AY' UPTO48 "[" Ordinal "]"
 
 LocalVariable ::= Letter
 Letter ::= [A-Z]
 
 PANEL ::= Ordinal
-PANELS ::= PANEL (Space PANEL)* | 'ALL'
+PANELS ::= PANEL (','? PANEL)* | 'ALL'
 ARG ::= Designator | Expression
 
 Ordinal ::= NonZeroDigit Digit*
