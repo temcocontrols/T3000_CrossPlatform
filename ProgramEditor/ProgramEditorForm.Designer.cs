@@ -30,10 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramEditorForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
-            this.autocompleteMenu = new FastColoredTextBoxNS.AutocompleteMenu(this.editTextBox);
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
             this.cmdClear = new System.Windows.Forms.ToolStripButton();
@@ -43,18 +45,24 @@
             this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.txtSyntaxErrors = new System.Windows.Forms.TextBox();
+            this.grpCompileErrors = new System.Windows.Forms.GroupBox();
+            this.gridCompileErrors = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.editTextBox)).BeginInit();
             this.tsTopMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.grpCompileErrors.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCompileErrors)).BeginInit();
             this.SuspendLayout();
             // 
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.saveButton.Location = new System.Drawing.Point(403, 3);
+            this.saveButton.Location = new System.Drawing.Point(401, 3);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(82, 32);
             this.saveButton.TabIndex = 5;
@@ -67,7 +75,7 @@
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cancelButton.Location = new System.Drawing.Point(491, 3);
+            this.cancelButton.Location = new System.Drawing.Point(489, 3);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(82, 32);
             this.cancelButton.TabIndex = 6;
@@ -100,27 +108,10 @@
             this.editTextBox.Name = "editTextBox";
             this.editTextBox.Paddings = new System.Windows.Forms.Padding(0);
             this.editTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.editTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("editTextBox.ServiceColors")));
-            this.editTextBox.Size = new System.Drawing.Size(576, 230);
+            this.editTextBox.ServiceColors = null;
+            this.editTextBox.Size = new System.Drawing.Size(574, 236);
             this.editTextBox.TabIndex = 7;
             this.editTextBox.Zoom = 100;
-            // 
-            // autocompleteMenu
-            // 
-            this.autocompleteMenu.AllowTabKey = false;
-            this.autocompleteMenu.AlwaysShowTooltip = false;
-            this.autocompleteMenu.AppearInterval = 500;
-            this.autocompleteMenu.AutoClose = false;
-            this.autocompleteMenu.AutoSize = false;
-            this.autocompleteMenu.BackColor = System.Drawing.Color.White;
-            this.autocompleteMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.autocompleteMenu.MaxTooltipSize = new System.Drawing.Size(0, 0);
-            this.autocompleteMenu.MinFragmentLength = 1;
-            this.autocompleteMenu.Name = "autocompleteMenu";
-            this.autocompleteMenu.Padding = new System.Windows.Forms.Padding(0);
-            this.autocompleteMenu.SearchPattern = "[\\w\\.]";
-            this.autocompleteMenu.Size = new System.Drawing.Size(154, 154);
-            this.autocompleteMenu.ToolTipDuration = 3000;
             // 
             // tsTopMenu
             // 
@@ -133,7 +124,7 @@
             this.cmdSettings});
             this.tsTopMenu.Location = new System.Drawing.Point(0, 0);
             this.tsTopMenu.Name = "tsTopMenu";
-            this.tsTopMenu.Size = new System.Drawing.Size(582, 25);
+            this.tsTopMenu.Size = new System.Drawing.Size(580, 25);
             this.tsTopMenu.TabIndex = 8;
             this.tsTopMenu.Text = "toolStrip1";
             // 
@@ -193,16 +184,16 @@
             this.tableLayoutPanel1.Controls.Add(this.tsTopMenu, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.editTextBox, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.txtSyntaxErrors, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.grpCompileErrors, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 78.66666F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.33333F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 73.11179F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.88822F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(582, 366);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(580, 397);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // flowLayoutPanel1
@@ -211,20 +202,77 @@
             this.flowLayoutPanel1.Controls.Add(this.saveButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 328);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 359);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(576, 35);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(574, 35);
             this.flowLayoutPanel1.TabIndex = 9;
             // 
-            // txtSyntaxErrors
+            // grpCompileErrors
             // 
-            this.txtSyntaxErrors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtSyntaxErrors.Location = new System.Drawing.Point(3, 264);
-            this.txtSyntaxErrors.Multiline = true;
-            this.txtSyntaxErrors.Name = "txtSyntaxErrors";
-            this.txtSyntaxErrors.ReadOnly = true;
-            this.txtSyntaxErrors.Size = new System.Drawing.Size(576, 58);
-            this.txtSyntaxErrors.TabIndex = 10;
+            this.grpCompileErrors.Controls.Add(this.gridCompileErrors);
+            this.grpCompileErrors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpCompileErrors.Location = new System.Drawing.Point(3, 270);
+            this.grpCompileErrors.Name = "grpCompileErrors";
+            this.grpCompileErrors.Size = new System.Drawing.Size(574, 83);
+            this.grpCompileErrors.TabIndex = 10;
+            this.grpCompileErrors.TabStop = false;
+            this.grpCompileErrors.Text = "Compile Errors";
+            // 
+            // gridCompileErrors
+            // 
+            this.gridCompileErrors.AllowUserToAddRows = false;
+            this.gridCompileErrors.AllowUserToDeleteRows = false;
+            this.gridCompileErrors.ColumnHeadersHeight = 24;
+            this.gridCompileErrors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.gridCompileErrors.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn1});
+            this.gridCompileErrors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridCompileErrors.Location = new System.Drawing.Point(3, 16);
+            this.gridCompileErrors.MultiSelect = false;
+            this.gridCompileErrors.Name = "gridCompileErrors";
+            this.gridCompileErrors.ReadOnly = true;
+            this.gridCompileErrors.RowHeadersVisible = false;
+            this.gridCompileErrors.RowTemplate.Height = 24;
+            this.gridCompileErrors.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.gridCompileErrors.Size = new System.Drawing.Size(568, 64);
+            this.gridCompileErrors.TabIndex = 3;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridViewTextBoxColumn3.HeaderText = "L, C";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn3.ToolTipText = "Double-click grid cell to locate in source code";
+            this.dataGridViewTextBoxColumn3.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Error Message";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn4.Width = 1000;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "State";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Parser State";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn1.ToolTipText = "Double-click grid cell to navigate to state details";
+            this.dataGridViewTextBoxColumn1.Width = 71;
             // 
             // ProgramEditorForm
             // 
@@ -232,7 +280,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(582, 366);
+            this.ClientSize = new System.Drawing.Size(580, 397);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ProgramEditorForm";
             this.Text = "Edit code:";
@@ -242,6 +290,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.grpCompileErrors.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridCompileErrors)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -250,7 +300,6 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
         private FastColoredTextBoxNS.IronyFCTB editTextBox;
-        private FastColoredTextBoxNS.AutocompleteMenu autocompleteMenu;
         private System.Windows.Forms.ToolStrip tsTopMenu;
         private System.Windows.Forms.ToolStripButton cmdSend;
         private System.Windows.Forms.ToolStripButton cmdClear;
@@ -260,6 +309,10 @@
         private System.Windows.Forms.ToolStripButton cmdSettings;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.TextBox txtSyntaxErrors;
+        private System.Windows.Forms.GroupBox grpCompileErrors;
+        private System.Windows.Forms.DataGridView gridCompileErrors;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
     }
 }

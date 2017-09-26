@@ -5,16 +5,27 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Windows.Forms;
+    using Irony.Parsing;
+
 
     public partial class ProgramEditorForm : Form
     {
         public string Code { get; set; }
+        Grammar _grammar;
+        LanguageData _language;
+        Parser _parser;
 
         public ProgramEditorForm()
         {
             InitializeComponent();
 
             editTextBox.Grammar = new T3000Grammar();
+            //LRUIZ :: Enable a new set of grammar, language and parser, to get Program Code Errors
+            _grammar = new T3000Grammar();
+            _language = new LanguageData(_grammar);
+            _parser = new Parser(_language);
+            //LRUIZ
+
             var items = new List<AutocompleteItem>();
             var keywords = new List<string>()
             {
@@ -42,7 +53,7 @@
                 items.Add(new SnippetAutocompleteItem(item) { ImageIndex = 1 });
 
             //set as autocomplete source
-            autocompleteMenu.Items.SetAutocompleteItems(items);
+            //autocompleteMenu.Items.SetAutocompleteItems(items);
         }
 
         public ProgramEditorForm(string code) : this()
@@ -84,7 +95,8 @@
             Code = code;
             //editTextBox.Text = RemoveInitialNumbers(code);
             editTextBox.Text = Code;
-            //txtSyntaxErrors.Text  = editTextBox.Grammar.SyntaxError.ToString() ;
+            
+
             
         }
 
@@ -120,6 +132,7 @@
             SetCode("");
         }
 
-        
+
+
     }
 }
