@@ -82,7 +82,10 @@
         private void SetCode(string code)
         {
             Code = code;
-            editTextBox.Text = RemoveInitialNumbers(code);
+            //editTextBox.Text = RemoveInitialNumbers(code);
+            editTextBox.Text = Code;
+            //txtSyntaxErrors.Text  = editTextBox.Grammar.SyntaxError.ToString() ;
+            
         }
 
 
@@ -111,5 +114,12 @@
         }
 
         #endregion
+
+        private void cmdClear_Click(object sender, EventArgs e)
+        {
+            SetCode("");
+        }
+
+        
     }
 }

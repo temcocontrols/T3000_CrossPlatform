@@ -85,7 +85,7 @@ namespace T3000
             string UPTO48 = "4[0-8]|[1-3][0-9]?";
             string UPTO32 = "3[0-2]|[1-2][0-9]?";
             string UPTO16 = "1[0-6]|[1-9]";
-            string UPTO8 = "[1-8]";
+            //string UPTO8 = "[1-8]";
             string UPTO4 = "[1-4]";
             string UPTO31 = "3[0-1]|[1-2][0-9]?";
             string UPTO5 = "[1-5]";
@@ -460,7 +460,8 @@ namespace T3000
 
             IFTRUE.Rule = "IF+" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
             IFFALSE.Rule = "IF-" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
-            IFCLAUSE.Rule = Commands | Assignment | GOSELECTOR | LineNumber;
+            //Added Function for testing purposes: Error found on a sample code PRG1 of BTUMETERrev22.prg
+            IFCLAUSE.Rule = Commands | Function | Assignment | GOSELECTOR | LineNumber;
             ELSEOPT.Rule = "ELSE" + IFCLAUSE;
             
             //ON ::= 'ON' IntegerTerm (GOTO | GOSUB) (',' LineNumber)*
