@@ -5,7 +5,10 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Windows.Forms;
+    using Irony;
     using Irony.Parsing;
+    
+       
 
 
     public partial class ProgramEditorForm : Form
@@ -13,6 +16,7 @@
         public string Code { get; set; }
         Grammar _grammar;
         LanguageData _language;
+        ParseTree _parseTree;
         Parser _parser;
 
         public ProgramEditorForm()
@@ -42,8 +46,8 @@
             foreach (var item in keywords)
                 items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
 
-            var snippets = new[]{ 
-                "if(^)\n{\n}", 
+            var snippets = new[]{
+                "if(^)\n{\n}",
                 "if(^)\n{\n}\nelse\n{\n}",
                 "for(^;;)\n{\n}", "while(^)\n{\n}",
                 "do${\n^}while();",
@@ -54,6 +58,9 @@
 
             //set as autocomplete source
             //autocompleteMenu.Items.SetAutocompleteItems(items);
+
+            this.WindowState = FormWindowState.Maximized;
+
         }
 
         public ProgramEditorForm(string code) : this()
@@ -95,44 +102,170 @@
             Code = code;
             //editTextBox.Text = RemoveInitialNumbers(code);
             editTextBox.Text = Code;
-            
+            //LRUIZ: Parse and show compile errors
 
-            
+            ParseCode();
+
         }
 
+        //USELESS CODE, to be examined later!.....
+        //#region Buttons
 
-        #region Buttons
+        //private void Save(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        Code = AddInitialNumbers(editTextBox.Text);
+        //    }
+        //    catch (Exception)// exception)
+        //    {
+        //        //MessageBoxUtilities.ShowException(exception);
+        //        DialogResult = DialogResult.None;
+        //        return;
+        //    }
 
-        private void Save(object sender, EventArgs e)
-        {
-            try
-            {
-                Code = AddInitialNumbers(editTextBox.Text);
-            }
-            catch (Exception)// exception)
-            {
-                //MessageBoxUtilities.ShowException(exception);
-                DialogResult = DialogResult.None;
-                return;
-            }
+        //    DialogResult = DialogResult.OK;
+        //    Close();
+        //}
 
-            DialogResult = DialogResult.OK;
-            Close();
-        }
+        //private void Cancel(object sender, EventArgs e)
+        //{
+        //    Close();
+        //}
 
-        private void Cancel(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        #endregion
+        //#endregion
 
         private void cmdClear_Click(object sender, EventArgs e)
         {
-            SetCode("");
+            ClearCode();
+        }
+
+        private void ClearCode()
+        {
+            //local member Code is not cleared, to allow recovering with REFRESH (F8)
+            editTextBox.Text = "";
+        }
+
+        private void ParseCode()
+        {
+            ClearParserOutput();
+            if (_parser == null || !_parser.Language.CanParse()) return;
+            _parseTree = null;
+            GC.Collect(); //to avoid disruption of perf times with occasional collections
+            _parser.Context.TracingEnabled = true;
+            try
+            {
+                _parser.Parse(editTextBox.Text, "<source>");
+            }
+            catch (Exception ex)
+            {
+                gridCompileErrors.Rows.Add(null, ex.Message, null);
+                
+                throw;
+            }
+            finally
+            {
+                _parseTree = _parser.Context.CurrentParseTree;
+                ShowCompilerErrors();
+
+                //TODO: Show Compile Stats
+
+                //    ShowCompileStats();
+               
+            }
+        }
+
+        private void ClearParserOutput()
+        {
+
+            //TODO: Add this stats labels to bottom of this form.
+
+            //lblSrcLineCount.Text = string.Empty;
+            //lblSrcTokenCount.Text = "";
+            //lblParseTime.Text = "";
+            //lblParseErrorCount.Text = "";
+
+            //lstTokens.Items.Clear();
+            gridCompileErrors.Rows.Clear();
+           
+            Application.DoEvents();
+        }
+
+        /// <summary>
+        /// Updates Compile Errors Gridview
+        /// </summary>
+        private void ShowCompilerErrors()
+        {
+            gridCompileErrors.Rows.Clear();
+            if (_parseTree == null || _parseTree.ParserMessages.Count == 0) return;
+            foreach (var err in _parseTree.ParserMessages)
+                gridCompileErrors.Rows.Add(err.Location, err, err.ParserState);
+        }
+
+        /// <summary>
+        /// Allows to position over token at selected error.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void gridCompileErrors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= gridCompileErrors.Rows.Count) return;
+            var err = gridCompileErrors.Rows[e.RowIndex].Cells[1].Value as LogMessage;
+            switch (e.ColumnIndex)
+            {
+                case 0: //state
+                case 1: //stack top
+                    ShowSourcePosition(err.Location.Position, 1);
+                    break;
+            }//switch
+        }
+
+        /// <summary>
+        /// Shows a caret in editTextBox for a selected token
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="length"></param>
+        private void ShowSourcePosition(int position, int length)
+        {
+            if (position < 0) return;
+            editTextBox.SelectionStart = position;
+            editTextBox.SelectionLength = length;
+            //editTextBox.Select(location.Position, length);
+            editTextBox.DoCaretVisible();
+            editTextBox.Focus();
+            
+        }
+
+        /// <summary>
+        /// Parse code delayed after editing program.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editTextBox_TextChangedDelayed(object sender, TextChangedEventArgs e)
+        {
+            ParseCode();
+        }
+
+        private void cmdRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshCode();
         }
 
 
+        private void RefreshCode()
+        {
+            editTextBox.Text = Code;
+        }
+        private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch(e.KeyCode )
+            {
+                case Keys.F3:
+                    ClearCode(); break;
+                case Keys.F8:
+                    RefreshCode();break;
 
+            }//switch.
+        }
     }
 }

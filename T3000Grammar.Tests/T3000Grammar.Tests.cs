@@ -85,7 +85,7 @@
         [Test]
         public void BtuMeter_Lexer()
         {
-            /*
+            
             #region Test data
             
             var grammar = new T3000Grammar();
@@ -136,7 +136,7 @@
             var dictionary = ToDictionary(root);
 
             Assert.AreEqual("IF-", dictionary[220].ChildNodes[0].ChildNodes[0].Token.Value);
-            */
+            
         }
     }
 }
