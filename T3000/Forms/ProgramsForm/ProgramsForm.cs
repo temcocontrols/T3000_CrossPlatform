@@ -98,6 +98,7 @@
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.Length = row.GetValue<int>(SizeColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
+                    
                 }
             }
             catch (Exception exception)
@@ -177,10 +178,11 @@
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
+                
                 }
 
                 
-                //Codes[index].Code = form.Code.ToBytes() ;
+                Codes[index].Code = form.Code.ToBytes() ;
             }
             catch (Exception exception)
             {

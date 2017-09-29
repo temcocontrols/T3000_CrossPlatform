@@ -8,8 +8,10 @@
     using Irony;
     using Irony.Parsing;
     
-       
+    using System.Drawing;
+    using System.ComponentModel;
 
+  
 
     public partial class ProgramEditorForm : Form
     {
@@ -18,6 +20,7 @@
         LanguageData _language;
         ParseTree _parseTree;
         Parser _parser;
+        //SyntaxSettings _syntaxcolors;
 
         public ProgramEditorForm()
         {
@@ -61,6 +64,8 @@
 
             this.WindowState = FormWindowState.Maximized;
 
+          
+            
         }
 
         public ProgramEditorForm(string code) : this()
@@ -260,12 +265,142 @@
         {
             switch(e.KeyCode )
             {
-                case Keys.F3:
+                case Keys.F2:
+                    SendCode();break;
+                case Keys.F4:
                     ClearCode(); break;
+                case Keys.F6:
+                    SaveFile();break;
+                case Keys.F7:
+                    LoadFile(); break;
                 case Keys.F8:
                     RefreshCode();break;
 
             }//switch.
         }
+
+        private void cmdLoad_Click(object sender, EventArgs e)
+        {
+            LoadFile();
+        }
+
+        /// <summary>
+        /// Load a text file into editor
+        /// </summary>
+        private void LoadFile()
+        {
+            // Create an instance of the open file dialog box.
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+
+            openFileDialog1.Multiselect = true;
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult  userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK )
+            { 
+                string text = System.IO.File.ReadAllText(openFileDialog1.FileName);
+                editTextBox.Text = text;
+            }
+        }
+
+        private void cmdSend_Click(object sender, EventArgs e)
+        {
+            SendCode();
+        }
+
+        private void SendCode()
+        {
+            Code = editTextBox.Text;
+        }
+
+        private void cmdSave_Click(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void SaveFile()
+        {
+            // Create an instance of the open file dialog box.
+            SaveFileDialog openFileDialog1 = new SaveFileDialog();
+
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+
+            
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK)
+            {
+                System.IO.File.WriteAllText (openFileDialog1.FileName,editTextBox.Text );
+               
+            }
+        }
+
+
+    //public class SyntaxSettings
+    //    {
+    //        Color mTextColor ;
+
+    //        [Browsable(true)]                         // this property should be visible
+    //        [ReadOnly(false)]                          // but just read only
+    //        [Description("Text Color")]             // sample hint1
+    //        [Category("Syntax Coloring")]                   // Category that I want
+    //        [DisplayName("Default Text Color")]       // I want to say more, than just DisplayInt
+    //        public Color TextColor
+    //        {
+    //            get { return mTextColor; }
+    //            set { mTextColor = value; }
+
+    //        }
+
+    //    }
+
+        private void cmdSettings_Click(object sender, EventArgs e)
+        {
+            EditSettings();
+        }
+
+        private void EditSettings()
+        {
+            
+            SettingsBag.SelectedObject = editTextBox ;
+            SettingsBag.Top = editTextBox.Top;
+            SettingsBag.Height = editTextBox.Height;
+            SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
+           
+            SettingsBag.Visible = !SettingsBag.Visible ;
+        }
+
+        private void ProgramEditorForm_ResizeEnd(object sender, EventArgs e)
+        {
+            if (SettingsBag.Visible)
+            {
+                SettingsBag.Top = editTextBox.Top;
+                SettingsBag.Height = editTextBox.Height;
+                SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
+            }
+        }
+
+        private void ProgramEditorForm_Resize(object sender, EventArgs e)
+        {
+            if (SettingsBag.Visible)
+            {
+                SettingsBag.Top = editTextBox.Top;
+                SettingsBag.Height = editTextBox.Height;
+                SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
+            }
+        }
     }
+
+
 }
