@@ -72,11 +72,11 @@ namespace T3000
             var LoopVariable = new RegexBasedTerminal("LoopVariable", "[A-K]");
 
             var LocalVariable = new RegexBasedTerminal("LocalVariable", "[A-Z]{1}");
-            
 
-            ////Redesign of LocalVariable to RegExBasedTerminal
-            //var LocalVariable = new RegexBasedTerminal("LocalVariable", "[A-Z]");
-            //LocalVariable.Flags = TermFlags.IsLiteral;
+
+            string PrintAscii = "(3[2-9])|([4-9][0-9])|(1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|('[A-Za-z]')";
+            var PrintableAscii = new RegexBasedTerminal("PrintableAscii", PrintAscii);
+            PrintableAscii.Priority = 25;
 
             //RegEx Tested Strings, for ending valid Control Points
             string UPTO128 = "12[0-8]|1[0-1][0-9]|[1-9][0-9]?";
@@ -297,7 +297,11 @@ namespace T3000
             var TIMEON = new NonTerminal("TIMEON");
             var WRON = new NonTerminal("WRON");
             var WROFF = new NonTerminal("WROFF");
-
+            var COM1 = new NonTerminal("COM1");
+            var BAUDRATE = new NonTerminal("BAUDRATE");
+            var PORT = new NonTerminal("PORT");
+            var CHARS = new NonTerminal("CHARS");
+            var ComParameters = new NonTerminal("ComParameters");
             
             //Create Assignment statement
             var Assignment = new NonTerminal("Assignment");
@@ -517,7 +521,7 @@ namespace T3000
             //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY |
             //INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL |
             //TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
-            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET |  DOY | DOM | 
+            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET | COM1 | DOY | DOM | 
                 DOW | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS 
                 | TBL | TIME | TIMEON | TIMEOFF | WRON | WROFF | UNACK | USERA | USERB;
 
@@ -560,7 +564,21 @@ namespace T3000
             //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
             WROFF.Rule = "WR-OFF" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
 
-            
+
+            //COM1 ::= 'COM1' PARIZQ BAUDRATE ',' PORT (CHARS+ | ',' EnclosedString) PARDER
+            //BAUDRATE::= '9600' | '115200'
+            //PORT::= '1' | 'Z' | 'Y' | 'X'
+            //CHARS::= ','(PrintableAscii | ['] [A-Za-z] ['])
+            //PrintableAscii::= '3'[2 - 9] | [4 - 9][0 - 9] | '1'[0 - 9][0 - 9] | '2'[0 - 4][0 - 9] | '25'[0 - 5]
+
+            COM1.Rule = "COM1" + PARIZQ + BAUDRATE + Comma + PORT + ComParameters + PARDER;
+            BAUDRATE.Rule = ToTerm("9600") | ToTerm("115200");
+            PORT.Rule = ToTerm("1") | ToTerm("Z") | ToTerm("Y") | ToTerm("X");
+            ComParameters.Rule = CHARS | EnclosedString;
+            CHARS.Rule = MakePlusRule(CHARS, Comma + PrintableAscii);
+
+             
+
             //EXPR.Rule = number | variable | FUN_CALL | stringLiteral | BINARY_EXPR 
             //          | "(" + EXPR + ")" | UNARY_EXPR;
             Expression.Rule = Function | Literal | Designator | UnaryExpression | BinaryExpression |  EnclosableExpression ;
@@ -617,7 +635,7 @@ namespace T3000
             //18 Parenthesis enclosed functions
             MarkReservedWords("ABS", "AVG", "CONPROP", "CONRATE", "CONRESET", "INT", "INTERVAL");
             MarkReservedWords("LN", "LN-1", "MAX", "MIN","SQR","STATUS","TBL","TIME-ON","TIME-OFF");
-            MarkReservedWords("WR-ON", "WR-OFF");
+            MarkReservedWords("WR-ON", "WR-OFF","COM1");
             //Branches
             MarkReservedWords("IF", "IF+", "IF-","ON-ALARM", "ON-ERROR", "ON", "GOTO", "GOSUB", "ELSE","THEN");
             //Commands
