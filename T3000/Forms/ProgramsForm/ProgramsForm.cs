@@ -13,6 +13,13 @@
         public List<ProgramCode> Codes { get; set; }
         public DataGridView Progs { get; set; }
 
+        public Prg  CurrentPrg { get; set; }
+
+        public ProgramsForm(ref Prg  CurPRG, List<ProgramPoint> points, List<ProgramCode> codes): this(points,codes)
+        {
+            CurrentPrg = CurPRG;
+        }
+
         public ProgramsForm(List<ProgramPoint> points, List<ProgramCode> codes)
         {
             if (points == null)
@@ -99,6 +106,7 @@
                     point.Length = row.GetValue<int>(SizeColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
                     
+                    
                 }
             }
             catch (Exception exception)
@@ -175,6 +183,7 @@
                 var row = view.CurrentRow;
                 var index = row.GetValue<int>(NumberColumn) - 1;
                 var form = new ProgramEditorForm(Codes[index].ToString());
+                
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -193,4 +202,5 @@
         #endregion
 
     }
+
 }

@@ -9,7 +9,14 @@
     using System.Windows.Forms;
     public partial class T3000Form : Form
     {
-        public Prg Prg { get; private set; }
+        private Prg _prg; 
+        public Prg Prg
+        {
+            get { return _prg; }
+          
+            private set { _prg = value; }
+        }
+
         public string PrgPath { get; private set; }
         public bool IsOpened => Prg != null;
 
@@ -269,8 +276,10 @@
                     return;
                 }
 
-                var form = new ProgramsForm(Prg.Programs, Prg.ProgramCodes);
+                var form = new ProgramsForm(ref _prg, Prg.Programs, Prg.ProgramCodes);
+                
                 form.Show();
+                
             }
             catch (Exception exception)
             {

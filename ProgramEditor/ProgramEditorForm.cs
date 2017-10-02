@@ -7,9 +7,9 @@
     using System.Windows.Forms;
     using Irony;
     using Irony.Parsing;
-    
     using System.Drawing;
     using System.ComponentModel;
+    using PRGReaderLibrary;
 
   
 
@@ -70,8 +70,20 @@
 
         public ProgramEditorForm(string code) : this()
         {
+            this.Text = "Edit Code: ";
             SetCode(code);
         }
+
+        public ProgramEditorForm (Prg CurrentPrg, int Index) : this()
+        {
+            
+            ProgramCode prgcode = CurrentPrg.ProgramCodes[Index];
+            //CurrentPrg.Programs[Index].Description
+            this.Text = "Edit Code: " +  CurrentPrg.Programs[Index].Label ;
+            SetCode(prgcode.Code.ToString());
+        }
+
+
 
         private string RemoveInitialNumbers(string text)
         {
@@ -113,33 +125,7 @@
 
         }
 
-        //USELESS CODE, to be examined later!.....
-        //#region Buttons
-
-        //private void Save(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        Code = AddInitialNumbers(editTextBox.Text);
-        //    }
-        //    catch (Exception)// exception)
-        //    {
-        //        //MessageBoxUtilities.ShowException(exception);
-        //        DialogResult = DialogResult.None;
-        //        return;
-        //    }
-
-        //    DialogResult = DialogResult.OK;
-        //    Close();
-        //}
-
-        //private void Cancel(object sender, EventArgs e)
-        //{
-        //    Close();
-        //}
-
-        //#endregion
-
+        
         private void cmdClear_Click(object sender, EventArgs e)
         {
             ClearCode();
