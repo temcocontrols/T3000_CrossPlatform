@@ -50,6 +50,8 @@
                 PrgPath = path;
                 Prg = Prg.Load(path);
 
+                
+
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
 
                 //File menu
@@ -276,7 +278,8 @@
                     return;
                 }
 
-                var form = new ProgramsForm(ref _prg, Prg.Programs, Prg.ProgramCodes);
+                var form = new ProgramsForm(ref _prg, PrgPath );
+                
                 
                 form.Show();
                 
@@ -297,7 +300,7 @@
                     return;
                 }
                 var f = new VariablesForm(Prg.Variables, Prg.CustomUnits);
-                var f2 = new ProgramsForm(Prg.Programs, Prg.ProgramCodes);
+                var f2 = new ProgramsForm(ref _prg, PrgPath );
                 var form = new ScreensForm(Prg.Screens);
                 form.Prg = Prg;
                 form.PointsP=Prg.Programs;

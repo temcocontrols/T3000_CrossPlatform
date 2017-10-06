@@ -22,6 +22,20 @@
         Parser _parser;
         //SyntaxSettings _syntaxcolors;
 
+
+        private Prg _prg;
+        public Prg Prg
+        {
+            get { return _prg; }
+
+            private set { _prg = value; }
+        }
+
+        public string PrgPath { get; private set; }
+        private int Index { get; set; }
+
+
+
         public ProgramEditorForm()
         {
             InitializeComponent();
@@ -68,19 +82,19 @@
             
         }
 
-        public ProgramEditorForm(string code) : this()
-        {
-            this.Text = "Edit Code: ";
-            SetCode(code);
-        }
 
-        public ProgramEditorForm (Prg CurrentPrg, int Index) : this()
+
+        public ProgramEditorForm (ref Prg CurrentPrg, string Path, int CodeIndex) : this()
         {
-            
-            ProgramCode prgcode = CurrentPrg.ProgramCodes[Index];
+
+            Prg = CurrentPrg;
+            PrgPath = Path;
+            Index = CodeIndex;
+               
+            ProgramCode prgcode = Prg.ProgramCodes[Index];
             //CurrentPrg.Programs[Index].Description
-            this.Text = "Edit Code: " +  CurrentPrg.Programs[Index].Label ;
-            SetCode(prgcode.Code.ToString());
+            this.Text = "Edit Code: " +  Prg.Programs[Index].Description ;
+            SetCode(prgcode.ToString());
         }
 
 
@@ -303,6 +317,63 @@
         private void SendCode()
         {
             Code = editTextBox.Text;
+            //byte[] Bytes = Code.ToBytes(2000);
+
+            //List<string> codelines = new List<string>();
+            //List<byte[]> bytelines = new List<byte[]>();
+            
+
+            //codelines.AddRange(editTextBox.Lines);
+            //for(int i= 0; i< codelines.Count();i++ )
+            //{
+            //    codelines[i] = codelines[i].TrimEnd(System.Environment.NewLine.ToCharArray());
+                              
+            //    bytelines.Add(codelines[i].ToBytes());
+            //    //var byteline = new List<byte>();
+
+            //    //byteline.AddRange(bytelines[i]);
+            //    //byteline.Insert(0,(byte) PRGReaderLibrary.LineToken.REM); //Token = STRING = 179
+            //    //byteline.Insert(0, 0);
+            //    //byteline.Insert(0, (byte) (i+1)); //Number = 10
+            //    //byteline.Insert(0, (byte) PRGReaderLibrary.ExpressionType.NUMBER ); //Type = NUMBER = 1
+            //    //bytelines[i] = byteline.ToArray();
+                
+            //}
+
+
+            ////Prg.ProgramCodes[Index].Code = Bytes;
+            ////Prg.ProgramCodes[0].Lines[0].Data = bytelines[0];
+
+           
+
+            ////ProgramCode NewCode = new ProgramCode(Bytes.ToArray(), FileVersion.Current);
+            //Prg.ProgramCodes[Index].Lines.RemoveRange(0, Prg.ProgramCodes[Index].Lines.Count());
+            
+
+            //foreach (var line in codelines )
+            //{
+            //    if (!string.IsNullOrEmpty(line))
+            //    {
+            //        var prgline = new PRGReaderLibrary.Line(line, FileVersion.Current);
+            //        //NewCode.Lines.Add(prgline);
+            //        Prg.ProgramCodes[Index].Lines.Add(prgline);
+            //    }
+            //  else
+            //    {
+            //        Console.Write($"Skipping empty line: {line}");
+            //    }
+            //}
+
+            //NewCode.Code = Code.ToBytes(2000);
+            //Prg.ProgramCodes[Index] = NewCode;
+
+            //Prg.ProgramCodes[Index].Code = Bytes;
+
+            Prg.ProgramCodes[Index] = new ProgramCode(Code, FileVersion.Current);
+
+            Prg.Save(PrgPath);
+
+
         }
 
         private void cmdSave_Click(object sender, EventArgs e)

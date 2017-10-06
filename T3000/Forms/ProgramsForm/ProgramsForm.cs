@@ -13,14 +13,28 @@
         public List<ProgramCode> Codes { get; set; }
         public DataGridView Progs { get; set; }
 
-        public Prg  CurrentPrg { get; set; }
-
-        public ProgramsForm(ref Prg  CurPRG, List<ProgramPoint> points, List<ProgramCode> codes): this(points,codes)
+        private Prg _prg;
+        public Prg Prg
         {
-            CurrentPrg = CurPRG;
+            get { return _prg; }
+
+            set { _prg = value; }
         }
 
-        public ProgramsForm(List<ProgramPoint> points, List<ProgramCode> codes)
+        public string PrgPath { get; private set; }
+
+
+        public ProgramsForm(ref Prg  CurPRG,string Path)
+        {
+            Prg = CurPRG;
+            PrgPath = Path;
+
+            SetView(Prg.Programs, Prg.ProgramCodes);
+
+        }
+
+
+        public void  SetView(List<ProgramPoint> points, List<ProgramCode> codes)
         {
             if (points == null)
             {
@@ -39,7 +53,7 @@
             view.AddEditHandler(CodeColumn, EditCodeColumn);
 
             //Value changed handles
-            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, 
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor,
                 Color.Red, Color.Blue);
 
             //Show points
@@ -63,6 +77,7 @@
 
             Progs = view;
         }
+
 
         private void SetRow(DataGridViewRow row, ProgramPoint point)
         {
@@ -182,8 +197,9 @@
             {
                 var row = view.CurrentRow;
                 var index = row.GetValue<int>(NumberColumn) - 1;
-                var form = new ProgramEditorForm(Codes[index].ToString());
-                
+                //var form = new ProgramEditorForm(Codes[index].ToString());
+                var form = new ProgramEditorForm(ref _prg, PrgPath, index);
+
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -191,7 +207,7 @@
                 }
 
                 
-                Codes[index].Code = form.Code.ToBytes() ;
+                //Codes[index].Code = form.Code.ToBytes() ;
             }
             catch (Exception exception)
             {

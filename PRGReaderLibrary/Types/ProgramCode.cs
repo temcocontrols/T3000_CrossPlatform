@@ -43,7 +43,8 @@
         EOI,
         TTIME,
         BIT_AND,
-        BIT_OR
+        BIT_OR,
+        RAWLINE = 253
     }
 
     public enum LineToken
@@ -112,7 +113,8 @@
         WHILE,
         SWITCH,
         EOL,
-        STRING
+        STRING,
+        RAWLINE = 253
     }
 
     public enum FunctionToken
@@ -570,6 +572,10 @@
 
                 case LineToken.ASSIGN:
                     return $"{Number} {Expressions[0].ToString()} = {Expressions[1].ToString()}";
+                //LRUIZ:
+                //Additions of raw lines, preproccessed by a real PARSER
+                case LineToken.RAWLINE:
+                    return $"{Data.GetString()}";
 
                 default:
                     Console.WriteLine(Token);
@@ -819,17 +825,73 @@ expressions: {expressions.Count}
             return;
         }
 
+        /// <summary>
+        /// Raw Lines Constructor
+        /// </summary>
+        /// <remarks>Author: LRUIZ</remarks>
+        /// <param name="line">string, Raw line of code, including Line Numbers</param>
+        /// <param name="version">Defaults to FileVersion.Current</param>
+        public Line(string line, FileVersion version = FileVersion.Current ):base(version)
+        {
+            
+            Type = ExpressionType.RAWLINE ; //1 Byte
+            Token = LineToken.RAWLINE; //1 Byte
+
+            string[] LineParts = line.Split(' ');
+            if (String.IsNullOrEmpty(LineParts[0]))
+            {
+                Number = 0;
+            }
+            else
+            {
+                Number = Convert.ToInt16(LineParts[0]);
+            }
+            switch (LineParts[1])
+            {
+                case "REM":
+                    Token = LineToken.REM;
+                    break;
+                case "IF+":
+                    Token = LineToken.IFP;
+                    break;
+
+                case "IF-":
+                    Token = LineToken.IFM;
+                    break;
+                case "IF":
+                    Token = LineToken.IF;
+                    break;
+                default:
+                    Token = LineToken.ASSIGN;
+                    break;
+
+
+            }
+
+            //Number = bytes.ToInt16(ref offset); //2 Bytes
+            
+            this.Data = line.ToBytes();
+            //Data = PRGReaderLibrary.BytesExtensions.ToBytes(line.ToBytes());
+            var size = Data.Count();
+        }
+
+
+
+
         public Line(byte[] bytes, Prg prg, ref int offset,
             FileVersion version = FileVersion.Current)
             : base(version)
         {
-            Type = (ExpressionType)bytes.ToByte(ref offset);
-            Number = bytes.ToInt16(ref offset);
-            Token = (LineToken)bytes.ToByte(ref offset);
+            Type = (ExpressionType)bytes.ToByte(ref offset); //1 Byte
+            Number = bytes.ToInt16(ref offset); //2 Bytes
+            Token = (LineToken)bytes.ToByte(ref offset); //1 Byte
+            
+
+            //Offset is 4
 
             try
             {
-                if (Number == 140)
+                if (Number == 140) //8C 00
                 {
 
                     var ifPart = GetLinePart(bytes, ref offset, FileVersion);
@@ -862,7 +924,7 @@ expressions: {expressions.Count}
                     return;
                 }
 
-                if (Number == 300)
+                if (Number == 300) //2C 01
                 {
                     Expressions.Add(new UnaryExpression(bytes, prg, ref offset, FileVersion));
                     offset += 3;
@@ -881,7 +943,7 @@ expressions: {expressions.Count}
                     return;
                 }
 
-                if (Number == 350)
+                if (Number == 350) //5E 01
                 {
                     var ifPart = GetLinePart(bytes, ref offset, FileVersion);
                     Expressions.Add(ToExpression(ifPart, prg, 0, FileVersion));
@@ -903,7 +965,7 @@ expressions: {expressions.Count}
                     return;
                 }
 
-                if (Number == 360)
+                if (Number == 360) //68 01
                 {
                     var ifPart = GetLinePart(bytes, ref offset, FileVersion);
                     Expressions.Add(ToExpression(ifPart, prg, 0, FileVersion));
@@ -944,13 +1006,14 @@ expressions: {expressions.Count}
                         break;
 
                     case LineToken.REM:
+                    case LineToken.RAWLINE:
                     default:
                         var size = bytes.ToByte(ref offset);
                         Data = bytes.ToBytes(ref offset, size);
                         break;
                 }
 
-                if (Number == 380)
+                if (Number == 380) //7C 01
                 {
                     offset += 115;
                 }
@@ -990,6 +1053,35 @@ Token: {Token}
         {
             Code = code;
         }
+
+
+        public  ProgramCode(string code, FileVersion version = FileVersion.Current)
+            : base(2000, version)
+        {
+            //Write Header of ProgramCode
+            Code = null;
+            
+
+            //string[] codelines = code.Split(System.Environment.NewLine.ToCharArray());
+            IList<string> codelines = code.ToLines(StringSplitOptions.RemoveEmptyEntries);
+            for(var i= 0;i<codelines.Count; i++)
+            {
+                codelines[i] = codelines[i].TrimEnd(System.Environment.NewLine.ToCharArray());
+                string[] tokens = codelines[i].Split(' ');
+                if(tokens.Count() < 2)
+                {
+                    throw new Exception($"Too few tokens found on line: {codelines[i]}");
+                }
+
+                var newline = new Line(codelines[i]);
+                Lines.Add(newline);
+
+                //TODO: Form a new line, and add bytes to code();
+                
+            }
+
+        }
+
 
         #region Binary data
 
@@ -1058,4 +1150,6 @@ Token: {Token}
         #endregion
 
     }
+
+   
 }
