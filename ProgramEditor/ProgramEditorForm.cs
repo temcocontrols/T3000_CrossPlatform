@@ -368,8 +368,9 @@
             //Prg.ProgramCodes[Index] = NewCode;
 
             //Prg.ProgramCodes[Index].Code = Bytes;
+            
 
-            Prg.ProgramCodes[Index] = new ProgramCode(Code, FileVersion.Current);
+            Prg.ProgramCodes[Index] = new ProgramCode(ProgramCode.RawProgramCode(Code,FileVersion.Current), FileVersion.Current);
 
             Prg.Save(PrgPath);
 
