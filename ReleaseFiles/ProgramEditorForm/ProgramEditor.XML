@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProgramEditor</name>
+    </assembly>
+    <members>
+        <member name="T:T3000.Forms.SendEventHandler">
+            <summary>
+            Delegate to event handler Send
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:T3000.Forms.ProgramEditorForm">
+            <summary>
+            ProgramEditor Form
+            </summary>
+        </member>
+        <member name="P:T3000.Forms.ProgramEditorForm.Caption">
+            <summary>
+            Form caption
+            </summary>
+        </member>
+        <member name="E:T3000.Forms.ProgramEditorForm.Send">
+            <summary>
+            Event Send
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.OnSend(System.EventArgs)">
+            <summary>
+            Overridable OnSend Event Handler
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.#ctor">
+            <summary>
+            Default constructor of ProgramEditorForm
+            Use: SetCode(string) to assign program code to Editor.
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.SetCode(System.String)">
+            <summary>
+            Set code to EditBox, ProgramCode is automatically parsed. 
+            </summary>
+            <param name="code">String contaning plain text Control Basic with numbered lines {Not Bytes Encoded Programs}</param>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.ClearCode">
+            <summary>
+            Clear editBox only.
+            If you want to update/clear the inner code, use SetCode
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.ToString">
+            <summary>
+            Override of ToString -> GetCode
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.GetCode">
+            <summary>
+            Get current code
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.ParseCode">
+            <summary>
+            Forces parsing the code contained in EditTextBox
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.ShowCompilerErrors">
+            <summary>
+            Updates Compile Errors Gridview
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.gridCompileErrors_CellDoubleClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+            <summary>
+            Allows to position over token at selected error.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.ShowSourcePosition(System.Int32,System.Int32)">
+            <summary>
+            Shows a caret in editTextBox for a selected token
+            </summary>
+            <param name="position"></param>
+            <param name="length"></param>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.editTextBox_TextChangedDelayed(System.Object,FastColoredTextBoxNS.TextChangedEventArgs)">
+            <summary>
+            Parse code delayed after editing program.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.RefreshCode">
+            <summary>
+            Refresh, reload assigned code into editBox
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.LoadFile">
+            <summary>
+            Open file dialog to load a text file into editor
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.SaveFile">
+            <summary>
+            Open File dialog to save a copy of program code into a file.
+            </summary>
+        </member>
+        <member name="F:T3000.Forms.ProgramEditorForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:FastColoredTextBoxNS.IronyFCTB">
+            <summary>
+            FastColoredTextBox with Irony parser support
+            </summary>
+            <see cref="!:https://github.com/PavelTorgashov/FastColoredTextBox"/>
+            <see cref="!:http://irony.codeplex.com/"/>
+        </member>
+        <member name="P:FastColoredTextBoxNS.IronyFCTB.Grammar">
+            <summary>
+            Grammar of custom language
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.IronyFCTB.Parser">
+            <summary>
+            Parser of custom language
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.IronyFCTB.SetParser(Irony.Parsing.Grammar)">
+            <summary>
+            Sets Irony parser (based on Grammar)
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.IronyFCTB.SetParser(Irony.Parsing.LanguageData)">
+            <summary>
+            Sets Irony parser (based on LanguageData)
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.IronyFCTB.SetParser(Irony.Parsing.Parser)">
+            <summary>
+            Sets Irony parser
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.IronyFCTB.GetTokenRange(Irony.Parsing.Token)">
+            <summary>
+            Returns range of token
+            </summary>
+        </member>
+        <member name="T:ProgramEditor.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ProgramEditor.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ProgramEditor.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
