@@ -198,10 +198,14 @@
                 var row = view.CurrentRow;
                 var index = row.GetValue<int>(NumberColumn) - 1;
                 //var form = new ProgramEditorForm(Codes[index].ToString());
-                var form = new ProgramEditorForm(ref _prg, PrgPath, index);
-
+                var form = new ProgramEditorForm();
+                form.SetCode(Codes[index].ToString());
+                //Override Send Event Handler
+                form.Send += Form_Send;
+               
                 if (form.ShowDialog() != DialogResult.OK)
                 {
+
                     return;
                 
                 }
@@ -214,6 +218,18 @@
                 MessageBoxUtilities.ShowException(exception);
             }
         }
+
+        private void Form_Send(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            string Code = sender.ToString();
+            MessageBox.Show(Code);
+            //TODO : Encode ProgramCode into bytes and replace section of PRG
+        }
+
+
+
+
 
         #endregion
 

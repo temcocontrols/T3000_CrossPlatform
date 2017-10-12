@@ -9,13 +9,32 @@
     using Irony.Parsing;
     using System.Drawing;
     using System.ComponentModel;
-    using PRGReaderLibrary;
+    //using PRGReaderLibrary;
 
-  
 
+    /// <summary>
+    /// Delegate to event handler Send
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    public delegate void SendEventHandler(object sender, EventArgs e);
+
+    /// <summary>
+    /// ProgramEditor Form
+    /// </summary>
     public partial class ProgramEditorForm : Form
     {
-        public string Code { get; set; }
+        private string Code { get; set; }
+
+        /// <summary>
+        /// Form caption
+        /// </summary>
+        public string Caption
+        {
+            get { return this.Text; }
+            set { this.Text = value; }
+        }
+
         Grammar _grammar;
         LanguageData _language;
         ParseTree _parseTree;
@@ -23,19 +42,33 @@
         //SyntaxSettings _syntaxcolors;
 
 
-        private Prg _prg;
-        public Prg Prg
-        {
-            get { return _prg; }
+        /// <summary>
+        /// Event Send
+        /// </summary>
+        public event SendEventHandler Send;
 
-            private set { _prg = value; }
+        
+
+        /// <summary>
+        /// Overridable OnSend Event Handler
+        /// </summary>
+        public void OnSend(EventArgs e)
+        {
+
+            Code = editTextBox.Text;
+
+            if (Send != null)
+            {
+                Send(this,e);
+            }
+
+           
         }
 
-        public string PrgPath { get; private set; }
-        private int Index { get; set; }
-
-
-
+        /// <summary>
+        /// Default constructor of ProgramEditorForm
+        /// Use: SetCode(string) to assign program code to Editor.
+        /// </summary>
         public ProgramEditorForm()
         {
             InitializeComponent();
@@ -83,22 +116,6 @@
         }
 
 
-
-        public ProgramEditorForm (ref Prg CurrentPrg, string Path, int CodeIndex) : this()
-        {
-
-            Prg = CurrentPrg;
-            PrgPath = Path;
-            Index = CodeIndex;
-               
-            ProgramCode prgcode = Prg.ProgramCodes[Index];
-            //CurrentPrg.Programs[Index].Description
-            this.Text = "Edit Code: " +  Prg.Programs[Index].Description ;
-            SetCode(prgcode.ToString());
-        }
-
-
-
         private string RemoveInitialNumbers(string text)
         {
             var lines = text.ToLines();
@@ -128,7 +145,11 @@
             return string.Join(Environment.NewLine, lines);
         }
 
-        private void SetCode(string code)
+        /// <summary>
+        /// Set code to EditBox, ProgramCode is automatically parsed. 
+        /// </summary>
+        /// <param name="code">String contaning plain text Control Basic with numbered lines {Not Bytes Encoded Programs}</param>
+        public void SetCode(string code)
         {
             Code = code;
             //editTextBox.Text = RemoveInitialNumbers(code);
@@ -145,13 +166,40 @@
             ClearCode();
         }
 
-        private void ClearCode()
+        /// <summary>
+        /// Clear editBox only.
+        /// If you want to update/clear the inner code, use SetCode
+        /// </summary>
+        public void ClearCode()
         {
             //local member Code is not cleared, to allow recovering with REFRESH (F8)
             editTextBox.Text = "";
         }
 
-        private void ParseCode()
+
+        /// <summary>
+        /// Override of ToString -> GetCode
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return GetCode();
+        }
+
+        /// <summary>
+        /// Get current code
+        /// </summary>
+        /// <returns></returns>
+        public string GetCode()
+        {
+            Code = editTextBox.Text;
+            return Code;
+        }
+
+        /// <summary>
+        /// Forces parsing the code contained in EditTextBox
+        /// </summary>
+        public void ParseCode()
         {
             ClearParserOutput();
             if (_parser == null || !_parser.Language.CanParse()) return;
@@ -179,6 +227,7 @@
                
             }
         }
+
 
         private void ClearParserOutput()
         {
@@ -256,8 +305,10 @@
             RefreshCode();
         }
 
-
-        private void RefreshCode()
+        /// <summary>
+        /// Refresh, reload assigned code into editBox
+        /// </summary>
+        public void RefreshCode()
         {
             editTextBox.Text = Code;
         }
@@ -285,9 +336,9 @@
         }
 
         /// <summary>
-        /// Load a text file into editor
+        /// Open file dialog to load a text file into editor
         /// </summary>
-        private void LoadFile()
+        public void LoadFile()
         {
             // Create an instance of the open file dialog box.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -314,65 +365,13 @@
             SendCode();
         }
 
+
+
+
         private void SendCode()
         {
             Code = editTextBox.Text;
-            //byte[] Bytes = Code.ToBytes(2000);
-
-            //List<string> codelines = new List<string>();
-            //List<byte[]> bytelines = new List<byte[]>();
-            
-
-            //codelines.AddRange(editTextBox.Lines);
-            //for(int i= 0; i< codelines.Count();i++ )
-            //{
-            //    codelines[i] = codelines[i].TrimEnd(System.Environment.NewLine.ToCharArray());
-                              
-            //    bytelines.Add(codelines[i].ToBytes());
-            //    //var byteline = new List<byte>();
-
-            //    //byteline.AddRange(bytelines[i]);
-            //    //byteline.Insert(0,(byte) PRGReaderLibrary.LineToken.REM); //Token = STRING = 179
-            //    //byteline.Insert(0, 0);
-            //    //byteline.Insert(0, (byte) (i+1)); //Number = 10
-            //    //byteline.Insert(0, (byte) PRGReaderLibrary.ExpressionType.NUMBER ); //Type = NUMBER = 1
-            //    //bytelines[i] = byteline.ToArray();
-                
-            //}
-
-
-            ////Prg.ProgramCodes[Index].Code = Bytes;
-            ////Prg.ProgramCodes[0].Lines[0].Data = bytelines[0];
-
-           
-
-            ////ProgramCode NewCode = new ProgramCode(Bytes.ToArray(), FileVersion.Current);
-            //Prg.ProgramCodes[Index].Lines.RemoveRange(0, Prg.ProgramCodes[Index].Lines.Count());
-            
-
-            //foreach (var line in codelines )
-            //{
-            //    if (!string.IsNullOrEmpty(line))
-            //    {
-            //        var prgline = new PRGReaderLibrary.Line(line, FileVersion.Current);
-            //        //NewCode.Lines.Add(prgline);
-            //        Prg.ProgramCodes[Index].Lines.Add(prgline);
-            //    }
-            //  else
-            //    {
-            //        Console.Write($"Skipping empty line: {line}");
-            //    }
-            //}
-
-            //NewCode.Code = Code.ToBytes(2000);
-            //Prg.ProgramCodes[Index] = NewCode;
-
-            //Prg.ProgramCodes[Index].Code = Bytes;
-            
-
-            Prg.ProgramCodes[Index] = new ProgramCode(ProgramCode.RawProgramCode(Code,FileVersion.Current), FileVersion.Current);
-
-            Prg.Save(PrgPath);
+            OnSend(new EventArgs());
 
 
         }
@@ -382,7 +381,10 @@
             SaveFile();
         }
 
-        private void SaveFile()
+        /// <summary>
+        /// Open File dialog to save a copy of program code into a file.
+        /// </summary>
+        public void SaveFile()
         {
             // Create an instance of the open file dialog box.
             SaveFileDialog openFileDialog1 = new SaveFileDialog();
@@ -404,24 +406,6 @@
             }
         }
 
-
-    //public class SyntaxSettings
-    //    {
-    //        Color mTextColor ;
-
-    //        [Browsable(true)]                         // this property should be visible
-    //        [ReadOnly(false)]                          // but just read only
-    //        [Description("Text Color")]             // sample hint1
-    //        [Category("Syntax Coloring")]                   // Category that I want
-    //        [DisplayName("Default Text Color")]       // I want to say more, than just DisplayInt
-    //        public Color TextColor
-    //        {
-    //            get { return mTextColor; }
-    //            set { mTextColor = value; }
-
-    //        }
-
-    //    }
 
         private void cmdSettings_Click(object sender, EventArgs e)
         {
