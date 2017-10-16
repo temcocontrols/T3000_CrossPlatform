@@ -36,11 +36,11 @@ namespace T3000.Forms
         /// <returns>string</returns>
         public override string ToString()
         {
-            string result = "[";
-            result += this.Text ?? "<<EmptyText>>";
-            result += "::";
-            result += this.TerminalName ?? "<<EmptyTerminalName>>";
-            result += ") ";
+            string result = "{";
+            result += this.Text ?? "NULL";
+            result += "|";
+            result += this.TerminalName ?? "NULL";
+            result += "} ";
             return result;
         }
 
@@ -65,15 +65,34 @@ namespace T3000.Forms
         {
             codetext = code;
             string[] excludeTokens = { "CONTROL_BASIC","LF" };
+            bool isFirstToken = true;
 
             foreach (var tok in tree.Tokens)
             {
+                var tokentext = tok.Text;
+                var terminalname = tok.Terminal.Name;
                 
-                Tokens.Add(new TokenInfo(tok.Text, tok.Terminal.Name));
-                
-            }
 
-            
+                switch(tok.Terminal.Name)
+                {
+                    case "Comment":
+                        //split into two tokens
+                        Tokens.Add(new TokenInfo("REM", "REM"));
+                        Tokens.Add(new TokenInfo(tok.Text.Substring(4), "Comment"));
+                        break;
+                    case "IntegerNumber":
+                        //rename to LineNumber only if first token on line.
+                        
+                        Tokens.Add(new TokenInfo(tokentext, isFirstToken?"LineNumber":terminalname));
+                        break;
+                    
+                        
+                    default:
+                        Tokens.Add(new TokenInfo(tokentext, terminalname ));
+                        break;
+                }
+                isFirstToken = terminalname == "LF" ? true:false;
+            }
             
         }
 

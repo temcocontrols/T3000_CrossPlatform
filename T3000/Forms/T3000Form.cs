@@ -271,6 +271,11 @@
 
         private void ShowPrograms(object sender, EventArgs e)
         {
+            ShowPrograms();
+        }
+
+        private void ShowPrograms()
+        {
             try
             {
                 if (!CheckIsOpened())
@@ -278,11 +283,11 @@
                     return;
                 }
 
-                var form = new ProgramsForm(ref _prg, PrgPath );
-                
-                
+                var form = new ProgramsForm(ref _prg, PrgPath);
+
+
                 form.Show();
-                
+
             }
             catch (Exception exception)
             {
@@ -370,5 +375,18 @@
 
         #endregion
 
+        private void T3000Form_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.P:
+                        ShowPrograms();
+                        break;
+                }
+            }
+            e.Handled = true;
+        }
     }
 }

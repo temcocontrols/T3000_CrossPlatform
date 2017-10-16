@@ -41,6 +41,7 @@
             this.cmdSave = new System.Windows.Forms.ToolStripButton();
             this.cmdRefresh = new System.Windows.Forms.ToolStripButton();
             this.cmdSettings = new System.Windows.Forms.ToolStripButton();
+            this.cmdRenumber = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.grpCompileErrors = new System.Windows.Forms.GroupBox();
@@ -67,7 +68,8 @@
             this.cmdLoad,
             this.cmdSave,
             this.cmdRefresh,
-            this.cmdSettings});
+            this.cmdSettings,
+            this.cmdRenumber});
             this.tsTopMenu.Location = new System.Drawing.Point(0, 0);
             this.tsTopMenu.Name = "tsTopMenu";
             this.tsTopMenu.Size = new System.Drawing.Size(580, 25);
@@ -139,6 +141,17 @@
             this.cmdSettings.Size = new System.Drawing.Size(53, 22);
             this.cmdSettings.Text = "Settings";
             this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
+            // 
+            // cmdRenumber
+            // 
+            this.cmdRenumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdRenumber.Image = ((System.Drawing.Image)(resources.GetObject("cmdRenumber.Image")));
+            this.cmdRenumber.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdRenumber.Name = "cmdRenumber";
+            this.cmdRenumber.Size = new System.Drawing.Size(95, 22);
+            this.cmdRenumber.Text = "Renumber (F10)";
+            this.cmdRenumber.ToolTipText = "Validate and Renumber Lines";
+            this.cmdRenumber.Click += new System.EventHandler(this.cmdRenumber_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -332,5 +345,6 @@
         private FastColoredTextBoxNS.Ruler ruler1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.PropertyGrid SettingsBag;
+        private System.Windows.Forms.ToolStripButton cmdRenumber;
     }
 }

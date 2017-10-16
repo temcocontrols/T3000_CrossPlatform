@@ -26,8 +26,8 @@ namespace FastColoredTextBoxNS
     public class IronyFCTB : FastColoredTextBox
     {
         public event EventHandler<StyleNeededEventArgs> StyleNeeded;
-
         protected Parser parser;
+        
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
 
         /// <summary>

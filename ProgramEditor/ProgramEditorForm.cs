@@ -7,9 +7,6 @@
     using System.Windows.Forms;
     using Irony;
     using Irony.Parsing;
-    using System.Drawing;
-    using System.ComponentModel;
-    //using PRGReaderLibrary;
 
 
     /// <summary>
@@ -39,8 +36,11 @@
         LanguageData _language;
         ParseTree _parseTree;
         Parser _parser;
-        //SyntaxSettings _syntaxcolors;
+        
 
+        //Container of all line numbers
+        List<LineInfo> Lines;
+        List<JumpInfo> Jumps;
 
         /// <summary>
         /// Event Send
@@ -75,11 +75,14 @@
             InitializeComponent();
 
             editTextBox.Grammar = new T3000Grammar();
+            editTextBox.SetParser(new LanguageData(editTextBox.Grammar));
             //LRUIZ :: Enable a new set of grammar, language and parser, to get Program Code Errors
             _grammar = new T3000Grammar();
             _language = new LanguageData(_grammar);
             _parser = new Parser(_language);
             //LRUIZ
+
+            
 
             var items = new List<AutocompleteItem>();
             var keywords = new List<string>()
@@ -112,39 +115,134 @@
 
             this.WindowState = FormWindowState.Maximized;
 
-          
+            
             
         }
 
 
-        private string RemoveInitialNumbers(string text)
+
+        /// <summary>
+        /// Get next line number
+        /// </summary>
+        /// <returns>new line number (string)</returns>
+        string GetNextLineNumber()
         {
-            var lines = text.ToLines();
-            for (var i = 0; i < lines.Count; ++i)
+            
+            Lines = new List<LineInfo>();
+            var lines = editTextBox.Text.ToLines(StringSplitOptions.RemoveEmptyEntries);
+            //Preload ALL line numbers
+            for (var i = 0; i < lines.Count; i++)
             {
                 var words = lines[i].Split(' ');
-                if (words.Length < 2)
-                {
-                    continue;
-                }
 
-                words = words.Skip(1).ToArray();
-                lines[i] = string.Join(' '.ToString(), words);
+                var LINFO = new LineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
+                this.Lines.Add(LINFO);
             }
 
-            return string.Join(Environment.NewLine, lines);
+            return (Lines.LastOrDefault().Before  + 10).ToString();
+
         }
 
-        private string AddInitialNumbers(string text)
+
+        /// <summary>
+        /// Try to renumber all lines and their references.
+        /// Show errors as semantic ones.
+        /// </summary>
+        public void LinesValidator()
         {
-            var lines = text.ToLines();
-            for (var i = 0; i < lines.Count; ++i)
+            
+            if (_parseTree.ParserMessages.Any()) return;
+
+            int pos = 0;
+            int col = 0;
+            bool Cancel = false;
+            Lines = new List<LineInfo>();
+            Jumps = new List<JumpInfo>();
+                       
+
+            var lines = editTextBox.Text.ToLines( StringSplitOptions.RemoveEmptyEntries);
+
+            //Preload ALL line numbers
+            for (var i = 0; i < lines.Count; i++)
             {
-                lines[i] = $"{(i + 1) * 10} {lines[i]}";
+                var words = lines[i].Split(' ');
+                
+                var LINFO = new LineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
+                this.Lines.Add(LINFO);
             }
 
-            return string.Join(Environment.NewLine, lines);
+            for (var i = 0; i < lines.Count; i++)
+            {
+                var words = lines[i].Split(' ');
+                
+
+                for(var j=0; j< words.Count(); j++)
+                {
+                    JumpType type = JumpType.GOTO ;
+                    int linenumber = -1;
+                    int offset = 0;
+
+
+                    switch (words[j])
+                    {
+                        case "GOTO":
+                        case "GOSUB":
+                        case "ON-ERROR":
+                        case "ON-ALARM":
+                        case "THEN":
+
+                            switch (words[j][0])
+                            {
+                                case 'G':
+                                    type = words[j] == "GOTO" ? JumpType.GOTO : JumpType.GOSUB; break;
+                                case 'O':
+                                    type = words[j] == "ON-ERROR" ? JumpType.ONERROR : JumpType.ONALARM; break;
+                                case 'T':
+                                    type = JumpType.THEN;break;
+                            }
+                    
+
+                            offset = j + 1;
+                            int BeforeLineNumber = -1;
+                            if (!Int32.TryParse(words[offset],out BeforeLineNumber)) break;
+
+                            //var BeforeLineNumber = Convert.ToInt32(words[offset]);
+                            linenumber = Lines.FindIndex(k => k.Before == BeforeLineNumber );
+                            if(linenumber == -1)
+                            {
+                                //There is a semantic error here
+                                //Add error message to parser and cancel renumbering.
+                                //Don't break it inmediately, to show all possible errors of this type
+                                _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+                                    new SourceLocation(pos + words[j].Count() + 1, i , col + words[j].Count()+1), 
+                                    $"Semantic Error: Line number {BeforeLineNumber.ToString()} for {words[j]} does not exist", 
+                                    new ParserState("Validating Lines")));
+                                ShowCompilerErrors();
+                                Cancel = true;
+                            }
+                            JumpInfo JINFO = new JumpInfo(type, i, offset );
+                            Jumps.Add(JINFO);
+                            //Change reference to new linenumber
+                            words[offset] = linenumber == -1? BeforeLineNumber.ToString():Lines[linenumber].ToString();
+                            break;
+                            
+                    }//switch jumps
+                     pos += words[j].Count() + 1;
+                    col += words[j].Count() + 1;
+                }//for words
+                pos++;
+                col = 0;
+                //change current linenumber
+                words[0] = Lines[i].ToString();
+                lines[i] = string.Join(' '.ToString(), words);
+                
+
+            }//for lines
+            string newcode = string.Join(Environment.NewLine, lines);
+            if (Cancel) return;
+            editTextBox.Text = newcode;
         }
+
 
         /// <summary>
         /// Set code to EditBox, ProgramCode is automatically parsed. 
@@ -154,11 +252,13 @@
         {
             Code = code;
             //editTextBox.Text = RemoveInitialNumbers(code);
+            
             editTextBox.Text = Code;
-            //LRUIZ: Parse and show compile errors
+           
+            //LRUIZ: Parse and show syntax errors
 
             ParseCode();
-
+            
         }
 
         
@@ -210,6 +310,7 @@
             try
             {
                 _parser.Parse(editTextBox.Text, "<source>");
+                
             }
             catch (Exception ex)
             {
@@ -299,6 +400,7 @@
         private void editTextBox_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
             ParseCode();
+            
         }
 
         private void cmdRefresh_Click(object sender, EventArgs e)
@@ -311,29 +413,39 @@
         /// </summary>
         public void RefreshCode()
         {
+            
             editTextBox.Text = Code;
+          
         }
         private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
         {
+            
+            
+
             switch(e.KeyCode )
             {
                 case Keys.F2:
-                    SendCode();break;
+                    SendCode(); e.Handled = true; break;
                 case Keys.F4:
-                    ClearCode(); break;
+                    ClearCode(); e.Handled = true; break;
                 case Keys.F6:
-                    SaveFile();break;
+                    SaveFile(); e.Handled = true; break;
                 case Keys.F7:
-                    LoadFile(); break;
+                    LoadFile(); e.Handled = true; break;
                 case Keys.F8:
-                    RefreshCode();break;
-
+                    RefreshCode(); e.Handled = true; break;
+                case Keys.F10:
+                    LinesValidator(); e.Handled = true; break;
+                
             }//switch.
+           
         }
 
         private void cmdLoad_Click(object sender, EventArgs e)
         {
+            
             LoadFile();
+           
         }
 
         /// <summary>
@@ -357,7 +469,9 @@
             if (userClickedOK == DialogResult.OK )
             { 
                 string text = System.IO.File.ReadAllText(openFileDialog1.FileName);
+                
                 editTextBox.Text = text;
+               
             }
         }
 
@@ -371,10 +485,18 @@
 
         private void SendCode()
         {
+            ParseCode();
+            if (_parseTree.ParserMessages.Any())
+            {
+                MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.","Parsing");
+                return;
+            }
+
+            LinesValidator();
 
             if (_parseTree.ParserMessages.Any())
             {
-                MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.");
+                MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.","Validating Lines");
                 return;
             }
 
@@ -422,12 +544,24 @@
         private void EditSettings()
         {
             
+
+
             SettingsBag.SelectedObject = editTextBox ;
             SettingsBag.Top = editTextBox.Top;
             SettingsBag.Height = editTextBox.Height;
             SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
            
             SettingsBag.Visible = !SettingsBag.Visible ;
+
+
+            ////NOT WORKING: Serialize SettingsBag;
+            //IFormatter formatter = new BinaryFormatter();
+            //Stream stream = new FileStream("EditorSettings.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+            //formatter.Serialize(stream, editTextBox  );
+            //stream.Close();
+
+            
+
         }
 
         private void ProgramEditorForm_ResizeEnd(object sender, EventArgs e)
@@ -449,7 +583,45 @@
                 SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
             }
         }
+
+        private void cmdRenumber_Click(object sender, EventArgs e)
+        {
+            LinesValidator();
+        }
     }
+
+
+    /// <summary>
+    /// Basic structure for renumbering lines
+    /// </summary>
+    public class LineInfo
+    {
+        public int Before { get; set; }
+        public int After { get; set; }
+        public LineInfo(int b, int a) { Before = b; After = a; }
+        public override string ToString()
+        {
+            return After.ToString();
+        }
+    };
+
+    //Jump types
+    public enum JumpType { GOTO, GOSUB, ONALARM, ONERROR, THEN };
+
+    public class JumpInfo
+    {
+        public JumpType Type { get; set; } //Type of Jump
+        public int LineIndex { get; set; } //Index of Line in Lines
+        public int Offset { get; set; } //Code Offset
+
+        public JumpInfo(JumpType t, int l, int o)
+        {
+            Type = t;
+            LineIndex = l;
+            Offset = o;
+        }
+    };
+
 
 
 }

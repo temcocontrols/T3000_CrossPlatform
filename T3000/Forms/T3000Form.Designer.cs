@@ -296,9 +296,11 @@
             this.Controls.Add(this.buttonsToolStrip);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "T3000Form";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.T3000Form_KeyUp);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);

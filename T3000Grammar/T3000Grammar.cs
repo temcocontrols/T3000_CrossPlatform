@@ -32,6 +32,7 @@ namespace T3000
             Number.AddExponentSymbols("E", TypeCode.Double);
             Number.AddExponentSymbols("E-", TypeCode.Double);
             Number.Priority = 20;
+           
 
             //string MyNumberLiteral = "(\\-?\\d+)\\.?\\d+(E\\-|E\\+|E|\\d+)\\d+";
             //var Number = new RegexBasedTerminal("MyNumber", MyNumberLiteral);
@@ -40,6 +41,10 @@ namespace T3000
 
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
             IntegerNumber.Priority = 10;
+
+            var LineNumber = new NumberLiteral("LineNumber", NumberOptions.IntOnly);
+            LineNumber.Priority = 11;
+
             //var Space = new RegexBasedTerminal("Space", "\\s+");
 
             //var AlarmMessage = new RegexBasedTerminal("AlarmMessage", "(\\w| |\\.|-|,|;|:|!|\\?|¡|¿|\\|\\/){1,69}");
@@ -131,7 +136,7 @@ namespace T3000
 
 
             var DayNumber = new RegexBasedTerminal("DayNumber", UPTO31);
-
+            DayNumber.Priority  = 9;
 
             var TimeLiteral = new RegexBasedTerminal("TimeLiteral", "(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9]");
             TimeLiteral.Priority = 100;
@@ -234,7 +239,7 @@ namespace T3000
             var Subroutine = new NonTerminal("Subroutine");
             var SubroutineSentences = new NonTerminal("SubRoutineSentences");
 
-            var LineNumber = new NonTerminal("LineNumber");
+            //var LineNumber = new NonTerminal("LineNumber");
             var EmptyLine = new NonTerminal("EmptyLine");
 
             var Statement = new NonTerminal("Statement");
@@ -376,7 +381,9 @@ namespace T3000
             //DECLARE::= 'DECLARE' Identifier(',' Identifier) *
             DECLAREStatement.Rule = LineNumber + ToTerm("DECLARE") + IdentifierList + NewLine;
             SubroutineSentences.Rule = SentencesSequence;
+
             ENDStatement.Rule = LineNumber + ToTerm("END");
+
 
             
             IdentifierList.Rule = MakePlusRule(IdentifierList, Comma, Identifier);
@@ -498,7 +505,7 @@ namespace T3000
             BinaryOps.Rule = ArithmeticOps | ComparisonOps | LogicOps;
 
 
-            LineNumber.Rule = IntegerNumber;
+            //LineNumber.Rule = IntegerNumber;
             //PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
             PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR |CON;
             
@@ -581,7 +588,13 @@ namespace T3000
 
             //EXPR.Rule = number | variable | FUN_CALL | stringLiteral | BINARY_EXPR 
             //          | "(" + EXPR + ")" | UNARY_EXPR;
-            Expression.Rule = Function | Literal | Designator | UnaryExpression | BinaryExpression |  EnclosableExpression ;
+            Expression.Rule = 
+                Function 
+                | Literal 
+                | Designator 
+                | UnaryExpression 
+                | BinaryExpression 
+                | EnclosableExpression ;
                         
             //UnaryExpression ::=  UnaryOps Term
             UnaryExpression.Rule = UnaryOps  + Expression;
@@ -613,7 +626,7 @@ namespace T3000
             PARIZQ.IsPairFor = PARDER;
 
 
-            MarkTransient(LineNumber);
+            //MarkTransient(LineNumber);
             
            
 
