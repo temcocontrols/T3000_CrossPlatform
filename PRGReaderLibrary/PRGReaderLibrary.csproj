@@ -36,6 +36,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Types\Enums\CODEC_Enums.cs" />
     <Compile Include="Types\Enums\TcpType.cs" />
     <Compile Include="Types\Enums\Periodicity.cs" />
     <Compile Include="Types\Enums\DirectReverse.cs" />

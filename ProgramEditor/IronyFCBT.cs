@@ -58,10 +58,6 @@ namespace FastColoredTextBoxNS
             }
         }
 
-        public IronyFCTB()
-        {
-        }
-
         /// <summary>
         /// Sets Irony parser (based on Grammar)
         /// </summary>
