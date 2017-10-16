@@ -614,6 +614,8 @@ namespace T3000
 
 
             MarkTransient(LineNumber);
+            
+           
 
             //MarkTransient(CodeLine, ProgramLine, 
             //    Term, Expression,

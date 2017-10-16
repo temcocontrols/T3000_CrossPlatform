@@ -191,27 +191,23 @@
 
         #region User input handles
 
+        private int Index_EditProgramCode = 0;
+
         private void EditCodeColumn(object sender, EventArgs e)
         {
             try
             {
                 var row = view.CurrentRow;
-                var index = row.GetValue<int>(NumberColumn) - 1;
-                //var form = new ProgramEditorForm(Codes[index].ToString());
+                Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
+                
                 var form = new ProgramEditorForm();
-                form.SetCode(Codes[index].ToString());
-                //Override Send Event Handler
+                form.Caption = $"Edit Code: {Prg.Programs[Index_EditProgramCode].Description}";
+                form.SetCode(Codes[Index_EditProgramCode].ToString());
+                //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
-               
-                if (form.ShowDialog() != DialogResult.OK)
-                {
 
-                    return;
-                
-                }
+                if (form.ShowDialog() != DialogResult.OK) return;
 
-                
-                //Codes[index].Code = form.Code.ToBytes() ;
             }
             catch (Exception exception)
             {
@@ -219,12 +215,14 @@
             }
         }
 
-        private void Form_Send(object sender, EventArgs e)
+        private void Form_Send(object sender, SendEventArgs e)
         {
-            //throw new NotImplementedException();
-            string Code = sender.ToString();
-            MessageBox.Show(Code);
-            //TODO : Encode ProgramCode into bytes and replace section of PRG
+            //TODO: Use parse tree tokens to encode bytes and patch PRG File.
+            MessageBox.Show(e.Code, "Code");
+            //Utility properties to encode: e.Code, e.Tokens, e.Index, Index_EditProgramCode
+            MessageBox.Show(e.ToString(), "Tokens");
+
+
         }
 
 

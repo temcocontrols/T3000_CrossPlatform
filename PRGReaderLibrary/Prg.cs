@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Collections.Generic;
 
+
+
     public class Prg : Version
     {
         public string DateTime { get; set; }
@@ -40,10 +42,13 @@
 
         #endregion
 
-        #region Binary data
+      
 
 
-        public byte[] RawData { get; protected set; }
+    #region Binary data
+
+
+    public byte[] RawData { get; protected set; }
 
         private void FromDosFormat(byte[] bytes)
         {

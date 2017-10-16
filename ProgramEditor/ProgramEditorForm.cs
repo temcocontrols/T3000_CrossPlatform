@@ -17,7 +17,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void SendEventHandler(object sender, EventArgs e);
+    public delegate void SendEventHandler(object sender, SendEventArgs e);
 
     /// <summary>
     /// ProgramEditor Form
@@ -52,10 +52,11 @@
         /// <summary>
         /// Overridable OnSend Event Handler
         /// </summary>
-        public void OnSend(EventArgs e)
+        public void OnSend(SendEventArgs e)
         {
 
             Code = editTextBox.Text;
+
 
             if (Send != null)
             {
@@ -370,10 +371,16 @@
 
         private void SendCode()
         {
+
+            if (_parseTree.ParserMessages.Any())
+            {
+                MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.");
+                return;
+            }
+
             Code = editTextBox.Text;
-            OnSend(new EventArgs());
-
-
+            OnSend(new SendEventArgs(Code,_parseTree));
+            
         }
 
         private void cmdSave_Click(object sender, EventArgs e)
