@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,17 +10,30 @@ using Irony.Parsing;
 namespace T3000.Forms
 {
     /// <summary>
-    /// All info about one single token
+    /// TokeInfo stores information about a single token
     /// </summary>
     public class TokenInfo
     {
+        /// <summary>
+        /// Original text token from parsing
+        /// </summary>
         string Text { get; set; }
+        /// <summary>
+        /// Associated Terminal Name from Grammar
+        /// </summary>
         string TerminalName { get; set; }
+        /// <summary>
+        /// Token Type (1 Byte)
+        /// </summary>
         int Type { get; set; }
+        /// <summary>
+        /// Token value (1 Byte)
+        /// </summary>
         int Token { get; set; }
 
         /// <summary>
-        /// Create Basic TokenInfo
+        /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
+        /// Expected to be fulfilled with more token info
         /// </summary>
         /// <param name="Text">Plain Text tokenizable</param>
         /// <param name="TName">Terminal Name</param>
@@ -33,7 +46,7 @@ namespace T3000.Forms
         /// <summary>
         /// TokenInfo ToString Override
         /// </summary>
-        /// <returns>string</returns>
+        /// <returns>string formatted as {Text|TerminalName}</returns>
         public override string ToString()
         {
             string result = "{";

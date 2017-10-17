@@ -28,12 +28,12 @@
     </TransformComponentArguments>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
-    <NamespaceGrouping>False</NamespaceGrouping>
-    <SyntaxFilters>Standard</SyntaxFilters>
+    <NamespaceGrouping>True</NamespaceGrouping>
+    <SyntaxFilters>C#, Visual Basic, Managed C++</SyntaxFilters>
     <SdkLinkTarget>Self</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
-    <Preliminary>False</Preliminary>
+    <Preliminary>True</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>T3000 CrossPlatform Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
@@ -43,6 +43,14 @@
       <DocumentationSource sourceFile="..\ProgramEditor\bin\Debug\ProgramEditor.dll" xmlns="" />
       <DocumentationSource sourceFile="..\ProgramEditor\bin\Debug\ProgramEditor.xml" xmlns="" />
     </DocumentationSources>
+    <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CleanIntermediates>True</CleanIntermediates>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
