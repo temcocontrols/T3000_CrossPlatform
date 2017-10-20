@@ -285,7 +285,7 @@
 
                 var form = new ProgramsForm(ref _prg, PrgPath);
 
-
+                form.MdiParent = this;
                 form.Show();
 
             }

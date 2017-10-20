@@ -73,6 +73,7 @@
             this.controlMenuItem,
             this.languageMenuItem});
             resources.ApplyResources(this.menuStrip, "menuStrip");
+            this.menuStrip.MdiWindowListItem = this.fileToolStripMenuItem;
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -296,6 +297,7 @@
             this.Controls.Add(this.buttonsToolStrip);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
+            this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "T3000Form";

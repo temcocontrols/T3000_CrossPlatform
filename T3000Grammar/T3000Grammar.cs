@@ -1,4 +1,4 @@
-namespace T3000
+﻿namespace T3000
 {
     using System;
     using System.Collections.ObjectModel;
@@ -32,12 +32,12 @@ namespace T3000
             Number.AddExponentSymbols("E", TypeCode.Double);
             Number.AddExponentSymbols("E-", TypeCode.Double);
             Number.Priority = 20;
-           
+
 
             //string MyNumberLiteral = "(\\-?\\d+)\\.?\\d+(E\\-|E\\+|E|\\d+)\\d+";
             //var Number = new RegexBasedTerminal("MyNumber", MyNumberLiteral);
             //Number.Priority = 20;
-                        
+
 
             var IntegerNumber = new NumberLiteral("IntegerNumber", NumberOptions.IntOnly);
             IntegerNumber.Priority = 10;
@@ -54,13 +54,13 @@ namespace T3000
                 FreeTextOptions.AllowEof, Environment.NewLine);
             StringMessage.Priority = 5;
 
-            var EnclosedString = new StringLiteral ("EnclosedString","\"", StringOptions.NoEscapes  );       
+            var EnclosedString = new StringLiteral("EnclosedString", "\"", StringOptions.NoEscapes);
             EnclosedString.Priority = 5;
 
             string IDTYPE1 = "[A-Z0-9]+?[\\.\\-_A-Z0-9]*(([A-Z]+[\\.]?[0-9]*)+?)";
             var Identifier = new RegexBasedTerminal("Identifier", IDTYPE1);
             Identifier.Priority = 30;
-            
+
 
             //123.25BAC_NET 1245.4A
             //12.3.FLOOR
@@ -99,44 +99,44 @@ namespace T3000
             //Control Points
             var VARS = new RegexBasedTerminal("VARS", "VAR(" + UPTO128 + ")");
             VARS.Priority = 40;
-            var OUTS = new RegexBasedTerminal("OUTS", "OUT("+ UPTO128 +")");
+            var OUTS = new RegexBasedTerminal("OUTS", "OUT(" + UPTO128 + ")");
             OUTS.Priority = 40;
             //TODO: Set appropiate priority and suffix based on Regular Expression all ControlPoints
-            var INS = new RegexBasedTerminal("INS", "IN("+UPTO128+")");
+            var INS = new RegexBasedTerminal("INS", "IN(" + UPTO128 + ")");
             INS.Priority = 40;
             var PRG = new RegexBasedTerminal("PRG", "PRG(" + UPTO128 + ")");
             PRG.Priority = 40;
-            var DMON = new RegexBasedTerminal("DMON", "DMON("+ UPTO128 + ")");
+            var DMON = new RegexBasedTerminal("DMON", "DMON(" + UPTO128 + ")");
             DMON.Priority = 40;
-            var AMON = new RegexBasedTerminal("AMON", "AMON(" +UPTO96 + ")");
+            var AMON = new RegexBasedTerminal("AMON", "AMON(" + UPTO96 + ")");
             AMON.Priority = 40;
             //ARRAYS ELEMENTS
-            var ARR = new RegexBasedTerminal("ARR", "AY("+ UPTO48 + ")\\[\\d+\\]" );
+            var ARR = new RegexBasedTerminal("ARR", "AY(" + UPTO48 + ")\\[\\d+\\]");
             ARR.Priority = 40;
 
             //Controllers, now known as PIDS
             var PIDS = new RegexBasedTerminal("PIDS", "PID(" + UPTO64 + ")");
             PIDS.Priority = 40;
             //Controllers, for backwards compatibility
-            var CON = new RegexBasedTerminal("CON", "CON(" + UPTO64 +")");
+            var CON = new RegexBasedTerminal("CON", "CON(" + UPTO64 + ")");
             CON.Priority = 40;
-            
+
             //Weekly Routines, now known as Schedules
-            var WRS = new RegexBasedTerminal("WRS", "SCH(" + UPTO64 +")");
+            var WRS = new RegexBasedTerminal("WRS", "SCH(" + UPTO64 + ")");
             WRS.Priority = 40;
             //Anual routines, now known as Holidays
             var ARS = new RegexBasedTerminal("ARS", "HOL(" + UPTO64 + ")");
             ARS.Priority = 40;
 
-            var GRP = new RegexBasedTerminal("GRP", "GRP(" + UPTO32 +")");
+            var GRP = new RegexBasedTerminal("GRP", "GRP(" + UPTO32 + ")");
             GRP.Priority = 40;
 
-            
+
             //Other sub-literals
 
 
             var DayNumber = new RegexBasedTerminal("DayNumber", UPTO31);
-            DayNumber.Priority  = 9;
+            DayNumber.Priority = 9;
 
             var TimeLiteral = new RegexBasedTerminal("TimeLiteral", "(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9]");
             TimeLiteral.Priority = 100;
@@ -224,7 +224,7 @@ namespace T3000
             var BEEP = ToTerm("BEEP");
             var SCANS = ToTerm("SCANS");
 
-            
+
 
             // 2. Non-terminals
 
@@ -257,7 +257,7 @@ namespace T3000
             var ALARMAT = new NonTerminal("ALARMAT");
             var CALL = new NonTerminal("CALL");
             var CALLARGS = new NonTerminal("CALLARGS");
-            var CALLARGSLIST = new NonTerminal ("CALLARGLIST");
+            var CALLARGSLIST = new NonTerminal("CALLARGLIST");
             var ARG = new NonTerminal("ARG");
             var CLEAR = new NonTerminal("CLEAR");
             var DALARM = new NonTerminal("DALARM");
@@ -292,7 +292,7 @@ namespace T3000
             var MAX = new NonTerminal("MAX");
             var MIN = new NonTerminal("MIN");
             //SQR | STATUS | TBL
-           
+
             var SQR = new NonTerminal("SQR");
             var STATUS = new NonTerminal("STATUS");
             var TBL = new NonTerminal("TBL");
@@ -307,7 +307,7 @@ namespace T3000
             var PORT = new NonTerminal("PORT");
             var CHARS = new NonTerminal("CHARS");
             var ComParameters = new NonTerminal("ComParameters");
-            
+
             //Create Assignment statement
             var Assignment = new NonTerminal("Assignment");
 
@@ -343,21 +343,21 @@ namespace T3000
             var Designator = new NonTerminal("Designator");
             var RemoteDesignator = new NonTerminal("RemoteDesignator");
             var PointIdentifier = new NonTerminal("PointIdentifier");
-            
+
             var Literal = new NonTerminal("Literal");
             var DatesLiteral = new NonTerminal("DatesLiteral");
             var MonthLiteral = new NonTerminal("MonthLiteral");
             var DayLiteral = new NonTerminal("DayLiteral");
             //var TimeLiteral = new NonTerminal("TimeLiteral");
-           
+
             //Terms to Expressions 
-          
+
             var UnaryExpression = new NonTerminal("UnaryExpression");
             var BinaryExpression = new NonTerminal("BinaryExpression");
             var EnclosableExpression = new NonTerminal("EnclosableExpression");
             var Expression = new NonTerminal("Expression");
-            
-            
+
+
 
             // LISTAS 
             var IdentifierList = new NonTerminal("IdentifierList");
@@ -385,7 +385,7 @@ namespace T3000
             ENDStatement.Rule = LineNumber + ToTerm("END");
 
 
-            
+
             IdentifierList.Rule = MakePlusRule(IdentifierList, Comma, Identifier);
             //SentencesSequence ::= ProgramLine+
             SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
@@ -393,7 +393,8 @@ namespace T3000
             //ProgramLine.Rule = EmptyLine | (LineNumber + Sentence + ReduceHere() + EndProgLine);
             ProgramLine.Rule = LineNumber + Sentence + EndProgLine;
 
-            EndProgLine.Rule = Comment.Q() + NewLine;
+            //EndProgLine.Rule = Comment.Q() + NewLine;
+            EndProgLine.Rule = PreferShiftHere() + Comment.Q() + NewLine;
 
             //EmptyLine ::= LineNumber? EndLine
             //EmptyLine.Rule = LineNumber.Q() + NewLine;
@@ -401,7 +402,7 @@ namespace T3000
 
             //Sentence ::= (Comment | (Commands| Assignment | Branch | Loop) Comment?)
             //Sentence.Rule = Comment | ((ToTerm("END") + ReduceHere() | Commands | Assignment | Branch | FOR | ENDFOR) + Comment.Q()  );
-            Sentence.Rule = ToTerm("END") | Commands  | Assignment | Branch | FOR | ENDFOR | Comment;
+            Sentence.Rule = ToTerm("END") | Commands | Assignment | Branch | FOR | ENDFOR | Comment;
 
 
             //Commands::= Command (';' Command) *
@@ -410,15 +411,15 @@ namespace T3000
             //Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | 
             //END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET 
             //| REMOTESET | RETURN | RUNMACRO | SETPRINTER | START | STOP | WAIT
-            Command.Rule = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE| ENABLE | HANGUP 
-            | PHONE | PRINT| PRINTAT| REMOTEGET| REMOTESET| RETURN | RUNMACRO | SETPRINTER 
+            Command.Rule = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | HANGUP
+            | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER
             | START | STOP | WAIT;
 
             NextCommand.Rule = MakeStarRule(NextCommand, CommandSeparator + Command);
 
             //ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
-            ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + StringMessage ;
-            
+            ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + StringMessage;
+
             //ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
             ALARMAT.Rule = "ALARM-AT" + (IntegerNumber | "ALL");
             //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
@@ -436,13 +437,13 @@ namespace T3000
             HANGUP.Rule = ToTerm("HANGUP");
             PHONE.Rule = "PHONE" + PhoneNumber;
             PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
-            PrintableKeywords.Rule = DATE | TIME | USERA | USERB | BEEP | PointIdentifier | EnclosedString ;
-            PrintableListOpt.Rule  = MakeStarRule(PrintableListOpt, CommandSeparator + PrintableKeywords);
+            PrintableKeywords.Rule = DATE | TIME | USERA | USERB | BEEP | PointIdentifier | EnclosedString;
+            PrintableListOpt.Rule = MakeStarRule(PrintableListOpt, CommandSeparator + PrintableKeywords);
             PRINTAT.Rule = "PRINT-AT" + (PANELS | "ALL");
             PANELS.Rule = MakePlusRule(PANELS, Comma.Q() + IntegerNumber);
             //REMOTEGET ::= 'REMOTE-GET' Designator AssignOp RemoteDesignator
             //REMOTESET::= 'REMOTE-SET' RemoteDesignator AssignOp Designator
-            REMOTEGET.Rule = "REMOTE-GET" + Designator  + AssignOp + RemoteDesignator;
+            REMOTEGET.Rule = "REMOTE-GET" + Designator + AssignOp + RemoteDesignator;
             REMOTESET.Rule = "REMOTE-SET" + RemoteDesignator + AssignOp + Designator;
             RETURN.Rule = ToTerm("RETURN");
             //RUNMACRO::= 'RUN-SYSTEM' SYSPRG
@@ -452,7 +453,7 @@ namespace T3000
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
-            WAIT.Rule = "WAIT" + Expression ;
+            WAIT.Rule = "WAIT" + Expression;
 
 
             //Assignment ::= Designator AssignOp Expression 
@@ -466,17 +467,19 @@ namespace T3000
             // IFFALSE::= 'IF-' Expression 'THEN' IFCLAUSE('ELSE' IFCLAUSE) ?
             //IFCLAUSE::= (Sentence | LineNumber)
 
-            Branch.Rule = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON | ONALARM | ONERROR ;
-            IF.Rule = "IF" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q() ;
+            Branch.Rule = IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON | ONALARM | ONERROR;
+            IF.Rule = "IF" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
 
             IFTRUE.Rule = "IF+" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
             IFFALSE.Rule = "IF-" + Expression + "THEN" + IFCLAUSE + ELSEOPT.Q();
             //Added Function for testing purposes: Error found on a sample code PRG1 of BTUMETERrev22.prg
             IFCLAUSE.Rule = Commands | Function | Assignment | GOSELECTOR | LineNumber;
-            ELSEOPT.Rule = "ELSE" + IFCLAUSE;
-            
+
+            //ELSEOPT.Rule = "ELSE" + IFCLAUSE;
+            ELSEOPT.Rule = PreferShiftHere() + "ELSE" + IFCLAUSE;
+
             //ON ::= 'ON' IntegerTerm (GOTO | GOSUB) (',' LineNumber)*
-            ON.Rule = ToTerm("ON") +  Expression + GOSELECTOR + LineNumberListOpt ;
+            ON.Rule = ToTerm("ON") + Expression + GOSELECTOR + LineNumberListOpt;
             GOSELECTOR.Rule = GOTO | GOSUB;
             LineNumberListOpt.Rule = MakeStarRule(LineNumberListOpt, Comma + LineNumber);
             //GOSUB::= 'GOSUB' LineNumber
@@ -507,8 +510,8 @@ namespace T3000
 
             //LineNumber.Rule = IntegerNumber;
             //PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
-            PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR |CON;
-            
+            PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR | CON;
+
             //Designator ::= Identifier | PointIdentifier | LocalVariable
             Designator.Rule = PointIdentifier | Identifier | LocalVariable;
             RemoteDesignator.Rule = Designator;
@@ -528,8 +531,8 @@ namespace T3000
             //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY |
             //INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL |
             //TIME | TIMEOFF | TIMEON | WRON | WROFF | UNACK | USERA | USERB
-            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET | COM1 | DOY | DOM | 
-                DOW | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS 
+            Function.Rule = ABS | AVG | CONPROP | CONRATE | CONRESET | COM1 | DOY | DOM |
+                DOW | INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS
                 | TBL | TIME | TIMEON | TIMEOFF | WRON | WROFF | UNACK | USERA | USERB;
 
             ABS.Rule = "ABS" + PARIZQ + Expression + PARDER;
@@ -538,7 +541,7 @@ namespace T3000
             //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
             //TODO: Verify MAX value for integer values of CONPROP
             CONPROP.Rule = "CONPROP" + PARIZQ + CON + Comma + Expression + PARDER;
-            
+
             //CONRATE  ::= 'CONRATE' PARIZQ Ordinal ',' Expression PARDER RANGE
             CONRATE.Rule = "CONRATE" + PARIZQ + CON + Comma + Expression + PARDER;
 
@@ -549,11 +552,11 @@ namespace T3000
             //INTERVAL::= 'INTERVAL' PARIZQ Expression PARDER
             INTERVAL.Rule = "INTERVAL" + PARIZQ + Expression + PARDER;
             //LN::= 'LN' PARIZQ Expression PARDER
-            LN.Rule = "LN" + PARIZQ +  Expression  + PARDER;
+            LN.Rule = "LN" + PARIZQ + Expression + PARDER;
             //LN1 ::= 'LN-1' PARIZQ Expression PARDER
             LN1.Rule = "LN-1" + PARIZQ + Expression + PARDER;
             //MAX ::= 'MAX' PARIZQ Expression (Space ',' Space Expression)*PARDER
-            MAX.Rule = "MAX" + PARIZQ   + Expression + ExpressionListOpt + PARDER;
+            MAX.Rule = "MAX" + PARIZQ + Expression + ExpressionListOpt + PARDER;
             //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
             MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
             //SQR ::= 'SQR' PARIZQ Expression PARDER
@@ -567,7 +570,7 @@ namespace T3000
             //TIMEOFF::= 'TIME-OFF' PARIZQ Designator PARDER
             TIMEOFF.Rule = "TIME-OFF" + PARIZQ + Designator + PARDER;
             //WRON ::= 'WR-ON' PARIZQ SYSPRG ',' TIMER PARDER
-            WRON.Rule = "WR-ON" + PARIZQ + SYSPRG  + Comma + TIMER + PARDER;
+            WRON.Rule = "WR-ON" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
             //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
             WROFF.Rule = "WR-OFF" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
 
@@ -584,30 +587,33 @@ namespace T3000
             ComParameters.Rule = CHARS | EnclosedString;
             CHARS.Rule = MakePlusRule(CHARS, Comma + PrintableAscii);
 
-             
+
 
             //EXPR.Rule = number | variable | FUN_CALL | stringLiteral | BINARY_EXPR 
             //          | "(" + EXPR + ")" | UNARY_EXPR;
-            Expression.Rule = 
-                Function 
-                | Literal 
-                | Designator 
-                | UnaryExpression 
-                | BinaryExpression 
-                | EnclosableExpression ;
-                        
+            Expression.Rule =
+                Function
+                | Literal
+                | Designator
+                | UnaryExpression
+                | BinaryExpression
+                | EnclosableExpression;
+
             //UnaryExpression ::=  UnaryOps Term
-            UnaryExpression.Rule = UnaryOps  + Expression;
+            UnaryExpression.Rule = UnaryOps + Expression;
             //BinaryExpression::= Expression BinaryOps Expression
             BinaryExpression.Rule = Expression + BinaryOps + Expression;
-            
+
             //EnclosableExpression ::= ParIzq SimpleExpression ParDer
             EnclosableExpression.Rule = PARIZQ + Expression + PARDER;
 
             ExpressionListOpt.Rule = MakeStarRule(ExpressionListOpt, Comma + Expression);
 
-                                   
+
             RegisterBracePair(PARIZQ.ToString(), PARDER.ToString());
+            RegisterBracePair("(", ")");
+            RegisterBracePair("[", "]");
+            RegisterBracePair("DECLARE", "END");
             
             // 4. Operators precedence
             RegisterOperators(100, Associativity.Right, EXP);

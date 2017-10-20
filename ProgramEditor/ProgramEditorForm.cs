@@ -4,6 +4,7 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Windows.Forms;
     using Irony;
     using Irony.Parsing;
@@ -41,6 +42,7 @@
         //Container of all line numbers
         List<LineInfo> Lines;
         List<JumpInfo> Jumps;
+        long LastParseTime;
 
         /// <summary>
         /// Event Send
@@ -309,8 +311,13 @@
             _parser.Context.TracingEnabled = true;
             try
             {
-                _parser.Parse(editTextBox.Text, "<source>");
-                
+                Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
+                _parser.Parse(editTextBox.Text, "<source>");                                            //your sample code
+                System.Threading.Thread.Sleep(500);
+                stopwatch.Stop();
+                LastParseTime = stopwatch.ElapsedMilliseconds -500;
+                lblParseTime.Text = $"Parse Time: {LastParseTime}ms";
+
             }
             catch (Exception ex)
             {
@@ -324,8 +331,7 @@
                 ShowCompilerErrors();
 
                 //TODO: Show Compile Stats
-
-                //    ShowCompileStats();
+                ShowCompileStats();
                
             }
         }
@@ -336,15 +342,24 @@
 
             //TODO: Add this stats labels to bottom of this form.
 
-            //lblSrcLineCount.Text = string.Empty;
-            //lblSrcTokenCount.Text = "";
-            //lblParseTime.Text = "";
-            //lblParseErrorCount.Text = "";
+            lblSrcLineCount.Text = string.Empty;
+            lblSrcTokenCount.Text = "";
+            lblParseTime.Text = "";
+            lblParseErrorCount.Text = "";
 
             //lstTokens.Items.Clear();
             gridCompileErrors.Rows.Clear();
            
             Application.DoEvents();
+        }
+
+        private void ShowCompileStats()
+        {
+            lblSrcLineCount.Text = $"Lines: {editTextBox.Lines.Count()} ";
+            lblSrcTokenCount.Text = $"Tokens: {_parseTree.Tokens.Count()}";
+            lblParseTime.Text = $"Parse Time: {LastParseTime}ms";
+            lblParseErrorCount.Text = _parseTree.HasErrors() ? $"Errors: {_parseTree.ParserMessages.Count() }" : "No Errors";
+
         }
 
         /// <summary>
@@ -588,6 +603,8 @@
         {
             LinesValidator();
         }
+
+
     }
 
 

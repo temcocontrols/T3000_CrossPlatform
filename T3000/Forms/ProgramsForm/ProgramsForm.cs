@@ -205,8 +205,9 @@
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
                 //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
-
-                if (form.ShowDialog() != DialogResult.OK) return;
+                form.MdiParent = this.MdiParent ;
+                form.Show();
+                //if (form.ShowDialog() != DialogResult.OK) return;
 
             }
             catch (Exception exception)
