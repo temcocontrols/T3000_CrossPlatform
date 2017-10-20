@@ -592,28 +592,65 @@
 
 
     /// <summary>
-    /// Basic structure for renumbering lines
+    /// Stores values Before and After Renumbering.
     /// </summary>
     public class LineInfo
     {
-        public int Before { get; set; }
+        /// <summary>
+        /// Line number before renumbering
+        /// </summary>
+        public int Before { get; set; } 
+        /// <summary>
+        /// Line number after renumbering
+        /// </summary>
         public int After { get; set; }
+        /// <summary>
+        /// Default constructor of class LineInfo
+        /// </summary>
+        /// <param name="b">Before value</param>
+        /// <param name="a">After value</param>
         public LineInfo(int b, int a) { Before = b; After = a; }
+        /// <summary>
+        /// LineInfo ToString() override
+        /// </summary>
+        /// <returns>Line number After renumbering as a string
+        /// Ready to use in line number replacements</returns>
         public override string ToString()
         {
             return After.ToString();
         }
     };
 
-    //Jump types
+    /// <summary>
+    /// Enumerates type of jumping instructions:
+    /// GOTO, GOSUB, ONALARM, ONERROR, THEN
+    /// </summary>
     public enum JumpType { GOTO, GOSUB, ONALARM, ONERROR, THEN };
 
+    /// <summary>
+    /// Stores Jump intructions information.
+    /// Helper in renumbering.
+    /// </summary>
     public class JumpInfo
-    {
+    {   /// <summary>
+        /// Type of  Jump Instruction: GOTO, GOSUB, ONALARM, ONERROR, THEN
+        /// </summary>
         public JumpType Type { get; set; } //Type of Jump
+        /// <summary>
+        /// Zero based index of line in list
+        /// </summary>
         public int LineIndex { get; set; } //Index of Line in Lines
+        /// <summary>
+        /// Offset in words count from the start of every line.
+        /// </summary>
         public int Offset { get; set; } //Code Offset
 
+        /// <summary>
+        /// Default constructor for a Jump Info.
+        /// </summary>
+        /// <param name="t">Type of Jump</param>
+        /// <param name="l">Line index</param>
+        /// <param name="o">Offset - Words for start of line</param>
         public JumpInfo(JumpType t, int l, int o)
         {
             Type = t;

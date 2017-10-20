@@ -130,7 +130,7 @@ namespace T3000.Forms
         /// <summary>
         /// Send EventArgs ToString() override
         /// </summary>
-        /// <returns>string</returns>
+        /// <returns>string concatenation of all tokens</returns>
         public override string ToString()
         {
             string result = "";

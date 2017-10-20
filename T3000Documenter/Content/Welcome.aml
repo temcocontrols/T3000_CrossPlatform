@@ -7,44 +7,52 @@ content to your help project.</para>
 		</introduction>
 
 		<section>
-			<title>Getting Started</title>
+			<title>HOW TO</title>
 			<content>
-				<para>To get started, add a documentation source to the project (a Visual Studio solution, project, or
-assembly and XML comments file).  See the <legacyBold>Getting Started</legacyBold> topics in the Sandcastle Help
-File Builder's help file for more information.  The following default items are included in this project:</para>
+        <para>
+          The following sample (C#), demonstrate how we call editor, pass decoded program to it, and define a overload for Send event
+          handler.
+        </para>
+        <code>
+          private int Index_EditProgramCode = 0;
 
-				<list class="bullet">
-					<listItem>
-						<para><localUri>ContentLayout.content</localUri> - Use the content layout file to manage the
-conceptual content in the project and define its layout in the table of contents.</para>
-					</listItem>
+          private void EditCodeColumn(object sender, EventArgs e)
+          {
+          try
+          {
+          var row = view.CurrentRow;
+          Index_EditProgramCode = row.GetValue(NumberColumn) - 1;
+                
+                var form = new ProgramEditorForm();
+                form.Caption = $"Edit Code: {Prg.Programs[Index_EditProgramCode].Description}";
+                form.SetCode(Codes[Index_EditProgramCode].ToString());
+                //Override Send Event Handler and encode program into bytes.
+                form.Send += Form_Send;
 
-					<listItem>
-						<para>The <localUri>.\media</localUri> folder - Place images in this folder that you will reference
-from conceptual content using <codeInline>medialLink</codeInline> or <codeInline>mediaLinkInline</codeInline>
-elements.  If you will not have any images in the file, you may remove this folder.</para>
-					</listItem>
+                if (form.ShowDialog() != DialogResult.OK) return;
 
-					<listItem>
-						<para>The <localUri>.\icons</localUri> folder - This contains a default logo for the help file.  You
-may replace it or remove it and the folder if not wanted.  If removed or if you change the file name, update
-the <ui>Transform Args</ui> project properties page by removing or changing the filename in the
-<codeInline>logoFile</codeInline> transform argument.  Note that unlike images referenced from conceptual topics,
-the logo file should have its <legacyBold>BuildAction</legacyBold> property set to <codeInline>Content</codeInline>.</para>
-					</listItem>
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
 
-					<listItem>
-						<para>The <localUri>.\Content</localUri> folder - Use this to store your conceptual topics.  You may
-name the files and organize them however you like.  One suggestion is to lay the files out on disk as you have
-them in the content layout file as shown in this project but the choice is yours.  Files can be added via the
-Solution Explorer or from within the content layout file editor.  Files must appear in the content layout file
-in order to be compiled into the help file.</para>
-					</listItem>
-				</list>
+        private void Form_Send(object sender, SendEventArgs e)
+        {
+            //TODO: Use parse tree tokens to encode bytes and patch PRG File.
+            MessageBox.Show(e.Code, "Code");
+            //Utility properties to encode: e.Code, e.Tokens, e.Index, Index_EditProgramCode
+            MessageBox.Show(e.ToString(), "Tokens");
 
-				<para>See the <legacyBold>Conceptual Content</legacyBold> topics in the Sandcastle Help File Builder's
-help file for more information.  See the <legacyBold> Sandcastle MAML Guide</legacyBold> for details on Microsoft
-Assistance Markup Language (MAML) which is used to create these topics.</para>
+
+        }
+        
+        </code>
+				<para>Form_Send, takes a SendEventArgs object containing Code as plain text, and a list of tokens from 
+        parser tree. This list of previosly analized tokens or the text (code), must be used as starting point to a new Encoder method.</para>
+
+			
 			</content>
 		</section>
 
