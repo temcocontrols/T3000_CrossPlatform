@@ -110,7 +110,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         _DATE = 0x0A0, PTIME = 0x0A1, SENSOR_ON = 0x0A4, SENSOR_OFF = 0x0A5, TO = 0x0A6, STEP = 0x0A7, THEN = 0x0A8,
         LET = 0x0A9, ALARM_AT_ALL = 0x0AA, FINISHED = 0x0AB, PRINT_ALARM_AT = 0x0AC, PRINT_ALARM_AT_ALL = 0x0AD,
         ARG = 0x0AE, DO = 0x0AF, WHILE = 0x0B0, SWITCH = 0x0B1, EOL = 0x0B2, STRING = 0x0B3,
-        RAWLINE = 0x0FD
+        RAWLINE = 0x0FD, EOF
     };
 
     /// <summary>

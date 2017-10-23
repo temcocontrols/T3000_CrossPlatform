@@ -5,7 +5,7 @@
 
     public class BaseCode : Version
     {
-        public int Count { get; }
+        public int Count { get; set; }
         public byte[] Code { get; set; }
 
         public BaseCode(int count, FileVersion version = FileVersion.Current)

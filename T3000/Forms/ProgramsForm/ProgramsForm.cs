@@ -6,6 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Text;
     using System.Windows.Forms;
 
     public partial class ProgramsForm : Form
@@ -230,9 +231,14 @@
 
             //Inician las pruebas de codificación
             byte[] ByteEncoded = EncodeBytes(e.Tokens);
-            MessageBox.Show(ByteEncoded.ToString(), "Tokens");
-
-
+            MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
+            Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
+            //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
+            Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
+            Prg.Programs[Index_EditProgramCode].Length = BitConverter.ToInt16(ByteEncoded, 0);
+            //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
+            Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}2.PRG");
+           
 
         }
 
@@ -242,7 +248,8 @@
             byte[] prgsize = { (byte) 0x00, (byte) 0x00 };
             result.AddRange(prgsize);
             
-            int offset = 2;
+            int offset = 0;
+            int tokenIndex = 0;
             bool isFirstToken = true;
 
             foreach (var token in Tokens)
@@ -250,24 +257,56 @@
                 switch(token.TerminalName)
                 {
                     case "REM":
-                        
+                        result.Add((byte)LINE_TOKEN.REM);
+                        offset++;
+                        break;
+                    case "Comment":
+                        token.Text = token.Text.Trim(' ');
+                        var sizeNext = token.Text.Length;
+                        result.Add((byte)sizeNext);
+                        offset++;
+                        result.AddRange(token.Text.ToBytes());
+                        offset += sizeNext;
+                        break;
+
                     case "LineNumber":
                         if (isFirstToken)
                         {
-                            result.Add((byte) TYPE_TOKEN.NUMBER); //TYPE OF NEXT TOKEN: NUMBER
-                            result.Add((byte)token.Token);
-
-
+                            result.Add((byte) TYPE_TOKEN.NUMBER); //TYPE OF NEXT TOKEN: NUMBER 1 Byte
+                            short LineNumber = Convert.ToInt16(token.Text);
+                                result.AddRange(LineNumber.ToBytes()); //LINE NUMBER, 2 Bytes
+                            offset += 3;
                         }
+                        //else is a linenumber for a jump
 
+                        break;
+                    case "EOF":
+                        if ((tokenIndex + 1) == Tokens.Count)
+                        {
+                            //EOF: Last LF, should be replaced with xFE
+                            result.Add((byte) LINE_TOKEN.EOF);
+                            //No increment to offset, as EOF doesn't count on 
+                        }
+                      
+                        //EOL: LF, Just Ignored. Next Token should be another LineNumber
                         break;
                     
                 }
                 isFirstToken = token.TerminalName  == "LF" ? true : false;
+                tokenIndex++;
+                
             }
+            
+            byte[] size = offset.ToBytes();
+            result[0] = size[0];
+            result[1] = size[1];
 
-
-            return result;
+            //fill with nulls til the end of block
+            while(result.Count < 2000)
+            {
+                result.Add((byte)0x00);
+            }
+            return result.ToArray();
         }
 
 

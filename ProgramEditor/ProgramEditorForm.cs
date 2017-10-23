@@ -649,6 +649,7 @@
             string[] excludeTokens = { "CONTROL_BASIC", "LF" };
             bool isFirstToken = true;
             var Cancel = false;
+            
 
             Tokens = new List<TokenInfo>();
 
@@ -714,12 +715,13 @@
                             Tokens.Add(NewIdentifier);
                         }
                         break;
-
+                    
                     default:
                         Tokens.Add(new TokenInfo(tokentext, terminalname));
                         break;
                 }
                 isFirstToken = terminalname == "LF" ? true : false;
+               
             }
 
 
