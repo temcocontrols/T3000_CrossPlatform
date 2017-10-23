@@ -12,10 +12,13 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
     /// </summary>
     public enum PCODE_CONST
     {
+        UNDEFINED_SYMBOL = 0,
+
         NAME = 100,
         MAX_OP = 10,
         MAX_VAR_LINE = 20,
 
+        //VALUE TYPES
         LOCAL_VARIABLE = 0x82,
         FLOAT_TYPE = 0x83,
         LONG_TYPE = 0x84,
@@ -30,6 +33,8 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
 
         LENGTHSTRING = 128,
 
+
+        //VAR TYPES BY NAME
         LOCAL_VAR = 1,
         POINT_VAR = 2,
         POINT_REMOTE_VAR = 3,
@@ -38,7 +43,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         ATTRIB = 5,
         MAX_ATTRIB = 10,
         MAX_LINE = 512,
-        MAX_Var = 500,
+        MAX_VARS = 500,
 
         MAX_ANNUAL_ARRAY = 50,
 
@@ -47,6 +52,9 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         REMOTE_POINT_PRG = 0x09E,
 
         INDEX_OUT_OF_RANGE = 2
+
+
+        
     }
 
     /// <summary>

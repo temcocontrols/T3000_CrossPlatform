@@ -1,13 +1,16 @@
 ﻿namespace T3000.Forms
 {
     using FastColoredTextBoxNS;
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Windows.Forms;
     using Irony;
     using Irony.Parsing;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Windows.Forms;
+    using PRGReaderLibrary;
+    using PRGReaderLibrary.Types.Enums.Codecs;
+
 
 
     /// <summary>
@@ -22,7 +25,29 @@
     /// </summary>
     public partial class ProgramEditorForm : Form
     {
+
+        private Prg _prg;
+        /// <summary>
+        /// Local copy of current PRG
+        /// </summary>
+        public Prg Prg
+        {
+            get { return _prg; }
+
+            set { _prg = value; }
+        }
+
+        /// <summary>
+        /// Local copy of PrgPath
+        /// </summary>
+        public string PrgPath { get; set; }
+
         private string Code { get; set; }
+
+
+        List<TokenInfo> Tokens = new List<TokenInfo>();
+
+        int ParsingTimes = 0;
 
         /// <summary>
         /// Form caption
@@ -32,6 +57,8 @@
             get { return this.Text; }
             set { this.Text = value; }
         }
+
+        
 
         Grammar _grammar;
         LanguageData _language;
@@ -120,7 +147,6 @@
             
             
         }
-
 
 
         /// <summary>
@@ -312,10 +338,35 @@
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
-                _parser.Parse(editTextBox.Text, "<source>");                                            //your sample code
+
+                _parser.Parse(editTextBox.Text, "<source>");
+
+
+                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
+                {
+                    MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.", "Parsing");
+                    return;
+                }
+
+                LinesValidator();
+
+                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
+                {
+                    MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.", "Validating Lines");
+                    return;
+                }
+
+                ProcessTokens();
+                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
+                {
+                    MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.", "Validating Tokens");
+                    return;
+                }
+
+
                 System.Threading.Thread.Sleep(500);
                 stopwatch.Stop();
-                LastParseTime = stopwatch.ElapsedMilliseconds -500;
+                LastParseTime = stopwatch.ElapsedMilliseconds - 500;
                 lblParseTime.Text = $"Parse Time: {LastParseTime}ms";
 
             }
@@ -501,22 +552,10 @@
         private void SendCode()
         {
             ParseCode();
-            if (_parseTree.ParserMessages.Any())
-            {
-                MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.","Parsing");
-                return;
-            }
-
-            LinesValidator();
-
-            if (_parseTree.ParserMessages.Any())
-            {
-                MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.","Validating Lines");
-                return;
-            }
+            
 
             Code = editTextBox.Text;
-            OnSend(new SendEventArgs(Code,_parseTree));
+            OnSend(new SendEventArgs(Code,Tokens));
             
         }
 
@@ -605,6 +644,86 @@
         }
 
 
+        private void ProcessTokens()
+        {
+            
+            string[] excludeTokens = { "CONTROL_BASIC", "LF" };
+            bool isFirstToken = true;
+            var Cancel = false;
+
+            Tokens = new List<TokenInfo>();
+
+            foreach (var tok in _parseTree.Tokens)
+            {
+                var tokentext = tok.Text;
+                var terminalname = tok.Terminal.Name;
+                
+                switch (tok.Terminal.Name)
+                {
+                    case "Comment":
+                        //split Comments into two tokens
+                        Tokens.Add(new TokenInfo("REM", "REM"));
+                        Tokens.Add(new TokenInfo(tok.Text.Substring(4), "Comment"));
+                        break;
+                    case "IntegerNumber":
+                        //rename to LineNumber only if first token on line.
+
+                        Tokens.Add(new TokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
+                        break;
+
+                    case "Identifier":
+                        //Locate Identifier and Identify Token associated ControlPoint.
+                        //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
+                        var IdentifierType = GetTypeIdentifier(tokentext);
+                        if(IdentifierType == 0)
+                        {
+                            //There is a semantic error here
+                            //Add error message to parser and cancel renumbering.
+                            //Don't break it inmediately, to show all possible errors of this type
+                            _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+                                tok.Location,
+                                $"Semantic Error: Identifier does not exist",
+                                new ParserState("Validating Tokens")));
+                            ShowCompilerErrors();
+                            Cancel = true;
+                        }
+                        break;
+
+                    default:
+                        Tokens.Add(new TokenInfo(tokentext, terminalname));
+                        break;
+                }
+                isFirstToken = terminalname == "LF" ? true : false;
+            }
+
+
+
+        }
+
+
+        int GetTypeIdentifier( string Ident)
+        {
+
+           
+            string label = "";
+
+            //Is VAR?
+            label = Prg.Variables.Find(v => v.Label == Ident).Label??string.Empty ;
+            if (!string.IsNullOrEmpty(label)) return (int) PCODE_CONST.LABEL_VAR;
+
+            //Is IN?
+            label = Prg.Inputs.Find(v => v.Label == Ident).Label ?? string.Empty;
+            if (!string.IsNullOrEmpty(label)) return (int)PCODE_CONST.LABEL_VAR;
+
+
+
+            return (int) PCODE_CONST.UNDEFINED_SYMBOL;
+
+        }
+
+
+
+
     }
 
 
@@ -676,6 +795,54 @@
         }
     };
 
+    /// <summary>
+    /// TokeInfo stores information about a single token
+    /// </summary>
+    public class TokenInfo
+    {
+        /// <summary>
+        /// Original text token from parsing
+        /// </summary>
+        string Text { get; set; }
+        /// <summary>
+        /// Associated Terminal Name from Grammar
+        /// </summary>
+        string TerminalName { get; set; }
+        /// <summary>
+        /// Token Type (1 Byte)
+        /// </summary>
+        int Type { get; set; }
+        /// <summary>
+        /// Token value (1 Byte)
+        /// </summary>
+        int Token { get; set; }
 
+        /// <summary>
+        /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
+        /// Expected to be fulfilled with more token info
+        /// </summary>
+        /// <param name="Text">Plain Text tokenizable</param>
+        /// <param name="TName">Terminal Name</param>
+        public TokenInfo(string Text, string TName)
+        {
+            this.Text = Text;
+            this.TerminalName = TName;
+        }
+
+        /// <summary>
+        /// TokenInfo ToString Override
+        /// </summary>
+        /// <returns>string formatted as {Text|TerminalName}</returns>
+        public override string ToString()
+        {
+            string result = "{";
+            result += this.Text ?? "NULL";
+            result += "|";
+            result += this.TerminalName ?? "NULL";
+            result += "} ";
+            return result;
+        }
+
+    }
 
 }

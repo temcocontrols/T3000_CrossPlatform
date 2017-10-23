@@ -201,11 +201,14 @@
                 Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
                 
                 var form = new ProgramEditorForm();
-                form.Caption = $"Edit Code: {Prg.Programs[Index_EditProgramCode].Description}";
+                form.Caption = $"Edit Code: Panel {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
+                form.Prg = this.Prg;
+                form.PrgPath = this.PrgPath;
                 //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
                 form.MdiParent = this.MdiParent ;
+                
                 form.Show();
                 //if (form.ShowDialog() != DialogResult.OK) return;
 
