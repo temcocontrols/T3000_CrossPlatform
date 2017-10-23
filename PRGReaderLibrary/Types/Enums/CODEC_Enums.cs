@@ -39,8 +39,8 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         POINT_VAR = 2,
         POINT_REMOTE_VAR = 3,
         LABEL_VAR = 4,
-
         ATTRIB = 5,
+		
         MAX_ATTRIB = 10,
         MAX_LINE = 512,
         MAX_VARS = 500,

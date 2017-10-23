@@ -179,6 +179,8 @@
         public void LinesValidator()
         {
             
+            if(_parseTree == null) return;
+
             if (_parseTree.ParserMessages.Any()) return;
 
             int pos = 0;
@@ -285,7 +287,7 @@
            
             //LRUIZ: Parse and show syntax errors
 
-            ParseCode();
+            ParseCode(false);
             
         }
 
@@ -328,7 +330,7 @@
         /// <summary>
         /// Forces parsing the code contained in EditTextBox
         /// </summary>
-        public void ParseCode()
+        public void ParseCode(bool fullParsing = false)
         {
             ClearParserOutput();
             if (_parser == null || !_parser.Language.CanParse()) return;
@@ -340,29 +342,23 @@
                 Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
 
                 _parser.Parse(editTextBox.Text, "<source>");
+                _parseTree = _parser.Context.CurrentParseTree;
 
 
-                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
+                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors()) return;
+
+                if (fullParsing) //Only do this checks in full parsing.
                 {
-                    MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.", "Parsing");
-                    return;
+                    LinesValidator(); // Check semantic errors on jumps and renumber lines.
+                    ProcessTokens(); //Check for other semantic errors and make some changes to local list of tokens
+
+                    if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
+                    {
+                        MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Compiler halted.", "Semantic Errors Found!");
+                        return;
+                    }
                 }
-
-                LinesValidator();
-
-                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
-                {
-                    MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.", "Validating Lines");
-                    return;
-                }
-
-                ProcessTokens();
-                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
-                {
-                    MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Operation has been cancelled.", "Validating Tokens");
-                    return;
-                }
-
+                
 
                 System.Threading.Thread.Sleep(500);
                 stopwatch.Stop();
@@ -374,14 +370,14 @@
             {
                 gridCompileErrors.Rows.Add(null, ex.Message, null);
                 
-                throw;
+                //throw;
             }
             finally
             {
-                _parseTree = _parser.Context.CurrentParseTree;
+                
                 ShowCompilerErrors();
 
-                //TODO: Show Compile Stats
+               
                 ShowCompileStats();
                
             }
@@ -391,14 +387,12 @@
         private void ClearParserOutput()
         {
 
-            //TODO: Add this stats labels to bottom of this form.
-
             lblSrcLineCount.Text = string.Empty;
             lblSrcTokenCount.Text = "";
             lblParseTime.Text = "";
             lblParseErrorCount.Text = "";
 
-            //lstTokens.Items.Clear();
+        
             gridCompileErrors.Rows.Clear();
            
             Application.DoEvents();
@@ -465,7 +459,7 @@
         /// <param name="e"></param>
         private void editTextBox_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
-            ParseCode();
+            ParseCode(false);
             
         }
 
@@ -551,8 +545,13 @@
 
         private void SendCode()
         {
-            ParseCode();
+            ParseCode(true); //Performs full parsing and semantic checks
             
+            if(_parseTree.HasErrors() || _parseTree.ParserMessages.Any())
+            {
+                MessageBox.Show("Send operation, aborted", "Error(s) found");
+                return;
+            }
 
             Code = editTextBox.Text;
             OnSend(new SendEventArgs(Code,Tokens));
@@ -653,6 +652,8 @@
 
             Tokens = new List<TokenInfo>();
 
+            if (_parseTree == null) return;
+
             foreach (var tok in _parseTree.Tokens)
             {
                 var tokentext = tok.Text;
@@ -663,7 +664,11 @@
                     case "Comment":
                         //split Comments into two tokens
                         Tokens.Add(new TokenInfo("REM", "REM"));
+                        Tokens.Last().Type = (int) LINE_TOKEN.REM;
+                        Tokens.Last().Token  = (int) LINE_TOKEN.REM;
                         Tokens.Add(new TokenInfo(tok.Text.Substring(4), "Comment"));
+                        Tokens.Last().Type = (int)LINE_TOKEN.STRING;
+                        Tokens.Last().Token = (int)LINE_TOKEN.STRING;
                         break;
                     case "IntegerNumber":
                         //rename to LineNumber only if first token on line.
@@ -671,21 +676,42 @@
                         Tokens.Add(new TokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
                         break;
 
+                    case "LocalVariable":
+                        TokenInfo NewLocalVar = new TokenInfo(tokentext, terminalname);
+                        NewLocalVar.Type = (int) PCODE_CONST.LOCAL_VAR;
+                        NewLocalVar.Token = (int)TYPE_TOKEN.IDENTIFIER;
+                        Tokens.Add(NewLocalVar);
+                        break;
+                    case "VARS":
+                    case "INS":
+                    case "OUTS":
+                        TokenInfo NewPointVar = new TokenInfo(tokentext, terminalname);
+                        NewPointVar.Type = (int)PCODE_CONST.POINT_VAR;
+                        NewPointVar.Token = (int)TYPE_TOKEN.IDENTIFIER;
+                        Tokens.Add(NewPointVar);
+                        break;
                     case "Identifier":
                         //Locate Identifier and Identify Token associated ControlPoint.
                         //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
                         var IdentifierType = GetTypeIdentifier(tokentext);
-                        if(IdentifierType == 0)
+                        if(IdentifierType == (int) PCODE_CONST.UNDEFINED_SYMBOL)
                         {
                             //There is a semantic error here
                             //Add error message to parser and cancel renumbering.
                             //Don't break it inmediately, to show all possible errors of this type
                             _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
                                 tok.Location,
-                                $"Semantic Error: Identifier does not exist",
+                                $"Semantic Error: Undefined Identifier: {tok.Text}",
                                 new ParserState("Validating Tokens")));
                             ShowCompilerErrors();
                             Cancel = true;
+                        }
+                        else
+                        {
+                            TokenInfo NewIdentifier = new TokenInfo(tokentext, terminalname);
+                            NewIdentifier.Type = IdentifierType;
+                            NewIdentifier.Token = (int)TYPE_TOKEN.IDENTIFIER;
+                            Tokens.Add(NewIdentifier);
                         }
                         break;
 
@@ -706,18 +732,50 @@
 
            
             string label = "";
+            try
+            {
+                //Is VAR?
+                label = Prg.Variables.Find(v => v.Label == Ident).Label ?? string.Empty;
+                if (!string.IsNullOrEmpty(label))
+                    return (int)PCODE_CONST.LABEL_VAR;
 
-            //Is VAR?
-            label = Prg.Variables.Find(v => v.Label == Ident).Label??string.Empty ;
-            if (!string.IsNullOrEmpty(label)) return (int) PCODE_CONST.LABEL_VAR;
+                //Is IN?
+                label = Prg.Inputs.Find(v => v.Label == Ident).Label ?? string.Empty;
+                if (!string.IsNullOrEmpty(label))
+                    return (int)PCODE_CONST.LABEL_VAR;
 
-            //Is IN?
-            label = Prg.Inputs.Find(v => v.Label == Ident).Label ?? string.Empty;
-            if (!string.IsNullOrEmpty(label)) return (int)PCODE_CONST.LABEL_VAR;
+                //Is OUT?
+                label = Prg.Outputs.Find(v => v.Label == Ident).Label ?? string.Empty;
+                if (!string.IsNullOrEmpty(label))
+                    return (int)PCODE_CONST.LABEL_VAR;
+
+                //Is PRG?
+                label = Prg.Programs.Find(v => v.Label == Ident).Label ?? string.Empty;
+                if (!string.IsNullOrEmpty(label))
+                    return (int)PCODE_CONST.LABEL_VAR;
+
+                //Is SCH?
+                label = Prg.Schedules.Find(v => v.Label == Ident).Label ?? string.Empty;
+                if (!string.IsNullOrEmpty(label))
+                    return (int)PCODE_CONST.LABEL_VAR;
+
+                //Is HOL?
+                label = Prg.Holidays.Find(v => v.Label == Ident).Label ?? string.Empty;
+                if (!string.IsNullOrEmpty(label))
+                    return (int)PCODE_CONST.LABEL_VAR;
+            }
+            catch
+            {
+                return (int)PCODE_CONST.UNDEFINED_SYMBOL;
+            }
+            
+            return (int)PCODE_CONST.UNDEFINED_SYMBOL;
+            
+            
 
 
 
-            return (int) PCODE_CONST.UNDEFINED_SYMBOL;
+            
 
         }
 
@@ -803,19 +861,19 @@
         /// <summary>
         /// Original text token from parsing
         /// </summary>
-        string Text { get; set; }
+        public string Text { get; set; }
         /// <summary>
         /// Associated Terminal Name from Grammar
         /// </summary>
-        string TerminalName { get; set; }
+        public string TerminalName { get; set; }
         /// <summary>
         /// Token Type (1 Byte)
         /// </summary>
-        int Type { get; set; }
+        public int Type { get; set; }
         /// <summary>
         /// Token value (1 Byte)
         /// </summary>
-        int Token { get; set; }
+        public int Token { get; set; }
 
         /// <summary>
         /// Default constructor: Create Basic TokenInfo from Text and Terminal Name

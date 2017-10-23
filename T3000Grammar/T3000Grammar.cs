@@ -101,7 +101,6 @@
             VARS.Priority = 40;
             var OUTS = new RegexBasedTerminal("OUTS", "OUT(" + UPTO128 + ")");
             OUTS.Priority = 40;
-            //TODO: Set appropiate priority and suffix based on Regular Expression all ControlPoints
             var INS = new RegexBasedTerminal("INS", "IN(" + UPTO128 + ")");
             INS.Priority = 40;
             var PRG = new RegexBasedTerminal("PRG", "PRG(" + UPTO128 + ")");
@@ -311,7 +310,7 @@
             //Create Assignment statement
             var Assignment = new NonTerminal("Assignment");
 
-            //TODO: Add all branch statements
+            
             var Branch = new NonTerminal("Branch");
             //BRANCH
             //Branch ::= IF | IFTRUE | IFFALSE | GOSUB | GOTO | ON

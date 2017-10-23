@@ -1,11 +1,12 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
+    using PRGReaderLibrary.Types.Enums.Codecs;
     using Properties;
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
     public partial class ProgramsForm : Form
     {
@@ -201,7 +202,7 @@
                 Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
                 
                 var form = new ProgramEditorForm();
-                form.Caption = $"Edit Code: Panel {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
+                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
                 form.Prg = this.Prg;
                 form.PrgPath = this.PrgPath;
@@ -227,8 +228,47 @@
             MessageBox.Show(e.ToString(), "Tokens");
 
 
+            //Inician las pruebas de codificación
+            byte[] ByteEncoded = EncodeBytes(e.Tokens);
+            MessageBox.Show(ByteEncoded.ToString(), "Tokens");
+
+
+
         }
 
+        private byte[] EncodeBytes(List<TokenInfo> Tokens)
+        {
+            var result = new List<byte>();
+            byte[] prgsize = { (byte) 0x00, (byte) 0x00 };
+            result.AddRange(prgsize);
+            
+            int offset = 2;
+            bool isFirstToken = true;
+
+            foreach (var token in Tokens)
+            {
+                switch(token.TerminalName)
+                {
+                    case "REM":
+                        
+                    case "LineNumber":
+                        if (isFirstToken)
+                        {
+                            result.Add((byte) TYPE_TOKEN.NUMBER); //TYPE OF NEXT TOKEN: NUMBER
+                            result.Add((byte)token.Token);
+
+
+                        }
+
+                        break;
+                    
+                }
+                isFirstToken = token.TerminalName  == "LF" ? true : false;
+            }
+
+
+            return result;
+        }
 
 
 
