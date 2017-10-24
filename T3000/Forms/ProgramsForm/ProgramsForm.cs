@@ -224,18 +224,29 @@
         private void Form_Send(object sender, SendEventArgs e)
         {
             //TODO: Use parse tree tokens to encode bytes and patch PRG File.
-            MessageBox.Show(e.Code, "Code");
-            //Utility properties to encode: e.Code, e.Tokens, e.Index, Index_EditProgramCode
-            MessageBox.Show(e.ToString(), "Tokens");
-
+            Console.WriteLine();
+            Console.WriteLine("---------------------DEBUG STRINGS-----------------------");
+            Console.WriteLine();
+            Console.WriteLine($"Code:{Environment.NewLine}{e.Code}");
+            Console.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
+            
 
             //Inician las pruebas de codificación
             byte[] ByteEncoded = EncodeBytes(e.Tokens);
-            MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
+            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            Console.Write("Bytes = {");
+            for (var i= 0; i < PSize; i++ )
+            {
+                Console.Write($"{ByteEncoded[i]} ");
+
+            }
+            Console.WriteLine("}");
+
+           // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
             Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
             //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
             Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
-            Prg.Programs[Index_EditProgramCode].Length = BitConverter.ToInt16(ByteEncoded, 0);
+            Prg.Programs[Index_EditProgramCode].Length = PSize;
             //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
             Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}2.PRG");
            
@@ -247,28 +258,35 @@
             var result = new List<byte>();
             byte[] prgsize = { (byte) 0x00, (byte) 0x00 };
             result.AddRange(prgsize);
+
+            short CountBinaryParts = 0;
+            Stack<TokenInfo> BinOpers = new Stack<TokenInfo>();
             
             int offset = 0;
             int tokenIndex = 0;
             bool isFirstToken = true;
 
-            foreach (var token in Tokens)
+            for (tokenIndex = 0; tokenIndex < Tokens.Count; tokenIndex ++)
             {
-                switch(token.TerminalName)
+                var token = Tokens[tokenIndex];
+
+                switch (token.TerminalName)
                 {
+                    #region REM COMMENTS
+
+                    
                     case "REM":
-                        result.Add((byte)LINE_TOKEN.REM);
+                    case "ASSIGN":
+                        result.Add((byte) token.Token);
                         offset++;
                         break;
                     case "Comment":
-                        token.Text = token.Text.Trim(' ');
-                        var sizeNext = token.Text.Length;
-                        result.Add((byte)sizeNext);
+                        result.Add((byte)token.Type); //Lenght of String
                         offset++;
                         result.AddRange(token.Text.ToBytes());
-                        offset += sizeNext;
+                        offset += token.Type;
                         break;
-
+                    #endregion
                     case "LineNumber":
                         if (isFirstToken)
                         {
@@ -290,10 +308,86 @@
                       
                         //EOL: LF, Just Ignored. Next Token should be another LineNumber
                         break;
+
+                    case "PLUS":
+                    case "MINUS":
+                    case "MUL":
+                    case "DIV":
+                    case "POW":
+                    case "MOD":
+                    case "LT":
+                    case "GT":
+                    case "LE":
+                    case "GE":
+                    case "EQ":
+                    case "NE":
+                    case "AND":
+                    case "XOR":
+                    case "OR":
+                    
+                        BinOpers.Push(token);
+                        break;
+
+                    case "NOT":
+                        //TODO: Learn how to -> tests and errors.
+                        break;
+
+                    case "Identifier":
+                        //Encode directly: Token + Index + Type
+
+                        CountBinaryParts = (short) ((Tokens[tokenIndex-1].TerminalName != "ASSIGN") ? 
+                        CountBinaryParts + 1 :  0);
+
+                        result.Add((byte)token.Token);
+                        result.Add((byte)token.Index);
+                        result.Add((byte)token.Type);
+                        offset += 3;
+                        
+                        
+                        if (BinOpers.Count > 0 && CountBinaryParts == 2)
+                        {
+                            //time to pop operator and encode postfix binary expression ending with oper
+                            var op = BinOpers.Pop();
+                            CountBinaryParts = 1; //ready for more binary expressions?
+                            result.Add((byte) op.Token);
+                            offset++;
+                        }
+
+                        break;
+
+                    case "Number":
+
+                        CountBinaryParts = (short)((Tokens[tokenIndex - 1].TerminalName != "ASSIGN") ?
+                        CountBinaryParts + 1 : 0);
+
+                        result.Add((byte)token.Token);
+                        offset++;
+                        //And... voilá...  trick revealed.
+                        //All numbers are converted to integer 32b, multiplying by 1000.
+                        //on Decoding bytes reverse operation dividing by 1000, so if not exact
+                        //floating point numbers only have 3 decimals
+                        int numVal = (int) (Convert.ToSingle(token.Text) * 1000);
+                        byte[] byteArray = BitConverter.GetBytes(numVal);
+                        result.AddRange(byteArray);
+                        offset += 4;
+
+                        if (BinOpers.Count > 0 && CountBinaryParts == 2)
+                        {
+                            //time to pop operator and encode postfix binary expression ending with oper
+                            var op = BinOpers.Pop();
+                            CountBinaryParts = 1; //ready for more binary expressions?
+                            result.Add((byte)op.Token);
+                            offset++;
+                        }
+
+                        break;
+                    case "LF":
+                        isFirstToken = true;
+                        CountBinaryParts = 0;
+                        break;
                     
                 }
                 isFirstToken = token.TerminalName  == "LF" ? true : false;
-                tokenIndex++;
                 
             }
             

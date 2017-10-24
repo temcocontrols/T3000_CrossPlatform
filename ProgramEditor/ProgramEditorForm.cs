@@ -649,89 +649,145 @@
             string[] excludeTokens = { "CONTROL_BASIC", "LF" };
             bool isFirstToken = true;
             var Cancel = false;
-            
 
-            Tokens = new List<TokenInfo>();
-
-            if (_parseTree == null) return;
-
-            foreach (var tok in _parseTree.Tokens)
+            try
             {
-                var tokentext = tok.Text;
-                var terminalname = tok.Terminal.Name;
-                
-                switch (tok.Terminal.Name)
+                Tokens = new List<TokenInfo>();
+
+                if (_parseTree == null) return;
+
+                foreach (var tok in _parseTree.Tokens)
                 {
-                    case "Comment":
-                        //split Comments into two tokens
-                        Tokens.Add(new TokenInfo("REM", "REM"));
-                        Tokens.Last().Type = (int) LINE_TOKEN.REM;
-                        Tokens.Last().Token  = (int) LINE_TOKEN.REM;
-                        Tokens.Add(new TokenInfo(tok.Text.Substring(4), "Comment"));
-                        Tokens.Last().Type = (int)LINE_TOKEN.STRING;
-                        Tokens.Last().Token = (int)LINE_TOKEN.STRING;
-                        break;
-                    case "IntegerNumber":
-                        //rename to LineNumber only if first token on line.
+                    var tokentext = tok.Text;
+                    var terminalname = tok.Terminal.Name;
 
-                        Tokens.Add(new TokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
-                        break;
+                    switch (tok.Terminal.Name)
+                    {
+                        case "Comment":
+                            //split Comments into two tokens
+                            Tokens.Add(new TokenInfo("REM", "REM"));
+                            Tokens.Last().Type = (short)LINE_TOKEN.REM;
+                            Tokens.Last().Token = (short)LINE_TOKEN.REM;
+                            var commentString = tok.Text.Substring(4).TrimEnd(' ');
+                            Tokens.Add(new TokenInfo(commentString, "Comment"));
+                            Tokens.Last().Type = (short)commentString.Length;
+                            Tokens.Last().Token = (short)LINE_TOKEN.STRING;
+                            break;
 
-                    case "LocalVariable":
-                        TokenInfo NewLocalVar = new TokenInfo(tokentext, terminalname);
-                        NewLocalVar.Type = (int) PCODE_CONST.LOCAL_VAR;
-                        NewLocalVar.Token = (int)TYPE_TOKEN.IDENTIFIER;
-                        Tokens.Add(NewLocalVar);
-                        break;
-                    case "VARS":
-                    case "INS":
-                    case "OUTS":
-                        TokenInfo NewPointVar = new TokenInfo(tokentext, terminalname);
-                        NewPointVar.Type = (int)PCODE_CONST.POINT_VAR;
-                        NewPointVar.Token = (int)TYPE_TOKEN.IDENTIFIER;
-                        Tokens.Add(NewPointVar);
-                        break;
-                    case "Identifier":
-                        //Locate Identifier and Identify Token associated ControlPoint.
-                        //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
-                        var IdentifierType = GetTypeIdentifier(tokentext);
-                        if(IdentifierType == (int) PCODE_CONST.UNDEFINED_SYMBOL)
-                        {
-                            //There is a semantic error here
-                            //Add error message to parser and cancel renumbering.
-                            //Don't break it inmediately, to show all possible errors of this type
-                            _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
-                                tok.Location,
-                                $"Semantic Error: Undefined Identifier: {tok.Text}",
-                                new ParserState("Validating Tokens")));
-                            ShowCompilerErrors();
-                            Cancel = true;
-                        }
-                        else
-                        {
-                            TokenInfo NewIdentifier = new TokenInfo(tokentext, terminalname);
-                            NewIdentifier.Type = IdentifierType;
-                            NewIdentifier.Token = (int)TYPE_TOKEN.IDENTIFIER;
-                            Tokens.Add(NewIdentifier);
-                        }
-                        break;
-                    
-                    default:
-                        Tokens.Add(new TokenInfo(tokentext, terminalname));
-                        break;
+                        case "IntegerNumber":
+                            //rename to LineNumber only if first token on line.
+
+                            Tokens.Add(new TokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
+                            break;
+
+                        case "LocalVariable":
+                            TokenInfo NewLocalVar = new TokenInfo(tokentext, terminalname);
+                            NewLocalVar.Type = (short)PCODE_CONST.LOCAL_VAR;
+                            NewLocalVar.Token = (short)TYPE_TOKEN.IDENTIFIER;
+                            Tokens.Add(NewLocalVar);
+                            break;
+                        case "VARS":
+                        case "INS":
+                        case "OUTS":
+                            TokenInfo NewPointVar = new TokenInfo(tokentext, terminalname);
+                            NewPointVar.Type = (short)PCODE_CONST.POINT_VAR;
+                            NewPointVar.Token = (short)TYPE_TOKEN.IDENTIFIER;
+                            Tokens.Add(NewPointVar);
+                            break;
+
+                        #region OPERATORS
+
+                        
+                        case "PLUS":
+                        case "MINUS":
+                        case "MUL":
+                        case "DIV":
+                        case "POW":
+                        case "MOD":
+                        case "LT":
+                        case "GT":
+                        case "LE":
+                        case "GE":
+                        case "EQ":
+                        case "NE":
+                        case "AND":
+                        case "XOR":
+                        case "OR":
+                        case "NOT":
+                            //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
+                            //To allow further transforms by RPN Parser of Expressions
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            TYPE_TOKEN TypeToken = (TYPE_TOKEN) Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
+                            Tokens.Last().Token = (short)TypeToken ;
+                            Tokens.Last().Precedence = (short)tok.KeyTerm.Precedence;
+                            break;
+                        #endregion
+
+                        case "ASSIGN":
+
+                            TokenInfo assignToken, last;
+
+                            var index = Tokens.Count - 1;
+                            last = Tokens[index];
+                            Tokens.RemoveAt(index);
+                            assignToken = new TokenInfo(tokentext, terminalname);
+                            assignToken.Token = (short)LINE_TOKEN.ASSIGN;
+                            //insert it before assignar var.
+                            Tokens.Add(assignToken);
+                            Tokens.Add(last);
+                            break;
+
+                        case "Identifier":
+                            //Locate Identifier and Identify Token associated ControlPoint.
+                            //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
+                            int PointIndex = 0;
+                            var TokenType = GetTypeIdentifier(tokentext, out PointIndex);
+                            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
+                            {
+                                //There is a semantic error here
+                                //Add error message to parser and cancel renumbering.
+                                //Don't break it inmediately, to show all possible errors of this type
+                                _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+                                    tok.Location,
+                                    $"Semantic Error: Undefined Identifier: {tok.Text}",
+                                    new ParserState("Validating Tokens")));
+                                ShowCompilerErrors();
+                                Cancel = true;
+                            }
+                            else
+                            {
+                                //Prepare token identifier to encode: Token + Index + Type
+                                TokenInfo NewIdentifier = new TokenInfo(tokentext, terminalname);
+                                NewIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                                NewIdentifier.Index = (short)PointIndex;
+                                NewIdentifier.Token = (short)TokenType;
+                                Tokens.Add(NewIdentifier);
+                            }
+                            break;
+                        case "Number":
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            break;
+
+                        default:
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            break;
+                    }
+                    isFirstToken = terminalname == "LF" ? true : false;
+
                 }
-                isFirstToken = terminalname == "LF" ? true : false;
-               
             }
-
+            catch( Exception ex) {
+                MessageBox.Show(ex.Message, "ProcessTokens()");
+                ex = null;
+            }
 
 
         }
 
 
-        int GetTypeIdentifier( string Ident)
+        PCODE_CONST GetTypeIdentifier( string Ident, out int Index)
         {
-
            
             string label = "";
             try
@@ -739,39 +795,65 @@
                 //Is VAR?
                 label = Prg.Variables.Find(v => v.Label == Ident).Label ?? string.Empty;
                 if (!string.IsNullOrEmpty(label))
-                    return (int)PCODE_CONST.LABEL_VAR;
+                {
+                    Index = Prg.Variables.FindIndex(v => v.Label == Ident);
+                    return PCODE_CONST.LOCAL_POINT_PRG;
+                }
+                    
 
                 //Is IN?
                 label = Prg.Inputs.Find(v => v.Label == Ident).Label ?? string.Empty;
                 if (!string.IsNullOrEmpty(label))
-                    return (int)PCODE_CONST.LABEL_VAR;
+                {
+                    Index = Prg.Inputs.FindIndex(v => v.Label == Ident);
+                    return PCODE_CONST.LOCAL_POINT_PRG;
+                } 
+                    
 
                 //Is OUT?
                 label = Prg.Outputs.Find(v => v.Label == Ident).Label ?? string.Empty;
                 if (!string.IsNullOrEmpty(label))
-                    return (int)PCODE_CONST.LABEL_VAR;
+                {
+                    Index = Prg.Outputs.FindIndex(v => v.Label == Ident);
+                    return PCODE_CONST.LOCAL_POINT_PRG;
+                }
+                    
 
                 //Is PRG?
                 label = Prg.Programs.Find(v => v.Label == Ident).Label ?? string.Empty;
                 if (!string.IsNullOrEmpty(label))
-                    return (int)PCODE_CONST.LABEL_VAR;
+                {
+                    Index = Prg.Programs.FindIndex(v => v.Label == Ident);
+                    return PCODE_CONST.LOCAL_POINT_PRG;
+                }
+                    
 
                 //Is SCH?
                 label = Prg.Schedules.Find(v => v.Label == Ident).Label ?? string.Empty;
                 if (!string.IsNullOrEmpty(label))
-                    return (int)PCODE_CONST.LABEL_VAR;
+                {
+                    Index = Prg.Schedules.FindIndex(v => v.Label == Ident);
+                    return PCODE_CONST.LOCAL_POINT_PRG;
+                }
+                   
 
                 //Is HOL?
                 label = Prg.Holidays.Find(v => v.Label == Ident).Label ?? string.Empty;
                 if (!string.IsNullOrEmpty(label))
-                    return (int)PCODE_CONST.LABEL_VAR;
+                {
+                    Index = Prg.Holidays.FindIndex(v => v.Label == Ident);
+                    return PCODE_CONST.LOCAL_POINT_PRG;
+                }
+                    
             }
             catch
             {
-                return (int)PCODE_CONST.UNDEFINED_SYMBOL;
+                Index = -1;
+                return PCODE_CONST.UNDEFINED_SYMBOL;
             }
-            
-            return (int)PCODE_CONST.UNDEFINED_SYMBOL;
+
+            Index = -2;
+            return PCODE_CONST.UNDEFINED_SYMBOL;
             
             
 
@@ -870,12 +952,21 @@
         public string TerminalName { get; set; }
         /// <summary>
         /// Token Type (1 Byte)
+        /// Token size for Comment string
         /// </summary>
-        public int Type { get; set; }
+        public short Type { get; set; }
         /// <summary>
         /// Token value (1 Byte)
         /// </summary>
-        public int Token { get; set; }
+        public short Token { get; set; }
+        /// <summary>
+        /// Control Point index
+        /// </summary>
+        public short Index { get; set; }
+        /// <summary>
+        /// Operators Precedence
+        /// </summary>
+        public short Precedence { get; set; }
 
         /// <summary>
         /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
@@ -892,14 +983,16 @@
         /// <summary>
         /// TokenInfo ToString Override
         /// </summary>
-        /// <returns>string formatted as {Text|TerminalName}</returns>
+        /// <returns>string formatted as ·×Text×· or ·TerminalName·
+        /// ·×Text· means there is no TerminalName defined
+        /// </returns>
         public override string ToString()
         {
-            string result = "{";
-            result += this.Text ?? "NULL";
-            result += "|";
-            result += this.TerminalName ?? "NULL";
-            result += "} ";
+            string result = " ";
+            //result     += this.Text ?? "NULL";
+            //result     += "->";
+            result       += this.TerminalName ?? $"×{this.Text}";
+            result       += "·";
             return result;
         }
 

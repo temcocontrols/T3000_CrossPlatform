@@ -162,13 +162,13 @@
 
             //Operators
             //Comparisson Operators
-            var AssignOp = ToTerm("=");
-            var LT = ToTerm("<");
-            var GT = ToTerm(">");
-            var LTE = ToTerm("<=");
-            var GTE = ToTerm(">=");
-            var NEQ = ToTerm("<>");
-            var EQ = ToTerm("=");
+            var AssignOp = ToTerm("=","ASSIGN");
+            var LT = ToTerm("<","LT");
+            var GT = ToTerm(">","GT");
+            var LTE = ToTerm("<=","LE");
+            var GTE = ToTerm(">=","GE");
+            var NEQ = ToTerm("<>","NE");
+            var EQ = ToTerm("=","EQ");
 
             var NOT = ToTerm("NOT");
 
@@ -178,11 +178,11 @@
             var OR = ToTerm("OR");
 
             //Arithmetic Operators
-            var SUM = ToTerm("+");
-            var SUB = ToTerm("-");
-            var MUL = ToTerm("*");
-            var DIV = ToTerm("/");
-            var EXP = ToTerm("^");
+            var SUM = ToTerm("+","PLUS");
+            var SUB = ToTerm("-","MINUS");
+            var MUL = ToTerm("*","MUL");
+            var DIV = ToTerm("/","DIV");
+            var EXP = ToTerm("^","POW");
             var MOD = ToTerm("MOD");
 
             //Months
