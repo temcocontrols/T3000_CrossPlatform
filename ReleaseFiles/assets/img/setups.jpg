@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>
+t3000/ReleaseFiles/assets/img/setups.jpg at 63a5d2e6a122200defdc0225ab3ec839f2a569d6 - C programming / T3000 | 
+GitLab
+</title>
+<link href="/assets/favicon-baaa14bade1248aa6165e9d34e7d83c0.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+<link href="/assets/application-41562a22f11f335188eb15ca66b21e63.css" media="all" rel="stylesheet" />
+<link href="/assets/print-1df3ea9b8ff148a6745321899e0cb213.css" media="print" rel="stylesheet" />
+<script src="/assets/application-8e6362c1642f84425f0aa32816406bb8.js"></script>
+<meta content="authenticity_token" name="csrf-param" />
+<meta content="VXMOImcyiynuC1i5KHElYmgOL2YkDjGGpTKBYEdLXHo=" name="csrf-token" />
+<script type="text/javascript">
+//<![CDATA[
+window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relative_url_root="";gon.default_avatar_url="https://phoenix.aimservices.tech:8082/assets/no_avatar-adffbfe10d45b20495cd2a9b88974150.png";gon.current_user_id=4;gon.api_token="pyGw9sAbr2CRk9BrPd2x";
+//]]>
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+</head>
+
+<body class='ui_mars project' data-page='projects:blob:show' data-project-id='36'>
+
+<header class='navbar navbar-static-top navbar-gitlab'>
+<div class='navbar-inner'>
+<div class='container'>
+<div class='app_logo'>
+<span class='separator'></span>
+<a class="home has_bottom_tooltip" href="/" title="Dashboard"><h1>GITLAB</h1>
+</a><span class='separator'></span>
+</div>
+<h1 class='title'><span><a href="/groups/c-programming">C programming</a> / T3000</span></h1>
+<button class='navbar-toggle' data-target='.navbar-collapse' data-toggle='collapse' type='button'>
+<span class='sr-only'>Toggle navigation</span>
+<i class='icon-reorder'></i>
+</button>
+<div class='navbar-collapse collapse'>
+<ul class='nav navbar-nav'>
+<li class='hidden-sm hidden-xs'>
+<div class='search'>
+<form accept-charset="UTF-8" action="/search" class="navbar-form pull-left" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+<input class="search-input" id="search" name="search" placeholder="Search in this project" type="text" />
+<input id="group_id" name="group_id" type="hidden" />
+<input id="project_id" name="project_id" type="hidden" value="36" />
+<input id="search_code" name="search_code" type="hidden" value="true" />
+<input id="repository_ref" name="repository_ref" type="hidden" value="63a5d2e6a122200defdc0225ab3ec839f2a569d6" />
+
+<div class='search-autocomplete-opts hide' data-autocomplete-path='/search/autocomplete' data-autocomplete-project-id='36' data-autocomplete-project-ref='63a5d2e6a122200defdc0225ab3ec839f2a569d6'></div>
+</form>
+
+</div>
+
+</li>
+<li class='visible-sm visible-xs'>
+<a class="has_bottom_tooltip" data-original-title="Search area" href="/search" title="Search"><i class='icon-search'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Help" href="/help" title="Help"><i class='icon-question-sign'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Public area" href="/public" title="Public area"><i class='icon-globe'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="My snippets" href="/s/allgama" title="My snippets"><i class='icon-paste'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Admin area" href="/admin" title="Admin area"><i class='icon-cogs'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="New project" href="/projects/new" title="New project"><i class='icon-plus'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Profile settings&quot;" href="/profile" title="Profile settings"><i class='icon-user'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-method="delete" data-original-title="Logout" href="/users/sign_out" rel="nofollow" title="Logout"><i class='icon-signout'></i>
+</a></li>
+<li class='hidden-xs'>
+<a class="profile-pic" href="/u/allgama" id="profile-pic"><img alt="User activity" src="https://phoenix.aimservices.tech:8082/uploads/user/avatar/4/logo_5.jpg" />
+</a></li>
+</ul>
+</div>
+</div>
+</div>
+</header>
+
+<script>
+  GitLab.GfmAutoComplete.dataSource = "/c-programming/t3000/autocomplete_sources?type=NilClass&type_id=63a5d2e6a122200defdc0225ab3ec839f2a569d6%2FReleaseFiles%2Fassets%2Fimg%2Fsetups.jpg"
+  GitLab.GfmAutoComplete.setup();
+</script>
+
+<div class='flash-container'>
+</div>
+
+
+<nav class='main-nav navbar-collapse collapse'>
+<div class='container'><ul>
+<li class="home"><a href="/c-programming/t3000" title="Project"><i class='icon-home'></i>
+</a></li><li class="active"><a href="/c-programming/t3000/tree/63a5d2e6a122200defdc0225ab3ec839f2a569d6">Files</a>
+</li><li class=""><a href="/c-programming/t3000/commits/63a5d2e6a122200defdc0225ab3ec839f2a569d6">Commits</a>
+</li><li class=""><a href="/c-programming/t3000/network/63a5d2e6a122200defdc0225ab3ec839f2a569d6">Network</a>
+</li><li class=""><a href="/c-programming/t3000/graphs/63a5d2e6a122200defdc0225ab3ec839f2a569d6">Graphs</a>
+</li><li class=""><a href="/c-programming/t3000/issues">Issues
+<span class='count issue_counter'>1</span>
+</a></li><li class=""><a href="/c-programming/t3000/merge_requests">Merge Requests
+<span class='count merge_counter'>0</span>
+</a></li><li class=""><a href="/c-programming/t3000/wikis/home">Wiki</a>
+</li><li class=""><a class="stat-tab tab " href="/c-programming/t3000/edit">Settings
+</a></li></ul>
+</div>
+</nav>
+<div class='container'>
+<div class='content'><div class='tree-ref-holder'>
+<form accept-charset="UTF-8" action="/c-programming/t3000/refs/switch" class="project-refs-form" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+<select class="project-refs-select select2 select2-sm" id="ref" name="ref"><optgroup label="Branches"><option value="master">master</option></optgroup><optgroup label="Tags"><option value="v1.0_ISSUE1_BUG_FIXED">v1.0_ISSUE1_BUG_FIXED</option>
+<option value="PARSER_COMPLETE">PARSER_COMPLETE</option></optgroup><optgroup label="Commit"><option selected="selected" value="63a5d2e6a122200defdc0225ab3ec839f2a569d6">63a5d2e6a122200defdc0225ab3ec839f2a569d6</option></optgroup></select>
+<input id="destination" name="destination" type="hidden" value="blob" />
+<input id="path" name="path" type="hidden" value="ReleaseFiles/assets/img/setups.jpg" />
+</form>
+
+
+</div>
+<div class='tree-holder' id='tree-holder'>
+<ul class='breadcrumb repo-breadcrumb'>
+<li>
+<i class='icon-angle-right'></i>
+<a href="/c-programming/t3000/tree/63a5d2e6a122200defdc0225ab3ec839f2a569d6">t3000
+</a></li>
+<li>
+<a href="/c-programming/t3000/tree/63a5d2e6a122200defdc0225ab3ec839f2a569d6/ReleaseFiles">ReleaseFiles</a>
+</li>
+<li>
+<a href="/c-programming/t3000/tree/63a5d2e6a122200defdc0225ab3ec839f2a569d6/ReleaseFiles/assets">assets</a>
+</li>
+<li>
+<a href="/c-programming/t3000/tree/63a5d2e6a122200defdc0225ab3ec839f2a569d6/ReleaseFiles/assets/img">img</a>
+</li>
+<li>
+<a href="/c-programming/t3000/blob/63a5d2e6a122200defdc0225ab3ec839f2a569d6/ReleaseFiles/assets/img/setups.jpg"><strong>
+setups.jpg
+</strong>
+</a></li>
+</ul>
+<ul class='blob-commit-info bs-callout bs-callout-info hidden-xs'>
+<li class='commit js-toggle-container'>
+<div class='commit-row-title'>
+<a class="commit_short_id" href="/c-programming/t3000/commit/63a5d2e6a122200defdc0225ab3ec839f2a569d6">63a5d2e6a</a>
+&nbsp;
+<span class='str-truncated'>
+<a class="commit-row-message" href="/c-programming/t3000/commit/63a5d2e6a122200defdc0225ab3ec839f2a569d6">End of week update of release files</a>
+</span>
+<a class="pull-right" href="/c-programming/t3000/tree/63a5d2e6a122200defdc0225ab3ec839f2a569d6">Browse Code »</a>
+<div class='notes_count'>
+<span class='label label-gray'>
+<i class='icon-comment'></i>
+1
+</span>
+</div>
+</div>
+<div class='commit-row-info'>
+<a class="commit-author-link has_tooltip" data-original-title="lruiz@aimservices.tech" href="/u/lruiz"><img alt="" class="avatar s16" src="https://phoenix.aimservices.tech:8082/uploads/user/avatar/10/LRUIZ.jpg" width="16" /> <span class="commit-author-name">Luis Danilo Ruiz Tórrez</span></a>
+<div class='committed_ago'>
+<time class='time_ago' data-placement='top' data-toggle='tooltip' datetime='2017-10-20T22:20:26Z' title='Oct 20, 2017 6:20pm'>2017-10-20 18:20:26 -0400</time>
+<script>$('.time_ago').timeago().tooltip()</script>
+ &nbsp;
+</div>
+</div>
+</li>
+
+</ul>
+<div class='tree-content-holder' id='tree-content-holder'>
+<div class='file-holder'>
+<div class='file-title clearfix'>
+<i class='icon-file'></i>
+<span class='file_name'>
+setups.jpg
+<small>7.09 KB</small>
+</span>
+<span class='options hidden-xs'><div class='btn-group tree-btn-group'>
+<a class="btn btn-small" href="/c-programming/t3000/raw/63a5d2e6a122200defdc0225ab3ec839f2a569d6/ReleaseFiles/assets/img/setups.jpg" target="_blank">raw</a>
+<a class="btn btn-small" href="/c-programming/t3000/commits/63a5d2e6a122200defdc0225ab3ec839f2a569d6/ReleaseFiles/assets/img/setups.jpg">history</a>
+</div>
+</span>
+</div>
+<div class='file-content image_file'>
+<img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gAVQXNoYW1wb28gU25hcCA5LjAuNP/h&#x000A;AOpFeGlmAABNTQAqAAAACAAKAQAAAwAAAAECTQAAAQEAAwAAAAEAQgAAAQ8A&#x000A;AgAAAA8AAACGARAAAgAAABQAAACWARIAAwAAAAEAAQAAARoABQAAAAEAAADS&#x000A;ARsABQAAAAEAAADaASgAAwAAAAEAAgAAATEAAgAAABQAAAC+ATIAAgAAABQA&#x000A;AACqAAAAAE5MaWIgVW5pdmVyc2FsAABOSW1hZ2VGaWxlSlBHIDEuMC4xADIw&#x000A;MTc6MTA6MjAgMTY6MDk6MTQATkltYWdlRmlsZUpQRyAxLjAuMQAAAABgAAAA&#x000A;AQAAAGAAAAAB/9sAQwAFAwQEBAMFBAQEBQUFBgcMCAcHBwcPCwsJDBEPEhIR&#x000A;DxERExYcFxMUGhURERghGBodHR8fHxMXIiQiHiQcHh8e/9sAQwEFBQUHBgcO&#x000A;CAgOHhQRFB4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4e&#x000A;Hh4eHh4eHh4eHh4e/8AAEQgAQgJNAwEhAAIRAQMRAf/EABwAAQACAwEBAQAA&#x000A;AAAAAAAAAAAEBQIDBgEHCP/EADMQAAICAgICAQMDBAEDBAMAAAECAwQABRES&#x000A;BiETFCIxByNBFTJRYUIWUtEkYoKRJTNx/8QAGQEBAQEBAQEAAAAAAAAAAAAA&#x000A;AAECAwQF/8QAMBEAAgEDAQYFBAEFAQAAAAAAAAERAiHwMQNBUWFxwRKBodHh&#x000A;BCKRsTITI0Li8fL/2gAMAwEAAhEDEQA/AP2XjAGMAYwBjAGMAYwBjAGMAYwB&#x000A;jAGMAYwBjAGMAYwBjAPCqlw/H3AEA/6PH/jPcAYwBjAGMAYwBjAGMAZ4VUuH&#x000A;4+4AgH/R4/8AGAe4wBjAGMAYwBjAGMAYwDwqpcPx9wBAP+jx/wCM9wBjAGMA&#x000A;YwBjAPCqlw/H3AEA/wCjx/4z3AIW+tSUdHfuw9Plr1pJU7gleVUkcgEcj1/k&#x000A;ZwvhXllvePHQl3iw3T9saPVDtNwvJYlQFB9H/H+s9Gy2aq2dVUTBw2m0dNap&#x000A;nUjWPPLB8k1NLW7eO/BPbgjlb6X4wweToykEc+gwYEEewOeRyD2nlHlmk8be&#x000A;vFs5bjT2QzRV6WvnuTMi8dn+OBHcIOyguR1BZQTyRy+o2a2fh3Tn/Xolcuwr&#x000A;e08W+C6ikjlhSaN1eN1DKwPog+wc1ULlTYUob1C1BbqzoJIZ4JA8cin8MrD0&#x000A;Qf8AIzg002uB1TlJm/KKXy7RQ+UL43PYtQ7B+RGZaM6V5GCfIUWcoImcIC3Q&#x000A;OW4BPHo5mbwWLSe+NeWaPyK1aqaya39RVVXlhtUZ6rlGLBZFWZFLxkqwDryp&#x000A;4PBy8yw7ZnbQZmXGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBlfut1r9OivfeZEY&#x000A;Fi0daSUIo/LOUU9FH/c3A/3gGB32qG3TVfUsbLkKvETmMsV7hPk46d+v3dee&#x000A;ePfHGebTyHTayO3JfvxwJU6/MWB9FlLBRwPubgc9RyeOPXsYCvoe399q6N2G&#x000A;nasMks3QjiF2VQ7dULsAVTs3odiOSCBm3YbehRleKxLIZUiEpjiheVupbqOA&#x000A;gJJJ/AHs8HgejgK5Cm8r0UNGK7JblEMvyccVZS6CM8SF0C9owp9MWAC8jnjn&#x000A;Jf8AWtWdodWlyOS6sBnaGMF2CDr7PUHg/cvA/J59A4z0kZ2NOr8h1ux2BoVx&#x000A;fSyIjL0s6+ev9gIHIMiKD7IzdX3WqsXLtSG/C8tFQ1rhvtiB7D7m/AI6tyOe&#x000A;Rx74xoDZqdnV2ldp6n1HxBuO01aSHt655Xuo7L/7hyP95Bh8q0UtazZS4/x1&#x000A;1RnLV5FLq56o0YK8yBiOFKdgx9DnHLM5ajM9yw1ewqbOmtulIXiLMv3IyMrK&#x000A;SGVlYAqQQQQQCMlYYGMAibfZUtRr5L+xsLBWi47uQTxyQB6Hs+yMlKQyhlII&#x000A;I5BH4OAQ59pShuvSZ5WsRpHI0ccDuQrsUU/aD65U8/4A5PA95NxukDNSzobL&#x000A;1+JQ6IHJMTBOCT+G46k+vwDyPXP5GAY0LcF6olqq5eGTkoxQr2HPHI5A5B/g&#x000A;/gjgjkHN+NAMYAxgDGAMYAxgFRb8k1lXYpQsLsEleZYEY62x8TO34Ak6dD//&#x000A;AHnjJNrb62rs6usnuRrdtk/DB+XbgMeeB+BwrezwPXH5wrwHY1LvtU896vBa&#x000A;NmagoazHXieZk5LADhASW5VvtHJHHsZ7p95r9tNYhqfVrJWCmVLFKauV7c8e&#x000A;pFXn8H8ZJtPmHY0t5PoxTiufWloJajXFZYZG4hUcl2AXlRx+OeOT6HJ9Zv02&#x000A;7123aVabziSIKzxz1pIHCtz1brIqkqeDwQOPR/xmovAdixxkBS+ev8fg2/k/&#x000A;7NZZb/6ibPj/AI9sZ9oml8r8Vi197Y62u9GxqeyVGeYxysrIOx7AguT7Bb42&#x000A;IA9hfd9Mv7VTemn5R49vV/cS3+zOS/T3fXKU2l0m4tVxd2W7pWqtY10k5hM0&#x000A;XEkcq89D9rggsfQI4HPOfY/1hMdOSnt9ePJKvklatOustanUy345OepatOiI&#x000A;6CN2WP2/TjglZEIY54tttdptKntKL0upvZvTxU6Jtf4y1VS04a1tZnf6WmlU&#x000A;Kmu1SSVa4PfD3wnS1Ey7KdDjZqvm+0/VRh5NtN7poJvpVr1Nfr9nNVeF66ie&#x000A;MWas614m+UzD5JozIv2srgdOuH6Ztf8AD/G/AzJQ80WhV11ujtqjU9hZdLxF&#x000A;cx/tMrN8Q+OUK6j4l5PBHb3KoppapvP+6/bpc85UUpx1mf5W/wDK4a7+cqLt&#x000A;qaBbvkslWnrtxc/UP+tL4PQmq1KD2/kXaNJZCvY+MHq3KqCZuIiB+5zwvH0f&#x000A;dXNnN59oSId9sbOsl+S9Ul00i0K4+mkD2a9kRorynuECfJL6cgRqQWXVbVLl&#x000A;XUt/jxT6R4eLtxNVrxVNafMR3T3xyuZeEeSx2pr/AJXe03lMm5uR068lD/p6&#x000A;5WFOAylUjVp40WUo0zvJIp9gEhQqgZxaxeXjyjyeffbrzOO0ZryV6Gs0+zYS&#x000A;xdiahgsrM1JSAIT6jRuQyyEgyFsw6XCcwrcG+PJX33iVZ6qWmpe9qeS8uXDr&#x000A;eDDyiP8AUOzq9JFttj5FrXaxeG/sUNds7ca3R8fwfAlKaKb6X4+/QqWTnj5V&#x000A;MhJH3rRGY6SgbFmSzMa0fyTSV2gaRuo5Yxt7Qk++p9j8H8Zq3hcce3t5TunX&#x000A;neVPD1m/xy0sTMZk0MYAxgDGAMYAxgDGAMYAxgDGAM5nza6f29NJDsFp3IX+&#x000A;qs1aE1khPQMa/GrdWYE/cfwAfXJHEfMqlXRT2C9eWes1K5FGNsmz+oau6xLW&#x000A;REcsXI4B+wp0J7f6495aXaNxv063AkgkfYbCnYnkiVezfJIh6xgAeyo6oP8A&#x000A;PUZd1+Xb27iiFUuGe5B8jr2/qdvRSjblk21WtFVljhZo1ZSwbu4HEfXkN9xH&#x000A;PP28n1k0bCxV1F3yKGrNZmv2EWuscDzfHAD0RysYLMvHaTge/v45H5xNnnIz&#x000A;SrJZpJVxhKLJcr0tvfisUrMDM2ulSR7Mkgc9o2UFFck8MQEHUAn8Zc67X26m&#x000A;48cjljdxU080E0oBKh+a44J/yercf54OVWzr7rzDvnT2ZP0MUkl7ZbOxDJHL&#x000A;NOYIxInUiGIlV4/0WLuD/IfKfyfXX7tvyWOpDN2s6SGGFgOA7h7HKhj654Ye&#x000A;j/3Dn0czuXT2+TS1ebyDrIbE9iSGqfJ1oSuUq/VmbkSGu4kMvzfeIuSvXn13&#x000A;Hr1kKeG7bp0pE1Wxrx6+hXq2j9K4likEsbM0K8fumP4+QVDKeRx29qbvzn7r&#x000A;15mcz8PlpyOt8HSVNTN8kVgK1uV45bMRjmnVm5+R0IBViSfXC+gOABwBe5WE&#x000A;MZCnMeXx7W9t9ZSoayC5BD3tWPqpmhhYgdETsI35PLFuOP8AiM5c2L8DaDVb&#x000A;z+t1krwXK9iPWNOxmEbRCJwY1EjL1I+5QPZPPA7DM7s5l6G4VvJECWJYth9a&#x000A;2u1cckqBi5ItsZFLL+SEP38fwTz6OWUM9uBt3Nbq723uoxZMMKtZSrJF7+IR&#x000A;lf2genX2Pv7dv5zVW/zz9x6XgKJXln6n1tJVav8ArseqmSzNvZ9YNonzPHXt&#x000A;x2DXMI5+MSM9jr8vHPDduO3HAyfuRtT9WNSN2dcddT47fP8AN0+of5+vyff8&#x000A;vxf/AD/t498ZbTfz9PnT2Ip9uuRr7mCVdlaNWvTm8hi1Em3UIZZZ0sCD6d+4&#x000A;Zn/dWMycAFiDz+OPtOdL4Ul2LTyV7zWmaC5YiiayWaRohKwjJZvbfbxwx/I4&#x000A;PvC0vmhHG7NS7xkKMYAxgDGAMYBS7D9zyOKa0jx0tbWaz8rL+2ZG7Lzz/lUD&#x000A;8j/3j/Wa9uTfteNXKkcskH13zFvjYdUNaYBmBHK+2Ue+PZAwt2cfYPf07fJt&#x000A;qwzL5rsbBikEL66qiydT1ZhJOSAfwSAR6/2P8574tDINU96xDJFavyNamSRO&#x000A;rr29KpH8FUCL/wDHM1fwfT3K9c4HB6LW7XV/p9f1dnW3J59lpnaGVa7tKjiA&#x000A;j6eQAfbx/wAPQB5I/u9t0ngkdo7W3Yf+o2YGqQR/V7Gma83dS/MSr0TlFB55&#x000A;6flj9zfx0/yebo9e7JV375+EdhjMg12YILVaWtZhjnglQpJHIoZXUjgqQfRB&#x000A;HrjPnEP6W/pJNEk0OtqyRuoZHTazEMD7BBEvsZ6Njt9tsk/6bOG22Oy2rXjR&#x000A;O0f6e/pnp97Rv67XU12MbFafyXpJSGAZ/sR3IJH3N6Hrgt/HOd7nPaV11R4v&#x000A;bLm9nRRTPhGM5nQgx6nXx76fepX42M9aOpLN3b7oo2dkXrzwOGkc8gc+/f4G&#x000A;TsbozLh3cjGAMYAxgDGAMYAxgDGAMYAxgDGAMYAxgDGAMYAxgDGAMYAxgDGA&#x000A;MYAyPLSqy7CC/JFzZrxvHE/Y/ar9ew4/B56r+f8AGASMYAxgDGAMYAxgDGAM&#x000A;YAxgGE8MViCSCeJJYpFKOjqGVlI4IIP5BzMAAcAcDAGMAYwBjAKrzIqviG5Z&#x000A;gCooTkgj0R8bZ808Hs3aXk+t0G4oUZxs4TaR5QJXVOjleDyQOenP8/nPZsEn&#x000A;sqlv9keXbStpS8uym1m4seT7bXbSEamKGptacFirUkVGX/1EZDmMkk+2Uc/6&#x000A;/wBZ9A/Unyfb6bd6XV0NhptHBsVl/wDyu4qST1vmUoI6vCyxBZJO7FSz+/jI&#x000A;CsT6z9VCqpppc7vjzsp4tWejv00xVVV1zpd+RY7Hzvx/WbRtRenttsIUHzrU&#x000A;11mzFHIU7iIyxxlBIw4Kxkh27JwpLKDD/Tr9RdP5hotFdENrXXtxTktRUrFa&#x000A;ZT1jEfydXeNQ6gyoA4HDc/bzwePLZptaL57Kfg9MNJTr8JmFr9V/Aq0NaaTd&#x000A;TMljXx7NDFr7MnWpIWCzuFjPxxgo3Zm4C+uxHI5gxfqCLn6nSePV9nSqa+pa&#x000A;Wm4k1Nmc25mgEoVbassEB4YcI/dn4JAHK82H4ofP0+d/KFcV/anOZw89Cy8I&#x000A;8vueR+Y+QURXrLpqkFWbWWEJMllJGmR5G98dS0J6cD2vDcnsON1z9RvEKly9&#x000A;WsbC0oo/J8841tlq4MZAlVZxH8bsnvuqsSgVywARuCU+Fb2pz09Sw5fJxnqb&#x000A;Np+oPiuujLS3bdgixNXCUtdZtu7RcfKVSGNmZEJCtIAUVvtJDes6WtNDZrx2&#x000A;K8qSwyoHjdDyrKRyCD/IIxFpzP8AmpHZwbMZAMYAxgDGAMYAxgDGAMYAxgDG&#x000A;AMpfMLm012pm2OvnoRpVieWRbMLSGYgfbGvVl6kn1z93sj7TkZUpcED+v7T+&#x000A;p/N8dRNYuwTXyRFGM/dlX7w/bjgOwXr1/AJ7fxmW63m2h0u92msgoSxUPkWE&#x000A;zMwDfEhMjHr/AHcOOoX7f7T92XP17in7mlxgx3m+2VW1blqLU+j1kMM1xZY2&#x000A;MkocnsEYMAvVRz7DdiePXHOWM9zZWtndpat6ca1Y0VpZ42k4mb7uOqsvICcH&#x000A;jkc9x7HHsZTtPQo4PIt9drLFR/phtxRWp5Jnhcw2Eil+NOgD8p39nsSwXj8N&#x000A;zllU3ewubvXwxQ1IqF/WyW4JCWeXsPi47D0AP3D6BPPH5H4wr5yfdF0zp2Zl&#x000A;pLO/fyG3Sv3dZbq1oFLvWpPCwlY8hfulfnhRyfQ/uX/eabnkNzXXt8djXqrV&#x000A;11FLcIikYs4JlH3MQAOfjHoA8cn2f4N2nkVK78vkx0flED1SdnsIZLLSMFhj&#x000A;189Zk4iMnUrKSx+1WIfhQ3HoZAk8m3lWgZbaa4SWaUV2u6xuEqo0irJ8v3nu&#x000A;Iw6sWBXkBvS/nDs8/Po7etmRZnf3R0PiexsbTTLbsGvI3yyIs1cERTorkLIg&#x000A;JJCsByPZ/wBEjg5bZWRDGQpT+WbK7r9fGurhhn2NmURVo5eehPBZiePfAVWP&#x000A;/wBZrk8r00NLXWLE0qtsIDPXijrySyOoClgFRSSR2HI4/wAn8A8SbOSwQ5vJ&#x000A;0fZusFyomvNOnYhsmF5e5mmaPjhWH54UA/wTyeQOMtot5rpr1inA1maSv2+V&#x000A;oqkrxqVHtfkClCw/7Qe3PrjnLprkSQ0J5RpWoy2zYnRYphA0T1Jkn+QgEIIi&#x000A;okJIIIAX2PeYy+RUIHsT2LnxQRVI7HwyU5Y5lDsyqT29ksV6hOobkfzyMMIj&#x000A;0vLNampitbK31nex9M0UdOdXWYqXWL42X5O3UeuVHb0QByBlzqdjT2tBL1GU&#x000A;ywOWAJRkIKkqwKsAQQQQQQCOMscCSSsZCjGAMYAxgDKfyrY7HW1qs9KGq8b2&#x000A;4IZ2mduVWSVE+1QPZ+4+yRxx+D+Mb0CBLvdku3aRVqf0qPYprnQxt8xdlH7g&#x000A;btxx3YL16/gE9v4zDybyDYa7yGtQr/RKjiEpDMrGa4Xl6OsRDAAovDHkN6I5&#x000A;6j3im/h5/D7+jD35mnqhPvdrBs9pBA2v2y1as0whqIyyV5FI+OKU9m5ZwSfQ&#x000A;U/afRyX4ZuLO3qW5J7NC6kMoSK5SQrDMCiseAWb2pJU/cfY/g8gSftb5TnJh&#x000A;2fmUes8w2uz8On8hpw0hFT1sk1hmjYrLZEZb40HYEKp47E88k9R7BItfCt5b&#x000A;281pJLus2deKOJ1ua9CkXdu3aIgyPyygKSQfw45A/nUXazkHb8xmbjpsZAVX&#x000A;mVW1e8Q3NKlF8tqxQnihj7BeztGwUcngDkkez6z4Bp5ttZ8eravyPwPzKC1T&#x000A;7Q1NlqNc8M0UDo3ZSvUBz2455/IdzyDz3+h9J4Xs6l4knO/TSDw/VOpbRPwt&#x000A;qN3Uq/0+8e8preR+O6ah4htoNYL9e/es7Ki6NXkSRTIEkIVQvWNePXJ5I/J4&#x000A;z9A/qDod95Fq5dVq91q6FG5WlrXor2pN35EcccpxLGFYAt/cHU8j7fR58G22&#x000A;Kbqrrf3bRuqtLRN2ao1hRTS1Mw5bmyPT9LW9nSqKVaiFS3rCunVxctpxErSH&#x000A;c5bX/pDR1fnSeR0T49bQtWeR9volubCNoYkh5gtiRDHysaH2j8N2Yf3cZs1P&#x000A;6ceQajVeNQ63yvWpe8erz0K1iXTO6SU5RGOjRiwP3QYkPyBuv5/b95K26009&#x000A;/wDt2qfnD4p9EvCoWWS7Lylb5XOa/wDTjyanupPFNbvvpdbH4bQ09rZTalpP&#x000A;qlEtpZPhIkVY5grA+zIF7jlT6zq9l+mK3bs9E7np4tbtR3bWsWB1sPNHEsah&#x000A;LSyApH+3GxAUv2U8OAeBaoru1rr0ltL8/lOOZup/dKx2n0t1vyM9P+mMPju4&#x000A;u7LxfyDba97NelVjS3cs7BYooJi8iAWJmBDofjHofHySv9xGVVH9IpNTvNzs&#x000A;NHd8XqPsprUyX5vGEl2tc2CWkAtiZQygu/UNGeAVB7Ae4/u/le0PjD1vzlz1&#x000A;JTFK+1b0+Voi3kaNp+idOfX6OlWs6C1X0H1FfWVd5oRsa0dOXoRE6NKpaSMo&#x000A;oWUMp68hgxJY/VdXW+i1lWn1rL8EKRda0PxRDqoHCJyei+vS8ngcDk5rxNpz&#x000A;xnM0sY8KTUblGd+dyRjMmhjAGMAYwBjAGMAYwBjAGMAYwBlH5BqNnf2dO5S2&#x000A;FGFaqsVht0msJ8hI4kHEicMACAffHY/5xvQIlnxzYGzLNFsoGiacXhWaAqGt&#x000A;KgCnv2PEfZVbr1Lc/wDIj1lhPo0fxCbx9JyglpvWM7L2PZlILkc+ySST7943&#x000A;RmWX75FTipPM1Im28blu3Znj2AhqXI4o70Bg7NKsZJHRuw6cglW5Dcjjjg+8&#x000A;WNDen8begl6CvcsT/UWpGiaaOQl+zRkdkJQjhPyPtHGN0ZqZSiM3Guz49tp0&#x000A;hkXcUq1pa71JHr68rGYG6+kQyHq69fTEkDk/acsotNFBstbZgk6RUKclRIuv&#x000A;PKsYuDzz/Ai4/Hvn/WWc/PdsRn49kb9TRNFLPeb5pLFmSdn69f7j9q/n/ioV&#x000A;ef56/wAfjIez0EWws7OSew6x7ChHTZUXhk6tIewJ/J/c/HH/AB/nnJ0zT2Nc&#x000A;SPS0OyW3Lbv7mKxLZIS2sVMRpLCsbKqAFmKkMxYtyefx6GQ18QtmCL59ysti&#x000A;nHDFQkNXhY0icOPkXv8AuMSq9iCgPUcBT7xppmS8V51zIXrxteeP62XW1Zls&#x000A;WVs2LE72JnSL407Nx6VOT1Hofkk88nn3ljjoBjAKXdePQ7fb1bly3bWGrE6x&#x000A;Q17EsDB2I5cvG6k/aOOP9nOd/wCm9pqt7qauku9IIY77RzWaz2EhWR4WEbnu&#x000A;Cx57kEsD6/ng8xKLLNSu+pOPhMawpDFsXCrWpwcvF2YmvOZixPI9sTxx/H59&#x000A;/jJI8d2EdPZ62ruUg11z53iC1j9RBJKSxIlDgEBmYgdQeDx29c5XpG7Izegn&#x000A;dPMzrB13hEmvrl6d3X1biXluQGtrfirRsIviZTEH5IKlufuB5PPOTNn4vY2M&#x000A;01uzs41uSVqyK8VYqiywTNKr9S5JUsQCvP4B+736s7+GdjKRnF41Ye5X2F7Z&#x000A;RzXUvrclaKsY42CwtEqKpdio4bnkliTz/BHFpoNZ/SqtiD5/m+a3PZ56dePk&#x000A;kZ+v5P47cc/zkVrLNCu+dSwxgDGAMYAxgDIO81/9TopW+b4utiCft17f/rlW&#x000A;Tjjkfnrxz/HOAU+x0FxLVm5Vsiet9R/UEofEA8llUAVfkLABCyq3HXnt77ce&#x000A;s82Hjmw2Eryy7OCEXIII9gi1SxJjJP7LF/2/ZP5D8eiOD7Km0cs7L18jvPPO&#x000A;79Bs/F7W3szS7TaQOv001asa9P43RZCvPdi7d+Oo9AKD75H44sdHq7dOe7b2&#x000A;F2G1btlA5grmGJQi8LwhZjz7PJLHn1+OMkfbGXDu5KSv4QamjfV0toIVsa1q&#x000A;N0mvys5+PokwXsOrj+fZ7AAH8Ai10GktUtjNstjfgt25K8dYGvWMEYjQsRyp&#x000A;dyW5Y++ePxwB751N2w7l5jIBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGM&#x000A;AYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwB&#x000A;jAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGM&#x000A;AYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwB&#x000A;jAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGMAYwBjAGM&#x000A;AYwBjAGMAYwBjAGMAYwD/9k='>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>
