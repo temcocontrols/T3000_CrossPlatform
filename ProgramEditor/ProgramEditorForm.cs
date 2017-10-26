@@ -642,7 +642,9 @@
             LinesValidator();
         }
 
-
+        /// <summary>
+        /// Pre-process tokens from parser
+        /// </summary>
         private void ProcessTokens()
         {
             
@@ -656,8 +658,10 @@
 
                 if (_parseTree == null) return;
 
-                foreach (var tok in _parseTree.Tokens)
+                //foreach (var tok in _parseTree.Tokens)
+                for(var idxToken = 0; idxToken < _parseTree.Tokens.Count; idxToken++)
                 {
+                    var tok = _parseTree.Tokens[idxToken];
                     var tokentext = tok.Text;
                     var terminalname = tok.Terminal.Name;
 
@@ -695,33 +699,7 @@
                             Tokens.Add(NewPointVar);
                             break;
 
-                        #region OPERATORS
-
                         
-                        case "PLUS":
-                        case "MINUS":
-                        case "MUL":
-                        case "DIV":
-                        case "POW":
-                        case "MOD":
-                        case "LT":
-                        case "GT":
-                        case "LE":
-                        case "GE":
-                        case "EQ":
-                        case "NE":
-                        case "AND":
-                        case "XOR":
-                        case "OR":
-                        case "NOT":
-                            //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
-                            //To allow further transforms by RPN Parser of Expressions
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
-                            TYPE_TOKEN TypeToken = (TYPE_TOKEN) Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
-                            Tokens.Last().Token = (short)TypeToken ;
-                            Tokens.Last().Precedence = (short)tok.KeyTerm.Precedence;
-                            break;
-                        #endregion
 
                         case "ASSIGN":
 
@@ -735,6 +713,10 @@
                             //insert it before assignar var.
                             Tokens.Add(assignToken);
                             Tokens.Add(last);
+                            //get the expression in postfix
+                            functions = new Stack<TokenInfo>();
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+                            
                             break;
 
                         case "Identifier":
@@ -786,6 +768,13 @@
         }
 
 
+
+        /// <summary>
+        /// Returns PCODE_CONST value and Index for the especified Identifier
+        /// </summary>
+        /// <param name="Ident">Label of Point Identifier</param>
+        /// <param name="Index">Out Index of Point Identifier</param>
+        /// <returns>PCODE_CONST value and Index</returns>
         PCODE_CONST GetTypeIdentifier( string Ident, out int Index)
         {
            
@@ -855,18 +844,256 @@
             Index = -2;
             return PCODE_CONST.UNDEFINED_SYMBOL;
             
-            
-
-
-
-            
-
         }
 
 
+        /// <summary>
+        /// Stack of recursive examined functions, counting subexpressions
+        /// </summary>
+        Stack<TokenInfo> functions = new Stack<TokenInfo>();
+
+        /// <summary>
+        /// Parse tokens from infix notation into postfix (RPN)
+        /// </summary>
+        /// <param name="Index">Start Index</param>
+        /// <param name="Cancel">Cancel processing because of at least one semantic error</param>
+        /// <returns>RPN Expression, ready to be encoded</returns>
+        List<TokenInfo> GetExpression(ref int Index, ref bool Cancel)
+        {
+            // _parseTree.Tokens.Count
+            List<TokenInfo> Expr = new List<TokenInfo>();
+            Stack<TokenInfo> Oper = new Stack<TokenInfo>();
+            
+            //Last processed token was a BEGIN EXPRESSION MARKER
+            Index++; //Jump over next token.
+
+            for (; Index < _parseTree.Tokens.Count; Index++)
+            {
+                var tok = _parseTree.Tokens[Index];
+                var tokentext = tok.Text;
+                var terminalname = tok.Terminal.Name;
+                
+
+                switch (terminalname)
+                {
+
+                    #region PARENTHESIS
+
+                    case "(":
+                        //If the incoming symbol is a left parenthesis, push it on the stack.
+                        Oper.Push(new TokenInfo(tokentext, terminalname));
+                        break;
+                    
+                    case ")":
+                        //	If the incoming symbol is a right parenthesis, 
+                        // pop the stack and print the operators until you see a left parenthesis. 
+                        // Discard the pair of parentheses.
+                        if (Oper.Count > 0)
+                        {
+                            while (Oper.Peek().TerminalName != "(")
+                            {
+                                Expr.Add(Oper.Pop());
+                            }
+                        }
+                        if(Oper.Count >0) Oper.Pop(); //Discard left parenthesis
+                        //see if those parenthesis were parts of a function call.
+                        if(Oper.Count > 0 && Oper.Peek().Precedence == 200 )
+                        {
+                            //Function Call
+                            //Add function token to expression.
+                            Expr.Add(Oper.Pop());
+                            if (functions.Count > 0)
+                            {
+                                if (Expr.Last().TerminalName == functions.Peek().TerminalName)
+                                {
+                                    //Add the counter into Index property of token function
+                                    
+                                    Expr.Last().Index = functions.Peek().Index ;
+                                    functions.Pop();
+                                }
+                               
+                            }
+
+                        }
+                        break;
+
+                    #endregion
+
+                    case "COMMA":
+                        //Add 1 to counter of subexpressions, comma means here comes another one.
+                        if (functions.Count > 0) functions.Peek().Index++;
+                        //Save everything down to Left Parenthesis but don't discard it
+                        if (Oper.Count > 0)
+                        {
+                            while (Oper.Peek().TerminalName != "(")
+                            {
+                                Expr.Add(Oper.Pop());
+                            }
+                        }
+
+                       
+                        break;
+
+                    #region END MARKERS FOR EXPRESSION
+                    case "LF":
+                    case "THEN":
+                    case "EOF":
+                    case "REM":
+                   
+
+                        //Pop all operators remaining in stack.
+                        //Return expression
+                        while (Oper.Count > 0)
+                        {
+                            Expr.Add(Oper.Pop());
+                        }
+                        
+                        Index--; //Get back, this token should be processed by parent function.
+                        return Expr;
+                    #endregion
+
+                    #region Identifier
+                    case "Identifier":
+                        //Locate Identifier and Identify Token associated ControlPoint.
+                        //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
+                        int PointIndex = 0;
+                        var TokenType = GetTypeIdentifier(tokentext, out PointIndex);
+                        if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
+                        {
+                            //There is a semantic error here
+                            //Add error message to parser and cancel renumbering.
+                            //Don't break it inmediately, to show all possible errors of this type
+                            _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+                                tok.Location,
+                                $"Semantic Error: Undefined Identifier: {tok.Text}",
+                                new ParserState("Validating Tokens")));
+                            ShowCompilerErrors();
+                            Cancel = true;
+                        }
+                        else
+                        {
+                            //Prepare token identifier to encode: Token + Index + Type
+                            TokenInfo NewIdentifier = new TokenInfo(tokentext, terminalname);
+                            NewIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                            NewIdentifier.Index = (short)PointIndex;
+                            NewIdentifier.Token = (short)TokenType;
+                            Expr.Add(NewIdentifier);
+                        }
+                        break;
+
+                    #endregion
+
+                    #region OPERATORS
+
+                    case "PLUS":
+                    case "MINUS":
+                    case "MUL":
+                    case "DIV":
+                    case "POW":
+                    case "MOD":
+                    case "LT":
+                    case "GT":
+                    case "LE":
+                    case "GE":
+                    case "EQ":
+                    case "NE":
+                    case "AND":
+                    case "XOR":
+                    case "OR":
+                    case "NOT":
+                    
+                        //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
+                        //To allow further transforms by RPN Parser of Expressions
+                        var op= new TokenInfo(tokentext, terminalname);
+                        TYPE_TOKEN TypeToken = (TYPE_TOKEN)Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
+                        op.Token = (short)TypeToken;
+                        op.Precedence = (short)tok.KeyTerm.Precedence;
+
+                        if(Oper.Count == 0)
+                        {
+                            Oper.Push(op);
+                        }
+                        else
+                        {
+                            while(Oper.Count > 0 && op.Precedence <= Oper.Peek().Precedence)
+                            {
+                                Expr.Add(Oper.Pop());
+                            }
+
+                            Oper.Push(op);
+                        }
+                        break;
+                    #endregion
+
+                    #region Number
+                    case "Number":
+                        Expr.Add(new TokenInfo(tokentext, terminalname));
+                        Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                        break;
+                    #endregion
+
+                    #region FUNCTIONS
+                    case "ABS":
+                    case "AVG":
+                    case "INTERVAL":
+                    case "_INT":
+                    case "LN":
+                    case "LN_1":
+                    case "SQR":
+                    case "_Status":
+                    case "MAX":
+                    case "MIN":
+                        //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
+                        //To allow further transforms by RPN Parser of Expressions
+                        var fxToken = new TokenInfo(tokentext, terminalname);
+                        FUNCTION_TOKEN tokenValue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
+                        fxToken.Token = (short)tokenValue;
+                        
+                        //fx.Precedence = (short)tok.KeyTerm.Precedence;
+                        fxToken.Precedence = 200;
+                        fxToken.Index = 1; //At least one expression to count
+                        if (Oper.Count == 0)
+                        {
+                            Oper.Push(fxToken);
+                            functions.Push(fxToken);
+
+                        }
+                        else
+                        {
+                            while (Oper.Count > 0 && fxToken.Precedence <= Oper.Peek().Precedence)
+                            {
+                                Expr.Add(Oper.Pop());
+                            }
+
+                            Oper.Push(fxToken);
+                            functions.Push(fxToken);
+
+                        }
+                        break;
+
+                        #endregion
+                }
+
+            }
+
+
+            //Pop All operators remaining in stack.
+            while (Oper.Count > 0)
+            {
+                Expr.Add(Oper.Pop());
+            }
+
+            //Check: If Expr.Count < 1 then semantic error found, expected Expression.
+
+
+            Index-=1;
+            return Expr;
+        }
 
 
     }
+
+
 
 
     /// <summary>
@@ -978,6 +1205,9 @@
         {
             this.Text = Text;
             this.TerminalName = TName;
+            this.Precedence = 0;
+            this.Index = 0;
+            this.Type = 0;
         }
 
         /// <summary>

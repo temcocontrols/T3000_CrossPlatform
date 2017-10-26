@@ -204,6 +204,9 @@
                 
                 var form = new ProgramEditorForm();
                 form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
+
+                Console.WriteLine("--------------ORIGINAL CODE-------------------");
+                ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
                 form.Prg = this.Prg;
                 form.PrgPath = this.PrgPath;
@@ -234,13 +237,7 @@
             //Inician las pruebas de codificación
             byte[] ByteEncoded = EncodeBytes(e.Tokens);
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            Console.Write("Bytes = {");
-            for (var i= 0; i < PSize; i++ )
-            {
-                Console.Write($"{ByteEncoded[i]} ");
-
-            }
-            Console.WriteLine("}");
+            ConsolePrintBytes(ByteEncoded, "Encoded");
 
            // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
             Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
@@ -253,14 +250,19 @@
 
         }
 
+
+        /// <summary>
+        /// Encode a ProgramCode Into Byte Array
+        /// </summary>
+        /// <param name="Tokens">Preprocessed list of tokens</param>
+        /// <returns>byte array</returns>
         private byte[] EncodeBytes(List<TokenInfo> Tokens)
         {
             var result = new List<byte>();
             byte[] prgsize = { (byte) 0x00, (byte) 0x00 };
             result.AddRange(prgsize);
 
-            short CountBinaryParts = 0;
-            Stack<TokenInfo> BinOpers = new Stack<TokenInfo>();
+           
             
             int offset = 0;
             int tokenIndex = 0;
@@ -324,8 +326,18 @@
                     case "AND":
                     case "XOR":
                     case "OR":
+                    case "ABS":
                     
-                        BinOpers.Push(token);
+
+                        result.Add((byte)token.Token);
+                        offset++;
+                        break;
+
+                    case "AVG":
+
+                        result.Add((byte)token.Token);
+                        result.Add((byte)token.Index);
+                        offset+=2;
                         break;
 
                     case "NOT":
@@ -335,30 +347,17 @@
                     case "Identifier":
                         //Encode directly: Token + Index + Type
 
-                        CountBinaryParts = (short) ((Tokens[tokenIndex-1].TerminalName != "ASSIGN") ? 
-                        CountBinaryParts + 1 :  0);
+                        
 
                         result.Add((byte)token.Token);
                         result.Add((byte)token.Index);
                         result.Add((byte)token.Type);
                         offset += 3;
-                        
-                        
-                        if (BinOpers.Count > 0 && CountBinaryParts == 2)
-                        {
-                            //time to pop operator and encode postfix binary expression ending with oper
-                            var op = BinOpers.Pop();
-                            CountBinaryParts = 1; //ready for more binary expressions?
-                            result.Add((byte) op.Token);
-                            offset++;
-                        }
 
                         break;
 
                     case "Number":
 
-                        CountBinaryParts = (short)((Tokens[tokenIndex - 1].TerminalName != "ASSIGN") ?
-                        CountBinaryParts + 1 : 0);
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -370,20 +369,11 @@
                         byte[] byteArray = BitConverter.GetBytes(numVal);
                         result.AddRange(byteArray);
                         offset += 4;
-
-                        if (BinOpers.Count > 0 && CountBinaryParts == 2)
-                        {
-                            //time to pop operator and encode postfix binary expression ending with oper
-                            var op = BinOpers.Pop();
-                            CountBinaryParts = 1; //ready for more binary expressions?
-                            result.Add((byte)op.Token);
-                            offset++;
-                        }
-
                         break;
+
                     case "LF":
                         isFirstToken = true;
-                        CountBinaryParts = 0;
+                        
                         break;
                     
                 }
@@ -407,6 +397,25 @@
 
 
         #endregion
+
+
+        /// <summary>
+        /// Prints a byte array
+        /// </summary>
+        /// <param name="ByteEncoded">Byte array to print</param>
+        /// <param name="HeaderString">Optional Header string</param>
+        void ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
+        {
+            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            Console.Write(HeaderString);
+            Console.Write(" Bytes = { ");
+            for (var i = 0; i < PSize + 3; i++)
+            {
+                Console.Write($"{ByteEncoded[i]} ");
+
+            }
+            Console.WriteLine("}");
+        }
 
     }
 

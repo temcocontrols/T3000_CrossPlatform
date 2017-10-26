@@ -40,7 +40,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         POINT_REMOTE_VAR = 3,
         LABEL_VAR = 4,
         ATTRIB = 5,
-		
+
         MAX_ATTRIB = 10,
         MAX_LINE = 512,
         MAX_VARS = 500,
@@ -79,7 +79,8 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         LT = 0x6D,
         [Name(">")]
         GT = 0x6E,
-        EQ = 0x71, NE = 0x72, XOR = 0x73, AND = 0x74, OR = 0x75, NOT = 0x76, EOI = 0x77, TTIME = 0x78, BIT_AND = 0x79, BIT_OR = 0x7A,
+        EQ = 0x71, NE = 0x72, XOR = 0x73, AND = 0x74, OR = 0x75, NOT = 0x76,
+        EOI = 0x77, TTIME = 0x78, BIT_AND = 0x79, BIT_OR = 0x7A,
         RAWLINE = 0xFD
     };
 
@@ -133,12 +134,14 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
     public enum FUNCTION_TOKEN
     {
         SUN = 7, MON = 8, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, COM_1 = 0x10,
-        ABS = 0x32, AVG = 0x33, DOY = 0x34, DOW = 0x35, _INT = 0x36, MAX = 0x37, MIN = 0x38, SQR = 0x39, Tbl = 0x3A,
+        ABS = 0x32, AVG = 0x33, DOY = 0x34, DOW = 0x35, _INT = 0x36, MAX = 0x37, MIN = 0x38,
+        SQR = 0x39, Tbl = 0x3A,
         TIME = 0x3B,
         [Name("TIME-ON")]
         TIME_ON = 0x3C,
         TIME_OFF = 0x3D, INTERVAL = 0x3E, TIME_FORMAT = 0x3F,
-        WR_ON = 0x40, WR_OFF = 0x41, UNACK = 0x42, _Status = 0x47, RUNTIME = 0x48, SCANS = 0x4B, POWER_LOSS = 0x4C, LN = 0x4D, LN_1 = 0x4E,
+        WR_ON = 0x40, WR_OFF = 0x41, UNACK = 0x42, _Status = 0x47, RUNTIME = 0x48, SCANS = 0x4B,
+        POWER_LOSS = 0x4C, LN = 0x4D, LN_1 = 0x4E,
         OUTPUTD = 0x50, INKEYD = 0x51, DOM = 0x52, MOY = 0x53, CONPROP = 0x56, CONRATE = 0x57, CONRESET = 0x58, CLEARPORT = 0x59,
         JAN = 0x0C1, FEB = 0x0C2, MAR = 0x0C3, APR = 0x0C4, MAY = 0x0C5, JUN = 0x0C6, JUL = 0x0C7, AUG = 0x0C8,
         SEP = 0x0C9, OCT = 0x0CA, NOV = 0x0CB, DEC = 0x0CC, LOCAL_POINT_PRG = 156,

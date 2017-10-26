@@ -157,7 +157,8 @@
             var PARIZQ = ToTerm("(");
             var PARDER = ToTerm(")");
             var CommandSeparator = ToTerm(";");
-            var Comma = ToTerm(",");
+            var Comma = ToTerm(",","COMMA");
+            
             var DDOT = ToTerm(":");
 
             //Operators
@@ -525,7 +526,7 @@
             //Literal ::= NumbersLiteral | DatesLiteral | DaysLiteral | TimeLiteral
             Literal.Rule = IntegerNumber | Number | DatesLiteral | DayLiteral | TimeLiteral;
 
-
+            #region 27 FUNCTIONS
             //27 Functions
             //Function::= ABS | AVG | CONPROP | CONRATE | CONRESET | DOM | DOW | DOY |
             //INT | INTERVAL | LN | LN1 | MAX | MIN | POWERLOSS | SCANS | SQR | STATUS | TBL |
@@ -535,8 +536,27 @@
                 | TBL | TIME | TIMEON | TIMEOFF | WRON | WROFF | UNACK | USERA | USERB;
 
             ABS.Rule = "ABS" + PARIZQ + Expression + PARDER;
+            //INT      ::= 'INT' PARIZQ Expression PARDER
+            INT.Rule = ToTerm("INT","_INT") + PARIZQ + Expression + PARDER;
+            //INTERVAL::= 'INTERVAL' PARIZQ Expression PARDER
+            INTERVAL.Rule = "INTERVAL" + PARIZQ + Expression + PARDER;
+            //LN::= 'LN' PARIZQ Expression PARDER
+            LN.Rule = "LN" + PARIZQ + Expression + PARDER;
+            //LN1 ::= 'LN-1' PARIZQ Expression PARDER
+            LN1.Rule = ToTerm("LN-1","LN_1") + PARIZQ + Expression + PARDER;
+            //SQR ::= 'SQR' PARIZQ Expression PARDER
+            SQR.Rule = "SQR" + PARIZQ + Expression + PARDER;
+            //STATUS ::= 'STATUS' PARIZQ Expression PARDER
+            STATUS.Rule = ToTerm("STATUS","_Status") + PARIZQ + Expression + PARDER;
+            
             //AVG      ::= 'AVG' PARIZQ EXPRESSION ( Space ',' Space EXPRESSION )* PARDER
             AVG.Rule = "AVG" + PARIZQ + Expression + ExpressionListOpt + PARDER;
+            //MAX ::= 'MAX' PARIZQ Expression (Space ',' Space Expression)*PARDER
+            MAX.Rule = "MAX" + PARIZQ + Expression + ExpressionListOpt + PARDER;
+            //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
+            MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
+
+
             //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
             //TODO: Verify MAX value for integer values of CONPROP
             CONPROP.Rule = "CONPROP" + PARIZQ + CON + Comma + Expression + PARDER;
@@ -546,22 +566,7 @@
 
             //CONRESET ::= 'CONRESET' PARIZQ Ordinal ',' Expression PARDER RANGE
             CONRESET.Rule = "CONRESET" + PARIZQ + CON + Comma + Expression + PARDER;
-            //INT      ::= 'INT' PARIZQ Expression PARDER
-            INT.Rule = "INT" + PARIZQ + Expression + PARDER;
-            //INTERVAL::= 'INTERVAL' PARIZQ Expression PARDER
-            INTERVAL.Rule = "INTERVAL" + PARIZQ + Expression + PARDER;
-            //LN::= 'LN' PARIZQ Expression PARDER
-            LN.Rule = "LN" + PARIZQ + Expression + PARDER;
-            //LN1 ::= 'LN-1' PARIZQ Expression PARDER
-            LN1.Rule = "LN-1" + PARIZQ + Expression + PARDER;
-            //MAX ::= 'MAX' PARIZQ Expression (Space ',' Space Expression)*PARDER
-            MAX.Rule = "MAX" + PARIZQ + Expression + ExpressionListOpt + PARDER;
-            //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
-            MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
-            //SQR ::= 'SQR' PARIZQ Expression PARDER
-            SQR.Rule = "SQR" + PARIZQ + Expression + PARDER;
-            //STATUS ::= 'STATUS' PARIZQ Expression PARDER
-            STATUS.Rule = "STATUS" + PARIZQ + Expression + PARDER;
+            
             //TBL ::= 'TBL' PARIZQ Expression ',' TABLENUMBER PARDER
             TBL.Rule = "TBL" + PARIZQ + Expression + Comma + TABLENUMBER + PARDER;
             //TIMEON ::= 'TIME-ON' PARIZQ Designator PARDER
@@ -586,7 +591,7 @@
             ComParameters.Rule = CHARS | EnclosedString;
             CHARS.Rule = MakePlusRule(CHARS, Comma + PrintableAscii);
 
-
+            #endregion
 
             //EXPR.Rule = number | variable | FUN_CALL | stringLiteral | BINARY_EXPR 
             //          | "(" + EXPR + ")" | UNARY_EXPR;

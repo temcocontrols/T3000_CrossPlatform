@@ -352,14 +352,15 @@
 
             ProgramCodes[0] = new ProgramCode(ProgramCodeBytes, this, 0, FileVersion);
 
-            
-            for(int i=1;i< ProgramCode.GetCount(FileVersion);i++)
+
+            for (int i = 1; i < ProgramCode.GetCount(FileVersion) ; i++)
             {
                 pcode_offset += ProgramCode.GetSize(FileVersion);
                 ProgramCodeBytes = bytes.ToBytes(pcode_offset, ProgramCode.GetSize(FileVersion));
                 ProgramCodes[i] = new ProgramCode(ProgramCodeBytes, this, 0, FileVersion);
+                Console.WriteLine($"Leído ProgramCode[{i}]");
             }
-            
+
 
 
             CustomUnits.Analog.AddRange(GetArray(bytes,
