@@ -119,6 +119,8 @@
             //Controllers, for backwards compatibility
             var CON = new RegexBasedTerminal("CON", "CON(" + UPTO64 + ")");
             CON.Priority = 40;
+            var CONNUMBER = new RegexBasedTerminal("CONNUMBER", "(" + UPTO64 + ")");
+            CON.Priority = 40;
 
             //Weekly Routines, now known as Schedules
             var WRS = new RegexBasedTerminal("WRS", "SCH(" + UPTO64 + ")");
@@ -559,17 +561,18 @@
 
             //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
             //TODO: Verify MAX value for integer values of CONPROP
-            CONPROP.Rule = "CONPROP" + PARIZQ + CON + Comma + Expression + PARDER;
+            CONPROP.Rule = "CONPROP" + PARIZQ + CONNUMBER + Comma + Expression + PARDER;
 
             //CONRATE  ::= 'CONRATE' PARIZQ Ordinal ',' Expression PARDER RANGE
-            CONRATE.Rule = "CONRATE" + PARIZQ + CON + Comma + Expression + PARDER;
+            CONRATE.Rule = "CONRATE" + PARIZQ + CONNUMBER + Comma + Expression + PARDER;
 
             //CONRESET ::= 'CONRESET' PARIZQ Ordinal ',' Expression PARDER RANGE
-            CONRESET.Rule = "CONRESET" + PARIZQ + CON + Comma + Expression + PARDER;
+            CONRESET.Rule = "CONRESET" + PARIZQ + CONNUMBER + Comma + Expression + PARDER;
             
             //TBL ::= 'TBL' PARIZQ Expression ',' TABLENUMBER PARDER
             TBL.Rule = "TBL" + PARIZQ + Expression + Comma + TABLENUMBER + PARDER;
             //TIMEON ::= 'TIME-ON' PARIZQ Designator PARDER
+
             TIMEON.Rule = "TIME-ON" + PARIZQ + Designator + PARDER;
             //TIMEOFF::= 'TIME-OFF' PARIZQ Designator PARDER
             TIMEOFF.Rule = "TIME-OFF" + PARIZQ + Designator + PARDER;

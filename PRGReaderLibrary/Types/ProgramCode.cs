@@ -1228,7 +1228,7 @@ Token: {Token}
             FTABLE.Add("SQR", (byte)FUNCTION_TOKEN.SQR);
             FTABLE.Add("STATUS", (byte)FUNCTION_TOKEN._Status);
             FTABLE.Add("RUNTIME", (byte)FUNCTION_TOKEN.RUNTIME);
-            FTABLE.Add("TBL", (byte)FUNCTION_TOKEN.Tbl);
+            FTABLE.Add("TBL", (byte)FUNCTION_TOKEN.TBL);
             FTABLE.Add("TIME", (byte)FUNCTION_TOKEN.TIME);
             FTABLE.Add("TIME_FORMAT", (byte)FUNCTION_TOKEN.TIME_FORMAT);
             FTABLE.Add("TIME-ON", (byte)FUNCTION_TOKEN.TIME_ON);

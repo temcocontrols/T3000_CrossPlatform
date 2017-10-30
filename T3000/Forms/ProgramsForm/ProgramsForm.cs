@@ -311,6 +311,7 @@
                         //EOL: LF, Just Ignored. Next Token should be another LineNumber
                         break;
 
+                    //OPERATORS
                     case "PLUS":
                     case "MINUS":
                     case "MUL":
@@ -326,14 +327,26 @@
                     case "AND":
                     case "XOR":
                     case "OR":
+                    //FUNCTIONS
                     case "ABS":
-                    
+                    case "INTERVAL":
+                    case "_INT":
+                    case "LN":
+                    case "LN_1":
+                    case "SQR":
+                    case "_Status":
+                    case "CONPROP":
+                    case "CONRATE":
+                    case "CONRESET":
+                    case "TBL":
 
                         result.Add((byte)token.Token);
                         offset++;
                         break;
 
                     case "AVG":
+                    case "MAX":
+                    case "MIN":
 
                         result.Add((byte)token.Token);
                         result.Add((byte)token.Index);
@@ -357,6 +370,8 @@
                         break;
 
                     case "Number":
+                    case "CONNUMBER":
+                    case "TABLENUMBER":
 
 
                         result.Add((byte)token.Token);

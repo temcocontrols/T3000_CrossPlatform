@@ -135,7 +135,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
     {
         SUN = 7, MON = 8, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, COM_1 = 0x10,
         ABS = 0x32, AVG = 0x33, DOY = 0x34, DOW = 0x35, _INT = 0x36, MAX = 0x37, MIN = 0x38,
-        SQR = 0x39, Tbl = 0x3A,
+        SQR = 0x39, TBL = 0x3A,
         TIME = 0x3B,
         [Name("TIME-ON")]
         TIME_ON = 0x3C,

@@ -690,6 +690,7 @@
                             NewLocalVar.Token = (short)TYPE_TOKEN.IDENTIFIER;
                             Tokens.Add(NewLocalVar);
                             break;
+
                         case "VARS":
                         case "INS":
                         case "OUTS":
@@ -747,6 +748,7 @@
                             }
                             break;
                         case "Number":
+                        case "CON":
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             break;
@@ -1027,6 +1029,8 @@
 
                     #region Number
                     case "Number":
+                    case "CONNUMBER":
+                    case "TABLENUMBER":
                         Expr.Add(new TokenInfo(tokentext, terminalname));
                         Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                         break;
@@ -1034,15 +1038,20 @@
 
                     #region FUNCTIONS
                     case "ABS":
-                    case "AVG":
                     case "INTERVAL":
                     case "_INT":
                     case "LN":
                     case "LN_1":
                     case "SQR":
                     case "_Status":
+                        //Variable list of expressions
+                    case "AVG":
                     case "MAX":
                     case "MIN":
+                    case "CONPROP":
+                    case "CONRATE":
+                    case "CONRESET":
+                    case "TBL":
                         //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                         //To allow further transforms by RPN Parser of Expressions
                         var fxToken = new TokenInfo(tokentext, terminalname);
