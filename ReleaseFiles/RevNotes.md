@@ -3,13 +3,9 @@ The latest release notes, windows and linux release files are stored here
 
 #### RevNotes Follow here, most recent at the top
 
-## Updated 20171026.022800
-This release can save more complex assigments. (enclosed expressions, 13 functions, recursive expressions and list of subexpressions)
-Working on Issue #2: 
-Functions encoded so far: ABS AVG INTERVAL INT LN LN-1 SQR STATUS MAX MIN CONPROP CONRATE CONRESET
-##### Pending TIMEON / TIMEOFF / WRON / WROFF /  COM1
 
-## Updated 20171026.022800
+
+## Updated 20171028.104200
 This release can save more complex assigments. (enclosed expressions, 10 functions, recursive expressions and list of subexpressions)
 Working on Issue #2: 
 Functions encoded so far: ABS AVG INTERVAL INT LN LN-1 SQR STATUS MAX MIN

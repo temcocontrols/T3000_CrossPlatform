@@ -26,10 +26,10 @@
       <Argument Key="logoAlignment" Value="left" xmlns="" />
       <Argument Key="maxVersionParts" Value="" xmlns="" />
     </TransformComponentArguments>
-    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <HelpFileVersion>1.0.0.1</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
-    <SyntaxFilters>C#, Visual Basic, Managed C++</SyntaxFilters>
+    <SyntaxFilters>C#, Visual Basic, Visual Basic Usage, Managed C++</SyntaxFilters>
     <SdkLinkTarget>Self</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
@@ -40,8 +40,11 @@
     <FeedbackEMailLinkText>Author</FeedbackEMailLinkText>
     <FeedbackEMailAddress>lruiz75%40gmail.com</FeedbackEMailAddress>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\ProgramEditor\bin\Debug\ProgramEditor.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\ProgramEditor\bin\Debug\ProgramEditor.xml" xmlns="" />
+      <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000.exe" />
+      <DocumentationSource sourceFile="..\T3000\bin\Debug\PRGReaderLibrary.dll" />
+      <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000Grammar.dll" />
+      <DocumentationSource sourceFile="..\T3000\bin\Debug\ProgramEditor.dll" />
+      <DocumentationSource sourceFile="..\T3000\bin\Debug\ProgramEditor.xml" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
