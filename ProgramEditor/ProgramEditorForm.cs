@@ -1031,6 +1031,8 @@
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
+                    case "SYSPRG":
+                    case "TIMER":
                         Expr.Add(new TokenInfo(tokentext, terminalname));
                         Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                         break;
@@ -1044,14 +1046,20 @@
                     case "LN_1":
                     case "SQR":
                     case "_Status":
-                        //Variable list of expressions
-                    case "AVG":
-                    case "MAX":
-                    case "MIN":
+                    case "TBL":
                     case "CONPROP":
                     case "CONRATE":
                     case "CONRESET":
-                    case "TBL":
+                    case "TIME_ON":
+                    case "TIME_OFF":
+                    case "WR_ON":
+                    case "WR_OFF":
+                    
+                    //Functions with variable list of expressions, must add count of expressions as last token.
+                    case "AVG":
+                    case "MAX":
+                    case "MIN":
+                    
                         //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                         //To allow further transforms by RPN Parser of Expressions
                         var fxToken = new TokenInfo(tokentext, terminalname);

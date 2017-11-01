@@ -339,11 +339,16 @@
                     case "CONRATE":
                     case "CONRESET":
                     case "TBL":
+                    case "TIME_ON":
+                    case "TIME_OFF":
+                    case "WR_ON":
+                    case "WR_OFF":
 
                         result.Add((byte)token.Token);
                         offset++;
                         break;
 
+                    //Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
                     case "MAX":
                     case "MIN":
@@ -360,8 +365,6 @@
                     case "Identifier":
                         //Encode directly: Token + Index + Type
 
-                        
-
                         result.Add((byte)token.Token);
                         result.Add((byte)token.Index);
                         result.Add((byte)token.Type);
@@ -372,6 +375,8 @@
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
+                    case "SYSPRG":
+                    case "TIMER":
 
 
                         result.Add((byte)token.Token);

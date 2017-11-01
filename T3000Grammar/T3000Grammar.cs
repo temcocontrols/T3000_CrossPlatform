@@ -136,7 +136,7 @@
             //Other sub-literals
 
 
-            var DayNumber = new RegexBasedTerminal("DayNumber", UPTO31);
+            var DayNumber = new RegexBasedTerminal("DayNumber", "(" + UPTO31 + ")");
             DayNumber.Priority = 9;
 
             var TimeLiteral = new RegexBasedTerminal("TimeLiteral", "(2[0-3]|[0-1][0-9]):[0-5][0-9]:[0-5][0-9]");
@@ -147,10 +147,10 @@
             var PhoneNumber = new RegexBasedTerminal("PhoneNumber", Phone);
             PhoneNumber.Priority = 1;
             //v3 Manual states that only exists 5 customs tables.
-            var TABLENUMBER = new RegexBasedTerminal("TABLENUMBER", UPTO5);
+            var TABLENUMBER = new RegexBasedTerminal("TABLENUMBER", "(" +UPTO5 +")");
             //Same, up to 16 program codes (control Basic)
-            var SYSPRG = new RegexBasedTerminal("SYSPRG", UPTO16);
-            var TIMER = new RegexBasedTerminal("TIMER", UPTO4);
+            var SYSPRG = new RegexBasedTerminal("SYSPRG", "(" + UPTO16 + ")");
+            var TIMER = new RegexBasedTerminal("TIMER", "(" + UPTO4 + ")");
 
             //KEYWORDS
 
@@ -513,7 +513,7 @@
             //LineNumber.Rule = IntegerNumber;
             //PointIdentifier ::= VARS | CONS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR
             PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR | CON;
-
+            
             //Designator ::= Identifier | PointIdentifier | LocalVariable
             Designator.Rule = PointIdentifier | Identifier | LocalVariable;
             RemoteDesignator.Rule = Designator;
@@ -550,14 +550,15 @@
             SQR.Rule = "SQR" + PARIZQ + Expression + PARDER;
             //STATUS ::= 'STATUS' PARIZQ Expression PARDER
             STATUS.Rule = ToTerm("STATUS","_Status") + PARIZQ + Expression + PARDER;
-            
+
+            #region Functions with variable list of expressions, must add count of expressions as last token.
             //AVG      ::= 'AVG' PARIZQ EXPRESSION ( Space ',' Space EXPRESSION )* PARDER
             AVG.Rule = "AVG" + PARIZQ + Expression + ExpressionListOpt + PARDER;
             //MAX ::= 'MAX' PARIZQ Expression (Space ',' Space Expression)*PARDER
             MAX.Rule = "MAX" + PARIZQ + Expression + ExpressionListOpt + PARDER;
             //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
             MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
-
+            #endregion  
 
             //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
             //TODO: Verify MAX value for integer values of CONPROP
@@ -573,13 +574,14 @@
             TBL.Rule = "TBL" + PARIZQ + Expression + Comma + TABLENUMBER + PARDER;
             //TIMEON ::= 'TIME-ON' PARIZQ Designator PARDER
 
-            TIMEON.Rule = "TIME-ON" + PARIZQ + Designator + PARDER;
+            TIMEON.Rule = ToTerm("TIME-ON","TIME_ON") + PARIZQ + Designator + PARDER;
+            
             //TIMEOFF::= 'TIME-OFF' PARIZQ Designator PARDER
-            TIMEOFF.Rule = "TIME-OFF" + PARIZQ + Designator + PARDER;
+            TIMEOFF.Rule = ToTerm("TIME-OFF","TIME_OFF") + PARIZQ + Designator + PARDER;
             //WRON ::= 'WR-ON' PARIZQ SYSPRG ',' TIMER PARDER
-            WRON.Rule = "WR-ON" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+            WRON.Rule = ToTerm("WR-ON","WR_ON") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
             //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
-            WROFF.Rule = "WR-OFF" + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+            WROFF.Rule = ToTerm("WR-OFF","WR_OFF") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
 
 
             //COM1 ::= 'COM1' PARIZQ BAUDRATE ',' PORT (CHARS+ | ',' EnclosedString) PARDER

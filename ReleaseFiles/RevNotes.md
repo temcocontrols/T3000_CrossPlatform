@@ -3,6 +3,11 @@ The latest release notes, windows and linux release files are stored here
 
 #### RevNotes Follow here, most recent at the top
 
+## Updated 20171031.142900
+Working on Issue #2: 
+This release can save more complex assigments. (enclosed expressions, all functions defined in grammar, recursive expressions and list of subexpressions)
+Here ends Encoding of Assigments and Expressions.
+__Next Step, Commands!__
 
 
 ## Updated 20171028.104200
