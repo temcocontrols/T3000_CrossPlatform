@@ -60,9 +60,15 @@
             this.screensButton = new System.Windows.Forms.ToolStripButton();
             this.schedulesButton = new System.Windows.Forms.ToolStripButton();
             this.holidaysButton = new System.Windows.Forms.ToolStripButton();
+            this.panelBuildingView = new System.Windows.Forms.Panel();
+            this.groupBoxBuildingView = new System.Windows.Forms.GroupBox();
+            this.treeBuildingView = new System.Windows.Forms.TreeView();
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.buttonsToolStrip.SuspendLayout();
+            this.panelBuildingView.SuspendLayout();
+            this.groupBoxBuildingView.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -290,10 +296,44 @@
             this.holidaysButton.Name = "holidaysButton";
             this.holidaysButton.Click += new System.EventHandler(this.ShowHolidays);
             // 
+            // panelBuildingView
+            // 
+            this.panelBuildingView.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panelBuildingView.Controls.Add(this.groupBoxBuildingView);
+            resources.ApplyResources(this.panelBuildingView, "panelBuildingView");
+            this.panelBuildingView.Name = "panelBuildingView";
+            // 
+            // groupBoxBuildingView
+            // 
+            this.groupBoxBuildingView.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.groupBoxBuildingView.Controls.Add(this.treeBuildingView);
+            resources.ApplyResources(this.groupBoxBuildingView, "groupBoxBuildingView");
+            this.groupBoxBuildingView.Name = "groupBoxBuildingView";
+            this.groupBoxBuildingView.TabStop = false;
+            // 
+            // treeBuildingView
+            // 
+            this.treeBuildingView.BackColor = System.Drawing.Color.White;
+            this.treeBuildingView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.treeBuildingView, "treeBuildingView");
+            this.treeBuildingView.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.treeBuildingView.FullRowSelect = true;
+            this.treeBuildingView.Name = "treeBuildingView";
+            this.treeBuildingView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("treeBuildingView.Nodes")))});
+            // 
+            // splitter1
+            // 
+            resources.ApplyResources(this.splitter1, "splitter1");
+            this.splitter1.Name = "splitter1";
+            this.splitter1.TabStop = false;
+            // 
             // T3000Form
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.panelBuildingView);
             this.Controls.Add(this.buttonsToolStrip);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
@@ -309,6 +349,8 @@
             this.statusStrip.PerformLayout();
             this.buttonsToolStrip.ResumeLayout(false);
             this.buttonsToolStrip.PerformLayout();
+            this.panelBuildingView.ResumeLayout(false);
+            this.groupBoxBuildingView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,5 +389,9 @@
         private System.Windows.Forms.ToolStripButton screensButton;
         private System.Windows.Forms.ToolStripButton schedulesButton;
         private System.Windows.Forms.ToolStripButton holidaysButton;
+        private System.Windows.Forms.Panel panelBuildingView;
+        private System.Windows.Forms.GroupBox groupBoxBuildingView;
+        private System.Windows.Forms.TreeView treeBuildingView;
+        private System.Windows.Forms.Splitter splitter1;
     }
 }

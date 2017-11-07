@@ -226,7 +226,7 @@
 
         private void Form_Send(object sender, SendEventArgs e)
         {
-            //TODO: Use parse tree tokens to encode bytes and patch PRG File.
+            
             Console.WriteLine();
             Console.WriteLine("---------------------DEBUG STRINGS-----------------------");
             Console.WriteLine();
@@ -245,7 +245,7 @@
             Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
             Prg.Programs[Index_EditProgramCode].Length = PSize;
             //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
-            Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}2.PRG");
+            //Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}.PRG");
            
 
         }
@@ -339,10 +339,19 @@
                     case "CONRATE":
                     case "CONRESET":
                     case "TBL":
+                    case "TIME":
                     case "TIME_ON":
                     case "TIME_OFF":
                     case "WR_ON":
                     case "WR_OFF":
+                    case "DOY":
+                    case "DOM":
+                    case "DOW":
+                    case "POWER_LOSS":
+                    case "UNACK":
+                    case "SCANS":
+                    case "USER_A":
+                    case "USER_B":
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -383,7 +392,7 @@
                         offset++;
                         //And... voilá...  trick revealed.
                         //All numbers are converted to integer 32b, multiplying by 1000.
-                        //on Decoding bytes reverse operation dividing by 1000, so if not exact
+                        //on Decoding bytes: reverse operation dividing by 1000, so if not exact
                         //floating point numbers only have 3 decimals
                         int numVal = (int) (Convert.ToSingle(token.Text) * 1000);
                         byte[] byteArray = BitConverter.GetBytes(numVal);
@@ -394,6 +403,9 @@
                     case "LF":
                         isFirstToken = true;
                         
+                        break;
+                    default:
+                        Console.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
                     
                 }

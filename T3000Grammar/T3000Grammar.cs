@@ -217,12 +217,12 @@
             var DOY = ToTerm("DOY");
             var DOM = ToTerm("DOM");
             var DOW = ToTerm("DOW");
-            var POWERLOSS = ToTerm("POWER-LOSS");
+            var POWERLOSS = ToTerm("POWER-LOSS","POWER_LOSS");
             var DATE = ToTerm("DATE");
             var TIME = ToTerm("TIME");
             var UNACK = ToTerm("UNACK");
-            var USERA = ToTerm("USER-A");
-            var USERB = ToTerm("USER-B");
+            var USERA = ToTerm("USER-A","USER_A");
+            var USERB = ToTerm("USER-B","USER-B");
             var BEEP = ToTerm("BEEP");
             var SCANS = ToTerm("SCANS");
 
@@ -561,7 +561,6 @@
             #endregion  
 
             //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
-            //TODO: Verify MAX value for integer values of CONPROP
             CONPROP.Rule = "CONPROP" + PARIZQ + CONNUMBER + Comma + Expression + PARDER;
 
             //CONRATE  ::= 'CONRATE' PARIZQ Ordinal ',' Expression PARDER RANGE

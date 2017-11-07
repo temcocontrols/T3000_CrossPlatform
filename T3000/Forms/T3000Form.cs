@@ -25,6 +25,10 @@
         public T3000Form()
         {
             InitializeComponent();
+            //LRUIZ: AutoExpand treeBuildingView
+            //TODO: Add dynamically nodes to tree Building View
+            treeBuildingView.ExpandAll();
+            treeBuildingView.FullRowSelect = true;
         }
 
         #region File

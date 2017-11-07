@@ -10,6 +10,7 @@
     using System.Windows.Forms;
     using PRGReaderLibrary;
     using PRGReaderLibrary.Types.Enums.Codecs;
+    using System.Text.RegularExpressions;
 
 
 
@@ -645,7 +646,8 @@
         /// <summary>
         /// Pre-process tokens from parser
         /// </summary>
-        private void ProcessTokens()
+        /// <remarks>Expressions are converted to RPN</remarks>
+        public void ProcessTokens()
         {
             
             string[] excludeTokens = { "CONTROL_BASIC", "LF" };
@@ -667,6 +669,8 @@
 
                     switch (tok.Terminal.Name)
                     {
+
+                        #region Split Comments
                         case "Comment":
                             //split Comments into two tokens
                             Tokens.Add(new TokenInfo("REM", "REM"));
@@ -677,6 +681,8 @@
                             Tokens.Last().Type = (short)commentString.Length;
                             Tokens.Last().Token = (short)LINE_TOKEN.STRING;
                             break;
+                        #endregion
+
 
                         case "IntegerNumber":
                             //rename to LineNumber only if first token on line.
@@ -691,34 +697,25 @@
                             Tokens.Add(NewLocalVar);
                             break;
 
+                        #region Control Points Generics | Identifiers, before any expressions
+                        //Before any expression, as in assigments
+                        //Acá faltan varios tipos de identificadores, agregarlos posteriormente
+                        //VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON
                         case "VARS":
                         case "INS":
                         case "OUTS":
-                            TokenInfo NewPointVar = new TokenInfo(tokentext, terminalname);
-                            NewPointVar.Type = (short)PCODE_CONST.POINT_VAR;
-                            NewPointVar.Token = (short)TYPE_TOKEN.IDENTIFIER;
-                            Tokens.Add(NewPointVar);
+                        case "PRG":
+                            string output = Regex.Match(tokentext, @"\d+").Value;
+                            int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
+                                                                              //Prepare token identifier to encode: Token + Index + Type
+                            TokenInfo CPIdentifier = new TokenInfo(tokentext, "Identifier");
+                            CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                            CPIdentifier.Index = (short)CtrlPointIndex;
+                            CPIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Tokens.Add(CPIdentifier);
                             break;
 
                         
-
-                        case "ASSIGN":
-
-                            TokenInfo assignToken, last;
-
-                            var index = Tokens.Count - 1;
-                            last = Tokens[index];
-                            Tokens.RemoveAt(index);
-                            assignToken = new TokenInfo(tokentext, terminalname);
-                            assignToken.Token = (short)LINE_TOKEN.ASSIGN;
-                            //insert it before assignar var.
-                            Tokens.Add(assignToken);
-                            Tokens.Add(last);
-                            //get the expression in postfix
-                            functions = new Stack<TokenInfo>();
-                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
-                            
-                            break;
 
                         case "Identifier":
                             //Locate Identifier and Identify Token associated ControlPoint.
@@ -747,13 +744,46 @@
                                 Tokens.Add(NewIdentifier);
                             }
                             break;
+
+                        #endregion
+
+                        #region Assigments and Expressions
+                        case "ASSIGN":
+
+                            TokenInfo assignToken, last;
+
+                            var index = Tokens.Count - 1;
+                            last = Tokens[index];
+                            Tokens.RemoveAt(index);
+                            assignToken = new TokenInfo(tokentext, terminalname);
+                            assignToken.Token = (short)LINE_TOKEN.ASSIGN;
+                            //insert it before assignar var.
+                            Tokens.Add(assignToken);
+                            Tokens.Add(last);
+                            //get the expression in postfix
+                            functions = new Stack<TokenInfo>();
+                            ///////////////////////////////////////////////
+                            // ALL FUNCTIONS AND LITERALS IN EXPRESSIONS
+                            ///////////////////////////////////////////////
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+                            
+                            break;
+                        #endregion
+
+                        #region Numeric Literals and Constants
                         case "Number":
-                        case "CON":
+                        case "CONNUMBER":
+                        case "TABLENUMBER":
+                        case "SYSPRG":
+                        case "TIMER":
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             break;
 
-                        default:
+                         #endregion
+
+
+                        default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             break;
                     }
@@ -777,64 +807,50 @@
         /// <param name="Ident">Label of Point Identifier</param>
         /// <param name="Index">Out Index of Point Identifier</param>
         /// <returns>PCODE_CONST value and Index</returns>
-        PCODE_CONST GetTypeIdentifier( string Ident, out int Index)
+        public PCODE_CONST GetTypeIdentifier( string Ident, out int Index)
         {
            
-            string label = "";
+           
             try
             {
-                //Is VAR?
-                label = Prg.Variables.Find(v => v.Label == Ident).Label ?? string.Empty;
-                if (!string.IsNullOrEmpty(label))
-                {
-                    Index = Prg.Variables.FindIndex(v => v.Label == Ident);
-                    return PCODE_CONST.LOCAL_POINT_PRG;
-                }
-                    
+                ////Is VAR?
+                //int i = 0;
+                //for(i=0;i<Prg.Variables.Count -1;i++)
+                //{
+                //    var v = Prg.Variables[i];
+                //    if(v.Label == Ident || v.Control.GetName() == Ident)
+                //    {
+                //        Index = i;
+                //        return PCODE_CONST.LOCAL_POINT_PRG;
+                //    }
+                //}
 
-                //Is IN?
-                label = Prg.Inputs.Find(v => v.Label == Ident).Label ?? string.Empty;
-                if (!string.IsNullOrEmpty(label))
-                {
-                    Index = Prg.Inputs.FindIndex(v => v.Label == Ident);
-                    return PCODE_CONST.LOCAL_POINT_PRG;
-                } 
-                    
+                //Test Variables
+                Index = Prg.Variables.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
-                //Is OUT?
-                label = Prg.Outputs.Find(v => v.Label == Ident).Label ?? string.Empty;
-                if (!string.IsNullOrEmpty(label))
-                {
-                    Index = Prg.Outputs.FindIndex(v => v.Label == Ident);
-                    return PCODE_CONST.LOCAL_POINT_PRG;
-                }
-                    
+                //Test Inputs
+                Index = Prg.Inputs.FindIndex(v => v.Label == Ident);
+                if(!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
-                //Is PRG?
-                label = Prg.Programs.Find(v => v.Label == Ident).Label ?? string.Empty;
-                if (!string.IsNullOrEmpty(label))
-                {
-                    Index = Prg.Programs.FindIndex(v => v.Label == Ident);
-                    return PCODE_CONST.LOCAL_POINT_PRG;
-                }
-                    
+                //Test Outputs
+                Index = Prg.Outputs.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1))  return PCODE_CONST.LOCAL_POINT_PRG;
 
-                //Is SCH?
-                label = Prg.Schedules.Find(v => v.Label == Ident).Label ?? string.Empty;
-                if (!string.IsNullOrEmpty(label))
-                {
-                    Index = Prg.Schedules.FindIndex(v => v.Label == Ident);
-                    return PCODE_CONST.LOCAL_POINT_PRG;
-                }
-                   
+                //Test Programs
+                Index = Prg.Programs.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
-                //Is HOL?
-                label = Prg.Holidays.Find(v => v.Label == Ident).Label ?? string.Empty;
-                if (!string.IsNullOrEmpty(label))
-                {
-                    Index = Prg.Holidays.FindIndex(v => v.Label == Ident);
-                    return PCODE_CONST.LOCAL_POINT_PRG;
-                }
+                //Test Schedules
+                Index = Prg.Schedules.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+
+
+                //Test Holidays
+                Index = Prg.Holidays.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+
+              
                     
             }
             catch
@@ -955,6 +971,21 @@
                     #endregion
 
                     #region Identifier
+                    //Acá faltan varios tipos de identificadores, agregarlos posteriormente
+                    case "VARS":
+                    case "INS":
+                    case "OUTS":
+                    case "PRG":
+                        string output = Regex.Match(tokentext, @"\d+").Value;
+                        int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
+                                                                          //Prepare token identifier to encode: Token + Index + Type
+                        TokenInfo CPIdentifier = new TokenInfo(tokentext, "Identifier");
+                        CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                        CPIdentifier.Index = (short)CtrlPointIndex;
+                        CPIdentifier.Token = (short) PCODE_CONST.LOCAL_POINT_PRG;
+                        Expr.Add(CPIdentifier);
+                        break;
+
                     case "Identifier":
                         //Locate Identifier and Identify Token associated ControlPoint.
                         //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
@@ -1050,10 +1081,19 @@
                     case "CONPROP":
                     case "CONRATE":
                     case "CONRESET":
+                    case "TIME":
                     case "TIME_ON":
                     case "TIME_OFF":
                     case "WR_ON":
                     case "WR_OFF":
+                    case "DOY":
+                    case "DOM":
+                    case "DOW":
+                    case "POWER_LOSS":
+                    case "UNACK":
+                    case "SCANS":
+                    case "USER_A":
+                    case "USER_B":
                     
                     //Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":

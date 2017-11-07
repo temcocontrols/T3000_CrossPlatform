@@ -3,7 +3,31 @@ The latest release notes, windows and linux release files are stored here
 
 #### RevNotes Follow here, most recent at the top
 
-## Updated 20171031.142900
+
+## Testing of Assigments and Expressions + Minor Corrections: 20171103.175500
+Working on Issue #2: 
+Pending: INTERVAL WR-ON and WR-OFF unknown last bytes.
+
+
+## BUG FIXING: 20171031.192900
+Working on Issue #2: 
+Fixed: GENERIC CONTROL POINTS (NOT LABELS) NOT INCLUDED WHEN IN EXPRESSIONS
+
+**Sample:**
+```
+Original Bytes = { 36 0 1 10 0 9 156 0 3 156 0 3 157 232 3 0 0 107 156 1 3 157 208 7 0 0 103 156 2 3 157 184 11 0 0 108 51 3 254 }
+
+---------------------DEBUG STRINGS-----------------------
+
+Code:
+10 INIT = AVG ( INIT + 1 , VAR2 * 2 , VAR3 - 3 ) 
+Tokens:
+ LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· NumberÂ· PLUSÂ· IdentifierÂ· NumberÂ· MULÂ· IdentifierÂ· NumberÂ· MINUSÂ· AVGÂ· EOFÂ· EOFÂ·
+Encoded Bytes = { 36 0 1 10 0 9 156 0 3 156 0 3 157 232 3 0 0 107 156 1 3 157 208 7 0 0 103 156 2 3 157 184 11 0 0 108 51 3 254 }
+Original Bytes = { 36 0 1 10 0 9 156 0 3 156 0 3 157 232 3 0 0 107 156 1 3 157 208 7 0 0 103 156 2 3 157 184 11 0 0 108 51 3 254 }
+```
+
+## Updated 20171031.144500
 Working on Issue #2: 
 This release can save more complex assigments. (enclosed expressions, all functions defined in grammar, recursive expressions and list of subexpressions)
 Here ends Encoding of Assigments and Expressions.
@@ -22,7 +46,7 @@ Functions encoded so far: ABS AVG INTERVAL INT LN LN-1 SQR STATUS MAX MIN
 Code:
 10 INIT = AVG ( INIT + 3 , 2 , 4 ) + INIT
 Tokens:
- LineNumber路 ASSIGN路 Identifier路 Identifier路 Number路 PLUS路 Number路 Number路 AVG路 Identifier路 PLUS路 EOF路 EOF路
+ LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· NumberÂ· PLUSÂ· NumberÂ· NumberÂ· AVGÂ· IdentifierÂ· PLUSÂ· EOFÂ· EOFÂ·
 Encoded Bytes = { 32 0 1 10 0 9 156 0 3 156 0 3 157 184 11 0 0 107 157 208 7 0 0 157 160 15 0 0 51 3 156 0 3 107 254 }
 
 ---------------------DEBUG STRINGS-----------------------
@@ -30,7 +54,7 @@ Encoded Bytes = { 32 0 1 10 0 9 156 0 3 156 0 3 157 184 11 0 0 107 157 208 7 0 0
 Code:
 10 INIT = AVG ( ABS(INIT) + 3 , 2 , 4 ) + INIT
 Tokens:
- LineNumber路 ASSIGN路 Identifier路 Identifier路 ABS路 Number路 PLUS路 Number路 Number路 AVG路 Identifier路 PLUS路 EOF路 EOF路
+ LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· ABSÂ· NumberÂ· PLUSÂ· NumberÂ· NumberÂ· AVGÂ· IdentifierÂ· PLUSÂ· EOFÂ· EOFÂ·
 Encoded Bytes = { 33 0 1 10 0 9 156 0 3 156 0 3 50 157 184 11 0 0 107 157 208 7 0 0 157 160 15 0 0 51 3 156 0 3 107 254 }
 ```
 
@@ -50,7 +74,7 @@ Working on Issue #2:
 Code:
 10 INIT = INIT + PMPSPEED * 10 - INIT / 20
 Tokens:
- LineNumber路 ASSIGN路 Identifier路 Identifier路 Identifier路 Number路 MUL路 PLUS路 Identifier路 Number路 DIV路 MINUS路 EOF路
+ LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· IdentifierÂ· NumberÂ· MULÂ· PLUSÂ· IdentifierÂ· NumberÂ· DIVÂ· MINUSÂ· EOFÂ·
 Bytes = {30 0 1 10 0 9 156 0 3 156 0 3 156 1 3 157 16 39 0 0 103 107 156 0 3 157 32 78 0 0 104 108 254 }
 ```
 

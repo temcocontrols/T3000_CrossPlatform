@@ -439,23 +439,6 @@
 
 
 
-        private byte get_token(string code)
-        {
-            byte tok = 0;
-            byte token_type = 0;
-            int pos = 0;
-
-            //Skip white spaces and null code
-            while (iswhite(code[pos]) && code[pos] > 0) ++pos;
-            
-        
-
-            return tok;
-
-
-
-        }
-
 
 
 
@@ -966,70 +949,6 @@ Token: {Token}
             : base(2000, version)
         {
             Code = code;
-        }
-
-
-        static public byte[] RawProgramCode(string code, FileVersion version = FileVersion.Current)
-
-        {
-            //Write Header of ProgramCode
-
-
-            List<byte> InnerCode = new List<byte>();
-
-            //Agregar la firma de la versión, primeros dos bytes, temporalmente
-            //Estos dos bytes al final contendrán el tamaño codificado del programcode
-            byte[] intBytes = FileVersionUtilities.Rev6Signature.ToBytes(2);
-            //if (BitConverter.IsLittleEndian)
-            //    Array.Reverse(intBytes);
-            //Comprobación:
-            if (intBytes[0] != 0x55 || intBytes[1] != 0xFF)
-            {
-                throw new Exception("Signature Fileversion Rev6 did not pass check!!");
-            }
-
-            byte[] result = intBytes;
-
-
-            InnerCode.AddRange(result);
-
-
-            //string[] codelines = code.Split(System.Environment.NewLine.ToCharArray());
-            IList<string> codelines = code.ToLines(StringSplitOptions.RemoveEmptyEntries);
-            for (var i = 0; i < codelines.Count; i++)
-            {
-                codelines[i] = codelines[i].TrimEnd(System.Environment.NewLine.ToCharArray());
-                string[] tokens = codelines[i].Split(' ');
-                if (tokens.Count() < 2)
-                {
-                    throw new Exception($"Too few tokens found on line: {codelines[i]}");
-                }
-
-                //TODO: Form a new line, and add bytes to code();
-                var byteline = Line.RawLine(codelines[i]);
-                Console.WriteLine($"ByteLine: {byteline}.ToString()");
-                InnerCode.AddRange(byteline);
-
-
-            }
-
-            //Fijar el tamaño en los dos primeros bytes
-            short count = (short)InnerCode.Count();
-            intBytes = BitConverter.GetBytes(count);
-            InnerCode[0] = intBytes[0];
-            InnerCode[1] = intBytes[1];
-
-            //rellenar el resto, con ceros
-            while (InnerCode.Count() < 2000)
-            {
-                InnerCode.Add((byte)0);
-
-            }
-
-
-            return InnerCode.ToArray();
-
-
         }
 
 
