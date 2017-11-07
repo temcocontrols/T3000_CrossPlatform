@@ -780,9 +780,21 @@
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             break;
 
-                         #endregion
+                        #endregion
+
+                        #region IF IF+ IF-
+                        case "IF":
+                            TokenInfo IfToken = new TokenInfo(tokentext,terminalname);
+                            
+                            LINE_TOKEN TypeToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            IfToken.Token = (short)TypeToken;
+                            IfToken.Precedence = 200;
 
 
+                            break;
+
+
+                        #endregion
                         default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             break;

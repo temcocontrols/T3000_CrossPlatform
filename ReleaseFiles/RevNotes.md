@@ -4,6 +4,12 @@ The latest release notes, windows and linux release files are stored here
 #### RevNotes Follow here, most recent at the top
 
 
+## Updated: 20171106.120700
+### ProgramEditor Assembly Made COM Visible + Registered for COM Interop
+Working on Issue #2: 
+Pending: INTERVAL WR-ON and WR-OFF unknown last bytes.
+Research how to properly encode IF IF+ IF-
+
 ## Testing of Assigments and Expressions + Minor Corrections: 20171103.175500
 Working on Issue #2: 
 Pending: INTERVAL WR-ON and WR-OFF unknown last bytes.

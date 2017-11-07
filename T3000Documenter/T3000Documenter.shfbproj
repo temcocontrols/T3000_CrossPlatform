@@ -42,9 +42,9 @@
     <DocumentationSources>
       <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000.exe" />
       <DocumentationSource sourceFile="..\T3000\bin\Debug\PRGReaderLibrary.dll" />
-      <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000Grammar.dll" />
       <DocumentationSource sourceFile="..\T3000\bin\Debug\ProgramEditor.dll" />
       <DocumentationSource sourceFile="..\T3000\bin\Debug\ProgramEditor.xml" />
+      <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000Grammar.dll" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
