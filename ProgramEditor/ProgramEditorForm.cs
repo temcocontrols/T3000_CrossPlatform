@@ -65,7 +65,17 @@
         LanguageData _language;
         ParseTree _parseTree;
         Parser _parser;
-        
+
+
+        /// <summary>
+        /// Stack of recursive examined functions, counting subexpressions
+        /// </summary>
+        Stack<TokenInfo> functions = new Stack<TokenInfo>();
+        /// <summary>
+        /// Stack of recursive examined branches, counting subexpressions
+        /// </summary>
+        Stack<TokenInfo> branches = new Stack<TokenInfo>();
+
 
         //Container of all line numbers
         List<LineInfo> Lines;
@@ -766,7 +776,23 @@
                             // ALL FUNCTIONS AND LITERALS IN EXPRESSIONS
                             ///////////////////////////////////////////////
                             Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
-                            
+                            //En caso que haya un then o un else en la pila
+                            //extraer y poner un delimintador EOE
+                            if(branches.Count > 0)
+                            {
+                                switch (branches.Peek().TerminalName)
+                                {
+                                    case "THEN":
+                                    case "ELSE":
+                                        branches.Pop();
+                                        Tokens.Add(new TokenInfo("EOE", "EOE"));
+                                        Tokens.Last().Token = (short)LINE_TOKEN.EOE;
+                                        Tokens.Last().Index = 0; 
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                             break;
                         #endregion
 
@@ -784,17 +810,104 @@
 
                         #region IF IF+ IF-
                         case "IF":
+                        case "IF+":
+                        case "IF-":
                             TokenInfo IfToken = new TokenInfo(tokentext,terminalname);
                             
                             LINE_TOKEN TypeToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
                             IfToken.Token = (short)TypeToken;
                             IfToken.Precedence = 200;
+                            Tokens.Add(IfToken);
+                            branches.Push(IfToken);
+                            var LastIdx = idxToken;
+                            //GET IF CLAUSE
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+                            
+                            break;
 
+                        case "THEN":
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            Tokens.Last().Index = (short) Tokens.Count; //Next token will be OFFSET
 
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().Text)
+                                {
+                                    case "IF":
+                                    case "IF+":
+                                    case "IF-":
+                                        branches.Pop();//Pop last IF*
+                                        branches.Push(Tokens.Last()); //Push corresponding THEN
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+
+                            //Offset to be treated as a NUMBER
+                            Tokens.Add(new TokenInfo("OFFSET", "OFFSET"));
+                            Tokens.Last().Token = 0;
+                            
+                    
                             break;
 
 
                         #endregion
+
+
+                        case "ELSE": //REM too???
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            Tokens.Last().Index = (short)Tokens.Count; //Next token will be OFFSET
+
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().Text)
+                                {
+                                    case "THEN":
+                                    
+                                        branches.Pop();//Pop last THEN*
+                                        branches.Push(Tokens.Last()); //Push corresponding THEN
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+
+                            //Offset to be treated as a NUMBER
+                            Tokens.Add(new TokenInfo("OFFSET", "OFFSET"));
+                            Tokens.Last().Token = 0;
+
+
+                            break;
+
+                        case "LF":
+                        case "EOF":
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().Text)
+                                {
+                                    case "THEN":
+                                    case "ELSE":
+                                        var offsetIdx = branches.Pop().Index;
+                                        //references token with end marker 
+                                        Tokens[offsetIdx].Index  = (short) Tokens.Count;
+                                        Tokens.Add(new TokenInfo("EOE", "EOE"));
+                                        Tokens.Last().Token = (short)LINE_TOKEN.EOE;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+
+                            break;
+
+
                         default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             break;
@@ -877,11 +990,8 @@
         }
 
 
-        /// <summary>
-        /// Stack of recursive examined functions, counting subexpressions
-        /// </summary>
-        Stack<TokenInfo> functions = new Stack<TokenInfo>();
 
+ 
         /// <summary>
         /// Parse tokens from infix notation into postfix (RPN)
         /// </summary>

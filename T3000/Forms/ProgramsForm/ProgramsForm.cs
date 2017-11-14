@@ -238,6 +238,7 @@
             byte[] ByteEncoded = EncodeBytes(e.Tokens);
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
             ConsolePrintBytes(ByteEncoded, "Encoded");
+            MessageBox.Show($"Resource compiled succceded{System.Environment.NewLine}Total size 2000 bytes{System.Environment.NewLine}Already used {PSize} bytes.", "T3000");
 
            // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
             Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
@@ -251,6 +252,8 @@
         }
 
 
+        
+
         /// <summary>
         /// Encode a ProgramCode Into Byte Array
         /// </summary>
@@ -262,9 +265,10 @@
             byte[] prgsize = { (byte) 0x00, (byte) 0x00 };
             result.AddRange(prgsize);
 
-           
+            Stack<int> offsets = new Stack<int>();
             
-            int offset = 0;
+            int offset = 1; //offset is a count of total encoded bytes
+            
             int tokenIndex = 0;
             bool isFirstToken = true;
 
@@ -274,11 +278,40 @@
 
                 switch (token.TerminalName)
                 {
-                    #region REM COMMENTS
+                    #region IF THEN ELSE
+                    case "IF":
+                    case "IF+":
+                    case "IF-":
+                    case "THEN":
+                    case "ELSE":
+                    case "EOE":
+                        result.Add((byte)token.Token);
+                        offset++;
 
-                    
+                        if(token.Token == (short) LINE_TOKEN.EOE)
+                        {
+                            if(offsets.Count > 0)
+                            {
+                                int newoffset = offset + 1;
+                                int idxoffset = offsets.Pop();
+                                //encode and replace
+                                short NewOffSetNumber = Convert.ToInt16(newoffset);
+                                byte[] byteoffset = NewOffSetNumber.ToBytes();
+                                result[idxoffset] = byteoffset[0];
+                                result[idxoffset + 1] = byteoffset[1];
+
+                            }
+                        }
+
+                        break;
+
+
+                    #endregion
+
+                    #region REM COMMENTS
                     case "REM":
                     case "ASSIGN":
+                   
                         result.Add((byte) token.Token);
                         offset++;
                         break;
@@ -289,6 +322,7 @@
                         offset += token.Type;
                         break;
                     #endregion
+
                     case "LineNumber":
                         if (isFirstToken)
                         {
@@ -300,6 +334,16 @@
                         //else is a linenumber for a jump
 
                         break;
+
+                    case "OFFSET":
+                        //push index of next byte for new offset.
+                        offsets.Push(offset + 1);
+                        short OffSetNumber = Convert.ToInt16(token.Token);
+                        result.AddRange(OffSetNumber.ToBytes()); //OFFSET NUMBER, 2 Bytes
+                        offset += 2;
+
+                        break;
+                    
                     case "EOF":
                         if ((tokenIndex + 1) == Tokens.Count)
                         {
@@ -311,6 +355,7 @@
                         //EOL: LF, Just Ignored. Next Token should be another LineNumber
                         break;
 
+                    #region Operators and Functions
                     //OPERATORS
                     case "PLUS":
                     case "MINUS":
@@ -370,6 +415,7 @@
                     case "NOT":
                         //TODO: Learn how to -> tests and errors.
                         break;
+                    #endregion
 
                     case "Identifier":
                         //Encode directly: Token + Index + Type
@@ -381,6 +427,7 @@
 
                         break;
 
+                    #region Numbers
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
@@ -399,6 +446,7 @@
                         result.AddRange(byteArray);
                         offset += 4;
                         break;
+                    #endregion
 
                     case "LF":
                         isFirstToken = true;
@@ -412,7 +460,8 @@
                 isFirstToken = token.TerminalName  == "LF" ? true : false;
                 
             }
-            
+
+            offset--;
             byte[] size = offset.ToBytes();
             result[0] = size[0];
             result[1] = size[1];

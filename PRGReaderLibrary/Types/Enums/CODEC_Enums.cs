@@ -81,7 +81,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         GT = 0x6E,
         EQ = 0x71, NE = 0x72, XOR = 0x73, AND = 0x74, OR = 0x75, NOT = 0x76,
         EOI = 0x77, TTIME = 0x78, BIT_AND = 0x79, BIT_OR = 0x7A,
-        RAWLINE = 0xFD
+        
     };
 
 
@@ -111,7 +111,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         _DATE = 0x0A0, PTIME = 0x0A1, SENSOR_ON = 0x0A4, SENSOR_OFF = 0x0A5, TO = 0x0A6, STEP = 0x0A7, THEN = 0x0A8,
         LET = 0x0A9, ALARM_AT_ALL = 0x0AA, FINISHED = 0x0AB, PRINT_ALARM_AT = 0x0AC, PRINT_ALARM_AT_ALL = 0x0AD,
         ARG = 0x0AE, DO = 0x0AF, WHILE = 0x0B0, SWITCH = 0x0B1, EOL = 0x0B2, STRING = 0x0B3,
-        RAWLINE = 0x0FD, EOF
+        RAWLINE = 0x0FD, EOF, EOE
     };
 
     /// <summary>
@@ -140,7 +140,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         [Name("TIME-ON")]
         TIME_ON = 0x3C,
         TIME_OFF = 0x3D, INTERVAL = 0x3E, TIME_FORMAT = 0x3F,
-        WR_ON = 0x40, WR_OFF = 0x41, UNACK = 0x42, _Status = 0x47, RUNTIME = 0x48, SCANS = 0x4B,
+        WR_ON = 0x40, WR_OFF = 0x41, UNACK = 0x42, USER_A = 0x45, USER_B = 0x46, _Status = 0x47, RUNTIME = 0x48, SCANS = 0x4B,
         POWER_LOSS = 0x4C, LN = 0x4D, LN_1 = 0x4E,
         OUTPUTD = 0x50, INKEYD = 0x51, DOM = 0x52, MOY = 0x53, CONPROP = 0x56, CONRATE = 0x57, CONRESET = 0x58, CLEARPORT = 0x59,
         JAN = 0x0C1, FEB = 0x0C2, MAR = 0x0C3, APR = 0x0C4, MAY = 0x0C5, JUN = 0x0C6, JUL = 0x0C7, AUG = 0x0C8,
