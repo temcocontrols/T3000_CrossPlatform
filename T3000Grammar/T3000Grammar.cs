@@ -478,7 +478,7 @@
             IFCLAUSE.Rule = Commands | Function | Assignment | GOSELECTOR | LineNumber;
 
             //ELSEOPT.Rule = "ELSE" + IFCLAUSE;
-            ELSEOPT.Rule = PreferShiftHere() + "ELSE" + IFCLAUSE;
+            ELSEOPT.Rule = PreferShiftHere() + ToTerm("ELSE","ELSE") + IFCLAUSE;
 
             //ON ::= 'ON' IntegerTerm (GOTO | GOSUB) (',' LineNumber)*
             ON.Rule = ToTerm("ON") + Expression + GOSELECTOR + LineNumberListOpt;

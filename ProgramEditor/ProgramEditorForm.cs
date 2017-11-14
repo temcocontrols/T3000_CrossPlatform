@@ -826,6 +826,7 @@
                             break;
 
                         case "THEN":
+                            //START MARKER FOR THEN PART
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
                             Tokens.Last().Index = (short) Tokens.Count; //Next token will be OFFSET
@@ -857,10 +858,11 @@
                         #endregion
 
 
-                        case "ELSE": //REM too???
+                        case "ELSE":
+
+                            //ELSE
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
-                            Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
-                            Tokens.Last().Index = (short)Tokens.Count; //Next token will be OFFSET
+                            Tokens.Last().Token = (short)LINE_TOKEN.ELSE; //End marker for Expr.
 
                             if (branches.Count > 0)
                             {
@@ -869,13 +871,22 @@
                                     case "THEN":
                                     
                                         branches.Pop();//Pop last THEN*
-                                        branches.Push(Tokens.Last()); //Push corresponding THEN
+                                        
                                         break;
                                     default:
                                         break;
                                 }
 
                             }
+
+                            branches.Push(Tokens.Last()); //Push corresponding ELSE
+
+                            //START MARKER FOR ELSE PART
+                            Tokens.Add(new TokenInfo("EOE", "EOE"));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            Tokens.Last().Index = (short)Tokens.Count; //Next token will be OFFSET
+
+
 
                             //Offset to be treated as a NUMBER
                             Tokens.Add(new TokenInfo("OFFSET", "OFFSET"));
@@ -1079,6 +1090,7 @@
                     case "THEN":
                     case "EOF":
                     case "REM":
+                    case "ELSE":
                    
 
                         //Pop all operators remaining in stack.
