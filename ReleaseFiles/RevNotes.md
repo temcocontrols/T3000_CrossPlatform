@@ -3,6 +3,22 @@ The latest release notes, windows and linux release files are stored here
 
 #### RevNotes Follow here, most recent at the top
 
+## Updated: 20171112.194000
+### Encoding Commands
+#### Bug fixing:  Last bytes after expression within WAIT is now recognized and encoded as a counter with 4 bytes after a byte marking EOE
+
+```
+START.Rule = "START" + Designator;
+STOP.Rule = "STOP" + Designator;
+WAIT.Rule = "WAIT" + Expression;
+CLEAR.Rule = ToTerm("CLEAR","CLEAR");
+RETURN.Rule = ToTerm("RETURN", "RETURN");
+HANGUP.Rule = ToTerm("HANGUP");
+```
+
+Tested against T3000 C++
+Working on Issue #2: 
+
 ## Updated: 20171111
 ### IF IF+ IF- Encoded
 #### Bug Fixed: ELSE now encoded.

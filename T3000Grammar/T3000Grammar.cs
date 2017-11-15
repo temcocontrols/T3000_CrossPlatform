@@ -430,13 +430,13 @@
             CALLARGSLIST.Rule = MakeStarRule(CALLARGSLIST, Comma + ARG);
             ARG.Rule = Designator | Expression;
 
-            CLEAR.Rule = ToTerm("CLEAR");
+           
             //DALARM ::= 'DALARM' Expression ',' NumberLiteral ',' StringLiteral+
             DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + StringMessage;
             //DISABLE ::= 'DISABLE' Identifier
             DISABLE.Rule = "DISABLE" + Designator;
             ENABLE.Rule = "ENABLE" + Designator;
-            HANGUP.Rule = ToTerm("HANGUP");
+            
             PHONE.Rule = "PHONE" + PhoneNumber;
             PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
             PrintableKeywords.Rule = DATE | TIME | USERA | USERB | BEEP | PointIdentifier | EnclosedString;
@@ -447,16 +447,19 @@
             //REMOTESET::= 'REMOTE-SET' RemoteDesignator AssignOp Designator
             REMOTEGET.Rule = "REMOTE-GET" + Designator + AssignOp + RemoteDesignator;
             REMOTESET.Rule = "REMOTE-SET" + RemoteDesignator + AssignOp + Designator;
-            RETURN.Rule = ToTerm("RETURN");
+            
             //RUNMACRO::= 'RUN-SYSTEM' SYSPRG
             RUNMACRO.Rule = "RUN-SYSTEM" + SYSPRG;
             SETPRINTER.Rule = PrintEverything | PrintOnlyCommands;
             PrintEverything.Rule = "SET-PRINTER" + (ToTerm("A") | ToTerm("B") | ToTerm("0"));
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
+
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
             WAIT.Rule = "WAIT" + Expression;
-
+            CLEAR.Rule = ToTerm("CLEAR","CLEAR");
+            RETURN.Rule = ToTerm("RETURN", "RETURN");
+            HANGUP.Rule = ToTerm("HANGUP");
 
             //Assignment ::= Designator AssignOp Expression 
             LET.Rule = "LET";

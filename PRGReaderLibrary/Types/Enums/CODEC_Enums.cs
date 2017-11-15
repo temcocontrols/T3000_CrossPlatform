@@ -90,13 +90,13 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
     /// </summary>
     public enum LINE_TOKEN 
     {
-        BEEP = 0x07, ASSIGNAR = 0x08, ASSIGN = 0x09, CLEARX = 0x0A, FOR = 0x0B, NEXT = 0x0D, IF = 0x0E,
+        BEEP = 0x07, ASSIGNAR = 0x08, ASSIGN = 0x09, CLEAR = 0x0A, FOR = 0x0B, NEXT = 0x0D, IF = 0x0E,
         ELSE = 0x10,
         [Name("IF+")]
         IFP = 0x11,
         [Name("IF-")]
         IFM = 0x12, GOTO = 0x13, GOSUB = 0x14, RETURN = 0x15, ENDPRG = 0x17, PRINT = 0x18,
-        REM = 0x1A, PRINT_AT = 0x1B, STARTPRG = 0x1C, STOP = 0x1D, WAIT = 0x1E, HANGUP = 0x1F,
+        REM = 0x1A, PRINT_AT = 0x1B, START = 0x1C, STOP = 0x1D, WAIT = 0x1E, HANGUP = 0x1F,
 
         PHONE = 0x20, ALARM_AT = 0x21, REMOTE_SET = 0x22, RUN_MACRO = 0x23, REMOTE_GET = 0x24,
         ENABLEX = 0x25, DISABLEX = 0x26, ON_ERROR = 0x27, SET_PRINTER = 0x28, ASSIGNARRAY_1 = 0x29, GOTOIF = 0x2A,

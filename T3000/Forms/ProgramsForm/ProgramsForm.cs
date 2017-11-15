@@ -278,7 +278,7 @@
 
                 switch (token.TerminalName)
                 {
-                    #region IF THEN ELSE
+                    #region IF IF+ IF- THEN ELSE
                     case "IF":
                     case "IF+":
                     case "IF-":
@@ -323,6 +323,7 @@
                         break;
                     #endregion
 
+                    #region Special Numbers
                     case "LineNumber":
                         if (isFirstToken)
                         {
@@ -343,17 +344,16 @@
                         offset += 2;
 
                         break;
-                    
-                    case "EOF":
-                        if ((tokenIndex + 1) == Tokens.Count)
-                        {
-                            //EOF: Last LF, should be replaced with xFE
-                            result.Add((byte) LINE_TOKEN.EOF);
-                            //No increment to offset, as EOF doesn't count on 
-                        }
-                      
-                        //EOL: LF, Just Ignored. Next Token should be another LineNumber
+
+                    case "WAITCOUNTER":
+                        result.Add((byte) token.Token);
+                        offset++;
+                        int WaitCounter =  Convert.ToInt32(token.Index);
+                        result.AddRange(WaitCounter.ToBytes()); //OFFSET NUMBER, 2 Bytes
+                        offset += 4;
+
                         break;
+                    #endregion
 
                     #region Operators and Functions
                     //OPERATORS
@@ -427,7 +427,7 @@
 
                         break;
 
-                    #region Numbers
+                    #region NUMBERS (4 BYTES)
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
@@ -452,6 +452,30 @@
                         isFirstToken = true;
                         
                         break;
+
+                    case "EOF":
+                        if ((tokenIndex + 1) == Tokens.Count)
+                        {
+                            //EOF: Last LF, should be replaced with xFE
+                            result.Add((byte)LINE_TOKEN.EOF);
+                            //No increment to offset, as EOF doesn't count on 
+                        }
+
+                        //EOL: LF, Just Ignored. Next Token should be another LineNumber
+                        break;
+
+                    #region Commands
+                    case "START":
+                    case "STOP":
+                    case "CLEAR":
+                    case "RETURN":
+                    case "WAIT":
+                    case "HANGUP":
+                        result.Add((byte)token.Token);
+                        offset++;
+                        break;
+                    #endregion
+
                     default:
                         Console.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;

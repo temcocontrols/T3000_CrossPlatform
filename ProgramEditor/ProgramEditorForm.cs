@@ -664,6 +664,8 @@
             bool isFirstToken = true;
             var Cancel = false;
 
+            int WaitCount = 0;
+
             try
             {
                 Tokens = new List<TokenInfo>();
@@ -680,7 +682,7 @@
                     switch (tok.Terminal.Name)
                     {
 
-                        #region Split Comments
+                        #region Comments
                         case "Comment":
                             //split Comments into two tokens
                             Tokens.Add(new TokenInfo("REM", "REM"));
@@ -696,7 +698,6 @@
 
                         case "IntegerNumber":
                             //rename to LineNumber only if first token on line.
-
                             Tokens.Add(new TokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
                             break;
 
@@ -808,7 +809,7 @@
 
                         #endregion
 
-                        #region IF IF+ IF-
+                        #region IF IF+ IF- THEN ELSE
                         case "IF":
                         case "IF+":
                         case "IF-":
@@ -854,12 +855,7 @@
                     
                             break;
 
-
-                        #endregion
-
-
                         case "ELSE":
-
                             //ELSE
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)LINE_TOKEN.ELSE; //End marker for Expr.
@@ -892,8 +888,8 @@
                             Tokens.Add(new TokenInfo("OFFSET", "OFFSET"));
                             Tokens.Last().Token = 0;
 
-
                             break;
+                        #endregion
 
                         case "LF":
                         case "EOF":
@@ -918,9 +914,36 @@
 
                             break;
 
+                        #region Commands
+                        //Simple Commands
+                        case "START":
+                        case "STOP":
+                        case "CLEAR":
+                        case "RETURN":
+                        case "HANGUP":
+                        
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            Tokens.Last().Token = (short)SimpleToken;
+                            break;
 
+                        case "WAIT":
+                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            LINE_TOKEN WaitToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            Tokens.Last().Token = (short)WaitToken;
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+                            //Add EOE and counter
+                            WaitCount++;
+                            Tokens.Add(new TokenInfo("WAITCOUNTER", "WAITCOUNTER"));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE;
+                            Tokens.Last().Index = (short) WaitCount;
+                           
+                            break;
+                        #endregion
+                        case "LET":
                         default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            
                             break;
                     }
                     isFirstToken = terminalname == "LF" ? true : false;
