@@ -57,6 +57,7 @@ Comments:
 # Control Basic Editor
 We are currently refactoring the 'Control Basic' language compiler which is used to write the logic of the T3 contollers. EBNF files are a way of accurately representing this control basic language eliminating the ambiguities of a written description. It will also allow us to extend the language in a structured way as the project moves along. Here is a graphical representation of the EBNF file: 
 
-https://rawgit.com/temcocontrols/T3000_CrossPlatform/master/Docs/Grammar%20Definitions/T3000ControlBasicEBNF.xhtml
+
+https://cdn.rawgit.com/temcocontrols/T3000_CrossPlatform/504f6617/Documentation/Grammar%20Definitions/T3000ControlBasicEBNF.xhtml
 
 Many clients have asked for a more modern version of the editor, this work will start once the parser and editor are done. 
