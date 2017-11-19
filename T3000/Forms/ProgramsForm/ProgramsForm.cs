@@ -252,7 +252,7 @@
         }
 
 
-        
+
 
         /// <summary>
         /// Encode a ProgramCode Into Byte Array
@@ -262,16 +262,19 @@
         private byte[] EncodeBytes(List<TokenInfo> Tokens)
         {
             var result = new List<byte>();
-            byte[] prgsize = { (byte) 0x00, (byte) 0x00 };
+            byte[] prgsize = { (byte)0x00, (byte)0x00 };
             result.AddRange(prgsize);
 
             Stack<int> offsets = new Stack<int>();
-            
+            Stack<JumpInfo> Jumps = new Stack<JumpInfo>();
+            List<LineInfo> Lines = new List<LineInfo>();
+
             int offset = 1; //offset is a count of total encoded bytes
-            
+
             int tokenIndex = 0;
             bool isFirstToken = true;
-
+            
+            
             for (tokenIndex = 0; tokenIndex < Tokens.Count; tokenIndex ++)
             {
                 var token = Tokens[tokenIndex];
@@ -329,10 +332,25 @@
                         {
                             result.Add((byte) TYPE_TOKEN.NUMBER); //TYPE OF NEXT TOKEN: NUMBER 1 Byte
                             short LineNumber = Convert.ToInt16(token.Text);
-                                result.AddRange(LineNumber.ToBytes()); //LINE NUMBER, 2 Bytes
+                            result.AddRange(LineNumber.ToBytes()); //LINE NUMBER, 2 Bytes
+                            Lines.Add(new LineInfo(Convert.ToInt32(LineNumber), Convert.ToInt32(offset+1)));
                             offset += 3;
+                            isFirstToken = false;
                         }
-                        //else is a linenumber for a jump
+                        else
+                        {
+                            //else: linenumber for a jump
+                            
+                            short LineNumber = Convert.ToInt16(token.Text);
+                            byte[] RawLineNumber = LineNumber.ToBytes();
+                            RawLineNumber[1] = (byte)LINE_TOKEN.RAWLINE;
+                            RawLineNumber[0] = (byte)LINE_TOKEN.RAWLINE;
+                            result.AddRange(RawLineNumber);
+                            Jumps.Push(new JumpInfo(0, LineNumber, offset + 1));
+                            offset += 2;
+
+                        }
+
 
                         break;
 
@@ -471,6 +489,9 @@
                     case "RETURN":
                     case "WAIT":
                     case "HANGUP":
+                    case "GOTO":
+                    case "GOSUB":
+
                         result.Add((byte)token.Token);
                         offset++;
                         break;
@@ -484,6 +505,31 @@
                 isFirstToken = token.TerminalName  == "LF" ? true : false;
                 
             }
+
+            //Set Jumps offsets
+            if(Jumps.Count > 0 && Lines.Count >0)
+            {
+                while (Jumps.Count > 0)
+                {
+                    JumpInfo NewJump = Jumps.Pop();
+                    var LineIdx = Lines.FindIndex(k => k.Before == NewJump.LineIndex);
+                    if (LineIdx >= 0)
+                    {
+                        short LineOffset = Convert.ToInt16(Lines[LineIdx].After);
+                        byte[] LObytes = LineOffset.ToBytes();
+                        result[NewJump.Offset] = LObytes[0];
+                        result[NewJump.Offset + 1] = LObytes[1];
+
+                    }
+                    else //LineIdx is -1, not found!
+                    {
+                        MessageBox.Show($"Error: Line not found: {NewJump.LineIndex}");
+                    }
+
+                }
+
+            }
+
 
             offset--;
             byte[] size = offset.ToBytes();

@@ -3,6 +3,12 @@ The latest release notes, windows and linux release files are stored here
 
 #### RevNotes Follow here, most recent at the top
 
+## Updated: 20171113.215000
+### Encoded GOTO GOSUB
+Tested against T3000 C++
+Working on Issue #2: 
+
+
 ## Updated: 20171112.194000
 ### Encoding Commands
 #### Bug fixing:  Last bytes after expression within WAIT is now recognized and encoded as a counter with 4 bytes after a byte marking EOE
