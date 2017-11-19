@@ -923,6 +923,8 @@
                         case "HANGUP":
                         case "GOTO":
                         case "GOSUB":
+                        case "ON_ALARM":
+                        case "ON_ERROR":
                         
                             Tokens.Add(new TokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());

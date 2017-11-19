@@ -491,6 +491,8 @@
                     case "HANGUP":
                     case "GOTO":
                     case "GOSUB":
+                    case "ON_ERROR":
+                    case "ON_ALARM":
 
                         result.Add((byte)token.Token);
                         offset++;

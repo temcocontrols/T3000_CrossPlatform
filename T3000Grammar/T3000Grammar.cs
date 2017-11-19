@@ -492,8 +492,8 @@
             //GOTO ::= 'GOTO' LineNumber
             GOTO.Rule = "GOTO" + LineNumber;
 
-            ONALARM.Rule = ToTerm("ON-ALARM") + LineNumber;
-            ONERROR.Rule = ToTerm("ON-ERROR") + LineNumber;
+            ONALARM.Rule = ToTerm("ON-ALARM","ON_ALARM") + LineNumber;
+            ONERROR.Rule = ToTerm("ON-ERROR","ON_ERROR") + LineNumber;
 
             //Loop::= FOR SentencesSequence ENDFOR
             //FOR::= 'FOR' LoopVariable AssignOp Integer 'TO' Integer('STEP' Integer) ? EndLine
