@@ -185,6 +185,7 @@
             var SUB = ToTerm("-","MINUS");
             var MUL = ToTerm("*","MUL");
             var DIV = ToTerm("/","DIV");
+            var IDIV = ToTerm("\\","IDIV"); // One \ operator for integer division
             var EXP = ToTerm("^","POW");
             var MOD = ToTerm("MOD");
 
@@ -506,7 +507,7 @@
 
 
             LogicOps.Rule = AND | OR | XOR;
-            ArithmeticOps.Rule = SUM | SUB | MUL | DIV | MOD | EXP;
+            ArithmeticOps.Rule = SUM | SUB | MUL | DIV | IDIV | MOD | EXP;
             ComparisonOps.Rule = EQ | NEQ | GT | LT | LTE | GTE;
 
             UnaryOps.Rule = NOT;
@@ -628,7 +629,7 @@
             
             // 4. Operators precedence
             RegisterOperators(100, Associativity.Right, EXP);
-            RegisterOperators(90, MUL,DIV);
+            RegisterOperators(90, MUL,DIV, IDIV);
             RegisterOperators(80, MOD);
             RegisterOperators(70, SUM, SUB);
             

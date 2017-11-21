@@ -71,6 +71,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         DIV = 0x68,
         [Name("-")]
         MINUSUNAR = 0x69,
+        IDIV = 0X6A, //ADDED, NOT DEFINED BY T3000 C++
         [Name("+")]
         PLUS = 0x6B,
         [Name("-")]

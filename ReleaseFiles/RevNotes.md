@@ -3,6 +3,13 @@ The latest release notes, windows and linux release files are stored here
 
 #### RevNotes Follow here, most recent at the top
 
+## Updated: 20171114.204000
+### Encoded ON-ERROR ON-ALARM
+Tested against T3000 C++
+Working on Issue #2: 
+Bugs in T3000 C++: MOD \ (integer division) and ON Expr GOTO/GOSUB LineNumberList **Lacks information on how to encode for T3000 C#**
+
+
 ## Updated: 20171113.215000
 ### Encoded GOTO GOSUB
 Tested against T3000 C++
