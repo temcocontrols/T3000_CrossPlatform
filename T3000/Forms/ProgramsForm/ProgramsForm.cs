@@ -2,6 +2,7 @@
 {
     using PRGReaderLibrary;
     using PRGReaderLibrary.Types.Enums.Codecs;
+    using ProgramEditor.Extensions;
     using Properties;
     using System;
     using System.Collections.Generic;
@@ -208,8 +209,25 @@
                 Console.WriteLine("--------------ORIGINAL CODE-------------------");
                 ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
-                form.Prg = this.Prg;
-                form.PrgPath = this.PrgPath;
+
+
+                #region Create local copy of identifiers from control points
+                foreach(var vars in Prg.Variables) 
+                    form.Identifiers.Add(vars.Label);
+                foreach (var ins in Prg.Inputs)
+                    form.Identifiers.Add(ins.Label,IdentifierTypes.INS);
+                foreach (var outs in Prg.Outputs)
+                    form.Identifiers.Add(outs.Label, IdentifierTypes.OUTS);
+                foreach (var prgs in Prg.Programs)
+                    form.Identifiers.Add(prgs.Label, IdentifierTypes.PRGS);
+                foreach (var schs in Prg.Schedules)
+                    form.Identifiers.Add(schs.Label, IdentifierTypes.SCHS);
+                foreach (var hols in Prg.Holidays)
+                    form.Identifiers.Add(hols.Label, IdentifierTypes.HOLS);
+
+                #endregion
+
+
                 //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
                 form.MdiParent = this.MdiParent ;
@@ -259,15 +277,15 @@
         /// </summary>
         /// <param name="Tokens">Preprocessed list of tokens</param>
         /// <returns>byte array</returns>
-        private byte[] EncodeBytes(List<TokenInfo> Tokens)
+        private byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
         {
             var result = new List<byte>();
             byte[] prgsize = { (byte)0x00, (byte)0x00 };
             result.AddRange(prgsize);
 
             Stack<int> offsets = new Stack<int>();
-            Stack<JumpInfo> Jumps = new Stack<JumpInfo>();
-            List<LineInfo> Lines = new List<LineInfo>();
+            Stack<EditorJumpInfo> Jumps = new Stack<EditorJumpInfo>();
+            List<EditorLineInfo> Lines = new List<EditorLineInfo>();
 
             int offset = 1; //offset is a count of total encoded bytes
 
@@ -333,7 +351,7 @@
                             result.Add((byte) TYPE_TOKEN.NUMBER); //TYPE OF NEXT TOKEN: NUMBER 1 Byte
                             short LineNumber = Convert.ToInt16(token.Text);
                             result.AddRange(LineNumber.ToBytes()); //LINE NUMBER, 2 Bytes
-                            Lines.Add(new LineInfo(Convert.ToInt32(LineNumber), Convert.ToInt32(offset+1)));
+                            Lines.Add(new EditorLineInfo(Convert.ToInt32(LineNumber), Convert.ToInt32(offset+1)));
                             offset += 3;
                             isFirstToken = false;
                         }
@@ -346,7 +364,7 @@
                             RawLineNumber[1] = (byte)LINE_TOKEN.RAWLINE;
                             RawLineNumber[0] = (byte)LINE_TOKEN.RAWLINE;
                             result.AddRange(RawLineNumber);
-                            Jumps.Push(new JumpInfo(0, LineNumber, offset + 1));
+                            Jumps.Push(new EditorJumpInfo(0, LineNumber, offset + 1));
                             offset += 2;
 
                         }
@@ -513,7 +531,7 @@
             {
                 while (Jumps.Count > 0)
                 {
-                    JumpInfo NewJump = Jumps.Pop();
+                    EditorJumpInfo NewJump = Jumps.Pop();
                     var LineIdx = Lines.FindIndex(k => k.Before == NewJump.LineIndex);
                     if (LineIdx >= 0)
                     {

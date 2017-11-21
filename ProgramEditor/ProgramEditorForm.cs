@@ -3,14 +3,15 @@
     using FastColoredTextBoxNS;
     using Irony;
     using Irony.Parsing;
+    using PRGReaderLibrary.Types.Enums.Codecs;
+    using ProgramEditor.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Windows.Forms;
-    using PRGReaderLibrary;
-    using PRGReaderLibrary.Types.Enums.Codecs;
     using System.Text.RegularExpressions;
+    using System.Windows.Forms;
+
 
 
 
@@ -27,26 +28,16 @@
     public partial class ProgramEditorForm : Form
     {
 
-        private Prg _prg;
         /// <summary>
-        /// Local copy of current PRG
+        /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
-        public Prg Prg
-        {
-            get { return _prg; }
+        public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
-            set { _prg = value; }
-        }
-
-        /// <summary>
-        /// Local copy of PrgPath
-        /// </summary>
-        public string PrgPath { get; set; }
-
+      
         private string Code { get; set; }
 
 
-        List<TokenInfo> Tokens = new List<TokenInfo>();
+        List<EditorTokenInfo> Tokens = new List<EditorTokenInfo>();
 
         int ParsingTimes = 0;
 
@@ -70,16 +61,16 @@
         /// <summary>
         /// Stack of recursive examined functions, counting subexpressions
         /// </summary>
-        Stack<TokenInfo> functions = new Stack<TokenInfo>();
+        Stack<EditorTokenInfo> functions = new Stack<EditorTokenInfo>();
         /// <summary>
         /// Stack of recursive examined branches, counting subexpressions
         /// </summary>
-        Stack<TokenInfo> branches = new Stack<TokenInfo>();
+        Stack<EditorTokenInfo> branches = new Stack<EditorTokenInfo>();
 
 
         //Container of all line numbers
-        List<LineInfo> Lines;
-        List<JumpInfo> Jumps;
+        List<EditorLineInfo> Lines;
+        List<EditorJumpInfo> Jumps;
         long LastParseTime;
 
         /// <summary>
@@ -123,7 +114,6 @@
             //LRUIZ
 
             
-
             var items = new List<AutocompleteItem>();
             var keywords = new List<string>()
             {
@@ -167,14 +157,14 @@
         string GetNextLineNumber()
         {
             
-            Lines = new List<LineInfo>();
+            Lines = new List<EditorLineInfo>();
             var lines = editTextBox.Text.ToLines(StringSplitOptions.RemoveEmptyEntries);
             //Preload ALL line numbers
             for (var i = 0; i < lines.Count; i++)
             {
                 var words = lines[i].Split(' ');
 
-                var LINFO = new LineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
+                var LINFO = new EditorLineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
                 this.Lines.Add(LINFO);
             }
 
@@ -197,8 +187,8 @@
             int pos = 0;
             int col = 0;
             bool Cancel = false;
-            Lines = new List<LineInfo>();
-            Jumps = new List<JumpInfo>();
+            Lines = new List<EditorLineInfo>();
+            Jumps = new List<EditorJumpInfo>();
                        
 
             var lines = editTextBox.Text.ToLines( StringSplitOptions.RemoveEmptyEntries);
@@ -208,7 +198,7 @@
             {
                 var words = lines[i].Split(' ');
                 
-                var LINFO = new LineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
+                var LINFO = new EditorLineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
                 this.Lines.Add(LINFO);
             }
 
@@ -261,7 +251,7 @@
                                 ShowCompilerErrors();
                                 Cancel = true;
                             }
-                            JumpInfo JINFO = new JumpInfo(type, i, offset );
+                            EditorJumpInfo JINFO = new EditorJumpInfo(type, i, offset );
                             Jumps.Add(JINFO);
                             //Change reference to new linenumber
                             words[offset] = linenumber == -1? BeforeLineNumber.ToString():Lines[linenumber].ToString();
@@ -668,7 +658,7 @@
 
             try
             {
-                Tokens = new List<TokenInfo>();
+                Tokens = new List<EditorTokenInfo>();
 
                 if (_parseTree == null) return;
 
@@ -685,11 +675,11 @@
                         #region Comments
                         case "Comment":
                             //split Comments into two tokens
-                            Tokens.Add(new TokenInfo("REM", "REM"));
+                            Tokens.Add(new EditorTokenInfo("REM", "REM"));
                             Tokens.Last().Type = (short)LINE_TOKEN.REM;
                             Tokens.Last().Token = (short)LINE_TOKEN.REM;
                             var commentString = tok.Text.Substring(4).TrimEnd(' ');
-                            Tokens.Add(new TokenInfo(commentString, "Comment"));
+                            Tokens.Add(new EditorTokenInfo(commentString, "Comment"));
                             Tokens.Last().Type = (short)commentString.Length;
                             Tokens.Last().Token = (short)LINE_TOKEN.STRING;
                             break;
@@ -698,11 +688,11 @@
 
                         case "IntegerNumber":
                             //rename to LineNumber only if first token on line.
-                            Tokens.Add(new TokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
                             break;
 
                         case "LocalVariable":
-                            TokenInfo NewLocalVar = new TokenInfo(tokentext, terminalname);
+                            EditorTokenInfo NewLocalVar = new EditorTokenInfo(tokentext, terminalname);
                             NewLocalVar.Type = (short)PCODE_CONST.LOCAL_VAR;
                             NewLocalVar.Token = (short)TYPE_TOKEN.IDENTIFIER;
                             Tokens.Add(NewLocalVar);
@@ -719,7 +709,7 @@
                             string output = Regex.Match(tokentext, @"\d+").Value;
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                                                                               //Prepare token identifier to encode: Token + Index + Type
-                            TokenInfo CPIdentifier = new TokenInfo(tokentext, "Identifier");
+                            EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, "Identifier");
                             CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
                             CPIdentifier.Index = (short)CtrlPointIndex;
                             CPIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
@@ -740,7 +730,7 @@
                                 //Don't break it inmediately, to show all possible errors of this type
                                 _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
                                     tok.Location,
-                                    $"Semantic Error: Undefined Identifier: {tok.Text}",
+                                    $"Semantic Error: Undefined Identifier: {tok.Text}{System.Environment.NewLine}Check if PRG object is valid.",
                                     new ParserState("Validating Tokens")));
                                 ShowCompilerErrors();
                                 Cancel = true;
@@ -748,7 +738,7 @@
                             else
                             {
                                 //Prepare token identifier to encode: Token + Index + Type
-                                TokenInfo NewIdentifier = new TokenInfo(tokentext, terminalname);
+                                EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
                                 NewIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
                                 NewIdentifier.Index = (short)PointIndex;
                                 NewIdentifier.Token = (short)TokenType;
@@ -761,18 +751,18 @@
                         #region Assigments and Expressions
                         case "ASSIGN":
 
-                            TokenInfo assignToken, last;
+                            EditorTokenInfo assignToken, last;
 
                             var index = Tokens.Count - 1;
                             last = Tokens[index];
                             Tokens.RemoveAt(index);
-                            assignToken = new TokenInfo(tokentext, terminalname);
+                            assignToken = new EditorTokenInfo(tokentext, terminalname);
                             assignToken.Token = (short)LINE_TOKEN.ASSIGN;
                             //insert it before assignar var.
                             Tokens.Add(assignToken);
                             Tokens.Add(last);
                             //get the expression in postfix
-                            functions = new Stack<TokenInfo>();
+                            functions = new Stack<EditorTokenInfo>();
                             ///////////////////////////////////////////////
                             // ALL FUNCTIONS AND LITERALS IN EXPRESSIONS
                             ///////////////////////////////////////////////
@@ -786,7 +776,7 @@
                                     case "THEN":
                                     case "ELSE":
                                         branches.Pop();
-                                        Tokens.Add(new TokenInfo("EOE", "EOE"));
+                                        Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
                                         Tokens.Last().Token = (short)LINE_TOKEN.EOE;
                                         Tokens.Last().Index = 0; 
                                         break;
@@ -803,7 +793,7 @@
                         case "TABLENUMBER":
                         case "SYSPRG":
                         case "TIMER":
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             break;
 
@@ -813,7 +803,7 @@
                         case "IF":
                         case "IF+":
                         case "IF-":
-                            TokenInfo IfToken = new TokenInfo(tokentext,terminalname);
+                            EditorTokenInfo IfToken = new EditorTokenInfo(tokentext,terminalname);
                             
                             LINE_TOKEN TypeToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
                             IfToken.Token = (short)TypeToken;
@@ -828,7 +818,7 @@
 
                         case "THEN":
                             //START MARKER FOR THEN PART
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
                             Tokens.Last().Index = (short) Tokens.Count; //Next token will be OFFSET
 
@@ -849,7 +839,7 @@
                             }
 
                             //Offset to be treated as a NUMBER
-                            Tokens.Add(new TokenInfo("OFFSET", "OFFSET"));
+                            Tokens.Add(new EditorTokenInfo("OFFSET", "OFFSET"));
                             Tokens.Last().Token = 0;
                             
                     
@@ -857,7 +847,7 @@
 
                         case "ELSE":
                             //ELSE
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)LINE_TOKEN.ELSE; //End marker for Expr.
 
                             if (branches.Count > 0)
@@ -878,14 +868,14 @@
                             branches.Push(Tokens.Last()); //Push corresponding ELSE
 
                             //START MARKER FOR ELSE PART
-                            Tokens.Add(new TokenInfo("EOE", "EOE"));
+                            Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
                             Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
                             Tokens.Last().Index = (short)Tokens.Count; //Next token will be OFFSET
 
 
 
                             //Offset to be treated as a NUMBER
-                            Tokens.Add(new TokenInfo("OFFSET", "OFFSET"));
+                            Tokens.Add(new EditorTokenInfo("OFFSET", "OFFSET"));
                             Tokens.Last().Token = 0;
 
                             break;
@@ -902,7 +892,7 @@
                                         var offsetIdx = branches.Pop().Index;
                                         //references token with end marker 
                                         Tokens[offsetIdx].Index  = (short) Tokens.Count;
-                                        Tokens.Add(new TokenInfo("EOE", "EOE"));
+                                        Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
                                         Tokens.Last().Token = (short)LINE_TOKEN.EOE;
                                         break;
                                     default:
@@ -910,7 +900,7 @@
                                 }
                             }
 
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
 
                             break;
 
@@ -926,19 +916,19 @@
                         case "ON_ALARM":
                         case "ON_ERROR":
                         
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
                             Tokens.Last().Token = (short)SimpleToken;
                             break;
 
                         case "WAIT":
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN WaitToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
                             Tokens.Last().Token = (short)WaitToken;
                             Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
                             //Add EOE and counter
                             WaitCount++;
-                            Tokens.Add(new TokenInfo("WAITCOUNTER", "WAITCOUNTER"));
+                            Tokens.Add(new EditorTokenInfo("WAITCOUNTER", "WAITCOUNTER"));
                             Tokens.Last().Token = (short)LINE_TOKEN.EOE;
                             Tokens.Last().Index = (short) WaitCount;
                            
@@ -946,7 +936,7 @@
                         #endregion
                         case "LET":
                         default: // No special cases, or expected to be ready to encode.
-                            Tokens.Add(new TokenInfo(tokentext, terminalname));
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             
                             break;
                     }
@@ -976,41 +966,35 @@
            
             try
             {
-                ////Is VAR?
-                //int i = 0;
-                //for(i=0;i<Prg.Variables.Count -1;i++)
-                //{
-                //    var v = Prg.Variables[i];
-                //    if(v.Label == Ident || v.Control.GetName() == Ident)
-                //    {
-                //        Index = i;
-                //        return PCODE_CONST.LOCAL_POINT_PRG;
-                //    }
-                //}
+                if (Identifiers == null) //Null object
+                {
+                    Index = -1;
+                    return PCODE_CONST.UNDEFINED_SYMBOL;
+                }
 
                 //Test Variables
-                Index = Prg.Variables.FindIndex(v => v.Label == Ident);
+                Index = Identifiers.Variables.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
                 //Test Inputs
-                Index = Prg.Inputs.FindIndex(v => v.Label == Ident);
+                Index = Identifiers.Inputs.FindIndex(v => v.Label == Ident);
                 if(!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
                 //Test Outputs
-                Index = Prg.Outputs.FindIndex(v => v.Label == Ident);
+                Index = Identifiers.Outputs.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1))  return PCODE_CONST.LOCAL_POINT_PRG;
 
                 //Test Programs
-                Index = Prg.Programs.FindIndex(v => v.Label == Ident);
+                Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
                 //Test Schedules
-                Index = Prg.Schedules.FindIndex(v => v.Label == Ident);
+                Index = Identifiers.Schedules.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
 
                 //Test Holidays
-                Index = Prg.Holidays.FindIndex(v => v.Label == Ident);
+                Index = Identifiers.Holidays.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
 
               
@@ -1036,11 +1020,11 @@
         /// <param name="Index">Start Index</param>
         /// <param name="Cancel">Cancel processing because of at least one semantic error</param>
         /// <returns>RPN Expression, ready to be encoded</returns>
-        List<TokenInfo> GetExpression(ref int Index, ref bool Cancel)
+        List<EditorTokenInfo> GetExpression(ref int Index, ref bool Cancel)
         {
             // _parseTree.Tokens.Count
-            List<TokenInfo> Expr = new List<TokenInfo>();
-            Stack<TokenInfo> Oper = new Stack<TokenInfo>();
+            List<EditorTokenInfo> Expr = new List<EditorTokenInfo>();
+            Stack<EditorTokenInfo> Oper = new Stack<EditorTokenInfo>();
             
             //Last processed token was a BEGIN EXPRESSION MARKER
             Index++; //Jump over next token.
@@ -1059,7 +1043,7 @@
 
                     case "(":
                         //If the incoming symbol is a left parenthesis, push it on the stack.
-                        Oper.Push(new TokenInfo(tokentext, terminalname));
+                        Oper.Push(new EditorTokenInfo(tokentext, terminalname));
                         break;
                     
                     case ")":
@@ -1140,7 +1124,7 @@
                         string output = Regex.Match(tokentext, @"\d+").Value;
                         int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                                                                           //Prepare token identifier to encode: Token + Index + Type
-                        TokenInfo CPIdentifier = new TokenInfo(tokentext, "Identifier");
+                        EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, "Identifier");
                         CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
                         CPIdentifier.Index = (short)CtrlPointIndex;
                         CPIdentifier.Token = (short) PCODE_CONST.LOCAL_POINT_PRG;
@@ -1167,7 +1151,7 @@
                         else
                         {
                             //Prepare token identifier to encode: Token + Index + Type
-                            TokenInfo NewIdentifier = new TokenInfo(tokentext, terminalname);
+                            EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
                             NewIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
                             NewIdentifier.Index = (short)PointIndex;
                             NewIdentifier.Token = (short)TokenType;
@@ -1198,7 +1182,7 @@
                     
                         //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                         //To allow further transforms by RPN Parser of Expressions
-                        var op= new TokenInfo(tokentext, terminalname);
+                        var op= new EditorTokenInfo(tokentext, terminalname);
                         TYPE_TOKEN TypeToken = (TYPE_TOKEN)Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
                         op.Token = (short)TypeToken;
                         op.Precedence = (short)tok.KeyTerm.Precedence;
@@ -1225,7 +1209,7 @@
                     case "TABLENUMBER":
                     case "SYSPRG":
                     case "TIMER":
-                        Expr.Add(new TokenInfo(tokentext, terminalname));
+                        Expr.Add(new EditorTokenInfo(tokentext, terminalname));
                         Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                         break;
                     #endregion
@@ -1263,7 +1247,7 @@
                     
                         //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                         //To allow further transforms by RPN Parser of Expressions
-                        var fxToken = new TokenInfo(tokentext, terminalname);
+                        var fxToken = new EditorTokenInfo(tokentext, terminalname);
                         FUNCTION_TOKEN tokenValue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
                         fxToken.Token = (short)tokenValue;
                         
@@ -1310,140 +1294,5 @@
 
 
     }
-
-
-
-
-    /// <summary>
-    /// Stores values Before and After Renumbering.
-    /// </summary>
-    public class LineInfo
-    {
-        /// <summary>
-        /// Line number before renumbering
-        /// </summary>
-        public int Before { get; set; } 
-        /// <summary>
-        /// Line number after renumbering
-        /// </summary>
-        public int After { get; set; }
-        /// <summary>
-        /// Default constructor of class LineInfo
-        /// </summary>
-        /// <param name="b">Before value</param>
-        /// <param name="a">After value</param>
-        public LineInfo(int b, int a) { Before = b; After = a; }
-        /// <summary>
-        /// LineInfo ToString() override
-        /// </summary>
-        /// <returns>Line number After renumbering as a string
-        /// Ready to use in line number replacements</returns>
-        public override string ToString()
-        {
-            return After.ToString();
-        }
-    };
-
-    /// <summary>
-    /// Enumerates type of jumping instructions:
-    /// GOTO, GOSUB, ONALARM, ONERROR, THEN
-    /// </summary>
-    public enum JumpType { GOTO, GOSUB, ONALARM, ONERROR, THEN };
-
-    /// <summary>
-    /// Stores Jump intructions information.
-    /// Helper in renumbering.
-    /// </summary>
-    public class JumpInfo
-    {   /// <summary>
-        /// Type of  Jump Instruction: GOTO, GOSUB, ONALARM, ONERROR, THEN
-        /// </summary>
-        public JumpType Type { get; set; } //Type of Jump
-        /// <summary>
-        /// Zero based index of line in list
-        /// </summary>
-        public int LineIndex { get; set; } //Index of Line in Lines
-        /// <summary>
-        /// Offset in words count from the start of every line.
-        /// </summary>
-        public int Offset { get; set; } //Code Offset
-
-        /// <summary>
-        /// Default constructor for a Jump Info.
-        /// </summary>
-        /// <param name="t">Type of Jump</param>
-        /// <param name="l">Line index</param>
-        /// <param name="o">Offset - Words for start of line</param>
-        public JumpInfo(JumpType t, int l, int o)
-        {
-            Type = t;
-            LineIndex = l;
-            Offset = o;
-        }
-    };
-
-    /// <summary>
-    /// TokeInfo stores information about a single token
-    /// </summary>
-    public class TokenInfo
-    {
-        /// <summary>
-        /// Original text token from parsing
-        /// </summary>
-        public string Text { get; set; }
-        /// <summary>
-        /// Associated Terminal Name from Grammar
-        /// </summary>
-        public string TerminalName { get; set; }
-        /// <summary>
-        /// Token Type (1 Byte)
-        /// Token size for Comment string
-        /// </summary>
-        public short Type { get; set; }
-        /// <summary>
-        /// Token value (1 Byte)
-        /// </summary>
-        public short Token { get; set; }
-        /// <summary>
-        /// Control Point index
-        /// </summary>
-        public short Index { get; set; }
-        /// <summary>
-        /// Operators Precedence
-        /// </summary>
-        public short Precedence { get; set; }
-
-        /// <summary>
-        /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
-        /// Expected to be fulfilled with more token info
-        /// </summary>
-        /// <param name="Text">Plain Text tokenizable</param>
-        /// <param name="TName">Terminal Name</param>
-        public TokenInfo(string Text, string TName)
-        {
-            this.Text = Text;
-            this.TerminalName = TName;
-            this.Precedence = 0;
-            this.Index = 0;
-            this.Type = 0;
-        }
-
-        /// <summary>
-        /// TokenInfo ToString Override
-        /// </summary>
-        /// <returns>string formatted as ·×Text×· or ·TerminalName·
-        /// ·×Text· means there is no TerminalName defined
-        /// </returns>
-        public override string ToString()
-        {
-            string result = " ";
-            //result     += this.Text ?? "NULL";
-            //result     += "->";
-            result       += this.TerminalName ?? $"×{this.Text}";
-            result       += "·";
-            return result;
-        }
-
-    }
-
+    
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Irony;
 using Irony.Parsing;
+using ProgramEditor.Extensions;
 
 
 namespace T3000.Forms
@@ -18,7 +19,7 @@ namespace T3000.Forms
     {
         
         string codetext;
-        List<TokenInfo> tokenlist = new List<TokenInfo>();
+        List<EditorTokenInfo> tokenlist = new List<EditorTokenInfo>();
 
      
 
@@ -28,7 +29,7 @@ namespace T3000.Forms
         /// </summary>
         /// <param name="code">Copy of plain text code</param>
         /// <param name="tokens">Preprocessed Tokens List</param>
-        public SendEventArgs(string code, List<TokenInfo> tokens)
+        public SendEventArgs(string code, List<EditorTokenInfo> tokens)
         {
             codetext  = code;
             tokenlist = tokens;
@@ -46,7 +47,7 @@ namespace T3000.Forms
         /// <summary>
         /// List of Tokens
         /// </summary>
-        public List<TokenInfo> Tokens
+        public List<EditorTokenInfo> Tokens
         {
            get{ return tokenlist; }
            set { tokenlist = value; }
