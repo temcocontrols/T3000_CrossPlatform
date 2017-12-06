@@ -127,8 +127,21 @@ namespace FastColoredTextBoxNS
             }
         }
 
+        /// <summary>
+        /// Constructor SyntaxHighlighter
+        /// </summary>
+        /// <param name="currentTb">TextBox</param>
         public SyntaxHighlighter(FastColoredTextBox currentTb) {
-            this.currentTb = currentTb;
+            try
+            {
+                this.currentTb = currentTb;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         #region IDisposable Members
