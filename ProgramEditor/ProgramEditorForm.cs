@@ -39,7 +39,7 @@
 
         List<EditorTokenInfo> Tokens = new List<EditorTokenInfo>();
 
-        int ParsingTimes = 0;
+        //int ParsingTimes = 0;
 
         /// <summary>
         /// Form caption
@@ -112,6 +112,7 @@
             _language = new LanguageData(_grammar);
             _parser = new Parser(_language);
             //LRUIZ
+      
 
             
             var items = new List<AutocompleteItem>();
