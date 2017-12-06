@@ -421,7 +421,10 @@
             int nextPart = 0)
         {
             var i = offset;
-            for (; bytes[i] != 255; ++i) ;
+            for (; bytes[i] != 255; ++i)
+            {
+            }
+
             if (nextPart != 0)
             {
                 i = bytes[nextPart - 1] != 255 ? nextPart : nextPart - 1;
@@ -1024,29 +1027,29 @@ Token: {Token}
    
 
 
-    struct variable_table
-    {
-        char[] name; //= new char [20];
-        char[] label; // = new char[9];
-        char type;
-        char var_type;
-        int l;
-        int c;
-        byte network;
-        byte sub_panel;
-        char panel;
-        char point_type;
-        //char num_point;
-        short num_point;
-    };
+    //struct variable_table
+    //{
+    //    char[] name; //= new char [20];
+    //    char[] label; // = new char[9];
+    //    char type;
+    //    char var_type;
+    //    int l;
+    //    int c;
+    //    byte network;
+    //    byte sub_panel;
+    //    char panel;
+    //    char point_type;
+    //    //char num_point;
+    //    short num_point;
+    //};
 
-    struct buf_str
-    {
-        int v;
-        char[] var;//[20];
-        float fvar;
-        char[] op;//[10];
-    };
+    //struct buf_str
+    //{
+    //    int v;
+    //    char[] var;//[20];
+    //    float fvar;
+    //    char[] op;//[10];
+    //};
 
 
 

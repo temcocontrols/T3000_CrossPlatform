@@ -15,7 +15,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="tb">Underlaying textbox</param>
+        /// <param name="ts">Underlaying textbox</param>
         /// <param name="c">Inserting char</param>
         public InsertCharCommand(TextSource ts, char c): base(ts)
         {
@@ -90,7 +90,7 @@ namespace FastColoredTextBoxNS
             {
                 case '\n':
                     if (!ts.CurrentTB.AllowInsertRemoveLines)
-                        throw new ArgumentOutOfRangeException("Cant insert this char in ColumnRange mode");
+                        throw new ArgumentOutOfRangeException($"Cant insert this char in ColumnRange mode");
                     if (ts.Count == 0)
                         InsertLine(ts);
                     InsertLine(ts);
@@ -102,7 +102,7 @@ namespace FastColoredTextBoxNS
                     if (tb.Selection.Start.iChar == 0)
                     {
                         if (!ts.CurrentTB.AllowInsertRemoveLines)
-                            throw new ArgumentOutOfRangeException("Cant insert this char in ColumnRange mode");
+                            throw new ArgumentOutOfRangeException($"Cant insert this char in ColumnRange mode");
                         if (tb.LineInfos[tb.Selection.Start.iLine - 1].VisibleState != VisibleState.Visible)
                             tb.ExpandBlock(tb.Selection.Start.iLine - 1);
                         deletedChar = '\n';
@@ -202,7 +202,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="tb">Underlaying textbox</param>
+        /// <param name="ts">Underlaying textbox</param>
         /// <param name="insertedText">Text for inserting</param>
         public InsertTextCommand(TextSource ts, string insertedText): base(ts)
         {
@@ -279,7 +279,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="tb">Underlaying textbox</param>
+        /// <param name="ts">Underlaying textbox</param>
         /// <param name="ranges">List of ranges for replace</param>
         /// <param name="insertedText">Text for inserting</param>
         public ReplaceTextCommand(TextSource ts, List<Range> ranges, string insertedText)
@@ -397,7 +397,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Construstor
         /// </summary>
-        /// <param name="tb">Underlaying textbox</param>
+        /// <param name="ts">Underlaying textbox</param>
         public ClearSelectedCommand(TextSource ts): base(ts)
         {
         }
@@ -568,9 +568,8 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="tb">Underlaying textbox</param>
-        /// <param name="ranges">List of ranges for replace</param>
-        /// <param name="insertedText">Text for inserting</param>
+        /// <param name="ts">Underlaying textbox</param>
+        /// <param name="iLines">List of ranges for replace</param>
         public RemoveLinesCommand(TextSource ts, List<int> iLines)
             : base(ts)
         {

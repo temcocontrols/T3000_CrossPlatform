@@ -246,7 +246,6 @@ namespace FastColoredTextBoxNS
                 }
                 catch
                 {
-                    ;
                 }
             fs = null;
         }

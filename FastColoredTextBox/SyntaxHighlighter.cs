@@ -329,7 +329,7 @@ namespace FastColoredTextBoxNS
             }
 
             //Char _
-            if (args.PrevLineText.TrimEnd().EndsWith("_"))
+            if (args.PrevLineText.TrimEnd().EndsWith("_", StringComparison.Ordinal))
             {
                 args.Shift = args.TabLength;
                 return;
@@ -516,7 +516,7 @@ namespace FastColoredTextBoxNS
 
         protected static Color ParseColor(string s)
         {
-            if (s.StartsWith("#"))
+            if (s.StartsWith("#", StringComparison.Ordinal))
             {
                 if (s.Length <= 7)
                     return Color.FromArgb(255,

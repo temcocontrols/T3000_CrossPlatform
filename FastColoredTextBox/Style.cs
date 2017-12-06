@@ -74,7 +74,6 @@ namespace FastColoredTextBoxNS
 
         public virtual void Dispose()
         {
-            ;
         }
 
         /// <summary>

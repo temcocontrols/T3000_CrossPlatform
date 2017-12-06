@@ -53,9 +53,9 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SettingsBag = new System.Windows.Forms.PropertyGrid();
             this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
             this.ruler1 = new FastColoredTextBoxNS.Ruler();
+            this.SettingsBag = new System.Windows.Forms.PropertyGrid();
             this.tsTopMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.layStatistics.SuspendLayout();
@@ -299,15 +299,6 @@
             this.dataGridViewTextBoxColumn1.ToolTipText = "Double-click grid cell to navigate to state details";
             this.dataGridViewTextBoxColumn1.Width = 71;
             // 
-            // SettingsBag
-            // 
-            this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.SettingsBag.Location = new System.Drawing.Point(47, 58);
-            this.SettingsBag.Name = "SettingsBag";
-            this.SettingsBag.Size = new System.Drawing.Size(247, 197);
-            this.SettingsBag.TabIndex = 10;
-            this.SettingsBag.Visible = false;
-            // 
             // editTextBox
             // 
             this.editTextBox.AutoCompleteBracketsList = new char[] {
@@ -329,7 +320,6 @@
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.editTextBox.IsReplaceMode = false;
             this.editTextBox.Location = new System.Drawing.Point(3, 53);
             this.editTextBox.Name = "editTextBox";
@@ -352,6 +342,15 @@
             this.ruler1.Size = new System.Drawing.Size(573, 24);
             this.ruler1.TabIndex = 11;
             this.ruler1.Target = this.editTextBox;
+            // 
+            // SettingsBag
+            // 
+            this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.SettingsBag.Location = new System.Drawing.Point(47, 58);
+            this.SettingsBag.Name = "SettingsBag";
+            this.SettingsBag.Size = new System.Drawing.Size(247, 197);
+            this.SettingsBag.TabIndex = 10;
+            this.SettingsBag.Visible = false;
             // 
             // ProgramEditorForm
             // 

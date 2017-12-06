@@ -44,7 +44,7 @@ namespace FastColoredTextBoxNS
     /// <summary>
     /// Fast colored textbox
     /// </summary>
-    public partial class FastColoredTextBox : UserControl, ISupportInitialize
+    public class FastColoredTextBox : UserControl, ISupportInitialize
     {
         internal const int minLeftIndent = 8;
         private const int maxBracketSearchIterations = 1000;
@@ -220,6 +220,9 @@ namespace FastColoredTextBoxNS
 
         private char[] autoCompleteBracketsList = { '(', ')', '{', '}', '[', ']', '"', '"', '\'', '\'' };
 
+        /// <summary>
+        /// AutoCompleteBracketsList
+        /// </summary>
         public char[] AutoCompleteBracketsList
         {
             get { return autoCompleteBracketsList; }
@@ -1318,7 +1321,7 @@ namespace FastColoredTextBoxNS
         public override bool AutoScroll
         {
             get { return base.AutoScroll; }
-            set { ; }
+            set { }
         }
 
         /// <summary>
@@ -2439,7 +2442,7 @@ namespace FastColoredTextBoxNS
         public int GetLineLength(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
 
             return lines[iLine].Count;
         }
@@ -2451,7 +2454,7 @@ namespace FastColoredTextBoxNS
         public Range GetLine(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
 
             var sel = new Range(this);
             sel.Start = new Place(0, iLine);
@@ -2716,6 +2719,7 @@ namespace FastColoredTextBoxNS
         /// Insert text into current selected position
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="jumpToCaret">Jump to caret</param>
         public virtual void InsertText(string text, bool jumpToCaret)
         {
             if (text == null)
@@ -2750,6 +2754,7 @@ namespace FastColoredTextBoxNS
         /// Insert text into current selection position (with predefined style)
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="style"></param>
         public virtual Range InsertText(string text, Style style)
         {
             return InsertText(text, style, true);
@@ -3351,7 +3356,6 @@ namespace FastColoredTextBoxNS
             }
             catch (ArgumentOutOfRangeException)
             {
-                ;
             }
 
             UpdateScrollbars();
@@ -5530,4 +5534,3074 @@ namespace FastColoredTextBoxNS
 
             if (Selection.ColumnSelectionMode)
             {
-         
+                Selection.Start = PointToPlaceSimple(e.Location);
+                Selection.ColumnSelectionMode = true;
+            }
+            else
+            {
+                if (VirtualSpace)
+                    Selection.Start = PointToPlaceSimple(e.Location);
+                else
+                    Selection.Start = PointToPlace(e.Location);
+            }
+
+            if ((lastModifiers & Keys.Shift) != 0)
+                Selection.End = oldEnd;
+
+            CheckAndChangeSelectionType();
+
+            Selection.EndUpdate();
+            Invalidate();
+            return;
+        }
+
+        protected virtual void CheckAndChangeSelectionType()
+        {
+            //change selection type to ColumnSelectionMode
+            if ((ModifierKeys & Keys.Alt) != 0 && !WordWrap)
+            {
+                Selection.ColumnSelectionMode = true;
+            }
+            else
+            //change selection type to Range
+            {
+                Selection.ColumnSelectionMode = false;
+            }
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            Invalidate();
+
+            if (lastModifiers == Keys.Control)
+            {
+                ChangeFontSize(2 * Math.Sign(e.Delta));
+                ((HandledMouseEventArgs)e).Handled = true;
+            }
+            else
+            if (VerticalScroll.Visible || !ShowScrollBars)
+            {
+                //base.OnMouseWheel(e);
+
+                // Determine scoll offset
+                int mouseWheelScrollLinesSetting = GetControlPanelWheelScrollLinesValue();
+
+                DoScrollVertical(mouseWheelScrollLinesSetting, e.Delta);
+
+                ((HandledMouseEventArgs)e).Handled = true;
+            }
+
+            DeactivateMiddleClickScrollingMode();
+        }
+
+        private void DoScrollVertical(int countLines, int direction)
+        {
+            if (VerticalScroll.Visible || !ShowScrollBars)
+            {
+                int numberOfVisibleLines = ClientSize.Height/CharHeight;
+
+                int offset;
+                if ((countLines == -1) || (countLines > numberOfVisibleLines))
+                    offset = CharHeight*numberOfVisibleLines;
+                else
+                    offset = CharHeight*countLines;
+
+                var newScrollPos = VerticalScroll.Value - Math.Sign(direction)*offset;
+
+                var ea =
+                    new ScrollEventArgs(direction > 0 ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement,
+                                        VerticalScroll.Value,
+                                        newScrollPos,
+                                        ScrollOrientation.VerticalScroll);
+
+                OnScroll(ea);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value for the system control panel mouse wheel scroll settings.
+        /// The value returns the number of lines that shall be scolled if the user turns the mouse wheet one step.
+        /// </summary>
+        /// <remarks>
+        /// This methods gets the "WheelScrollLines" value our from the registry key "HKEY_CURRENT_USER\Control Panel\Desktop".
+        /// If the value of this option is 0, the screen will not scroll when the mouse wheel is turned.
+        /// If the value of this option is -1 or is greater than the number of lines visible in the window,
+        /// the screen will scroll up or down by one page.
+        /// </remarks>
+        /// <returns>
+        /// Number of lines to scrol l when the mouse wheel is turned
+        /// </returns>
+        private static int GetControlPanelWheelScrollLinesValue()
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", false))
+                {
+                    return Convert.ToInt32(key.GetValue("WheelScrollLines"));
+                }
+            }
+            catch
+            {
+                // Use default value
+                return 1;
+            }
+        }
+
+
+        public void ChangeFontSize(int step)
+        {
+            var points = Font.SizeInPoints;
+            using (var gr = Graphics.FromHwnd(Handle))
+            {
+                var dpi = gr.DpiY;
+                var newPoints = points + step * 72f / dpi;
+                if(newPoints < 1f) return;
+                var k = newPoints / originalFont.SizeInPoints;
+                 Zoom = (int)(100 * k);
+            }
+        }
+
+        /// <summary>
+        /// Zooming (in percentages)
+        /// </summary>
+        [Browsable(false)]
+        public int Zoom 
+        {
+            get { return zoom; }
+            set {
+                zoom = value;
+                DoZoom(zoom / 100f);
+                OnZoomChanged();
+            }
+        }
+
+        protected virtual void OnZoomChanged()
+        {
+            if (ZoomChanged != null)
+                ZoomChanged(this, EventArgs.Empty);
+        }
+
+        private void DoZoom(float koeff)
+        {
+            //remmber first displayed line
+            var iLine = YtoLineIndex(VerticalScroll.Value);
+            //
+            var points = originalFont.SizeInPoints;
+            points *= koeff;
+
+            if (points < 1f || points > 300f) return;
+
+            var oldFont = Font;
+            SetFont(new Font(Font.FontFamily, points, Font.Style, GraphicsUnit.Point));
+            oldFont.Dispose();
+
+            NeedRecalc(true);
+
+            //restore first displayed line
+            if (iLine < LinesCount)
+                VerticalScroll.Value = Math.Min(VerticalScroll.Maximum, LineInfos[iLine].startY - Paddings.Top);
+            UpdateScrollbars();
+            //
+            Invalidate();
+            OnVisibleRangeChanged();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+
+            CancelToolTip();
+        }
+
+        protected Range draggedRange;
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (middleClickScrollingActivated)
+                return;
+
+            if (lastMouseCoord != e.Location)
+            {
+                //restart tooltip timer
+                CancelToolTip();
+                timer3.Start();
+            }
+            lastMouseCoord = e.Location;
+
+            if (e.Button == MouseButtons.Left && mouseIsDragDrop)
+            {
+                draggedRange = Selection.Clone();
+                DoDragDrop(SelectedText, DragDropEffects.Copy);
+                draggedRange = null;
+                return;
+            }
+
+            if (e.Button == MouseButtons.Left && mouseIsDrag)
+            {
+                Place place;
+                if (Selection.ColumnSelectionMode || VirtualSpace)
+                    place = PointToPlaceSimple(e.Location);
+                else
+                    place = PointToPlace(e.Location);
+
+                if (isLineSelect)
+                {
+                    Selection.BeginUpdate();
+
+                    int iLine = place.iLine;
+                    if (iLine < lineSelectFrom)
+                    {
+                        Selection.Start = new Place(0, iLine);
+                        Selection.End = new Place(GetLineLength(lineSelectFrom), lineSelectFrom);
+                    }
+                    else
+                    {
+                        Selection.Start = new Place(GetLineLength(iLine), iLine);
+                        Selection.End = new Place(0, lineSelectFrom);
+                    }
+
+                    Selection.EndUpdate();
+                    DoCaretVisible();
+                    HorizontalScroll.Value = 0;
+                    UpdateScrollbars();
+                    Invalidate();
+                }
+                else if (place != Selection.Start)
+                {
+                    Place oldEnd = Selection.End;
+                    Selection.BeginUpdate();
+                    if (Selection.ColumnSelectionMode)
+                    {
+                        Selection.Start = place;
+                        Selection.ColumnSelectionMode = true;
+                    }
+                    else
+                        Selection.Start = place;
+                    Selection.End = oldEnd;
+                    Selection.EndUpdate();
+                    DoCaretVisible();
+                    Invalidate();
+                    return;
+                }
+            }
+
+            VisualMarker marker = FindVisualMarkerForPoint(e.Location);
+            if (marker != null)
+                base.Cursor = marker.Cursor;
+            else
+            {
+                if (e.Location.X < LeftIndentLine || isLineSelect)
+                    base.Cursor = Cursors.Arrow;
+                else
+                    base.Cursor = defaultCursor;
+            }
+        }
+
+        private void CancelToolTip()
+        {
+            timer3.Stop();
+            if (ToolTip != null && !string.IsNullOrEmpty(ToolTip.GetToolTip(this)))
+            {
+                ToolTip.Hide(this);
+                ToolTip.SetToolTip(this, null);
+            }
+        }
+
+        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            base.OnMouseDoubleClick(e);
+
+            var m = FindVisualMarkerForPoint(e.Location);
+            if (m != null)
+                OnMarkerDoubleClick(m);
+        }
+
+        private void SelectWord(Place p)
+        {
+            int fromX = p.iChar;
+            int toX = p.iChar;
+
+            for (int i = p.iChar; i < lines[p.iLine].Count; i++)
+            {
+                char c = lines[p.iLine][i].c;
+                if (char.IsLetterOrDigit(c) || c == '_')
+                    toX = i + 1;
+                else
+                    break;
+            }
+
+            for (int i = p.iChar - 1; i >= 0; i--)
+            {
+                char c = lines[p.iLine][i].c;
+                if (char.IsLetterOrDigit(c) || c == '_')
+                    fromX = i;
+                else
+                    break;
+            }
+
+            Selection = new Range(this, toX, p.iLine, fromX, p.iLine);
+        }
+
+        private int YtoLineIndex(int y)
+        {
+            int i = LineInfos.BinarySearch(new LineInfo(-10), new LineYComparer(y));
+            i = i < 0 ? -i - 2 : i;
+            if (i < 0) return 0;
+            if (i > lines.Count - 1) return lines.Count - 1;
+            return i;
+        }
+
+        /// <summary>
+        /// Gets nearest line and char position from coordinates
+        /// </summary>
+        /// <param name="point">Point</param>
+        /// <returns>Line and char position</returns>
+        public Place PointToPlace(Point point)
+        {
+            #if debug
+            var sw = Stopwatch.StartNew();
+            #endif
+            point.Offset(HorizontalScroll.Value, VerticalScroll.Value);
+            point.Offset(-LeftIndent - Paddings.Left, 0);
+            int iLine = YtoLineIndex(point.Y);
+            if (iLine < 0)
+                return Place.Empty;
+
+            int y = 0;
+
+            for (; iLine < lines.Count; iLine++)
+            {
+                y = LineInfos[iLine].startY + LineInfos[iLine].WordWrapStringsCount*CharHeight;
+                if (y > point.Y && LineInfos[iLine].VisibleState == VisibleState.Visible)
+                    break;
+            }
+            if (iLine >= lines.Count)
+                iLine = lines.Count - 1;
+            if (LineInfos[iLine].VisibleState != VisibleState.Visible)
+                iLine = FindPrevVisibleLine(iLine);
+            //
+            int iWordWrapLine = LineInfos[iLine].WordWrapStringsCount;
+            do
+            {
+                iWordWrapLine--;
+                y -= CharHeight;
+            } while (y > point.Y);
+            if (iWordWrapLine < 0) iWordWrapLine = 0;
+            //
+            int start = LineInfos[iLine].GetWordWrapStringStartPosition(iWordWrapLine);
+            int finish = LineInfos[iLine].GetWordWrapStringFinishPosition(iWordWrapLine, lines[iLine]);
+            var x = (int) Math.Round((float) point.X/CharWidth);
+            if (iWordWrapLine > 0)
+                x -= LineInfos[iLine].wordWrapIndent;
+
+            x = x < 0 ? start : start + x;
+            if (x > finish)
+                x = finish + 1;
+            if (x > lines[iLine].Count)
+                x = lines[iLine].Count;
+
+#if debug
+            Console.WriteLine("PointToPlace: " + sw.ElapsedMilliseconds);
+#endif
+
+            return new Place(x, iLine);
+        }
+
+        private Place PointToPlaceSimple(Point point)
+        {
+            point.Offset(HorizontalScroll.Value, VerticalScroll.Value);
+            point.Offset(-LeftIndent - Paddings.Left, 0);
+            int iLine = YtoLineIndex(point.Y);
+            var x = (int) Math.Round((float) point.X/CharWidth);
+            if (x < 0) x = 0;
+            return new Place(x, iLine);
+        }
+
+        /// <summary>
+        /// Gets nearest absolute text position for given point
+        /// </summary>
+        /// <param name="point">Point</param>
+        /// <returns>Position</returns>
+        public int PointToPosition(Point point)
+        {
+            return PlaceToPosition(PointToPlace(point));
+        }
+
+        /// <summary>
+        /// Fires TextChanging event
+        /// </summary>
+        public virtual void OnTextChanging(ref string text)
+        {
+            ClearBracketsPositions();
+
+            if (TextChanging != null)
+            {
+                var args = new TextChangingEventArgs {InsertingText = text};
+                TextChanging(this, args);
+                text = args.InsertingText;
+                if (args.Cancel)
+                    text = string.Empty;
+            }
+        }
+
+        public virtual void OnTextChanging()
+        {
+            string temp = null;
+            OnTextChanging(ref temp);
+        }
+
+        /// <summary>
+        /// Fires TextChanged event
+        /// </summary>
+        public virtual void OnTextChanged()
+        {
+            var r = new Range(this);
+            r.SelectAll();
+            OnTextChanged(new TextChangedEventArgs(r));
+        }
+
+        /// <summary>
+        /// Fires TextChanged event
+        /// </summary>
+        public virtual void OnTextChanged(int fromLine, int toLine)
+        {
+            var r = new Range(this);
+            r.Start = new Place(0, Math.Min(fromLine, toLine));
+            r.End = new Place(lines[Math.Max(fromLine, toLine)].Count, Math.Max(fromLine, toLine));
+            OnTextChanged(new TextChangedEventArgs(r));
+        }
+
+        /// <summary>
+        /// Fires TextChanged event
+        /// </summary>
+        public virtual void OnTextChanged(Range r)
+        {
+            OnTextChanged(new TextChangedEventArgs(r));
+        }
+
+        /// <summary>
+        /// Call this method before multiple text changing
+        /// </summary>
+        public void BeginUpdate()
+        {
+            if (updating == 0)
+                updatingRange = null;
+            updating++;
+        }
+
+        /// <summary>
+        /// Call this method after multiple text changing
+        /// </summary>
+        public void EndUpdate()
+        {
+            updating--;
+
+            if (updating == 0 && updatingRange != null)
+            {
+                updatingRange.Expand();
+                OnTextChanged(updatingRange);
+            }
+        }
+
+
+        /// <summary>
+        /// Fires TextChanged event
+        /// </summary>
+        protected virtual void OnTextChanged(TextChangedEventArgs args)
+        {
+            //
+            args.ChangedRange.Normalize();
+            //
+            if (updating > 0)
+            {
+                if (updatingRange == null)
+                    updatingRange = args.ChangedRange.Clone();
+                else
+                {
+                    if (updatingRange.Start.iLine > args.ChangedRange.Start.iLine)
+                        updatingRange.Start = new Place(0, args.ChangedRange.Start.iLine);
+                    if (updatingRange.End.iLine < args.ChangedRange.End.iLine)
+                        updatingRange.End = new Place(lines[args.ChangedRange.End.iLine].Count,
+                                                      args.ChangedRange.End.iLine);
+                    updatingRange = updatingRange.GetIntersectionWith(Range);
+                }
+                return;
+            }
+            //
+#if debug
+            var sw = Stopwatch.StartNew();
+            #endif
+            CancelToolTip();
+            ClearHints();
+            IsChanged = true;
+            TextVersion++;
+            MarkLinesAsChanged(args.ChangedRange);
+            ClearFoldingState(args.ChangedRange);
+            //
+            if (wordWrap)
+                RecalcWordWrap(args.ChangedRange.Start.iLine, args.ChangedRange.End.iLine);
+            //
+            base.OnTextChanged(args);
+
+            //dalayed event stuffs
+            if (delayedTextChangedRange == null)
+                delayedTextChangedRange = args.ChangedRange.Clone();
+            else
+                delayedTextChangedRange = delayedTextChangedRange.GetUnionWith(args.ChangedRange);
+
+            needRiseTextChangedDelayed = true;
+            ResetTimer(timer2);
+            //
+            OnSyntaxHighlight(args);
+            //
+            if (TextChanged != null)
+                TextChanged(this, args);
+            //
+            if (BindingTextChanged != null)
+                BindingTextChanged(this, EventArgs.Empty);
+            //
+            base.OnTextChanged(EventArgs.Empty);
+            //
+#if debug
+            Console.WriteLine("OnTextChanged: " + sw.ElapsedMilliseconds);
+#endif
+
+            OnVisibleRangeChanged();
+        }
+
+        /// <summary>
+        /// Clears folding state for range of text
+        /// </summary>
+        private void ClearFoldingState(Range range)
+        {
+            for (int iLine = range.Start.iLine; iLine <= range.End.iLine; iLine++)
+                if (iLine >= 0 && iLine < lines.Count)
+                    FoldedBlocks.Remove(this[iLine].UniqueId);
+        }
+
+
+        private void MarkLinesAsChanged(Range range)
+        {
+            for (int iLine = range.Start.iLine; iLine <= range.End.iLine; iLine++)
+                if (iLine >= 0 && iLine < lines.Count)
+                    lines[iLine].IsChanged = true;
+        }
+
+        /// <summary>
+        /// Fires SelectionChanged event
+        /// </summary>
+        public virtual void OnSelectionChanged()
+        {
+#if debug
+            var sw = Stopwatch.StartNew();
+            #endif
+            //find folding markers for highlighting
+            if (HighlightFoldingIndicator)
+                HighlightFoldings();
+            //
+            needRiseSelectionChangedDelayed = true;
+            ResetTimer(timer);
+
+            if (SelectionChanged != null)
+                SelectionChanged(this, new EventArgs());
+
+#if debug
+            Console.WriteLine("OnSelectionChanged: "+ sw.ElapsedMilliseconds);
+#endif
+        }
+
+        //find folding markers for highlighting
+        private void HighlightFoldings()
+        {
+            if (LinesCount == 0)
+                return;
+            //
+            int prevStartFoldingLine = startFoldingLine;
+            int prevEndFoldingLine = endFoldingLine;
+            //
+            startFoldingLine = -1;
+            endFoldingLine = -1;
+            int counter = 0;
+            for (int i = Selection.Start.iLine; i >= Math.Max(Selection.Start.iLine - maxLinesForFolding, 0); i--)
+            {
+                bool hasStartMarker = lines.LineHasFoldingStartMarker(i);
+                bool hasEndMarker = lines.LineHasFoldingEndMarker(i);
+
+                if (hasEndMarker && hasStartMarker)
+                    continue;
+
+                if (hasStartMarker)
+                {
+                    counter--;
+                    if (counter == -1) //found start folding
+                    {
+                        startFoldingLine = i;
+                        break;
+                    }
+                }
+                if (hasEndMarker && i != Selection.Start.iLine)
+                    counter++;
+            }
+            if (startFoldingLine >= 0)
+            {
+                //find end of block
+                endFoldingLine = FindEndOfFoldingBlock(startFoldingLine, maxLinesForFolding);
+                if (endFoldingLine == startFoldingLine)
+                    endFoldingLine = -1;
+            }
+
+            if (startFoldingLine != prevStartFoldingLine || endFoldingLine != prevEndFoldingLine)
+                OnFoldingHighlightChanged();
+        }
+
+        protected virtual void OnFoldingHighlightChanged()
+        {
+            if (FoldingHighlightChanged != null)
+                FoldingHighlightChanged(this, EventArgs.Empty);
+        }
+
+        protected override void OnGotFocus(EventArgs e)
+        {
+            SetAsCurrentTB();
+            base.OnGotFocus(e);
+            Invalidate();
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            lastModifiers = Keys.None;
+            DeactivateMiddleClickScrollingMode();
+            base.OnLostFocus(e);
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Gets absolute text position from line and char position
+        /// </summary>
+        /// <param name="point">Line and char position</param>
+        /// <returns>Point of char</returns>
+        public int PlaceToPosition(Place point)
+        {
+            if (point.iLine < 0 || point.iLine >= lines.Count ||
+                point.iChar >= lines[point.iLine].Count + Environment.NewLine.Length)
+                return -1;
+
+            int result = 0;
+            for (int i = 0; i < point.iLine; i++)
+                result += lines[i].Count + Environment.NewLine.Length;
+            result += point.iChar;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets line and char position from absolute text position
+        /// </summary>
+        public Place PositionToPlace(int pos)
+        {
+            if (pos < 0)
+                return new Place(0, 0);
+
+            for (int i = 0; i < lines.Count; i++)
+            {
+                int lineLength = lines[i].Count + Environment.NewLine.Length;
+                if (pos < lines[i].Count)
+                    return new Place(pos, i);
+                if (pos < lineLength)
+                    return new Place(lines[i].Count, i);
+
+                pos -= lineLength;
+            }
+
+            if (lines.Count > 0)
+                return new Place(lines[lines.Count - 1].Count, lines.Count - 1);
+            else
+                return new Place(0, 0);
+            //throw new ArgumentOutOfRangeException("Position out of range");
+        }
+
+        /// <summary>
+        /// Gets absolute char position from char position
+        /// </summary>
+        public Point PositionToPoint(int pos)
+        {
+            return PlaceToPoint(PositionToPlace(pos));
+        }
+
+        /// <summary>
+        /// Gets point for given line and char position
+        /// </summary>
+        /// <param name="place">Line and char position</param>
+        /// <returns>Coordiantes</returns>
+        public Point PlaceToPoint(Place place)
+        {
+            if (place.iLine >= LineInfos.Count)
+                return new Point();
+            int y = LineInfos[place.iLine].startY;
+            //
+            int iWordWrapIndex = LineInfos[place.iLine].GetWordWrapStringIndex(place.iChar);
+            y += iWordWrapIndex*CharHeight;
+            int x = (place.iChar - LineInfos[place.iLine].GetWordWrapStringStartPosition(iWordWrapIndex))*CharWidth;
+            if(iWordWrapIndex > 0 )
+                x += LineInfos[place.iLine].wordWrapIndent * CharWidth;
+            //
+            y = y - VerticalScroll.Value;
+            x = LeftIndent + Paddings.Left + x - HorizontalScroll.Value;
+
+            return new Point(x, y);
+        }
+
+        /// <summary>
+        /// Get range of text
+        /// </summary>
+        /// <param name="fromPos">Absolute start position</param>
+        /// <param name="toPos">Absolute finish position</param>
+        /// <returns>Range</returns>
+        public Range GetRange(int fromPos, int toPos)
+        {
+            var sel = new Range(this);
+            sel.Start = PositionToPlace(fromPos);
+            sel.End = PositionToPlace(toPos);
+            return sel;
+        }
+
+        /// <summary>
+        /// Get range of text
+        /// </summary>
+        /// <param name="fromPlace">Line and char position</param>
+        /// <param name="toPlace">Line and char position</param>
+        /// <returns>Range</returns>
+        public Range GetRange(Place fromPlace, Place toPlace)
+        {
+            return new Range(this, fromPlace, toPlace);
+        }
+
+        /// <summary>
+        /// Finds ranges for given regex pattern
+        /// </summary>
+        /// <param name="regexPattern">Regex pattern</param>
+        /// <returns>Enumeration of ranges</returns>
+        public IEnumerable<Range> GetRanges(string regexPattern)
+        {
+            var range = new Range(this);
+            range.SelectAll();
+            //
+            foreach (Range r in range.GetRanges(regexPattern, RegexOptions.None))
+                yield return r;
+        }
+
+        /// <summary>
+        /// Finds ranges for given regex pattern
+        /// </summary>
+        /// <param name="regexPattern">Regex pattern</param>
+        /// <param name="options"></param>
+        /// <returns>Enumeration of ranges</returns>
+        public IEnumerable<Range> GetRanges(string regexPattern, RegexOptions options)
+        {
+            var range = new Range(this);
+            range.SelectAll();
+            //
+            foreach (Range r in range.GetRanges(regexPattern, options))
+                yield return r;
+        }
+
+        /// <summary>
+        /// Get text of given line
+        /// </summary>
+        /// <param name="iLine">Line index</param>
+        /// <returns>Text</returns>
+        public string GetLineText(int iLine)
+        {
+            if (iLine < 0 || iLine >= lines.Count)
+                throw new ArgumentOutOfRangeException($"Line index out of range");
+            var sb = new StringBuilder(lines[iLine].Count);
+            foreach (Char c in lines[iLine])
+                sb.Append(c.c);
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Exapnds folded block
+        /// </summary>
+        /// <param name="iLine">Start line</param>
+        public virtual void ExpandFoldedBlock(int iLine)
+        {
+            if (iLine < 0 || iLine >= lines.Count)
+                throw new ArgumentOutOfRangeException($"Line index out of range");
+            //find all hidden lines afetr iLine
+            int end = iLine;
+            for (; end < LinesCount - 1; end++)
+            {
+                if (LineInfos[end + 1].VisibleState != VisibleState.Hidden)
+                    break;
+            }
+
+            ExpandBlock(iLine, end);
+
+            FoldedBlocks.Remove(this[iLine].UniqueId);//remove folded state for this line
+            AdjustFolding();
+        }
+
+        /// <summary>
+        /// Collapse folding blocks using FoldedBlocks dictionary.
+        /// </summary>
+        public virtual void AdjustFolding()
+        {
+            //collapse folded blocks
+            for (int iLine = 0; iLine < LinesCount; iLine++)
+                if (LineInfos[iLine].VisibleState == VisibleState.Visible)
+                    if (FoldedBlocks.ContainsKey(this[iLine].UniqueId))
+                        CollapseFoldingBlock(iLine);
+        }
+
+
+        /// <summary>
+        /// Expand collapsed block
+        /// </summary>
+        public virtual void ExpandBlock(int fromLine, int toLine)
+        {
+            int from = Math.Min(fromLine, toLine);
+            int to = Math.Max(fromLine, toLine);
+            for (int i = from; i <= to; i++)
+                SetVisibleState(i, VisibleState.Visible);
+            needRecalc = true;
+
+            Invalidate();
+            OnVisibleRangeChanged();
+        }
+
+        /// <summary>
+        /// Expand collapsed block
+        /// </summary>
+        /// <param name="iLine">Any line inside collapsed block</param>
+        public void ExpandBlock(int iLine)
+        {
+            if (LineInfos[iLine].VisibleState == VisibleState.Visible)
+                return;
+
+            for (int i = iLine; i < LinesCount; i++)
+                if (LineInfos[i].VisibleState == VisibleState.Visible)
+                    break;
+                else
+                {
+                    SetVisibleState(i, VisibleState.Visible);
+                    needRecalc = true;
+                }
+
+            for (int i = iLine - 1; i >= 0; i--)
+                if (LineInfos[i].VisibleState == VisibleState.Visible)
+                    break;
+                else
+                {
+                    SetVisibleState(i, VisibleState.Visible);
+                    needRecalc = true;
+                }
+
+            Invalidate();
+            OnVisibleRangeChanged();
+        }
+
+        /// <summary>
+        /// Collapses all folding blocks
+        /// </summary>
+        public virtual void CollapseAllFoldingBlocks()
+        {
+            for (int i = 0; i < LinesCount; i++)
+                if (lines.LineHasFoldingStartMarker(i))
+                {
+                    int iFinish = FindEndOfFoldingBlock(i);
+                    if (iFinish >= 0)
+                    {
+                        CollapseBlock(i, iFinish);
+                        i = iFinish;
+                    }
+                }
+
+            OnVisibleRangeChanged();
+            UpdateScrollbars();
+        }
+
+        /// <summary>
+        /// Exapnds all folded blocks
+        /// </summary>
+
+        public virtual void ExpandAllFoldingBlocks()
+        {
+            for (int i = 0; i < LinesCount; i++)
+                SetVisibleState(i, VisibleState.Visible);
+
+            FoldedBlocks.Clear();
+
+            OnVisibleRangeChanged();
+            Invalidate();
+            UpdateScrollbars();
+        }
+
+        /// <summary>
+        /// Collapses folding block
+        /// </summary>
+        /// <param name="iLine">Start folding line</param>
+        public virtual void CollapseFoldingBlock(int iLine)
+        {
+            if (iLine < 0 || iLine >= lines.Count)
+                throw new ArgumentOutOfRangeException($"Line index out of range");
+            if (string.IsNullOrEmpty(lines[iLine].FoldingStartMarker))
+                throw new ArgumentOutOfRangeException($"This line is not folding start line");
+            //find end of block
+            int i = FindEndOfFoldingBlock(iLine);
+            //collapse
+            if (i >= 0)
+            {
+                CollapseBlock(iLine, i);
+                var id = this[iLine].UniqueId;
+                FoldedBlocks[id] = id; //add folded state for line
+            }
+        }
+
+        private int FindEndOfFoldingBlock(int iStartLine)
+        {
+            return FindEndOfFoldingBlock(iStartLine, int.MaxValue);
+        }
+
+        protected virtual int FindEndOfFoldingBlock(int iStartLine, int maxLines)
+        {
+            //find end of block
+            int i;
+            string marker = lines[iStartLine].FoldingStartMarker;
+            var stack = new Stack<string>();
+
+            switch (FindEndOfFoldingBlockStrategy)
+            {
+                case FindEndOfFoldingBlockStrategy.Strategy1:
+                    for (i = iStartLine /*+1*/; i < LinesCount; i++)
+                    {
+                        if (lines.LineHasFoldingStartMarker(i))
+                            stack.Push(lines[i].FoldingStartMarker);
+
+                        if (lines.LineHasFoldingEndMarker(i))
+                        {
+                            string m = lines[i].FoldingEndMarker;
+                            while (stack.Count > 0 && stack.Pop() != m)
+                            {
+                            }
+
+                            if (stack.Count == 0)
+                                return i;
+                        }
+
+                        maxLines--;
+                        if (maxLines < 0)
+                            return i;
+                    }
+                    break;
+
+                case FindEndOfFoldingBlockStrategy.Strategy2:
+                    for (i = iStartLine /*+1*/; i < LinesCount; i++)
+                    {
+                        if (lines.LineHasFoldingEndMarker(i))
+                        {
+                            string m = lines[i].FoldingEndMarker;
+                            while (stack.Count > 0 && stack.Pop() != m)
+                            {
+                            }
+
+                            if (stack.Count == 0)
+                                return i;
+                        }
+
+                        if (lines.LineHasFoldingStartMarker(i))
+                            stack.Push(lines[i].FoldingStartMarker);
+
+                        maxLines--;
+                        if (maxLines < 0)
+                            return i;
+                    }
+                    break;
+            }
+
+            //return -1;
+            return LinesCount - 1;
+        }
+
+        /// <summary>
+        /// Start foilding marker for the line
+        /// </summary>
+        public string GetLineFoldingStartMarker(int iLine)
+        {
+            if (lines.LineHasFoldingStartMarker(iLine))
+                return lines[iLine].FoldingStartMarker;
+            return null;
+        }
+
+        /// <summary>
+        /// End foilding marker for the line
+        /// </summary>
+        public string GetLineFoldingEndMarker(int iLine)
+        {
+            if (lines.LineHasFoldingEndMarker(iLine))
+                return lines[iLine].FoldingEndMarker;
+            return null;
+        }
+
+        protected virtual void RecalcFoldingLines()
+        {
+            if (!needRecalcFoldingLines)
+                return;
+            needRecalcFoldingLines = false;
+            if (!ShowFoldingLines)
+                return;
+
+            foldingPairs.Clear();
+            //
+            Range range = VisibleRange;
+            int startLine = Math.Max(range.Start.iLine - maxLinesForFolding, 0);
+            int endLine = Math.Min(range.End.iLine + maxLinesForFolding, Math.Max(range.End.iLine, LinesCount - 1));
+            var stack = new Stack<int>();
+            for (int i = startLine; i <= endLine; i++)
+            {
+                bool hasStartMarker = lines.LineHasFoldingStartMarker(i);
+                bool hasEndMarker = lines.LineHasFoldingEndMarker(i);
+
+                if (hasEndMarker && hasStartMarker)
+                    continue;
+
+                if (hasStartMarker)
+                {
+                    stack.Push(i);
+                }
+                if (hasEndMarker)
+                {
+                    string m = lines[i].FoldingEndMarker;
+                    while (stack.Count > 0)
+                    {
+                        int iStartLine = stack.Pop();
+                        foldingPairs[iStartLine] = i;
+                        if (m == lines[iStartLine].FoldingStartMarker)
+                            break;
+                    }
+                }
+            }
+
+            while (stack.Count > 0)
+                foldingPairs[stack.Pop()] = endLine + 1;
+        }
+
+        /// <summary>
+        /// Collapse text block
+        /// </summary>
+        public virtual void CollapseBlock(int fromLine, int toLine)
+        {
+            int from = Math.Min(fromLine, toLine);
+            int to = Math.Max(fromLine, toLine);
+            if (from == to)
+                return;
+
+            //find first non empty line
+            for (; from <= to; from++)
+            {
+                if (GetLineText(from).Trim().Length > 0)
+                {
+                    //hide lines
+                    for (int i = from + 1; i <= to; i++)
+                        SetVisibleState(i, VisibleState.Hidden);
+                    SetVisibleState(from, VisibleState.StartOfHiddenBlock);
+                    Invalidate();
+                    break;
+                }
+            }
+            //Move caret outside
+            from = Math.Min(fromLine, toLine);
+            to = Math.Max(fromLine, toLine);
+            int newLine = FindNextVisibleLine(to);
+            if (newLine == to)
+                newLine = FindPrevVisibleLine(from);
+            Selection.Start = new Place(0, newLine);
+            //
+            needRecalc = true;
+            Invalidate();
+            OnVisibleRangeChanged();
+        }
+
+
+        internal int FindNextVisibleLine(int iLine)
+        {
+            if (iLine >= lines.Count - 1) return iLine;
+            int old = iLine;
+            do
+                iLine++; while (iLine < lines.Count - 1 && LineInfos[iLine].VisibleState != VisibleState.Visible);
+
+            if (LineInfos[iLine].VisibleState != VisibleState.Visible)
+                return old;
+            else
+                return iLine;
+        }
+
+
+        internal int FindPrevVisibleLine(int iLine)
+        {
+            if (iLine <= 0) return iLine;
+            int old = iLine;
+            do
+                iLine--; while (iLine > 0 && LineInfos[iLine].VisibleState != VisibleState.Visible);
+
+            if (LineInfos[iLine].VisibleState != VisibleState.Visible)
+                return old;
+            else
+                return iLine;
+        }
+
+        private VisualMarker FindVisualMarkerForPoint(Point p)
+        {
+            foreach (VisualMarker m in visibleMarkers)
+                if (m.rectangle.Contains(p))
+                    return m;
+            return null;
+        }
+
+        /// <summary>
+        /// Insert TAB into front of seletcted lines.
+        /// </summary>
+        public virtual void IncreaseIndent()
+        {
+            if (Selection.Start == Selection.End)
+            {
+                if (!Selection.ReadOnly)
+                {
+                    Selection.Start = new Place(this[Selection.Start.iLine].StartSpacesCount, Selection.Start.iLine);
+                    //insert tab as spaces
+                    int spaces = TabLength - (Selection.Start.iChar % TabLength);
+                    //replace mode? select forward chars
+                    if (IsReplaceMode)
+                    {
+                        for (int i = 0; i < spaces; i++)
+                            Selection.GoRight(true);
+                        Selection.Inverse();
+                    }
+
+                    InsertText(new String(' ', spaces));
+                }
+                return;
+            }
+
+            bool carretAtEnd = (Selection.Start > Selection.End) && !Selection.ColumnSelectionMode;
+
+            int startChar = 0; // Only move selection when in 'ColumnSelectionMode'
+            if (Selection.ColumnSelectionMode)
+                startChar = Math.Min(Selection.End.iChar, Selection.Start.iChar);
+
+            BeginUpdate();
+            Selection.BeginUpdate();
+            lines.Manager.BeginAutoUndoCommands();
+
+            var old = Selection.Clone();
+            lines.Manager.ExecuteCommand(new SelectCommand(TextSource));//remember selection
+
+            //
+            Selection.Normalize();
+            Range currentSelection = this.Selection.Clone();
+            int from = Selection.Start.iLine;
+            int to = Selection.End.iLine;
+
+            if (!Selection.ColumnSelectionMode)
+                if (Selection.End.iChar == 0) to--;
+
+            for (int i = from; i <= to; i++)
+            {
+                if (lines[i].Count == 0) continue;
+                Selection.Start = new Place(startChar, i);
+                lines.Manager.ExecuteCommand(new InsertTextCommand(TextSource, new String(' ', TabLength)));
+            }
+
+            // Restore selection
+            if (Selection.ColumnSelectionMode == false)
+            {
+                int newSelectionStartCharacterIndex = currentSelection.Start.iChar + this.TabLength;
+                int newSelectionEndCharacterIndex = currentSelection.End.iChar + (currentSelection.End.iLine == to?this.TabLength : 0);
+                this.Selection.Start = new Place(newSelectionStartCharacterIndex, currentSelection.Start.iLine);
+                this.Selection.End = new Place(newSelectionEndCharacterIndex, currentSelection.End.iLine);
+            }
+            else
+            {
+                Selection = old;
+            }
+            lines.Manager.EndAutoUndoCommands();
+
+            if (carretAtEnd)
+                Selection.Inverse();
+
+            needRecalc = true;
+            Selection.EndUpdate();
+            EndUpdate();
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Remove TAB from front of seletcted lines.
+        /// </summary>
+        public virtual void DecreaseIndent()
+        {
+            if (Selection.Start.iLine == Selection.End.iLine)
+            {
+                DecreaseIndentOfSingleLine();
+                return;
+            }
+
+            int startCharIndex = 0;
+            if (Selection.ColumnSelectionMode)
+                startCharIndex = Math.Min(Selection.End.iChar, Selection.Start.iChar);
+
+            BeginUpdate();
+            Selection.BeginUpdate();
+            lines.Manager.BeginAutoUndoCommands();
+            var old = Selection.Clone();
+            lines.Manager.ExecuteCommand(new SelectCommand(TextSource));//remember selection
+
+            // Remember current selection infos
+            Range currentSelection = this.Selection.Clone();
+            Selection.Normalize();
+            int from = Selection.Start.iLine;
+            int to = Selection.End.iLine;
+
+            if (!Selection.ColumnSelectionMode)
+                if (Selection.End.iChar == 0) to--;
+
+            int numberOfDeletedWhitespacesOfFirstLine = 0;
+            int numberOfDeletetWhitespacesOfLastLine = 0;
+
+            for (int i = from; i <= to; i++)
+            {
+                if (startCharIndex > lines[i].Count)
+                    continue;
+                // Select first characters from the line
+                int endIndex = Math.Min(this.lines[i].Count, startCharIndex + this.TabLength);
+                string wasteText = this.lines[i].Text.Substring(startCharIndex, endIndex-startCharIndex);
+
+                // Only select the first whitespace characters
+                endIndex = Math.Min(endIndex, startCharIndex + wasteText.Length - wasteText.TrimStart().Length);
+
+                // Select the characters to remove
+                this.Selection = new Range(this, new Place(startCharIndex, i), new Place(endIndex, i));
+
+                // Remember characters to remove for first and last line
+                int numberOfWhitespacesToRemove = endIndex - startCharIndex;
+                if (i == currentSelection.Start.iLine)
+                {
+                    numberOfDeletedWhitespacesOfFirstLine = numberOfWhitespacesToRemove;
+                }
+                if (i == currentSelection.End.iLine)
+                {
+                    numberOfDeletetWhitespacesOfLastLine = numberOfWhitespacesToRemove;
+                }
+
+                // Remove marked/selected whitespace characters
+                if(!Selection.IsEmpty)
+                    this.ClearSelected();
+            }
+
+            // Restore selection
+            if (Selection.ColumnSelectionMode == false)
+            {
+                int newSelectionStartCharacterIndex = Math.Max(0, currentSelection.Start.iChar - numberOfDeletedWhitespacesOfFirstLine);
+                int newSelectionEndCharacterIndex = Math.Max(0, currentSelection.End.iChar - numberOfDeletetWhitespacesOfLastLine);
+                this.Selection.Start = new Place(newSelectionStartCharacterIndex, currentSelection.Start.iLine);
+                this.Selection.End = new Place(newSelectionEndCharacterIndex, currentSelection.End.iLine);
+            }
+            else
+            {
+                Selection = old;
+            }
+            lines.Manager.EndAutoUndoCommands();
+
+            needRecalc = true;
+            Selection.EndUpdate();
+            EndUpdate();
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Remove TAB in front of the caret ot the selected line.
+        /// </summary>
+        protected virtual void DecreaseIndentOfSingleLine()
+        {
+            if (this.Selection.Start.iLine != this.Selection.End.iLine)
+                return;
+
+            // Remeber current selection infos
+            Range currentSelection = this.Selection.Clone();
+            int currentLineIndex = this.Selection.Start.iLine;
+            int currentLeftSelectionStartIndex = Math.Min(this.Selection.Start.iChar, this.Selection.End.iChar);
+
+            // Determine number of whitespaces to remove
+            string lineText = this.lines[currentLineIndex].Text;
+            Match whitespacesLeftOfSelectionStartMatch = new Regex(@"\s*", RegexOptions.RightToLeft).Match(lineText, currentLeftSelectionStartIndex);
+            int leftOffset = whitespacesLeftOfSelectionStartMatch.Index;
+            int countOfWhitespaces = whitespacesLeftOfSelectionStartMatch.Length;
+            int numberOfCharactersToRemove = 0;
+            if (countOfWhitespaces > 0)
+            {
+                int remainder = (this.TabLength > 0)
+                    ? currentLeftSelectionStartIndex % this.TabLength
+                    : 0;
+                numberOfCharactersToRemove = (remainder != 0)
+                    ? Math.Min(remainder, countOfWhitespaces)
+                    : Math.Min(this.TabLength, countOfWhitespaces);
+            }
+
+            // Remove whitespaces if available
+            if (numberOfCharactersToRemove > 0)
+            {
+                // Start selection update
+                this.BeginUpdate();
+                this.Selection.BeginUpdate();
+                lines.Manager.BeginAutoUndoCommands();
+                lines.Manager.ExecuteCommand(new SelectCommand(TextSource));//remember selection
+
+                // Remove whitespaces
+                this.Selection.Start = new Place(leftOffset, currentLineIndex);
+                this.Selection.End = new Place(leftOffset + numberOfCharactersToRemove, currentLineIndex);
+                ClearSelected();
+
+                // Restore selection
+                int newSelectionStartCharacterIndex = currentSelection.Start.iChar - numberOfCharactersToRemove;
+                int newSelectionEndCharacterIndex = currentSelection.End.iChar - numberOfCharactersToRemove;
+                this.Selection.Start = new Place(newSelectionStartCharacterIndex, currentLineIndex);
+                this.Selection.End = new Place(newSelectionEndCharacterIndex, currentLineIndex);
+
+                lines.Manager.ExecuteCommand(new SelectCommand(TextSource));//remember selection
+                // End selection update
+                lines.Manager.EndAutoUndoCommands();
+                this.Selection.EndUpdate();
+                this.EndUpdate();
+            }
+
+            Invalidate();
+        }
+
+
+        /// <summary>
+        /// Insert autoindents into selected lines
+        /// </summary>
+        public virtual void DoAutoIndent()
+        {
+            if (Selection.ColumnSelectionMode)
+                return;
+            Range r = Selection.Clone();
+            r.Normalize();
+            //
+            BeginUpdate();
+            Selection.BeginUpdate();
+            lines.Manager.BeginAutoUndoCommands();
+            //
+            for (int i = r.Start.iLine; i <= r.End.iLine; i++)
+                DoAutoIndent(i);
+            //
+            lines.Manager.EndAutoUndoCommands();
+            Selection.Start = r.Start;
+            Selection.End = r.End;
+            Selection.Expand();
+            //
+            Selection.EndUpdate();
+            EndUpdate();
+        }
+
+        /// <summary>
+        /// Insert prefix into front of seletcted lines
+        /// </summary>
+        public virtual void InsertLinePrefix(string prefix)
+        {
+            Range old = Selection.Clone();
+            int from = Math.Min(Selection.Start.iLine, Selection.End.iLine);
+            int to = Math.Max(Selection.Start.iLine, Selection.End.iLine);
+            BeginUpdate();
+            Selection.BeginUpdate();
+            lines.Manager.BeginAutoUndoCommands();
+            lines.Manager.ExecuteCommand(new SelectCommand(TextSource));
+            int spaces = GetMinStartSpacesCount(from, to);
+            for (int i = from; i <= to; i++)
+            {
+                Selection.Start = new Place(spaces, i);
+                lines.Manager.ExecuteCommand(new InsertTextCommand(TextSource, prefix));
+            }
+            Selection.Start = new Place(0, from);
+            Selection.End = new Place(lines[to].Count, to);
+            needRecalc = true;
+            lines.Manager.EndAutoUndoCommands();
+            Selection.EndUpdate();
+            EndUpdate();
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Remove prefix from front of selected lines
+        /// This method ignores forward spaces of the line
+        /// </summary>
+        public virtual void RemoveLinePrefix(string prefix)
+        {
+            Range old = Selection.Clone();
+            int from = Math.Min(Selection.Start.iLine, Selection.End.iLine);
+            int to = Math.Max(Selection.Start.iLine, Selection.End.iLine);
+            BeginUpdate();
+            Selection.BeginUpdate();
+            lines.Manager.BeginAutoUndoCommands();
+            lines.Manager.ExecuteCommand(new SelectCommand(TextSource));
+            for (int i = from; i <= to; i++)
+            {
+                string text = lines[i].Text;
+                string trimmedText = text.TrimStart();
+                if (trimmedText.StartsWith(prefix))
+                {
+                    int spaces = text.Length - trimmedText.Length;
+                    Selection.Start = new Place(spaces, i);
+                    Selection.End = new Place(spaces + prefix.Length, i);
+                    ClearSelected();
+                }
+            }
+            Selection.Start = new Place(0, from);
+            Selection.End = new Place(lines[to].Count, to);
+            needRecalc = true;
+            lines.Manager.EndAutoUndoCommands();
+            Selection.EndUpdate();
+            EndUpdate();
+        }
+
+        /// <summary>
+        /// Begins AutoUndo block.
+        /// All changes of text between BeginAutoUndo() and EndAutoUndo() will be canceled in one operation Undo.
+        /// </summary>
+        public void BeginAutoUndo()
+        {
+            lines.Manager.BeginAutoUndoCommands();
+        }
+
+        /// <summary>
+        /// Ends AutoUndo block.
+        /// All changes of text between BeginAutoUndo() and EndAutoUndo() will be canceled in one operation Undo.
+        /// </summary>
+        public void EndAutoUndo()
+        {
+            lines.Manager.EndAutoUndoCommands();
+        }
+
+        public virtual void OnVisualMarkerClick(MouseEventArgs args, StyleVisualMarker marker)
+        {
+            if (VisualMarkerClick != null)
+                VisualMarkerClick(this, new VisualMarkerEventArgs(marker.Style, marker, args));
+            marker.Style.OnVisualMarkerClick(this, new VisualMarkerEventArgs(marker.Style, marker, args));
+        }
+
+        protected virtual void OnMarkerClick(MouseEventArgs args, VisualMarker marker)
+        {
+            if (marker is StyleVisualMarker)
+            {
+                OnVisualMarkerClick(args, marker as StyleVisualMarker);
+                return;
+            }
+            if (marker is CollapseFoldingMarker)
+            {
+                CollapseFoldingBlock((marker as CollapseFoldingMarker).iLine);
+                return;
+            }
+
+            if (marker is ExpandFoldingMarker)
+            {
+                ExpandFoldedBlock((marker as ExpandFoldingMarker).iLine);
+                return;
+            }
+
+            if (marker is FoldedAreaMarker)
+            {
+                //select folded block
+                int iStart = (marker as FoldedAreaMarker).iLine;
+                int iEnd = FindEndOfFoldingBlock(iStart);
+                if (iEnd < 0)
+                    return;
+                Selection.BeginUpdate();
+                Selection.Start = new Place(0, iStart);
+                Selection.End = new Place(lines[iEnd].Count, iEnd);
+                Selection.EndUpdate();
+                Invalidate();
+                return;
+            }
+        }
+
+        protected virtual void OnMarkerDoubleClick(VisualMarker marker)
+        {
+            if (marker is FoldedAreaMarker)
+            {
+                ExpandFoldedBlock((marker as FoldedAreaMarker).iLine);
+                Invalidate();
+                return;
+            }
+        }
+
+        private void ClearBracketsPositions()
+        {
+            leftBracketPosition = null;
+            rightBracketPosition = null;
+            leftBracketPosition2 = null;
+            rightBracketPosition2 = null;
+        }
+
+        /// <summary>
+        /// Highlights brackets around caret
+        /// </summary>
+        private void HighlightBrackets(char LeftBracket, char RightBracket, ref Range leftBracketPosition, ref Range rightBracketPosition)
+        {
+            switch(BracketsHighlightStrategy)
+            {
+                case BracketsHighlightStrategy.Strategy1: HighlightBrackets1(LeftBracket, RightBracket, ref leftBracketPosition, ref rightBracketPosition); break;
+                case BracketsHighlightStrategy.Strategy2: HighlightBrackets2(LeftBracket, RightBracket, ref leftBracketPosition, ref rightBracketPosition); break;
+            }
+        }
+
+        private void HighlightBrackets1(char LeftBracket, char RightBracket, ref Range leftBracketPosition, ref Range rightBracketPosition)
+        {
+            if (!Selection.IsEmpty)
+                return;
+            if (LinesCount == 0)
+                return;
+            //
+            Range oldLeftBracketPosition = leftBracketPosition;
+            Range oldRightBracketPosition = rightBracketPosition;
+            var range = GetBracketsRange(Selection.Start, LeftBracket, RightBracket, true);
+
+            if(range != null)
+            {
+                leftBracketPosition = new Range(this, range.Start, new Place(range.Start.iChar + 1, range.Start.iLine));
+                rightBracketPosition = new Range(this, new Place(range.End.iChar - 1, range.End.iLine), range.End);
+            }
+
+            if (oldLeftBracketPosition != leftBracketPosition ||
+                oldRightBracketPosition != rightBracketPosition)
+                Invalidate();
+        }
+
+        /// <summary>
+        /// Returns range between brackets (or null if not found)
+        /// </summary>
+        public Range GetBracketsRange(Place placeInsideBrackets, char leftBracket, char rightBracket, bool includeBrackets)
+        {
+            var startRange = new Range(this, placeInsideBrackets, placeInsideBrackets);
+            var range = startRange.Clone();
+
+            Range leftBracketPosition = null;
+            Range rightBracketPosition = null;
+
+            int counter = 0;
+            int maxIterations = maxBracketSearchIterations;
+            while (range.GoLeftThroughFolded()) //move caret left
+            {
+                if (range.CharAfterStart == leftBracket) counter++;
+                if (range.CharAfterStart == rightBracket) counter--;
+                if (counter == 1)
+                {
+                    range.Start = new Place(range.Start.iChar + (!includeBrackets ? 1 : 0), range.Start.iLine);
+                    leftBracketPosition = range;
+                    break;
+                }
+                //
+                maxIterations--;
+                if (maxIterations <= 0) break;
+            }
+            //
+            range = startRange.Clone();
+            counter = 0;
+            maxIterations = maxBracketSearchIterations;
+            do
+            {
+                if (range.CharAfterStart == leftBracket) counter++;
+                if (range.CharAfterStart == rightBracket) counter--;
+                if (counter == -1)
+                {
+                    range.End = new Place(range.Start.iChar + (includeBrackets ? 1 : 0 ), range.Start.iLine);
+                    rightBracketPosition = range;
+                    break;
+                }
+                //
+                maxIterations--;
+                if (maxIterations <= 0) break;
+            } while (range.GoRightThroughFolded()); //move caret right
+
+            if (leftBracketPosition != null && rightBracketPosition != null)
+                return new Range(this, leftBracketPosition.Start, rightBracketPosition.End);
+            else
+                return null;
+        }
+
+        private void HighlightBrackets2(char LeftBracket, char RightBracket, ref Range leftBracketPosition, ref Range rightBracketPosition)
+        {
+            if (!Selection.IsEmpty)
+                return;
+            if (LinesCount == 0)
+                return;
+            //
+            Range oldLeftBracketPosition = leftBracketPosition;
+            Range oldRightBracketPosition = rightBracketPosition;
+            Range range = Selection.Clone(); //need clone because we will move caret
+
+            bool found = false;
+            int counter = 0;
+            int maxIterations = maxBracketSearchIterations;
+            if (range.CharBeforeStart == RightBracket)
+            {
+                rightBracketPosition = new Range(this, range.Start.iChar - 1, range.Start.iLine, range.Start.iChar, range.Start.iLine);
+                while (range.GoLeftThroughFolded()) //move caret left
+                {
+                    if (range.CharAfterStart == LeftBracket) counter++;
+                    if (range.CharAfterStart == RightBracket) counter--;
+                    if (counter == 0)
+                    {
+                        //highlighting
+                        range.End = new Place(range.Start.iChar + 1, range.Start.iLine);
+                        leftBracketPosition = range;
+                        found = true;
+                        break;
+                    }
+                    //
+                    maxIterations--;
+                    if (maxIterations <= 0) break;
+                }
+            }
+            //
+            range = Selection.Clone(); //need clone because we will move caret
+            counter = 0;
+            maxIterations = maxBracketSearchIterations;
+            if(!found)
+            if (range.CharAfterStart == LeftBracket)
+            {
+                leftBracketPosition = new Range(this, range.Start.iChar, range.Start.iLine, range.Start.iChar + 1, range.Start.iLine);
+                do
+                {
+                    if (range.CharAfterStart == LeftBracket) counter++;
+                    if (range.CharAfterStart == RightBracket) counter--;
+                    if (counter == 0)
+                    {
+                        //highlighting
+                        range.End = new Place(range.Start.iChar + 1, range.Start.iLine);
+                        rightBracketPosition = range;
+                        found = true;
+                        break;
+                    }
+                    //
+                    maxIterations--;
+                    if (maxIterations <= 0) break;
+                } while (range.GoRightThroughFolded()); //move caret right
+            }
+
+            if (oldLeftBracketPosition != leftBracketPosition || oldRightBracketPosition != rightBracketPosition)
+                Invalidate();
+        }
+
+        /// <summary>
+        /// Selectes next fragment for given regex.
+        /// </summary>
+        public bool SelectNext(string regexPattern, bool backward = false, RegexOptions options = RegexOptions.None)
+        {
+            var sel = Selection.Clone();
+            sel.Normalize();
+            var range1 = backward ? new Range(this, Range.Start, sel.Start) : new Range(this, sel.End, Range.End);
+
+            Range res = null;
+            foreach(var r in range1.GetRanges(regexPattern, options))
+            {
+                res = r;
+                if (!backward) break;
+            }
+
+            if (res == null) return false;
+            Selection = res;
+            Invalidate();
+            return true;
+        }
+
+        public virtual void OnSyntaxHighlight(TextChangedEventArgs args)
+        {
+            #if debug
+            Stopwatch sw = Stopwatch.StartNew();
+            #endif
+
+            Range range;
+
+            switch (HighlightingRangeType)
+            {
+                case HighlightingRangeType.VisibleRange:
+                    range = VisibleRange.GetUnionWith(args.ChangedRange);
+                    break;
+                case HighlightingRangeType.AllTextRange:
+                    range = Range;
+                    break;
+                default:
+                    range = args.ChangedRange;
+                    break;
+            }
+
+            if (SyntaxHighlighter != null)
+            {
+                if (Language == Language.Custom && !string.IsNullOrEmpty(DescriptionFile))
+                    SyntaxHighlighter.HighlightSyntax(DescriptionFile, range);
+                else
+                    SyntaxHighlighter.HighlightSyntax(Language, range);
+            }
+
+#if debug
+            Console.WriteLine("OnSyntaxHighlight: "+ sw.ElapsedMilliseconds);
+#endif
+        }
+
+        private void InitializeComponent()
+        {
+            SuspendLayout();
+            // 
+            // FastColoredTextBox
+            // 
+            Name = "FastColoredTextBox";
+            ResumeLayout(false);
+        }
+
+        /// <summary>
+        /// Prints range of text
+        /// </summary>
+        public virtual void Print(Range range, PrintDialogSettings settings)
+        {
+            //prepare export with wordwrapping
+            var exporter = new ExportToHTML();
+            exporter.UseBr = true;
+            exporter.UseForwardNbsp = true;
+            exporter.UseNbsp = true;
+            exporter.UseStyleTag = false;
+            exporter.IncludeLineNumbers = settings.IncludeLineNumbers;
+
+            if (range == null)
+                range = Range;
+
+            if (range.Text == string.Empty)
+                return;
+
+            //change visible range
+            visibleRange = range;
+            try
+            {
+                //call handlers for VisibleRange
+                if (VisibleRangeChanged != null)
+                    VisibleRangeChanged(this, new EventArgs());
+                if (VisibleRangeChangedDelayed != null)
+                    VisibleRangeChangedDelayed(this, new EventArgs());
+            }
+            finally
+            {
+                //restore visible range
+                visibleRange = null;
+            }
+
+            //generate HTML
+            string HTML = exporter.GetHtml(range);
+            HTML = "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\"><head><title>" +
+                   PrepareHtmlText(settings.Title) + "</title></head>" + HTML +"<br>"+ SelectHTMLRangeScript();
+            string tempFile = Path.GetTempPath() + "fctb.html";
+            File.WriteAllText(tempFile, HTML);
+
+            //clear wb page setup settings
+            SetPageSetupSettings(settings);
+
+            //create wb
+            var wb = new WebBrowser();
+            wb.Tag = settings;
+            wb.Visible = false;
+            wb.Location = new Point(-1000, -1000);
+            wb.Parent = this;
+            wb.StatusTextChanged += wb_StatusTextChanged;
+            wb.Navigate(tempFile);
+        }
+
+        protected virtual string PrepareHtmlText(string s)
+        {
+            return s.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+        }
+
+        private void wb_StatusTextChanged(object sender, EventArgs e)
+        {
+            var wb = sender as WebBrowser;
+            if (wb.StatusText.Contains("#print"))
+            {
+                var settings = wb.Tag as PrintDialogSettings;
+                try
+                {
+                    //show print dialog
+                    if (settings.ShowPrintPreviewDialog)
+                        wb.ShowPrintPreviewDialog();
+                    else
+                    {
+                        if (settings.ShowPageSetupDialog)
+                            wb.ShowPageSetupDialog();
+
+                        if (settings.ShowPrintDialog)
+                            wb.ShowPrintDialog();
+                        else
+                            wb.Print();
+                    }
+                }
+                finally
+                {
+                    //destroy webbrowser
+                    wb.Parent = null;
+                    wb.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prints all text
+        /// </summary>
+        public void Print(PrintDialogSettings settings)
+        {
+            Print(Range, settings);
+        }
+
+        /// <summary>
+        /// Prints all text, without any dialog windows
+        /// </summary>
+        public void Print()
+        {
+            Print(Range,
+                  new PrintDialogSettings
+                      {ShowPageSetupDialog = false, ShowPrintDialog = false, ShowPrintPreviewDialog = false});
+        }
+
+        private string SelectHTMLRangeScript()
+        {
+            Range sel = Selection.Clone();
+            sel.Normalize();
+            int start = PlaceToPosition(sel.Start) - sel.Start.iLine;
+            int len = sel.Text.Length - (sel.End.iLine - sel.Start.iLine);
+            return string.Format(
+                @"<script type=""text/javascript"">
+try{{
+    var sel = document.selection;
+    var rng = sel.createRange();
+    rng.moveStart(""character"", {0});
+    rng.moveEnd(""character"", {1});
+    rng.select();
+}}catch(ex){{}}
+window.status = ""#print"";
+</script>",
+                start, len);
+        }
+
+        private static void SetPageSetupSettings(PrintDialogSettings settings)
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Internet Explorer\PageSetup", true);
+            if (key != null)
+            {
+                key.SetValue("footer", settings.Footer);
+                key.SetValue("header", settings.Header);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                if (SyntaxHighlighter != null)
+                    SyntaxHighlighter.Dispose();
+                timer.Dispose();
+                timer2.Dispose();
+                middleClickScrollingTimer.Dispose();
+
+                if (findForm != null)
+                    findForm.Dispose();
+
+                if (replaceForm != null)
+                    replaceForm.Dispose();
+                /*
+                if (Font != null)
+                    Font.Dispose();
+
+                if (originalFont != null)
+                    originalFont.Dispose();*/
+
+                if (TextSource != null)
+                    TextSource.Dispose();
+
+                if (ToolTip != null)
+                    ToolTip.Dispose();
+            }
+        }
+
+        protected virtual void OnPaintLine(PaintLineEventArgs e)
+        {
+            if (PaintLine != null)
+                PaintLine(this, e);
+        }
+
+        internal void OnLineInserted(int index)
+        {
+            OnLineInserted(index, 1);
+        }
+
+        internal void OnLineInserted(int index, int count)
+        {
+            if (LineInserted != null)
+                LineInserted(this, new LineInsertedEventArgs(index, count));
+        }
+
+        internal void OnLineRemoved(int index, int count, List<int> removedLineIds)
+        {
+            if (count > 0)
+                if (LineRemoved != null)
+                    LineRemoved(this, new LineRemovedEventArgs(index, count, removedLineIds));
+        }
+
+        /// <summary>
+        /// Open text file
+        /// </summary>
+        public void OpenFile(string fileName, Encoding enc)
+        {
+            var ts = CreateTextSource();
+            try
+            {
+                InitTextSource(ts);
+                Text = File.ReadAllText(fileName, enc);
+                ClearUndo();
+                IsChanged = false;
+                OnVisibleRangeChanged();
+            }
+            catch
+            {
+                InitTextSource(CreateTextSource());
+                lines.InsertLine(0, TextSource.CreateLine());
+                IsChanged = false;
+                throw;
+            }
+            Selection.Start = Place.Empty;
+            DoSelectionVisible();
+        }
+
+        /// <summary>
+        /// Open text file (with automatic encoding detector)
+        /// </summary>
+        public void OpenFile(string fileName)
+        {
+            try
+            {
+                var enc = EncodingDetector.DetectTextFileEncoding(fileName);
+                if (enc != null)
+                    OpenFile(fileName, enc);
+                else
+                    OpenFile(fileName, Encoding.Default);
+            }
+            catch
+            {
+                InitTextSource(CreateTextSource());
+                lines.InsertLine(0, TextSource.CreateLine());
+                IsChanged = false;
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Open file binding mode
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="enc"></param>
+        public void OpenBindingFile(string fileName, Encoding enc)
+        {
+            var fts = new FileTextSource(this);
+            try
+            {
+                InitTextSource(fts);
+                fts.OpenFile(fileName, enc);
+                IsChanged = false;
+                OnVisibleRangeChanged();
+            }
+            catch
+            {
+                fts.CloseFile();
+                InitTextSource(CreateTextSource());
+                lines.InsertLine(0, TextSource.CreateLine());
+                IsChanged = false;
+                throw;
+            }
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Close file binding mode
+        /// </summary>
+        public void CloseBindingFile()
+        {
+            if (lines is FileTextSource)
+            {
+                var fts = lines as FileTextSource;
+                fts.CloseFile();
+
+                InitTextSource(CreateTextSource());
+                lines.InsertLine(0, TextSource.CreateLine());
+                IsChanged = false;
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Save text to the file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="enc"></param>
+        public void SaveToFile(string fileName, Encoding enc)
+        {
+            lines.SaveToFile(fileName, enc);
+            IsChanged = false;
+            OnVisibleRangeChanged();
+            UpdateScrollbars();
+        }
+
+        /// <summary>
+        /// Set VisibleState of line
+        /// </summary>
+        public void SetVisibleState(int iLine, VisibleState state)
+        {
+            LineInfo li = LineInfos[iLine];
+            li.VisibleState = state;
+            LineInfos[iLine] = li;
+            needRecalc = true;
+        }
+
+        /// <summary>
+        /// Returns VisibleState of the line
+        /// </summary>
+        public VisibleState GetVisibleState(int iLine)
+        {
+            return LineInfos[iLine].VisibleState;
+        }
+
+        /// <summary>
+        /// Shows Goto dialog form
+        /// </summary>
+        public void ShowGoToDialog()
+        {
+            var form = new GoToForm();
+            form.TotalLineCount = LinesCount;
+            form.SelectedLineNumber = Selection.Start.iLine + 1;
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                int line = Math.Min(LinesCount - 1, Math.Max(0, form.SelectedLineNumber - 1));
+                Selection = new Range(this, 0, line, 0, line);
+                DoSelectionVisible();
+            }
+        }
+
+        /// <summary>
+        /// Occurs when undo/redo stack is changed
+        /// </summary>
+        public void OnUndoRedoStateChanged()
+        {
+            if (UndoRedoStateChanged != null)
+                UndoRedoStateChanged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Search lines by regex pattern
+        /// </summary>
+        public List<int> FindLines(string searchPattern, RegexOptions options)
+        {
+            var iLines = new List<int>();
+            foreach (Range r in Range.GetRangesByLines(searchPattern, options))
+                iLines.Add(r.Start.iLine);
+
+            return iLines;
+        }
+
+        /// <summary>
+        /// Removes given lines
+        /// </summary>
+        public void RemoveLines(List<int> iLines)
+        {
+            TextSource.Manager.ExecuteCommand(new RemoveLinesCommand(TextSource, iLines));
+            if (iLines.Count > 0)
+                IsChanged = true;
+
+            if (LinesCount == 0)
+                Text = "";
+            NeedRecalc();
+            Invalidate();
+        }
+
+        void ISupportInitialize.BeginInit()
+        {
+            //
+        }
+
+        void ISupportInitialize.EndInit()
+        {
+            OnTextChanged();
+            Selection.Start = Place.Empty;
+            DoCaretVisible();
+            IsChanged = false;
+            ClearUndo();
+        }
+
+        #region Drag and drop
+
+        private bool IsDragDrop { get; set; }
+
+
+        protected override void OnDragEnter(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text) && AllowDrop)
+            {
+                e.Effect = DragDropEffects.Copy;
+                IsDragDrop = true;
+            }
+            base.OnDragEnter(e);
+        }
+
+        protected override void OnDragDrop(DragEventArgs e)
+        {
+            if (ReadOnly || !AllowDrop)
+            {
+                IsDragDrop = false;
+                return;
+            }
+
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                if (ParentForm != null)
+                    ParentForm.Activate();
+                Focus();
+                Point p = PointToClient(new Point(e.X, e.Y));
+                var text = e.Data.GetData(DataFormats.Text).ToString();
+                var place = PointToPlace(p);
+                DoDragDrop(place, text);
+                IsDragDrop = false;
+            }
+            base.OnDragDrop(e);
+        }
+
+        private void DoDragDrop_old(Place place, string text)
+        {
+            Range insertRange = new Range(this, place, place);
+
+            // Abort, if insertRange is read only
+            if (insertRange.ReadOnly)
+                return;
+
+            // Abort, if dragged range contains target place
+            if ((draggedRange != null) && (draggedRange.Contains(place) == true))
+                return;
+
+            // Determine, if the dragged string should be copied or moved
+            bool copyMode =
+                (draggedRange == null) ||       // drag from outside
+                (draggedRange.ReadOnly) ||      // dragged range is read only
+                ((ModifierKeys & Keys.Control) != Keys.None);
+
+            //drag from outside?
+            if (draggedRange == null)
+            {
+                Selection.BeginUpdate();
+                // Insert text
+                Selection.Start = place;
+                InsertText(text);
+                // Select inserted text
+                Selection = new Range(this, place, Selection.Start);
+                Selection.EndUpdate();
+                return;
+            }
+
+            //drag from me
+            Place caretPositionAfterInserting;
+            BeginAutoUndo();
+            Selection.BeginUpdate();
+
+            //remember dragged selection for undo/redo
+            Selection = draggedRange;
+            lines.Manager.ExecuteCommand(new SelectCommand(lines));
+            //
+            if (draggedRange.ColumnSelectionMode)
+            {
+                draggedRange.Normalize();
+                insertRange = new Range(this, place, new Place(place.iChar, place.iLine + draggedRange.End.iLine - draggedRange.Start.iLine)) { ColumnSelectionMode = true };
+                for (int i = LinesCount; i <= insertRange.End.iLine; i++)
+                {
+                    Selection.GoLast(false);
+                    InsertChar('\n');
+                }
+            }
+
+            if (!insertRange.ReadOnly)
+            {
+                if (place < draggedRange.Start)
+                {
+                    // Delete dragged range if not in copy mode
+                    if (copyMode == false)
+                    {
+                        Selection = draggedRange;
+                        ClearSelected();
+                    }
+
+                    // Insert text
+                    Selection = insertRange;
+                    Selection.ColumnSelectionMode = insertRange.ColumnSelectionMode;
+                    InsertText(text);
+                    caretPositionAfterInserting = Selection.Start;
+                }
+                else
+                {
+                    // Insert text
+                    Selection = insertRange;
+                    Selection.ColumnSelectionMode = insertRange.ColumnSelectionMode;
+                    InsertText(text);
+                    caretPositionAfterInserting = Selection.Start;
+                    var lineLength = this[caretPositionAfterInserting.iLine].Count;
+
+                    // Delete dragged range if not in copy mode
+                    if (copyMode == false)
+                    {
+                        Selection = draggedRange;
+                        ClearSelected();
+                    }
+
+                    var shift = lineLength - this[caretPositionAfterInserting.iLine].Count;
+                    caretPositionAfterInserting.iChar = caretPositionAfterInserting.iChar - shift;
+                    place.iChar = place.iChar - shift;
+                }
+
+                // Select inserted text
+                if (!draggedRange.ColumnSelectionMode)
+                {
+                    Selection = new Range(this, place, caretPositionAfterInserting);
+                }
+                else
+                {
+                    draggedRange.Normalize();
+                    Selection = new Range(this, place,
+                                            new Place(place.iChar + draggedRange.End.iChar - draggedRange.Start.iChar,
+                                                    place.iLine + draggedRange.End.iLine - draggedRange.Start.iLine)) { ColumnSelectionMode = true };
+                }
+            }
+
+            Selection.EndUpdate();
+            EndAutoUndo();
+            draggedRange = null;
+        }
+
+        protected virtual void DoDragDrop(Place place, string text)
+        {
+            Range insertRange = new Range(this, place, place);
+
+            // Abort, if insertRange is read only
+            if (insertRange.ReadOnly)
+                return;
+
+            // Abort, if dragged range contains target place
+            if ((draggedRange != null) && (draggedRange.Contains(place) == true))
+                return;
+
+            // Determine, if the dragged string should be copied or moved
+            bool copyMode =
+                (draggedRange == null) ||       // drag from outside
+                (draggedRange.ReadOnly) ||      // dragged range is read only
+                ((ModifierKeys & Keys.Control) != Keys.None);
+
+            if (draggedRange == null)//drag from outside
+            {
+                Selection.BeginUpdate();
+                // Insert text
+                Selection.Start = place;
+                InsertText(text);
+                // Select inserted text
+                Selection = new Range(this, place, Selection.Start);
+                Selection.EndUpdate();
+            }
+            else//drag from me
+            {
+                if (!draggedRange.Contains(place))
+                {
+                    BeginAutoUndo();
+
+                    //remember dragged selection for undo/redo
+                    Selection = draggedRange;
+                    lines.Manager.ExecuteCommand(new SelectCommand(lines));
+                    //
+                    if (draggedRange.ColumnSelectionMode)
+                    {
+                        draggedRange.Normalize();
+                        insertRange = new Range(this, place, new Place(place.iChar, place.iLine + draggedRange.End.iLine - draggedRange.Start.iLine)) { ColumnSelectionMode = true };
+                        for (int i = LinesCount; i <= insertRange.End.iLine; i++)
+                        {
+                            Selection.GoLast(false);
+                            InsertChar('\n');
+                        }
+                    }
+
+                    if (!insertRange.ReadOnly)
+                    {
+                        if (place < draggedRange.Start)
+                        {
+                            // Delete dragged range if not in copy mode
+                            if (copyMode == false)
+                            {
+                                Selection = draggedRange;
+                                ClearSelected();
+                            }
+
+                            // Insert text
+                            Selection = insertRange;
+                            Selection.ColumnSelectionMode = insertRange.ColumnSelectionMode;
+                            InsertText(text);
+                        }
+                        else
+                        {
+                            // Insert text
+                            Selection = insertRange;
+                            Selection.ColumnSelectionMode = insertRange.ColumnSelectionMode;
+                            InsertText(text);
+
+                            // Delete dragged range if not in copy mode
+                            if (copyMode == false)
+                            {
+                                Selection = draggedRange;
+                                ClearSelected();
+                            }
+                        }
+                    }
+
+                    // Selection start and end position
+                    Place startPosition = place;
+                    Place endPosition = Selection.Start;
+
+                    // Correct selection
+                    Range dR = (draggedRange.End > draggedRange.Start)  // dragged selection
+                        ? this.GetRange(draggedRange.Start, draggedRange.End)
+                        : this.GetRange(draggedRange.End, draggedRange.Start);
+                    Place tP = place; // targetPlace
+                    int tS_S_Line;  // targetSelection.Start.iLine
+                    int tS_S_Char;  // targetSelection.Start.iChar
+                    int tS_E_Line;  // targetSelection.End.iLine
+                    int tS_E_Char;  // targetSelection.End.iChar
+                    if ((place > draggedRange.Start) && (copyMode == false))
+                    {
+                        if (draggedRange.ColumnSelectionMode == false)
+                        {
+                            // Normal selection mode:
+
+                            // Determine character/column position of target selection
+                            if (dR.Start.iLine != dR.End.iLine) // If more then one line was selected/dragged ...
+                            {
+                                tS_S_Char = (dR.End.iLine != tP.iLine)
+                                    ? tP.iChar
+                                    : dR.Start.iChar + (tP.iChar - dR.End.iChar);
+                                tS_E_Char = dR.End.iChar;
+                            }
+                            else // only one line was selected/dragged
+                            {
+                                if (dR.End.iLine == tP.iLine)
+                                {
+                                    tS_S_Char = tP.iChar - dR.Text.Length;
+                                    tS_E_Char = tP.iChar;
+                                }
+                                else
+                                {
+                                    tS_S_Char = tP.iChar;
+                                    tS_E_Char = tP.iChar + dR.Text.Length;
+                                }
+                            }
+
+                            // Determine line/row of target selection
+                            if (dR.End.iLine != tP.iLine)
+                            {
+                                tS_S_Line = tP.iLine - (dR.End.iLine - dR.Start.iLine);
+                                tS_E_Line = tP.iLine;
+                            }
+                            else
+                            {
+                                tS_S_Line = dR.Start.iLine;
+                                tS_E_Line = dR.End.iLine;
+                            }
+
+                            startPosition = new Place(tS_S_Char, tS_S_Line);
+                            endPosition = new Place(tS_E_Char, tS_E_Line);
+                        }
+                    }
+
+
+                    // Select inserted text
+                    if (!draggedRange.ColumnSelectionMode)
+                        Selection = new Range(this, startPosition, endPosition);
+                    else
+                    {
+                        if ((copyMode == false) &&
+                            (place.iLine >= dR.Start.iLine) && (place.iLine <= dR.End.iLine) &&
+                            (place.iChar >= dR.End.iChar))
+                        {
+                            tS_S_Char = tP.iChar - (dR.End.iChar - dR.Start.iChar);
+                            tS_E_Char = tP.iChar;
+                        }
+                        else
+                        {
+                            tS_S_Char = tP.iChar;
+                            tS_E_Char = tP.iChar + (dR.End.iChar - dR.Start.iChar);
+                        }
+                        tS_S_Line = tP.iLine;
+                        tS_E_Line = tP.iLine + (dR.End.iLine - dR.Start.iLine);
+
+                        startPosition = new Place(tS_S_Char, tS_S_Line);
+                        endPosition = new Place(tS_E_Char, tS_E_Line);
+                        Selection = new Range(this, startPosition, endPosition)
+                        {
+                            ColumnSelectionMode = true
+                        };
+                    }
+
+                    EndAutoUndo();
+                }
+
+                this.selection.Inverse();
+                OnSelectionChanged();
+            }
+            draggedRange = null;
+        }
+
+        protected override void OnDragOver(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                Point p = PointToClient(new Point(e.X, e.Y));
+                Selection.Start = PointToPlace(p);
+                if (p.Y < 6 && VerticalScroll.Visible && VerticalScroll.Value > 0)
+                    VerticalScroll.Value = Math.Max(0, VerticalScroll.Value - charHeight);
+
+                DoCaretVisible();
+                Invalidate();
+            }
+            base.OnDragOver(e);
+        }
+
+        protected override void OnDragLeave(EventArgs e)
+        {
+            IsDragDrop = false;
+            base.OnDragLeave(e);
+        }
+
+        #endregion
+
+        #region MiddleClickScrolling
+
+        private bool middleClickScrollingActivated;
+        private Point middleClickScrollingOriginPoint;
+        private Point middleClickScrollingOriginScroll;
+        private readonly Timer middleClickScrollingTimer = new Timer();
+        private ScrollDirection middleClickScollDirection = ScrollDirection.None;
+
+        /// <summary>
+        /// Activates the scrolling mode (middle click button).
+        /// </summary>
+        /// <param name="e">MouseEventArgs</param>
+        private void ActivateMiddleClickScrollingMode(MouseEventArgs e)
+        {
+            if (!middleClickScrollingActivated)
+            {
+                if ((!HorizontalScroll.Visible) && (!VerticalScroll.Visible))
+                if (ShowScrollBars)
+                    return;
+                middleClickScrollingActivated = true;
+                middleClickScrollingOriginPoint = e.Location;
+                middleClickScrollingOriginScroll = new Point(HorizontalScroll.Value, VerticalScroll.Value);
+                middleClickScrollingTimer.Interval = 50;
+                middleClickScrollingTimer.Enabled = true;
+                Capture = true;
+                // Refresh the control 
+                Refresh();
+                // Disable drawing
+                SendMessage(Handle, WM_SETREDRAW, 0, 0);
+            }
+        }
+
+        /// <summary>
+        /// Deactivates the scrolling mode (middle click button).
+        /// </summary>
+        private void DeactivateMiddleClickScrollingMode()
+        {
+            if (middleClickScrollingActivated)
+            {
+                middleClickScrollingActivated = false;
+                middleClickScrollingTimer.Enabled = false;
+                Capture = false;
+                base.Cursor = defaultCursor;
+                // Enable drawing
+                SendMessage(Handle, WM_SETREDRAW, 1, 0);
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Restore scrolls
+        /// </summary>
+        private void RestoreScrollsAfterMiddleClickScrollingMode()
+        {
+            var xea = new ScrollEventArgs(ScrollEventType.ThumbPosition,
+                HorizontalScroll.Value,
+                middleClickScrollingOriginScroll.X,
+                ScrollOrientation.HorizontalScroll);
+            OnScroll(xea);
+
+            var yea = new ScrollEventArgs(ScrollEventType.ThumbPosition,
+                VerticalScroll.Value,
+                middleClickScrollingOriginScroll.Y,
+                ScrollOrientation.VerticalScroll);
+            OnScroll(yea);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        private const int WM_SETREDRAW = 0xB;
+
+        void middleClickScrollingTimer_Tick(object sender, EventArgs e)
+        {
+            if (IsDisposed)
+                return;
+
+            if (!middleClickScrollingActivated)
+                return;
+
+            Point currentMouseLocation = PointToClient(Cursor.Position);
+
+            Capture = true;
+
+            // Calculate angle and distance between current position point and origin point
+            int distanceX = this.middleClickScrollingOriginPoint.X - currentMouseLocation.X;
+            int distanceY = this.middleClickScrollingOriginPoint.Y - currentMouseLocation.Y;
+
+            if (!VerticalScroll.Visible && ShowScrollBars) distanceY = 0;
+            if (!HorizontalScroll.Visible && ShowScrollBars) distanceX = 0;
+
+            double angleInDegree = 180 - Math.Atan2(distanceY, distanceX) * 180 / Math.PI;
+            double distance = Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
+
+            // determine scrolling direction depending on the angle
+            if (distance > 10)
+            {
+                if (angleInDegree >= 325 || angleInDegree <= 35)
+                    this.middleClickScollDirection = ScrollDirection.Right;
+                else if (angleInDegree <= 55)
+                    this.middleClickScollDirection = ScrollDirection.Right | ScrollDirection.Up;
+                else if (angleInDegree <= 125)
+                    this.middleClickScollDirection = ScrollDirection.Up;
+                else if (angleInDegree <= 145)
+                    this.middleClickScollDirection = ScrollDirection.Up | ScrollDirection.Left;
+                else if (angleInDegree <= 215)
+                    this.middleClickScollDirection = ScrollDirection.Left;
+                else if (angleInDegree <= 235)
+                    this.middleClickScollDirection = ScrollDirection.Left | ScrollDirection.Down;
+                else if (angleInDegree <= 305)
+                    this.middleClickScollDirection = ScrollDirection.Down;
+                else
+                    this.middleClickScollDirection = ScrollDirection.Down | ScrollDirection.Right;
+            }
+            else
+            {
+                this.middleClickScollDirection = ScrollDirection.None;
+            }
+
+            // Set mouse cursor
+            switch (this.middleClickScollDirection)
+            {
+                case ScrollDirection.Right: base.Cursor = Cursors.PanEast; break;
+                case ScrollDirection.Right | ScrollDirection.Up: base.Cursor = Cursors.PanNE; break;
+                case ScrollDirection.Up: base.Cursor = Cursors.PanNorth; break;
+                case ScrollDirection.Up | ScrollDirection.Left: base.Cursor = Cursors.PanNW; break;
+                case ScrollDirection.Left: base.Cursor = Cursors.PanWest; break;
+                case ScrollDirection.Left | ScrollDirection.Down: base.Cursor = Cursors.PanSW; break;
+                case ScrollDirection.Down: base.Cursor = Cursors.PanSouth; break;
+                case ScrollDirection.Down | ScrollDirection.Right: base.Cursor = Cursors.PanSE; break;
+                default: base.Cursor = defaultCursor; return;
+            }
+
+            var xScrollOffset = (int)(-distanceX / 5.0);
+            var yScrollOffset = (int)(-distanceY / 5.0);
+
+            var xea = new ScrollEventArgs(xScrollOffset < 0 ? ScrollEventType.SmallIncrement : ScrollEventType.SmallDecrement,
+                HorizontalScroll.Value,
+                HorizontalScroll.Value + xScrollOffset,
+                ScrollOrientation.HorizontalScroll);
+
+            var yea = new ScrollEventArgs(yScrollOffset < 0 ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement,
+                VerticalScroll.Value,
+                VerticalScroll.Value + yScrollOffset,
+                ScrollOrientation.VerticalScroll);
+
+            if ((middleClickScollDirection & (ScrollDirection.Down | ScrollDirection.Up)) > 0)
+                //DoScrollVertical(1 + Math.Abs(yScrollOffset), Math.Sign(distanceY));
+                OnScroll(yea, false);
+
+            if ((middleClickScollDirection & (ScrollDirection.Right | ScrollDirection.Left)) > 0)
+                OnScroll(xea);
+
+            // Enable drawing
+            SendMessage(Handle, WM_SETREDRAW, 1, 0);
+            // Refresh the control 
+            Refresh();
+            // Disable drawing
+            SendMessage(Handle, WM_SETREDRAW, 0, 0);
+        }
+
+        private void DrawMiddleClickScrolling(Graphics gr)
+        {
+            // If mouse scrolling mode activated draw the scrolling cursor image
+            bool ableToScrollVertically = this.VerticalScroll.Visible || !ShowScrollBars;
+            bool ableToScrollHorizontally = this.HorizontalScroll.Visible || !ShowScrollBars;
+
+            // Calculate inverse color
+            Color inverseColor = Color.FromArgb(100, (byte)~this.BackColor.R, (byte)~this.BackColor.G, (byte)~this.BackColor.B);
+            using (SolidBrush inverseColorBrush = new SolidBrush(inverseColor))
+            {
+                var p = middleClickScrollingOriginPoint;
+
+                var state = gr.Save();
+
+                gr.SmoothingMode = SmoothingMode.HighQuality;
+                gr.TranslateTransform(p.X, p.Y);
+                gr.FillEllipse(inverseColorBrush, -2, -2, 4, 4);
+
+                if (ableToScrollVertically) DrawTriangle(gr, inverseColorBrush);
+                gr.RotateTransform(90);
+                if (ableToScrollHorizontally) DrawTriangle(gr, inverseColorBrush);
+                gr.RotateTransform(90);
+                if (ableToScrollVertically) DrawTriangle(gr, inverseColorBrush);
+                gr.RotateTransform(90);
+                if (ableToScrollHorizontally) DrawTriangle(gr, inverseColorBrush);
+
+                gr.Restore(state);
+            }
+        }
+
+        private void DrawTriangle(Graphics g, Brush brush)
+        {
+            const int size = 5;
+            var points = new Point[] { new Point(size, 2 * size), new Point(0, 3 * size), new Point(-size, 2 * size) };
+            g.FillPolygon(brush, points);
+        }
+
+        #endregion
+
+
+        #region Nested type: LineYComparer
+
+        private class LineYComparer : IComparer<LineInfo>
+        {
+            private readonly int Y;
+
+            public LineYComparer(int Y)
+            {
+                this.Y = Y;
+            }
+
+            #region IComparer<LineInfo> Members
+
+            public int Compare(LineInfo x, LineInfo y)
+            {
+                if (x.startY == -10)
+                    return -y.startY.CompareTo(Y);
+                else
+                    return x.startY.CompareTo(Y);
+            }
+
+            #endregion
+        }
+
+        #endregion
+    }
+
+    public class PaintLineEventArgs : PaintEventArgs
+    {
+        public PaintLineEventArgs(int iLine, Rectangle rect, Graphics gr, Rectangle clipRect) : base(gr, clipRect)
+        {
+            LineIndex = iLine;
+            LineRect = rect;
+        }
+
+        public int LineIndex { get; private set; }
+        public Rectangle LineRect { get; private set; }
+    }
+
+    public class LineInsertedEventArgs : EventArgs
+    {
+        public LineInsertedEventArgs(int index, int count)
+        {
+            Index = index;
+            Count = count;
+        }
+
+        /// <summary>
+        /// Inserted line index
+        /// </summary>
+        public int Index { get; private set; }
+
+        /// <summary>
+        /// Count of inserted lines
+        /// </summary>
+        public int Count { get; private set; }
+    }
+
+    public class LineRemovedEventArgs : EventArgs
+    {
+        public LineRemovedEventArgs(int index, int count, List<int> removedLineIds)
+        {
+            Index = index;
+            Count = count;
+            RemovedLineUniqueIds = removedLineIds;
+        }
+
+        /// <summary>
+        /// Removed line index
+        /// </summary>
+        public int Index { get; private set; }
+
+        /// <summary>
+        /// Count of removed lines
+        /// </summary>
+        public int Count { get; private set; }
+
+        /// <summary>
+        /// UniqueIds of removed lines
+        /// </summary>
+        public List<int> RemovedLineUniqueIds { get; private set; }
+    }
+
+    /// <summary>
+    /// TextChanged event argument
+    /// </summary>
+    public class TextChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public TextChangedEventArgs(Range changedRange)
+        {
+            ChangedRange = changedRange;
+        }
+
+        /// <summary>
+        /// This range contains changed area of text
+        /// </summary>
+        public Range ChangedRange { get; set; }
+    }
+
+    public class TextChangingEventArgs : EventArgs
+    {
+        public string InsertingText { get; set; }
+
+        /// <summary>
+        /// Set to true if you want to cancel text inserting
+        /// </summary>
+        public bool Cancel { get; set; }
+    }
+
+    public class WordWrapNeededEventArgs : EventArgs
+    {
+        public List<int> CutOffPositions { get; private set;}
+        public bool ImeAllowed { get; private set;}
+        public Line Line { get; private set; }
+
+        public WordWrapNeededEventArgs(List<int> cutOffPositions, bool imeAllowed, Line line)
+        {
+            this.CutOffPositions = cutOffPositions;
+            this.ImeAllowed = imeAllowed;
+            this.Line = line;
+        }
+    }
+
+    public enum WordWrapMode
+    {
+        /// <summary>
+        /// Word wrapping by control width
+        /// </summary>
+        WordWrapControlWidth,
+
+        /// <summary>
+        /// Word wrapping by preferred line width (PreferredLineWidth)
+        /// </summary>
+        WordWrapPreferredWidth,
+
+        /// <summary>
+        /// Char wrapping by control width
+        /// </summary>
+        CharWrapControlWidth,
+
+        /// <summary>
+        /// Char wrapping by preferred line width (PreferredLineWidth)
+        /// </summary>
+        CharWrapPreferredWidth,
+
+        /// <summary>
+        /// Custom wrap (by event WordWrapNeeded)
+        /// </summary>
+        Custom
+    }
+
+    public class PrintDialogSettings
+    {
+        public PrintDialogSettings()
+        {
+            ShowPrintPreviewDialog = true;
+            Title = "";
+            Footer = "";
+            Header = "";
+        }
+
+        public bool ShowPageSetupDialog { get; set; }
+        public bool ShowPrintDialog { get; set; }
+        public bool ShowPrintPreviewDialog { get; set; }
+
+        /// <summary>
+        /// Title of page. If you want to print Title on the page, insert code &amp;w in Footer or Header.
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Footer of page.
+        /// Here you can use special codes: &amp;w (Window title), &amp;D, &amp;d (Date), &amp;t(), &amp;4 (Time), &amp;p (Current page number), &amp;P (Total number of pages),  &amp;&amp; (A single ampersand), &amp;b (Right justify text, Center text. If &amp;b occurs once, then anything after the &amp;b is right justified. If &amp;b occurs twice, then anything between the two &amp;b is centered, and anything after the second &amp;b is right justified).
+        /// </summary>
+        public string Footer { get; set; }
+
+        /// <summary>
+        /// Header of page
+        /// Here you can use special codes: &amp;w (Window title), &amp;D, &amp;d (Date), &amp;t(), &amp;4 (Time), &amp;p (Current page number), &amp;P (Total number of pages),  &amp;&amp; (A single ampersand), &amp;b (Right justify text, Center text. If &amp;b occurs once, then anything after the &amp;b is right justified. If &amp;b occurs twice, then anything between the two &amp;b is centered, and anything after the second &amp;b is right justified).
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
+        /// Prints line numbers
+        /// </summary>
+        public bool IncludeLineNumbers { get; set; }
+    }
+
+    public class AutoIndentEventArgs : EventArgs
+    {
+        public AutoIndentEventArgs(int iLine, string lineText, string prevLineText, int tabLength, int currentIndentation)
+        {
+            this.iLine = iLine;
+            LineText = lineText;
+            PrevLineText = prevLineText;
+            TabLength = tabLength;
+            AbsoluteIndentation = currentIndentation;
+        }
+
+        public int iLine { get; internal set; }
+        public int TabLength { get; internal set; }
+        public string LineText { get; internal set; }
+        public string PrevLineText { get; internal set; }
+
+        /// <summary>
+        /// Additional spaces count for this line, relative to previous line
+        /// </summary>
+        public int Shift { get; set; }
+
+        /// <summary>
+        /// Additional spaces count for next line, relative to previous line
+        /// </summary>
+        public int ShiftNextLines { get; set; }
+
+        /// <summary>
+        /// Absolute indentation of current line. You can change this property if you want to set absolute indentation.
+        /// </summary>
+        public int AbsoluteIndentation { get; set; }
+    }
+
+    /// <summary>
+    /// Type of highlighting
+    /// </summary>
+    public enum HighlightingRangeType
+    {
+        /// <summary>
+        /// Highlight only changed range of text. Highest performance.
+        /// </summary>
+        ChangedRange,
+
+        /// <summary>
+        /// Highlight visible range of text. Middle performance.
+        /// </summary>
+        VisibleRange,
+
+        /// <summary>
+        /// Highlight all (visible and invisible) text. Lowest performance.
+        /// </summary>
+        AllTextRange
+    }
+
+    /// <summary>
+    /// Strategy of search of end of folding block
+    /// </summary>
+    public enum FindEndOfFoldingBlockStrategy
+    {
+        Strategy1,
+        Strategy2
+    }
+
+    /// <summary>
+    /// Strategy of search of brackets to highlighting
+    /// </summary>
+    public enum BracketsHighlightStrategy
+    {
+        Strategy1,
+        Strategy2
+    }
+
+    /// <summary>
+    /// ToolTipNeeded event args
+    /// </summary>
+    public class ToolTipNeededEventArgs : EventArgs
+    {
+        public ToolTipNeededEventArgs(Place place, string hoveredWord)
+        {
+            HoveredWord = hoveredWord;
+            Place = place;
+        }
+
+        public Place Place { get; private set; }
+        public string HoveredWord { get; private set; }
+        public string ToolTipTitle { get; set; }
+        public string ToolTipText { get; set; }
+        public ToolTipIcon ToolTipIcon { get; set; }
+    }
+
+    /// <summary>
+    /// HintClick event args
+    /// </summary>
+    public class HintClickEventArgs : EventArgs
+    {
+        public HintClickEventArgs(Hint hint)
+        {
+            Hint = hint;
+        }
+
+        public Hint Hint { get; private set; }
+    }
+
+    /// <summary>
+    /// CustomAction event args
+    /// </summary>
+    public class CustomActionEventArgs : EventArgs
+    {
+        public FCTBAction Action { get; private set; }
+
+        public CustomActionEventArgs(FCTBAction action)
+        {
+            Action = action;
+        }
+    }
+
+    public enum TextAreaBorderType
+    {
+        None,
+        Single,
+        Shadow
+    }
+
+    [Flags]
+    public enum ScrollDirection : ushort
+    {
+        None = 0,
+        Left = 1,
+        Right = 2,
+        Up = 4,
+        Down = 8
+    }
+
+    [Serializable]
+    public class ServiceColors
+    {
+        public Color CollapseMarkerForeColor { get; set; }
+        public Color CollapseMarkerBackColor { get; set; }
+        public Color CollapseMarkerBorderColor { get; set; }
+        public Color ExpandMarkerForeColor { get; set; }
+        public Color ExpandMarkerBackColor { get; set; }
+        public Color ExpandMarkerBorderColor { get; set; }
+
+        public ServiceColors()
+        {
+            CollapseMarkerForeColor = Color.Silver;
+            CollapseMarkerBackColor = Color.White;
+            CollapseMarkerBorderColor = Color.Silver;
+            ExpandMarkerForeColor = Color.Red;
+            ExpandMarkerBackColor = Color.White;
+            ExpandMarkerBorderColor = Color.Silver;
+        }
+    }
+
+#if Styles32
+    /// <summary>
+    /// Style index mask (32 styles)
+    /// </summary>
+    [Flags]
+    public enum StyleIndex : uint
+    {
+        None = 0,
+        Style0 = 0x1,
+        Style1 = 0x2,
+        Style2 = 0x4,
+        Style3 = 0x8,
+        Style4 = 0x10,
+        Style5 = 0x20,
+        Style6 = 0x40,
+        Style7 = 0x80,
+        Style8 = 0x100,
+        Style9 = 0x200,
+        Style10 = 0x400,
+        Style11 = 0x800,
+        Style12 = 0x1000,
+        Style13 = 0x2000,
+        Style14 = 0x4000,
+        Style15 = 0x8000,
+
+        Style16 = 0x10000,
+        Style17 = 0x20000,
+        Style18 = 0x40000,
+        Style19 = 0x80000,
+        Style20 = 0x100000,
+        Style21 = 0x200000,
+        Style22 = 0x400000,
+        Style23 = 0x800000,
+        Style24 = 0x1000000,
+        Style25 = 0x2000000,
+        Style26 = 0x4000000,
+        Style27 = 0x8000000,
+        Style28 = 0x10000000,
+        Style29 = 0x20000000,
+        Style30 = 0x40000000,
+        Style31 = 0x80000000,
+
+        All = 0xffffffff
+    }
+#else
+    /// <summary>
+    /// Style index mask (16 styles)
+    /// </summary>
+    [Flags]
+    public enum StyleIndex : ushort
+    {
+        None = 0,
+        Style0 = 0x1,
+        Style1 = 0x2,
+        Style2 = 0x4,
+        Style3 = 0x8,
+        Style4 = 0x10,
+        Style5 = 0x20,
+        Style6 = 0x40,
+        Style7 = 0x80,
+        Style8 = 0x100,
+        Style9 = 0x200,
+        Style10 = 0x400,
+        Style11 = 0x800,
+        Style12 = 0x1000,
+        Style13 = 0x2000,
+        Style14 = 0x4000,
+        Style15 = 0x8000,
+        All = 0xffff
+    }
+#endif
+
+}

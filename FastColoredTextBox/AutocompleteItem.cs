@@ -79,7 +79,6 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void OnSelected(AutocompleteMenu popupMenu, SelectedEventArgs e)
         {
-            ;
         }
 
         /// <summary>
