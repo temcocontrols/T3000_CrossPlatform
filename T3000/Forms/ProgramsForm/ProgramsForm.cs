@@ -194,7 +194,7 @@
 
         #region User input handles
 
-        private int Index_EditProgramCode = 0;
+        int Index_EditProgramCode;
 
         private void EditCodeColumn(object sender, EventArgs e)
         {

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramEditorForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
             this.cmdClear = new System.Windows.Forms.ToolStripButton();
@@ -53,9 +53,9 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SettingsBag = new System.Windows.Forms.PropertyGrid();
             this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
             this.ruler1 = new FastColoredTextBoxNS.Ruler();
-            this.SettingsBag = new System.Windows.Forms.PropertyGrid();
             this.tsTopMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.layStatistics.SuspendLayout();
@@ -266,8 +266,8 @@
             // 
             // dataGridViewTextBoxColumn3
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewTextBoxColumn3.HeaderText = "L, C";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -277,8 +277,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewTextBoxColumn4.HeaderText = "Error Message";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
@@ -289,8 +289,8 @@
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dataGridViewTextBoxColumn1.DataPropertyName = "State";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewTextBoxColumn1.HeaderText = "Parser State";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -298,6 +298,15 @@
             this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn1.ToolTipText = "Double-click grid cell to navigate to state details";
             this.dataGridViewTextBoxColumn1.Width = 71;
+            // 
+            // SettingsBag
+            // 
+            this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.SettingsBag.Location = new System.Drawing.Point(47, 58);
+            this.SettingsBag.Name = "SettingsBag";
+            this.SettingsBag.Size = new System.Drawing.Size(247, 197);
+            this.SettingsBag.TabIndex = 10;
+            this.SettingsBag.Visible = false;
             // 
             // editTextBox
             // 
@@ -314,7 +323,7 @@
         '\''};
             this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(27, 14);
             this.editTextBox.BackBrush = null;
-            this.editTextBox.BackColor = System.Drawing.Color.Gainsboro;
+            this.editTextBox.BackColor = System.Drawing.Color.Beige;
             this.editTextBox.CharHeight = 14;
             this.editTextBox.CharWidth = 8;
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -334,7 +343,7 @@
             // 
             // ruler1
             // 
-            this.ruler1.BackColor = System.Drawing.Color.Black;
+            this.ruler1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.ruler1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ruler1.Location = new System.Drawing.Point(3, 28);
             this.ruler1.MaximumSize = new System.Drawing.Size(1073741824, 24);
@@ -343,15 +352,6 @@
             this.ruler1.Size = new System.Drawing.Size(573, 24);
             this.ruler1.TabIndex = 11;
             this.ruler1.Target = this.editTextBox;
-            // 
-            // SettingsBag
-            // 
-            this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.SettingsBag.Location = new System.Drawing.Point(47, 58);
-            this.SettingsBag.Name = "SettingsBag";
-            this.SettingsBag.Size = new System.Drawing.Size(247, 197);
-            this.SettingsBag.TabIndex = 10;
-            this.SettingsBag.Visible = false;
             // 
             // ProgramEditorForm
             // 

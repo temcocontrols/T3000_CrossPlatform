@@ -145,6 +145,7 @@
             //autocompleteMenu.Items.SetAutocompleteItems(items);
 
             this.WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Normal;
 
             
             
