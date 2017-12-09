@@ -289,6 +289,8 @@
 
             int offset = 1; //offset is a count of total encoded bytes
 
+            
+
             int tokenIndex = 0;
             bool isFirstToken = true;
             
@@ -378,6 +380,15 @@
                         short OffSetNumber = Convert.ToInt16(token.Token);
                         result.AddRange(OffSetNumber.ToBytes()); //OFFSET NUMBER, 2 Bytes
                         offset += 2;
+
+                        break;
+
+                    case "ARGCOUNT":
+                        
+                        short IdentCount = Convert.ToInt16(token.Index);
+                        byte[] bytesIdentCount = IdentCount.ToBytes();
+                        result.Add(bytesIdentCount[0]); //OFFSET NUMBER, 2 Bytes
+                        offset += 1;
 
                         break;
 
@@ -511,11 +522,17 @@
                     case "GOSUB":
                     case "ON_ERROR":
                     case "ON_ALARM":
+                    case "ENABLEX":
+                    case "DISABLEX":
+                    case "ENDPRG":
+                    case "DECLARE":
 
                         result.Add((byte)token.Token);
                         offset++;
                         break;
                     #endregion
+
+                   
 
                     default:
                         Console.WriteLine($"Token ignored and not encoded: {token.ToString()}");

@@ -917,12 +917,37 @@
                         case "GOSUB":
                         case "ON_ALARM":
                         case "ON_ERROR":
+                        case "ENABLEX":
+                        case "DISABLEX":
+                        case "ENDPRG":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
                             Tokens.Last().Token = (short)SimpleToken;
                             break;
 
+                        case "DECLARE":
+
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            LINE_TOKEN DeclareToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            Tokens.Last().Token = (short)DeclareToken;
+
+                            Tokens.Add(new EditorTokenInfo("ARGCOUNT", "ARGCOUNT"));
+                            
+                            //count identifiers (arguments)
+                            var DeclareIdx = Tokens.Count - 1;
+                            var idCount = 0;
+                            var NextId = idxToken + 1;
+
+                            while (_parseTree.Tokens[NextId].Terminal.Name == "Identifier")
+                            {
+                                idCount++;
+                                NextId++;
+                            }
+                            Tokens[DeclareIdx].Index = (short) idCount;
+
+
+                            break;
                         case "WAIT":
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN WaitToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());

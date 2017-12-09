@@ -385,11 +385,11 @@
             DECLAREStatement.Rule = LineNumber + ToTerm("DECLARE") + IdentifierList + NewLine;
             SubroutineSentences.Rule = SentencesSequence;
 
-            ENDStatement.Rule = LineNumber + ToTerm("END");
+            ENDStatement.Rule = LineNumber + ToTerm("END","ENDPRG");
 
 
 
-            IdentifierList.Rule = MakePlusRule(IdentifierList, Comma, Identifier);
+            IdentifierList.Rule = MakePlusRule(IdentifierList, Identifier);
             //SentencesSequence ::= ProgramLine+
             SentencesSequence.Rule = MakeStarRule(SentencesSequence, ProgramLine);
             //ProgramLine ::= EmptyLine | (LineNumber Sentence EndLine)
@@ -435,8 +435,7 @@
             //DALARM ::= 'DALARM' Expression ',' NumberLiteral ',' StringLiteral+
             DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + StringMessage;
             //DISABLE ::= 'DISABLE' Identifier
-            DISABLE.Rule = "DISABLE" + Designator;
-            ENABLE.Rule = "ENABLE" + Designator;
+           
             
             PHONE.Rule = "PHONE" + PhoneNumber;
             PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
@@ -455,12 +454,16 @@
             PrintEverything.Rule = "SET-PRINTER" + (ToTerm("A") | ToTerm("B") | ToTerm("0"));
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
 
+            #region ENCODED COMMANDS
+
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
             WAIT.Rule = "WAIT" + Expression;
             CLEAR.Rule = ToTerm("CLEAR","CLEAR");
             RETURN.Rule = ToTerm("RETURN", "RETURN");
             HANGUP.Rule = ToTerm("HANGUP");
+            DISABLE.Rule = ToTerm("DISABLE", "DISABLEX") + Designator;
+            ENABLE.Rule = ToTerm("ENABLE", "ENABLEX") + Designator;
 
             //Assignment ::= Designator AssignOp Expression 
             LET.Rule = "LET";
@@ -495,6 +498,9 @@
 
             ONALARM.Rule = ToTerm("ON-ALARM","ON_ALARM") + LineNumber;
             ONERROR.Rule = ToTerm("ON-ERROR","ON_ERROR") + LineNumber;
+
+            #endregion
+
 
             //Loop::= FOR SentencesSequence ENDFOR
             //FOR::= 'FOR' LoopVariable AssignOp Integer 'TO' Integer('STEP' Integer) ? EndLine
