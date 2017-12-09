@@ -797,6 +797,7 @@
                         case "TIMER":
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
                             break;
 
                         #endregion
@@ -920,6 +921,7 @@
                         case "ENABLEX":
                         case "DISABLEX":
                         case "ENDPRG":
+                        case "RUN_MACRO":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());

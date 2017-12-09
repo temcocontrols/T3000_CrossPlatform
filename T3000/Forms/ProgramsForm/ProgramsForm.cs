@@ -384,6 +384,7 @@
                         break;
 
                     case "ARGCOUNT":
+                    case "SYSPRG":
                         
                         short IdentCount = Convert.ToInt16(token.Index);
                         byte[] bytesIdentCount = IdentCount.ToBytes();
@@ -444,6 +445,7 @@
                     case "SCANS":
                     case "USER_A":
                     case "USER_B":
+                    case "RUN_MACRO":
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -478,7 +480,6 @@
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
-                    case "SYSPRG":
                     case "TIMER":
 
 

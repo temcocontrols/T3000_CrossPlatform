@@ -448,8 +448,9 @@
             REMOTEGET.Rule = "REMOTE-GET" + Designator + AssignOp + RemoteDesignator;
             REMOTESET.Rule = "REMOTE-SET" + RemoteDesignator + AssignOp + Designator;
             
-            //RUNMACRO::= 'RUN-SYSTEM' SYSPRG
-            RUNMACRO.Rule = "RUN-SYSTEM" + SYSPRG;
+            //RUNMACRO::= 'RUN-MACRO' SYSPRG
+            RUNMACRO.Rule = ToTerm("RUN-MACRO","RUN_MACRO") + SYSPRG;
+            RUNMACRO.Precedence = 200;
             SETPRINTER.Rule = PrintEverything | PrintOnlyCommands;
             PrintEverything.Rule = "SET-PRINTER" + (ToTerm("A") | ToTerm("B") | ToTerm("0"));
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
@@ -680,7 +681,7 @@
             //Commands
             MarkReservedWords("START", "STOP","LET", "ALARM", "ALARM-AT", "CALL","ALL");
             MarkReservedWords("CLEAR", "DALARM","DISABLE","ENABLE", "HANGUP","PHONE","PRINT",
-                "PRINT-AT","REMOTE-GET","REMOTE-SET","RETURN","RUN-SYSTEM","WAIT",
+                "PRINT-AT","REMOTE-GET","REMOTE-SET","RETURN","RUN-MACRO","WAIT",
                 "SET-PRINTER","Set-Printer");
                
 
