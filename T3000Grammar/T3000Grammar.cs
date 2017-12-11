@@ -378,6 +378,8 @@
 
             //CONTROL_BASIC ::= SentencesSequence | SubRoutine
             CONTROL_BASIC.Rule = SentencesSequence | Subroutine;
+
+            #region Encoded Subroutines
             //SubRoutine ::= (LineNumber DECLARE EndLine SentencesSequence LineNumber END)
             Subroutine.Rule = DECLAREStatement + SubroutineSentences;
 
@@ -386,7 +388,7 @@
             SubroutineSentences.Rule = SentencesSequence;
 
             ENDStatement.Rule = LineNumber + ToTerm("END","ENDPRG");
-
+            #endregion
 
 
             IdentifierList.Rule = MakePlusRule(IdentifierList, Identifier);
@@ -425,6 +427,8 @@
 
             //ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
             ALARMAT.Rule = "ALARM-AT" + (IntegerNumber | "ALL");
+
+
             //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
             CALL.Rule = "CALL" + PRG + CALLARGS.Q();
             CALLARGS.Rule = AssignOp + ARG + CALLARGSLIST;
@@ -448,14 +452,16 @@
             REMOTEGET.Rule = "REMOTE-GET" + Designator + AssignOp + RemoteDesignator;
             REMOTESET.Rule = "REMOTE-SET" + RemoteDesignator + AssignOp + Designator;
             
-            //RUNMACRO::= 'RUN-MACRO' SYSPRG
-            RUNMACRO.Rule = ToTerm("RUN-MACRO","RUN_MACRO") + SYSPRG;
-            RUNMACRO.Precedence = 200;
+            
             SETPRINTER.Rule = PrintEverything | PrintOnlyCommands;
             PrintEverything.Rule = "SET-PRINTER" + (ToTerm("A") | ToTerm("B") | ToTerm("0"));
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
 
             #region ENCODED COMMANDS
+
+            //RUNMACRO::= 'RUN-MACRO' SYSPRG
+            RUNMACRO.Rule = ToTerm("RUN-MACRO", "RUN_MACRO") + SYSPRG;
+            RUNMACRO.Precedence = 200;
 
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
