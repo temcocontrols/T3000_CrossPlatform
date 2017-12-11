@@ -1051,5 +1051,4 @@ Token: {Token}
     //    char[] op;//[10];
     //};
 
-    //        CTABLE.Add("REM", (byte)LINE_TOKEN.REM);
 }

@@ -383,12 +383,14 @@
 
                         break;
 
+                    //Index and Counters: 1 Byte
                     case "ARGCOUNT":
                     case "SYSPRG":
+                    case "PRG":
                         
                         short IdentCount = Convert.ToInt16(token.Index);
                         byte[] bytesIdentCount = IdentCount.ToBytes();
-                        result.Add(bytesIdentCount[0]); //OFFSET NUMBER, 2 Bytes
+                        result.Add(bytesIdentCount[0]); //OFFSET NUMBER, 1 Bytes
                         offset += 1;
 
                         break;
@@ -397,7 +399,7 @@
                         result.Add((byte) token.Token);
                         offset++;
                         int WaitCounter =  Convert.ToInt32(token.Index);
-                        result.AddRange(WaitCounter.ToBytes()); //OFFSET NUMBER, 2 Bytes
+                        result.AddRange(WaitCounter.ToBytes()); //OFFSET NUMBER, 4 Bytes
                         offset += 4;
 
                         break;
@@ -446,6 +448,7 @@
                     case "USER_A":
                     case "USER_B":
                     case "RUN_MACRO":
+                    case "CALL":
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -466,6 +469,7 @@
                         break;
                     #endregion
 
+                    #region Identifiers: VARS, INS, OUTS, etc 3 bytes
                     case "Identifier":
                         //Encode directly: Token + Index + Type
 
@@ -476,7 +480,9 @@
 
                         break;
 
-                    #region NUMBERS (4 BYTES)
+                    #endregion
+
+                    #region NUMBERS (4 BYTES ONLY)
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":

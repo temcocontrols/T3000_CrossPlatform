@@ -707,7 +707,7 @@
                         case "VARS":
                         case "INS":
                         case "OUTS":
-                        case "PRG":
+                       
                             string output = Regex.Match(tokentext, @"\d+").Value;
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                                                                               //Prepare token identifier to encode: Token + Index + Type
@@ -718,7 +718,24 @@
                             Tokens.Add(CPIdentifier);
                             break;
 
-                        
+                        case "PRG":
+                            string idxPRG = Regex.Match(tokentext, @"\d+").Value;
+                            int CPIdx = Convert.ToInt16(idxPRG) - 1; //PRG1 will get index 0, and so on.
+                                                                     //Prepare token identifier to encode: Index (single Byte)
+                            EditorTokenInfo CPIdPRG = new EditorTokenInfo(tokentext, "PRG");
+                            CPIdPRG.Type = (short)TYPE_TOKEN.KEYWORD;
+                            CPIdPRG.Index = (short)CPIdx;
+                            CPIdPRG.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Tokens.Add(CPIdPRG);
+                            break;
+
+                        case "MRK": //termporary marker for commas between arguments, generated when
+                            //encoding ARGCOUNT for CALL PRG
+                            //Translated to EOE
+                            Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE;
+
+                            break;
 
                         case "Identifier":
                             //Locate Identifier and Identify Token associated ControlPoint.
@@ -753,6 +770,40 @@
                         #region Assigments and Expressions
                         case "ASSIGN":
 
+                            if(Tokens.Last().TerminalName == "PRG")
+                            {
+                                //CALL PRG ASSIGMENT ARGS ...
+                                //counter for identifiers as arguments
+                                Tokens.Add(new EditorTokenInfo("ARGCOUNT", "ARGCOUNT"));
+
+                                //count identifiers (arguments)
+                                var ArgIdx = Tokens.Count - 1;
+                                var idCnt = 0;
+                                var NxtId = idxToken + 1;
+
+                                while (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
+                                    || _parseTree.Tokens[NxtId].Terminal.Name == "COMMA")
+                                {
+                                    if (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier") 
+                                    {
+                                        //count this identifier
+                                        idCnt++;
+                                    }
+                                    else
+                                    {
+                                        //It's a comma, change it to marker 0xFF
+                                        _parseTree.Tokens[NxtId].Terminal.Name = "MRK";
+                                    }
+                                    NxtId++;
+                                }
+                                //Also produce a new token here, last MRK = 0xFF
+                                _parseTree.Tokens.Insert(NxtId, new Token(new Terminal("MRK"), new SourceLocation(0,0,0), "MRK", null));
+                                Tokens[ArgIdx].Index = (short)idCnt;
+
+                                break; //Only when ASSIGN found after  PRG
+                            }
+
+                            //Any other way, encode an assigment ↓ ↓ ↓ ↓ 
                             EditorTokenInfo assignToken, last;
 
                             var index = Tokens.Count - 1;
@@ -922,6 +973,7 @@
                         case "DISABLEX":
                         case "ENDPRG":
                         case "RUN_MACRO":
+                        case "CALL":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
