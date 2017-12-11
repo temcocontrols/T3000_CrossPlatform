@@ -85,6 +85,15 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         
     };
 
+    /// <summary>
+    /// Tokens values for PRT types SET-PRINTER
+    /// </summary>
+    public enum PRT_TOKEN
+    {
+        PRT_0 = 48,
+        PRT_A = 65,
+        PRT_B
+    }
 
     /// <summary>
     /// tokens (commands) ported from T3000 C++

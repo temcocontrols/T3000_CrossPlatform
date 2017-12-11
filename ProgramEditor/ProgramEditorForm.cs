@@ -851,6 +851,14 @@
                             Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
                             break;
 
+                        case "PRT_A":
+                        case "PRT_B":
+                        case "PRT_0":
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            PRT_TOKEN PrtToken = (PRT_TOKEN)Enum.Parse(typeof(PRT_TOKEN), terminalname.ToString().Trim());
+                            Tokens.Last().Token = (short)PrtToken;
+                                                        
+                            break;
                         #endregion
 
                         #region IF IF+ IF- THEN ELSE
@@ -974,6 +982,7 @@
                         case "ENDPRG":
                         case "RUN_MACRO":
                         case "CALL":
+                        case "SET_PRINTER":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());

@@ -395,6 +395,15 @@
 
                         break;
 
+                    case "PRT_A":
+                    case "PRT_B":
+                    case "PRT_0":
+                        short prt = Convert.ToInt16(token.Token);
+                        byte[] bytesPrt = prt.ToBytes();
+                        result.Add(bytesPrt[0]); //OFFSET NUMBER, 1 Bytes
+                        offset += 1;
+                        break;
+
                     case "WAITCOUNTER":
                         result.Add((byte) token.Token);
                         offset++;
@@ -449,6 +458,7 @@
                     case "USER_B":
                     case "RUN_MACRO":
                     case "CALL":
+                    case "SET_PRINTER":
 
                         result.Add((byte)token.Token);
                         offset++;

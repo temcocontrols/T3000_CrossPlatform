@@ -454,7 +454,7 @@
             
             
             SETPRINTER.Rule = PrintEverything | PrintOnlyCommands;
-            PrintEverything.Rule = "SET-PRINTER" + (ToTerm("A") | ToTerm("B") | ToTerm("0"));
+            PrintEverything.Rule = ToTerm("SET-PRINTER", "SET_PRINTER") + (ToTerm("A","PRT_A") | ToTerm("B","PRT_B") | ToTerm("0","PRT_0"));
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
 
             #region ENCODED COMMANDS
