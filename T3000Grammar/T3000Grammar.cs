@@ -132,7 +132,8 @@
             var GRP = new RegexBasedTerminal("GRP", "GRP(" + UPTO32 + ")");
             GRP.Priority = 40;
 
-
+            var PANEL = new RegexBasedTerminal("PANEL", "(" + UPTO5+ ")");
+            PANEL.Priority = 40;
             //Other sub-literals
 
 
@@ -425,8 +426,8 @@
             //ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
             ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + StringMessage;
 
-            //ALARMAT ::= 'ALARM-AT' PANEL | 'ALL'
-            ALARMAT.Rule = "ALARM-AT" + (IntegerNumber | "ALL");
+            //ALARMAT ::= 'ALARM-AT' PANELS | 'ALL'
+            ALARMAT.Rule = "ALARM-AT" + (PANELS | ToTerm("ALL","ALL"));
 
 
             //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
@@ -445,8 +446,8 @@
             PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
             PrintableKeywords.Rule = DATE | TIME | USERA | USERB | BEEP | PointIdentifier | EnclosedString;
             PrintableListOpt.Rule = MakeStarRule(PrintableListOpt, CommandSeparator + PrintableKeywords);
-            PRINTAT.Rule = "PRINT-AT" + (PANELS | "ALL");
-            PANELS.Rule = MakePlusRule(PANELS, Comma.Q() + IntegerNumber);
+            PRINTAT.Rule = ToTerm("PRINT-AT", "PRINT_AT") + (PANELS | ToTerm("ALL","ALL"));
+            PANELS.Rule = MakePlusRule(PANELS, PANEL);
             //REMOTEGET ::= 'REMOTE-GET' Designator AssignOp RemoteDesignator
             //REMOTESET::= 'REMOTE-SET' RemoteDesignator AssignOp Designator
             REMOTEGET.Rule = "REMOTE-GET" + Designator + AssignOp + RemoteDesignator;
