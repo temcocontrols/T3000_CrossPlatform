@@ -1,6 +1,6 @@
 ﻿namespace T3000.Forms
 {
-    partial class ProgramsForm
+    partial class T3000Form
     {
         /// <summary>
         /// Required designer variable.
@@ -28,154 +28,370 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramsForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.clearSelectedRowButton = new System.Windows.Forms.Button();
-            this.view = new T3000.Controls.TView();
-            this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.AutoManualColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.SizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RunStatusColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.LabelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CodeColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(T3000Form));
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadPRGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.savePRGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.upgradeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controlMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outputsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.variablesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controllersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.screensMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.schedulesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.holidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.germanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
+            this.inputsButton = new System.Windows.Forms.ToolStripButton();
+            this.outputsButton = new System.Windows.Forms.ToolStripButton();
+            this.variablesButton = new System.Windows.Forms.ToolStripButton();
+            this.programsButton = new System.Windows.Forms.ToolStripButton();
+            this.controllersButton = new System.Windows.Forms.ToolStripButton();
+            this.screensButton = new System.Windows.Forms.ToolStripButton();
+            this.schedulesButton = new System.Windows.Forms.ToolStripButton();
+            this.holidaysButton = new System.Windows.Forms.ToolStripButton();
+            this.panelBuildingView = new System.Windows.Forms.Panel();
+            this.groupBoxBuildingView = new System.Windows.Forms.GroupBox();
+            this.treeBuildingView = new System.Windows.Forms.TreeView();
+            this.splitterMain = new System.Windows.Forms.Splitter();
+            this.menuStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
+            this.buttonsToolStrip.SuspendLayout();
+            this.panelBuildingView.SuspendLayout();
+            this.groupBoxBuildingView.SuspendLayout();
             this.SuspendLayout();
             // 
-            // saveButton
+            // menuStrip
             // 
-            resources.ApplyResources(this.saveButton, "saveButton");
-            this.saveButton.Name = "saveButton";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.Save);
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.controlMenuItem,
+            this.languageMenuItem});
+            resources.ApplyResources(this.menuStrip, "menuStrip");
+            this.menuStrip.MdiWindowListItem = this.fileToolStripMenuItem;
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
-            // cancelButton
+            // fileToolStripMenuItem
             // 
-            resources.ApplyResources(this.cancelButton, "cancelButton");
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.Cancel);
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadPRGToolStripMenuItem,
+            this.savePRGToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.upgradeMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
-            // clearSelectedRowButton
+            // loadPRGToolStripMenuItem
             // 
-            resources.ApplyResources(this.clearSelectedRowButton, "clearSelectedRowButton");
-            this.clearSelectedRowButton.Name = "clearSelectedRowButton";
-            this.clearSelectedRowButton.UseVisualStyleBackColor = true;
-            this.clearSelectedRowButton.Click += new System.EventHandler(this.ClearSelectedRow);
+            this.loadPRGToolStripMenuItem.Name = "loadPRGToolStripMenuItem";
+            resources.ApplyResources(this.loadPRGToolStripMenuItem, "loadPRGToolStripMenuItem");
+            this.loadPRGToolStripMenuItem.Click += new System.EventHandler(this.LoadPrg);
             // 
-            // view
+            // savePRGToolStripMenuItem
             // 
-            this.view.AllowUserToAddRows = false;
-            this.view.AllowUserToDeleteRows = false;
-            resources.ApplyResources(this.view, "view");
-            this.view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.view.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NumberColumn,
-            this.DescriptionColumn,
-            this.StatusColumn,
-            this.AutoManualColumn,
-            this.SizeColumn,
-            this.RunStatusColumn,
-            this.LabelColumn,
-            this.CodeColumn});
-            this.view.FormattingEnabled = true;
-            this.view.MultiSelect = false;
-            this.view.Name = "view";
-            this.view.UserInputEnabled = true;
-            this.view.ValidationEnabled = true;
-            this.view.ValueChangedEnabled = true;
+            resources.ApplyResources(this.savePRGToolStripMenuItem, "savePRGToolStripMenuItem");
+            this.savePRGToolStripMenuItem.Name = "savePRGToolStripMenuItem";
+            this.savePRGToolStripMenuItem.Click += new System.EventHandler(this.SavePrg);
             // 
-            // NumberColumn
+            // saveAsToolStripMenuItem
             // 
-            this.NumberColumn.FillWeight = 55F;
-            resources.ApplyResources(this.NumberColumn, "NumberColumn");
-            this.NumberColumn.Name = "NumberColumn";
-            this.NumberColumn.ReadOnly = true;
+            resources.ApplyResources(this.saveAsToolStripMenuItem, "saveAsToolStripMenuItem");
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsPrg);
             // 
-            // DescriptionColumn
+            // upgradeMenuItem
             // 
-            this.DescriptionColumn.FillWeight = 150F;
-            resources.ApplyResources(this.DescriptionColumn, "DescriptionColumn");
-            this.DescriptionColumn.Name = "DescriptionColumn";
+            resources.ApplyResources(this.upgradeMenuItem, "upgradeMenuItem");
+            this.upgradeMenuItem.Name = "upgradeMenuItem";
+            this.upgradeMenuItem.Click += new System.EventHandler(this.Upgrade);
             // 
-            // StatusColumn
+            // exitToolStripMenuItem
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            this.StatusColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.StatusColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            resources.ApplyResources(this.StatusColumn, "StatusColumn");
-            this.StatusColumn.Name = "StatusColumn";
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.Exit);
             // 
-            // AutoManualColumn
+            // controlMenuItem
             // 
-            resources.ApplyResources(this.AutoManualColumn, "AutoManualColumn");
-            this.AutoManualColumn.Name = "AutoManualColumn";
+            this.controlMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputsMenuItem,
+            this.outputsMenuItem,
+            this.variablesMenuItem,
+            this.programsMenuItem,
+            this.controllersMenuItem,
+            this.screensMenuItem,
+            this.schedulesMenuItem,
+            this.holidaysMenuItem});
+            this.controlMenuItem.Name = "controlMenuItem";
+            resources.ApplyResources(this.controlMenuItem, "controlMenuItem");
             // 
-            // SizeColumn
+            // inputsMenuItem
             // 
-            resources.ApplyResources(this.SizeColumn, "SizeColumn");
-            this.SizeColumn.Name = "SizeColumn";
-            this.SizeColumn.ReadOnly = true;
+            resources.ApplyResources(this.inputsMenuItem, "inputsMenuItem");
+            this.inputsMenuItem.Name = "inputsMenuItem";
+            this.inputsMenuItem.Click += new System.EventHandler(this.ShowInputs);
             // 
-            // RunStatusColumn
+            // outputsMenuItem
             // 
-            resources.ApplyResources(this.RunStatusColumn, "RunStatusColumn");
-            this.RunStatusColumn.Name = "RunStatusColumn";
-            this.RunStatusColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            resources.ApplyResources(this.outputsMenuItem, "outputsMenuItem");
+            this.outputsMenuItem.Name = "outputsMenuItem";
+            this.outputsMenuItem.Click += new System.EventHandler(this.ShowOutputs);
             // 
-            // LabelColumn
+            // variablesMenuItem
             // 
-            resources.ApplyResources(this.LabelColumn, "LabelColumn");
-            this.LabelColumn.Name = "LabelColumn";
+            resources.ApplyResources(this.variablesMenuItem, "variablesMenuItem");
+            this.variablesMenuItem.Name = "variablesMenuItem";
+            this.variablesMenuItem.Click += new System.EventHandler(this.ShowVariables);
             // 
-            // CodeColumn
+            // programsMenuItem
             // 
-            resources.ApplyResources(this.CodeColumn, "CodeColumn");
-            this.CodeColumn.Name = "CodeColumn";
-            this.CodeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CodeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.CodeColumn.Text = "Edit";
-            this.CodeColumn.UseColumnTextForButtonValue = true;
+            resources.ApplyResources(this.programsMenuItem, "programsMenuItem");
+            this.programsMenuItem.Name = "programsMenuItem";
+            this.programsMenuItem.Click += new System.EventHandler(this.ShowPrograms);
             // 
-            // ProgramsForm
+            // controllersMenuItem
             // 
-            this.AcceptButton = this.saveButton;
+            resources.ApplyResources(this.controllersMenuItem, "controllersMenuItem");
+            this.controllersMenuItem.Name = "controllersMenuItem";
+            this.controllersMenuItem.Click += new System.EventHandler(this.ShowControllers);
+            // 
+            // screensMenuItem
+            // 
+            resources.ApplyResources(this.screensMenuItem, "screensMenuItem");
+            this.screensMenuItem.Name = "screensMenuItem";
+            this.screensMenuItem.Click += new System.EventHandler(this.ShowScreens);
+            // 
+            // schedulesMenuItem
+            // 
+            resources.ApplyResources(this.schedulesMenuItem, "schedulesMenuItem");
+            this.schedulesMenuItem.Name = "schedulesMenuItem";
+            this.schedulesMenuItem.Click += new System.EventHandler(this.ShowSchedules);
+            // 
+            // holidaysMenuItem
+            // 
+            resources.ApplyResources(this.holidaysMenuItem, "holidaysMenuItem");
+            this.holidaysMenuItem.Name = "holidaysMenuItem";
+            this.holidaysMenuItem.Click += new System.EventHandler(this.ShowHolidays);
+            // 
+            // languageMenuItem
+            // 
+            this.languageMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.englishToolStripMenuItem,
+            this.germanToolStripMenuItem,
+            this.chineseToolStripMenuItem});
+            this.languageMenuItem.Name = "languageMenuItem";
+            resources.ApplyResources(this.languageMenuItem, "languageMenuItem");
+            // 
+            // englishToolStripMenuItem
+            // 
+            this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            resources.ApplyResources(this.englishToolStripMenuItem, "englishToolStripMenuItem");
+            this.englishToolStripMenuItem.Click += new System.EventHandler(this.SelectEnglish);
+            // 
+            // germanToolStripMenuItem
+            // 
+            this.germanToolStripMenuItem.Name = "germanToolStripMenuItem";
+            resources.ApplyResources(this.germanToolStripMenuItem, "germanToolStripMenuItem");
+            this.germanToolStripMenuItem.Click += new System.EventHandler(this.SelectGerman);
+            // 
+            // chineseToolStripMenuItem
+            // 
+            this.chineseToolStripMenuItem.Name = "chineseToolStripMenuItem";
+            resources.ApplyResources(this.chineseToolStripMenuItem, "chineseToolStripMenuItem");
+            this.chineseToolStripMenuItem.Click += new System.EventHandler(this.SelectChinese);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            resources.ApplyResources(this.statusStrip, "statusStrip");
+            this.statusStrip.Name = "statusStrip";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            resources.ApplyResources(this.statusLabel, "statusLabel");
+            // 
+            // buttonsToolStrip
+            // 
+            this.buttonsToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.buttonsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputsButton,
+            this.outputsButton,
+            this.variablesButton,
+            this.programsButton,
+            this.controllersButton,
+            this.screensButton,
+            this.schedulesButton,
+            this.holidaysButton});
+            resources.ApplyResources(this.buttonsToolStrip, "buttonsToolStrip");
+            this.buttonsToolStrip.Name = "buttonsToolStrip";
+            // 
+            // inputsButton
+            // 
+            this.inputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.inputsButton, "inputsButton");
+            this.inputsButton.Name = "inputsButton";
+            this.inputsButton.Click += new System.EventHandler(this.ShowInputs);
+            // 
+            // outputsButton
+            // 
+            this.outputsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.outputsButton, "outputsButton");
+            this.outputsButton.Name = "outputsButton";
+            this.outputsButton.Click += new System.EventHandler(this.ShowOutputs);
+            // 
+            // variablesButton
+            // 
+            this.variablesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.variablesButton, "variablesButton");
+            this.variablesButton.Name = "variablesButton";
+            this.variablesButton.Click += new System.EventHandler(this.ShowVariables);
+            // 
+            // programsButton
+            // 
+            this.programsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.programsButton, "programsButton");
+            this.programsButton.Name = "programsButton";
+            this.programsButton.Click += new System.EventHandler(this.ShowPrograms);
+            // 
+            // controllersButton
+            // 
+            this.controllersButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.controllersButton, "controllersButton");
+            this.controllersButton.Name = "controllersButton";
+            this.controllersButton.Click += new System.EventHandler(this.ShowControllers);
+            // 
+            // screensButton
+            // 
+            this.screensButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.screensButton, "screensButton");
+            this.screensButton.Name = "screensButton";
+            this.screensButton.Click += new System.EventHandler(this.ShowScreens);
+            // 
+            // schedulesButton
+            // 
+            this.schedulesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.schedulesButton, "schedulesButton");
+            this.schedulesButton.Name = "schedulesButton";
+            this.schedulesButton.Click += new System.EventHandler(this.ShowSchedules);
+            // 
+            // holidaysButton
+            // 
+            this.holidaysButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.holidaysButton, "holidaysButton");
+            this.holidaysButton.Name = "holidaysButton";
+            this.holidaysButton.Click += new System.EventHandler(this.ShowHolidays);
+            // 
+            // panelBuildingView
+            // 
+            this.panelBuildingView.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panelBuildingView.Controls.Add(this.groupBoxBuildingView);
+            resources.ApplyResources(this.panelBuildingView, "panelBuildingView");
+            this.panelBuildingView.Name = "panelBuildingView";
+            // 
+            // groupBoxBuildingView
+            // 
+            this.groupBoxBuildingView.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.groupBoxBuildingView.Controls.Add(this.treeBuildingView);
+            resources.ApplyResources(this.groupBoxBuildingView, "groupBoxBuildingView");
+            this.groupBoxBuildingView.Name = "groupBoxBuildingView";
+            this.groupBoxBuildingView.TabStop = false;
+            // 
+            // treeBuildingView
+            // 
+            this.treeBuildingView.BackColor = System.Drawing.Color.White;
+            this.treeBuildingView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.treeBuildingView, "treeBuildingView");
+            this.treeBuildingView.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.treeBuildingView.FullRowSelect = true;
+            this.treeBuildingView.Name = "treeBuildingView";
+            this.treeBuildingView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("treeBuildingView.Nodes")))});
+            // 
+            // splitterMain
+            // 
+            resources.ApplyResources(this.splitterMain, "splitterMain");
+            this.splitterMain.Name = "splitterMain";
+            this.splitterMain.TabStop = false;
+            // 
+            // T3000Form
+            // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.cancelButton;
-            this.Controls.Add(this.clearSelectedRowButton);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.view);
-            this.Name = "ProgramsForm";
-            ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
+            this.Controls.Add(this.splitterMain);
+            this.Controls.Add(this.panelBuildingView);
+            this.Controls.Add(this.buttonsToolStrip);
+            this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.menuStrip);
+            this.IsMdiContainer = true;
+            this.KeyPreview = true;
+            this.MainMenuStrip = this.menuStrip;
+            this.Name = "T3000Form";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.T3000Form_KeyUp);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            this.buttonsToolStrip.ResumeLayout(false);
+            this.buttonsToolStrip.PerformLayout();
+            this.panelBuildingView.ResumeLayout(false);
+            this.groupBoxBuildingView.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private T3000.Controls.TView view;
-        private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Button clearSelectedRowButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn StatusColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn AutoManualColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SizeColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn RunStatusColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LabelColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn CodeColumn;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadPRGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem savePRGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem controlMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem variablesMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem languageMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem germanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chineseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inputsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem outputsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem screensMenuItem;
+        private System.Windows.Forms.ToolStrip buttonsToolStrip;
+        private System.Windows.Forms.ToolStripButton variablesButton;
+        private System.Windows.Forms.ToolStripMenuItem upgradeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem programsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem controllersMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem holidaysMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem schedulesMenuItem;
+        private System.Windows.Forms.ToolStripButton inputsButton;
+        private System.Windows.Forms.ToolStripButton outputsButton;
+        private System.Windows.Forms.ToolStripButton programsButton;
+        private System.Windows.Forms.ToolStripButton controllersButton;
+        private System.Windows.Forms.ToolStripButton screensButton;
+        private System.Windows.Forms.ToolStripButton schedulesButton;
+        private System.Windows.Forms.ToolStripButton holidaysButton;
+        private System.Windows.Forms.Panel panelBuildingView;
+        private System.Windows.Forms.GroupBox groupBoxBuildingView;
+        private System.Windows.Forms.TreeView treeBuildingView;
+        private System.Windows.Forms.Splitter splitterMain;
     }
 }
-

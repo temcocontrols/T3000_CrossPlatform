@@ -8,6 +8,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
@@ -115,7 +116,7 @@
       
 
             
-            var items = new List<AutocompleteItem>();
+            //var items = new List<AutocompleteItem>();
             var keywords = new List<string>()
             {
                 "REM",
@@ -128,24 +129,25 @@
             };
             keywords.AddRange(T3000Grammar.Functions);
 
-            foreach (var item in keywords)
-                items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
+            //foreach (var item in keywords)
+            //    items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
 
-            var snippets = new[]{
-                "if(^)\n{\n}",
-                "if(^)\n{\n}\nelse\n{\n}",
-                "for(^;;)\n{\n}", "while(^)\n{\n}",
-                "do${\n^}while();",
-                "switch(^)\n{\n\tcase : break;\n}"
-            };
-            foreach (var item in snippets)
-                items.Add(new SnippetAutocompleteItem(item) { ImageIndex = 1 });
+            //var snippets = new[]{
+            //    "if(^)\n{\n}",
+            //    "if(^)\n{\n}\nelse\n{\n}",
+            //    "for(^;;)\n{\n}", "while(^)\n{\n}",
+            //    "do${\n^}while();",
+            //    "switch(^)\n{\n\tcase : break;\n}"
+            //};
+            //foreach (var item in snippets)
+            //    items.Add(new SnippetAutocompleteItem(item) { ImageIndex = 1 });
 
             //set as autocomplete source
             //autocompleteMenu.Items.SetAutocompleteItems(items);
 
+
             this.WindowState = FormWindowState.Maximized;
-            this.WindowState = FormWindowState.Normal;
+            //this.WindowState = FormWindowState.Normal;
 
             
             
@@ -687,6 +689,12 @@
                             break;
                         #endregion
 
+                        case "PhoneNumber":
+                            var PhoneString = tok.Text.TrimEnd(' ');
+                            Tokens.Add(new EditorTokenInfo(PhoneString, "PhoneNumber"));
+                            Tokens.Last().Type = (short)PhoneString.Length;
+                            Tokens.Last().Token = (short)LINE_TOKEN.STRING;
+                            break;
 
                         case "IntegerNumber":
                             //rename to LineNumber only if first token on line.
@@ -987,6 +995,7 @@
                         case "SET_PRINTER":
                         case "PRINT_AT":
                         case "ALARM_AT":
+                        case "PHONE":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
@@ -1389,7 +1398,16 @@
             return Expr;
         }
 
-
+        private void ProgramEditorForm_Load(object sender, EventArgs e)
+        {
+            this.Left = 0;
+            this.Top = 0;
+            Rectangle recNew = new Rectangle();
+            recNew = this.ParentForm.ClientRectangle;
+            recNew.Height -= 4;
+            recNew.Width -= 4;
+            this.Size = recNew.Size;
+        }
     }
     
 }

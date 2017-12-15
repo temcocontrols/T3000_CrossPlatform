@@ -320,6 +320,7 @@
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.editTextBox.IsReplaceMode = false;
             this.editTextBox.Location = new System.Drawing.Point(3, 53);
             this.editTextBox.Name = "editTextBox";
@@ -356,12 +357,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(579, 441);
             this.Controls.Add(this.SettingsBag);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
             this.Name = "ProgramEditorForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Edit code:";
+            this.Load += new System.EventHandler(this.ProgramEditorForm_Load);
             this.ResizeEnd += new System.EventHandler(this.ProgramEditorForm_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProgramEditorForm_KeyDown);
             this.Resize += new System.EventHandler(this.ProgramEditorForm_Resize);

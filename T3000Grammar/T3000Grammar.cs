@@ -423,46 +423,55 @@
 
             NextCommand.Rule = MakeStarRule(NextCommand, CommandSeparator + Command);
 
+
+            //TODO: ALARM, Waiting for information previously asked to TEMCO
             //ALARM ::= 'ALARM' Expression ComparisonOps Expression ',' Expression ',' StringLiteral*
             ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + StringMessage;
-
-            //ALARMAT ::= 'ALARM-AT' PANELS | 'ALL'
-            ALARMAT.Rule = ToTerm("ALARM-AT", "ALARM_AT") + (PANELS | ToTerm("ALL","ALL"));
-
-
-            //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
-            CALL.Rule = "CALL" + PRG + CALLARGS.Q();
-            CALLARGS.Rule = AssignOp + ARG + CALLARGSLIST;
-            CALLARGSLIST.Rule = MakeStarRule(CALLARGSLIST, Comma + ARG);
-            ARG.Rule = Designator | Expression;
-
-           
             //DALARM ::= 'DALARM' Expression ',' NumberLiteral ',' StringLiteral+
             DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + StringMessage;
-            //DISABLE ::= 'DISABLE' Identifier
-           
+            //DISABLE ::= 'DISABLE' Identifier           
+
+
             
-            PHONE.Rule = "PHONE" + PhoneNumber;
+                                 
+                      
+            
+
             PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
             PrintableKeywords.Rule = DATE | TIME | USERA | USERB | BEEP | PointIdentifier | EnclosedString;
             PrintableListOpt.Rule = MakeStarRule(PrintableListOpt, CommandSeparator + PrintableKeywords);
-            PRINTAT.Rule = ToTerm("PRINT-AT", "PRINT_AT") + (PANELS | ToTerm("ALL","ALL"));
-            PANELS.Rule = MakePlusRule(PANELS, PANEL);
+            
             //REMOTEGET ::= 'REMOTE-GET' Designator AssignOp RemoteDesignator
             //REMOTESET::= 'REMOTE-SET' RemoteDesignator AssignOp Designator
             REMOTEGET.Rule = "REMOTE-GET" + Designator + AssignOp + RemoteDesignator;
             REMOTESET.Rule = "REMOTE-SET" + RemoteDesignator + AssignOp + Designator;
-            
-            
+
+
+
+            #region ENCODED COMMANDS
+
+            PHONE.Rule = ToTerm("PHONE", "PHONE") + PhoneNumber;
+
+            PRINTAT.Rule = ToTerm("PRINT-AT", "PRINT_AT") + (PANELS | ToTerm("ALL", "ALL"));
+            PANELS.Rule = MakePlusRule(PANELS, PANEL);
+
             SETPRINTER.Rule = PrintEverything | PrintOnlyCommands;
             PrintEverything.Rule = ToTerm("SET-PRINTER", "SET_PRINTER") + (ToTerm("A","PRT_A") | ToTerm("B","PRT_B") | ToTerm("0","PRT_0"));
             PrintOnlyCommands.Rule = "Set-Printer" + (ToTerm("a") | ToTerm("b") | ToTerm("0"));
 
-            #region ENCODED COMMANDS
+            //ALARMAT ::= 'ALARM-AT' PANELS | 'ALL'
+            ALARMAT.Rule = ToTerm("ALARM-AT", "ALARM_AT") + (PANELS | ToTerm("ALL", "ALL"));
 
             //RUNMACRO::= 'RUN-MACRO' SYSPRG
             RUNMACRO.Rule = ToTerm("RUN-MACRO", "RUN_MACRO") + SYSPRG;
             RUNMACRO.Precedence = 200;
+
+            //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?
+            //TODO: CALL, Check if it works with expressions
+            CALL.Rule = "CALL" + PRG + CALLARGS.Q();
+            CALLARGS.Rule = AssignOp + ARG + CALLARGSLIST;
+            CALLARGSLIST.Rule = MakeStarRule(CALLARGSLIST, Comma + ARG);
+            ARG.Rule = Designator | Expression;
 
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;

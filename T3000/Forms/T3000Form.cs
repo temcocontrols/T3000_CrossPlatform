@@ -36,7 +36,7 @@
         private void LoadPrg(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog();
-            dialog.Filter = $"{Resources.PrgFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
             dialog.Title = Resources.SelectPrgFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {
@@ -121,7 +121,7 @@
             }
 
             var dialog = new SaveFileDialog();
-            dialog.Filter = $"{Resources.PrgFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
             dialog.Title = Resources.SavePrgFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {

@@ -339,6 +339,7 @@
                         offset++;
                         break;
                     case "Comment":
+                    case "PhoneNumber":
                         result.Add((byte)token.Type); //Lenght of String
                         offset++;
                         result.AddRange(token.Text.ToBytes());
@@ -479,6 +480,7 @@
                     case "DECLARE":
                     case "PRINT_AT":
                     case "ALARM_AT":
+                    case "PHONE":
 
 
                         result.Add((byte)token.Token);
