@@ -416,7 +416,7 @@
                         break;
                     #endregion
 
-                    #region Operators and Functions
+                    #region Operators, Functions and Commands
                     //OPERATORS
                     case "PLUS":
                     case "MINUS":
@@ -458,13 +458,35 @@
                     case "SCANS":
                     case "USER_A":
                     case "USER_B":
+                    
+                    //COMMANDS
+                    case "START":
+                    case "STOP":
+                    case "CLEAR":
+                    case "RETURN":
+                    case "WAIT":
+                    case "HANGUP":
+                    case "GOTO":
+                    case "GOSUB":
+                    case "ON_ERROR":
+                    case "ON_ALARM":
+                    case "ENABLEX":
+                    case "DISABLEX":
+                    case "ENDPRG":
                     case "RUN_MACRO":
                     case "CALL":
                     case "SET_PRINTER":
+                    case "DECLARE":
+                    case "PRINT_AT":
+                    case "ALARM_AT":
+
 
                         result.Add((byte)token.Token);
                         offset++;
                         break;
+
+
+
 
                     //Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
@@ -477,7 +499,7 @@
                         break;
 
                     case "NOT":
-                        //TODO: Learn how to -> tests and errors.
+                        //TODO: Learn how to encode NOT operator -> tests and errors.
                         break;
                     #endregion
 
@@ -529,28 +551,6 @@
 
                         //EOL: LF, Just Ignored. Next Token should be another LineNumber
                         break;
-
-                    #region Commands
-                    case "START":
-                    case "STOP":
-                    case "CLEAR":
-                    case "RETURN":
-                    case "WAIT":
-                    case "HANGUP":
-                    case "GOTO":
-                    case "GOSUB":
-                    case "ON_ERROR":
-                    case "ON_ALARM":
-                    case "ENABLEX":
-                    case "DISABLEX":
-                    case "ENDPRG":
-                    case "DECLARE":
-                    case "PRINT_AT":
-
-                        result.Add((byte)token.Token);
-                        offset++;
-                        break;
-                    #endregion
 
                    
 

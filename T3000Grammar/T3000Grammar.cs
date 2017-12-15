@@ -427,7 +427,7 @@
             ALARM.Rule = "ALARM" + Expression + ComparisonOps + Expression + Comma + Expression + Comma + StringMessage;
 
             //ALARMAT ::= 'ALARM-AT' PANELS | 'ALL'
-            ALARMAT.Rule = "ALARM-AT" + (PANELS | ToTerm("ALL","ALL"));
+            ALARMAT.Rule = ToTerm("ALARM-AT", "ALARM_AT") + (PANELS | ToTerm("ALL","ALL"));
 
 
             //CALL ::= 'CALL' PRG (AssignOp ARG (Space ',' Space ARG)* )?

@@ -986,6 +986,7 @@
                         case "CALL":
                         case "SET_PRINTER":
                         case "PRINT_AT":
+                        case "ALARM_AT":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
@@ -1027,11 +1028,14 @@
                            
                             break;
                         #endregion
+
+                        #region Defaults
                         case "LET":
                         default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             
                             break;
+                        #endregion
                     }
                     isFirstToken = terminalname == "LF" ? true : false;
 
