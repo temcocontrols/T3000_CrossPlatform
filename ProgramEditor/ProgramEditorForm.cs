@@ -846,6 +846,7 @@
                         case "TABLENUMBER":
                         case "SYSPRG":
                         case "TIMER":
+                        case "PANEL":
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
@@ -854,6 +855,7 @@
                         case "PRT_A":
                         case "PRT_B":
                         case "PRT_0":
+                        case "ALL":
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             PRT_TOKEN PrtToken = (PRT_TOKEN)Enum.Parse(typeof(PRT_TOKEN), terminalname.ToString().Trim());
                             Tokens.Last().Token = (short)PrtToken;
@@ -983,6 +985,7 @@
                         case "RUN_MACRO":
                         case "CALL":
                         case "SET_PRINTER":
+                        case "PRINT_AT":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());

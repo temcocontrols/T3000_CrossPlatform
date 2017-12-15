@@ -387,6 +387,7 @@
                     case "ARGCOUNT":
                     case "SYSPRG":
                     case "PRG":
+                    case "PANEL":
                         
                         short IdentCount = Convert.ToInt16(token.Index);
                         byte[] bytesIdentCount = IdentCount.ToBytes();
@@ -398,6 +399,7 @@
                     case "PRT_A":
                     case "PRT_B":
                     case "PRT_0":
+                    case "ALL":
                         short prt = Convert.ToInt16(token.Token);
                         byte[] bytesPrt = prt.ToBytes();
                         result.Add(bytesPrt[0]); //OFFSET NUMBER, 1 Bytes
@@ -543,6 +545,7 @@
                     case "DISABLEX":
                     case "ENDPRG":
                     case "DECLARE":
+                    case "PRINT_AT":
 
                         result.Add((byte)token.Token);
                         offset++;
