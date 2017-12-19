@@ -2,6 +2,12 @@
 The latest release notes, windows and linux release files are stored here
 
 
+## Updated: 20171213.1547OM
+### Encoded RUN_MACRO CALL SET_PRINTER PRINT_AT ALARM_AT PHONE and others
+### New tar.gz release for testing on raspbian with mono.
+Tested against T3000 C++ and Raspbian Jessie
+Working on Issue #2: 
+
 ## Updated: 20171204.121900
 ### Encoded DECLARE END
 Tested against T3000 C++
