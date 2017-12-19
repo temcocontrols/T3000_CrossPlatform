@@ -996,6 +996,7 @@
                         case "PRINT_AT":
                         case "ALARM_AT":
                         case "PHONE":
+                        case "PRINT":
                         
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());

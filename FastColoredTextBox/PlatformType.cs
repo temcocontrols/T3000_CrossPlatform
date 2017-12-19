@@ -28,40 +28,44 @@ namespace FastColoredTextBoxNS
             public ushort wProcessorRevision;
         };
 
-        [DllImport("kernel32.dll")]
-        static extern void GetNativeSystemInfo(ref SYSTEM_INFO lpSystemInfo);
+        //[DllImport("kernel32.dll")]
+        //static extern void GetNativeSystemInfo(ref SYSTEM_INFO lpSystemInfo);
 
-        [DllImport("kernel32.dll")]
-        static extern void GetSystemInfo(ref SYSTEM_INFO lpSystemInfo);
+        //[DllImport("kernel32.dll")]
+        //static extern void GetSystemInfo(ref SYSTEM_INFO lpSystemInfo);
 
         public static Platform GetOperationSystemPlatform()
         {
-            var sysInfo = new SYSTEM_INFO();
+            //TODO: Disabled API calls to GetNativeSystemInfo
 
-            // WinXP and older - use GetNativeSystemInfo
-            if (Environment.OSVersion.Version.Major > 5 ||
-                (Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1))
-            {
-                GetNativeSystemInfo(ref sysInfo);
-            }
-            // else use GetSystemInfo
-            else
-            {
-                GetSystemInfo(ref sysInfo);
-            }
+            //var sysInfo = new SYSTEM_INFO();
 
-            switch (sysInfo.wProcessorArchitecture)
-            {
-                case PROCESSOR_ARCHITECTURE_IA64:
-                case PROCESSOR_ARCHITECTURE_AMD64:
-                    return Platform.X64;
+            //// WinXP and older - use GetNativeSystemInfo
+            //if (Environment.OSVersion.Version.Major > 5 ||
+            //    (Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1))
+            //{
+            //    GetNativeSystemInfo(ref sysInfo);
+            //}
+            //// else use GetSystemInfo
+            //else
+            //{
+            //    GetSystemInfo(ref sysInfo);
+            //}
 
-                case PROCESSOR_ARCHITECTURE_INTEL:
-                    return Platform.X86;
+            //switch (sysInfo.wProcessorArchitecture)
+            //{
+            //    case PROCESSOR_ARCHITECTURE_IA64:
+            //    case PROCESSOR_ARCHITECTURE_AMD64:
+            //        return Platform.X64;
 
-                default:
-                    return Platform.Unknown;
-            }
+            //    case PROCESSOR_ARCHITECTURE_INTEL:
+            //        return Platform.X86;
+
+            //    default:
+            //        return Platform.Unknown;
+            //}
+
+            return Platform.Unknown;
         }
     }
 

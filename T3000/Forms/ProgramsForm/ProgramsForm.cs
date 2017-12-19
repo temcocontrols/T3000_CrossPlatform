@@ -481,6 +481,7 @@
                     case "PRINT_AT":
                     case "ALARM_AT":
                     case "PHONE":
+                    case "PRINT":
 
 
                         result.Add((byte)token.Token);
