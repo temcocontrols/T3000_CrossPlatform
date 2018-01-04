@@ -37,14 +37,10 @@
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>T3000 CrossPlatform Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
-    <FeedbackEMailLinkText>Author</FeedbackEMailLinkText>
-    <FeedbackEMailAddress>lruiz75%40gmail.com</FeedbackEMailAddress>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000.exe" />
-      <DocumentationSource sourceFile="..\T3000\bin\Debug\PRGReaderLibrary.dll" />
-      <DocumentationSource sourceFile="..\T3000\bin\Debug\ProgramEditor.dll" />
-      <DocumentationSource sourceFile="..\T3000\bin\Debug\ProgramEditor.xml" />
-      <DocumentationSource sourceFile="..\T3000\bin\Debug\T3000Grammar.dll" />
+      <DocumentationSource sourceFile="..\FastColoredTextBox\bin\Debug\FastColoredTextBox.dll" />
+      <DocumentationSource sourceFile="..\FastColoredTextBox\bin\Debug\FastColoredTextBox.xml" />
+      <DocumentationSource sourceFile="..\FastColoredTextBoxNS\bin\Debug\FastColoredTextBoxNS.dll" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>

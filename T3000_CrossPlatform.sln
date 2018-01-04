@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBox", "FastC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBoxNS", "FastColoredTextBoxNS\FastColoredTextBoxNS.csproj", "{21D9406B-9A90-4A82-9894-ABEB07393E78}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "T3000Documenter", "T3000Documenter\T3000Documenter.shfbproj", "{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,18 @@ Global
 		{21D9406B-9A90-4A82-9894-ABEB07393E78}.Release|x64.Build.0 = Release|Any CPU
 		{21D9406B-9A90-4A82-9894-ABEB07393E78}.Release|x86.ActiveCfg = Release|Any CPU
 		{21D9406B-9A90-4A82-9894-ABEB07393E78}.Release|x86.Build.0 = Release|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Debug|x64.Build.0 = Debug|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Debug|x86.Build.0 = Debug|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x64.ActiveCfg = Release|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x64.Build.0 = Release|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x86.ActiveCfg = Release|Any CPU
+		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -88,12 +88,12 @@ namespace FastColoredTextBoxNS
             ClearStylesBuffer();
             AddStyle(WavyStyle);
 
-            VariablesColor = Color.DarkBlue ;
+            VariablesColor = Color.Crimson ;
             InputsColor = Color.BlueViolet;
             OutputsColor = Color.DarkBlue;
 
-            SolidBrush brush1 = new SolidBrush(VariablesColor);
-            SyntaxHighlighter.VariableStyle = new TextStyle(brush1, null, FontStyle.Regular);
+            SolidBrush variablebrush = new SolidBrush(VariablesColor);
+            SyntaxHighlighter.VariableStyle = new TextStyle(variablebrush, null, FontStyle.Regular);
 
             SyntaxHighlighter.InitStyleSchema(Language.CSharp);
             InitBraces();

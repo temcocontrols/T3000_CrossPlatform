@@ -40,6 +40,7 @@ namespace FastColoredTextBoxNS
         protected Regex CSharpKeywordRegex;
         protected Regex CSharpNumberRegex;
         protected Regex CSharpStringRegex;
+        protected Regex CSharpVariablesRegex;
 
         protected Regex HTMLAttrRegex,
                       HTMLAttrValRegex,
@@ -628,6 +629,8 @@ namespace FastColoredTextBoxNS
                 new Regex(
                     @"\b(abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|using|virtual|void|volatile|while|add|alias|ascending|descending|dynamic|from|get|global|group|into|join|let|orderby|partial|remove|select|set|value|var|where|yield)\b|#region\b|#endregion\b",
                     RegexCompiledOption);
+
+            CSharpVariablesRegex = new Regex(@"VAR(12[0-8]|1[0-1][0-9]|[1-9][0-9]?)",RegexCompiledOption);
         }
 
         public void InitStyleSchema(Language lang)
@@ -741,6 +744,7 @@ namespace FastColoredTextBoxNS
             range.SetStyle(ClassNameStyle, CSharpClassNameRegex);
             //keyword highlighting
             range.SetStyle(KeywordStyle, CSharpKeywordRegex);
+            range.SetStyle(VariableStyle, CSharpVariablesRegex);
 
             //find document comments
             foreach (Range r in range.GetRanges(@"^\s*///.*$", RegexOptions.Multiline))
