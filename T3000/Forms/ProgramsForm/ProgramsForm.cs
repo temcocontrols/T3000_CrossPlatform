@@ -539,6 +539,8 @@
                         break;
                     #endregion
 
+                    #region EOF CRLF
+
                     case "LF":
                         isFirstToken = true;
                         
@@ -555,7 +557,7 @@
                         //EOL: LF, Just Ignored. Next Token should be another LineNumber
                         break;
 
-                   
+                    #endregion
 
                     default:
                         Console.WriteLine($"Token ignored and not encoded: {token.ToString()}");

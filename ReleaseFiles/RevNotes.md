@@ -2,6 +2,14 @@
 The latest release notes, windows and linux release files are stored here
 
 
+## Updated: 20171214.1452
+### No more commands encoded, but a new version of FastColoredTextBoxNS.IronyFCBT control (editor with syntax highlighting based on irony grammar)
+#### Version 1.1 [COM VISIBLE And Registered for COM InterOP]
+\ReleaseFiles\setup\T3000 Raspbian.tar.gz is a simple compressed release for testing on raspbian with mono.
+\ReleaseFiles\FastColoredTextBox.IronyFCBT.rar is a simple compressed release for this control to be tested in T3000 C++
+Working on Issue #2:
+ 
+
 ## Updated: 20171213.1547OM
 ### Encoded RUN_MACRO CALL SET_PRINTER PRINT_AT ALARM_AT PHONE and others
 ### New tar.gz release for testing on raspbian with mono.

@@ -259,3 +259,11 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/docs/T3000ControlBasicEBNFv1.zip
+/docs/T3000ControlBasic.EBNF
+/docs/T3000 Control Basic Syntax - EBNF Diagrams.docx
+/docs/Control Points, Variables and Errors.pdf
+/ReleaseFiles/assets/img/issue002.jpg
+/ReleaseFiles/assets/img/NEW001.jpg
+/ReleaseFiles/Setup/T3000 Rasbian
+/ReleaseFiles/Setup/T3000 Rasbian.tar

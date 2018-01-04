@@ -94,7 +94,7 @@ namespace FastColoredTextBoxNS
         private uint lineNumberStartValue;
         private int lineSelectFrom;
         private TextSource lines;
-        private IntPtr m_hImc;
+        //private IntPtr m_hImc;
         private int maxLineLength;
         private bool mouseIsDrag;
         private bool mouseIsDragDrop;
