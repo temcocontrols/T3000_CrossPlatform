@@ -80,8 +80,6 @@
         /// </summary>
         public event SendEventHandler Send;
 
-        
-
         /// <summary>
         /// Overridable OnSend Event Handler
         /// </summary>
@@ -154,7 +152,6 @@
             
         }
 
-
         /// <summary>
         /// Get next line number
         /// </summary>
@@ -176,7 +173,6 @@
             return (Lines.LastOrDefault().Before  + 10).ToString();
 
         }
-
 
         /// <summary>
         /// Try to renumber all lines and their references.
@@ -279,7 +275,6 @@
             editTextBox.Text = newcode;
         }
 
-
         /// <summary>
         /// Set code to EditBox, ProgramCode is automatically parsed. 
         /// </summary>
@@ -296,7 +291,6 @@
             ParseCode(false);
             
         }
-
         
         private void cmdClear_Click(object sender, EventArgs e)
         {
@@ -312,7 +306,6 @@
             //local member Code is not cleared, to allow recovering with REFRESH (F8)
             editTextBox.Text = "";
         }
-
 
         /// <summary>
         /// Override of ToString -> GetCode
@@ -388,7 +381,6 @@
                
             }
         }
-
 
         private void ClearParserOutput()
         {
@@ -1071,7 +1063,6 @@
         }
 
 
-
         /// <summary>
         /// Returns PCODE_CONST value and Index for the especified Identifier
         /// </summary>
@@ -1128,8 +1119,6 @@
             return PCODE_CONST.UNDEFINED_SYMBOL;
             
         }
-
-
 
  
         /// <summary>

@@ -56,6 +56,7 @@
     <Compile Include="Types\HelpTypes\NameAttribute.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Types\Enums\Jumper.cs" />
+	<Compile Include="Utilities\Decoder.cs" />
     <Compile Include="Utilities\EditorJumpInfo.cs" />
     <Compile Include="Utilities\EditorLineInfo.cs" />
     <Compile Include="Utilities\EditorTokenInfo.cs" />

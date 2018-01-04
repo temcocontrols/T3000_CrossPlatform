@@ -1,8 +1,8 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
-    using PRGReaderLibrary.Utilities;
     using PRGReaderLibrary.Types.Enums.Codecs;
+    using PRGReaderLibrary.Utilities;
     using ProgramEditor.Extensions;
     using Properties;
     using System;
@@ -209,6 +209,11 @@
 
                 Console.WriteLine("--------------ORIGINAL CODE-------------------");
                 PRGReaderLibrary.Utilities.Encoder.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
+
+                string ProgramText = PRGReaderLibrary.Utilities.Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);
+
+                Console.WriteLine("--------------NEW PROGRAM TEXT-------------------");
+                Console.WriteLine(ProgramText);
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
 
 

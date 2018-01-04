@@ -1,9 +1,9 @@
 ﻿namespace T3000
 {
+    using Irony.Interpreter.Ast;
+    using Irony.Parsing;
     using System;
     using System.Collections.ObjectModel;
-    using Irony.Parsing;
-    using Irony.Interpreter.Ast;
 
     [Language("Control Basic", "1.0", "T3000 Programming Language")]
     public class T3000Grammar : Grammar
