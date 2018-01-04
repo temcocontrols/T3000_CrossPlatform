@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProgramEditor.Extensions
+namespace PRGReaderLibrary.Utilities
 {
     /// <summary>
     /// Stores values Before and After Renumbering.

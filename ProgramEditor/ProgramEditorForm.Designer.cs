@@ -365,7 +365,6 @@
             this.Name = "ProgramEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Edit code:";
-            this.Load += new System.EventHandler(this.ProgramEditorForm_Load);
             this.ResizeEnd += new System.EventHandler(this.ProgramEditorForm_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProgramEditorForm_KeyDown);
             this.Resize += new System.EventHandler(this.ProgramEditorForm_Resize);

@@ -43,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ControlPointWrappers.cs" />
-    <Compile Include="Extensions\EditorJumpInfo.cs" />
-    <Compile Include="Extensions\EditorLineInfo.cs" />
-    <Compile Include="Extensions\EditorTokenInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ProgramEditorForm.cs">
       <SubType>Form</SubType>

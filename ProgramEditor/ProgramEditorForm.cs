@@ -4,6 +4,7 @@
     using Irony;
     using Irony.Parsing;
     using PRGReaderLibrary.Types.Enums.Codecs;
+    using PRGReaderLibrary.Utilities;
     using ProgramEditor.Extensions;
     using System;
     using System.Collections.Generic;
@@ -540,6 +541,11 @@
             }
         }
 
+        /// <summary>
+        /// User call to SendCode event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdSend_Click(object sender, EventArgs e)
         {
             SendCode();
@@ -547,7 +553,9 @@
 
 
 
-
+        /// <summary>
+        /// Triggers SendCode Event
+        /// </summary>
         private void SendCode()
         {
             ParseCode(true); //Performs full parsing and semantic checks
@@ -646,6 +654,9 @@
         {
             LinesValidator();
         }
+
+
+
 
         /// <summary>
         /// Pre-process tokens from parser
@@ -1399,16 +1410,16 @@
             return Expr;
         }
 
-        private void ProgramEditorForm_Load(object sender, EventArgs e)
-        {
-            this.Left = 0;
-            this.Top = 0;
-            Rectangle recNew = new Rectangle();
-            recNew = this.ParentForm.ClientRectangle;
-            recNew.Height -= 4;
-            recNew.Width -= 4;
-            this.Size = recNew.Size;
-        }
+        //private void ProgramEditorForm_Load(object sender, EventArgs e)
+        //{
+        //    this.Left = 0;
+        //    this.Top = 0;
+        //    Rectangle recNew = new Rectangle();
+        //    recNew = this.ParentForm.ClientRectangle;
+        //    recNew.Height -= 4;
+        //    recNew.Width -= 4;
+        //    this.Size = recNew.Size;
+        //}
     }
     
 }
