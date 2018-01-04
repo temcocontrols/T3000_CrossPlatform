@@ -10,12 +10,11 @@
 //
 //  Copyright (C) Pavel Torgashov, 2013. 
 
+using Irony.Parsing;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using Irony.Parsing;
-using static System.Net.WebRequestMethods;
 
 namespace FastColoredTextBoxNS
 {
@@ -30,6 +29,10 @@ namespace FastColoredTextBoxNS
         protected Parser parser;
         
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
+     
+
+              
+
 
         /// <summary>
         /// Grammar of custom language
@@ -52,6 +55,7 @@ namespace FastColoredTextBoxNS
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), EditorBrowsable(EditorBrowsableState.Never)]
         public Parser Parser {
             get {
+          
                 return parser;
             }
             set {
@@ -83,6 +87,14 @@ namespace FastColoredTextBoxNS
             this.parser = parser;
             ClearStylesBuffer();
             AddStyle(WavyStyle);
+
+            VariablesColor = Color.DarkBlue ;
+            InputsColor = Color.BlueViolet;
+            OutputsColor = Color.DarkBlue;
+
+            SolidBrush brush1 = new SolidBrush(VariablesColor);
+            SyntaxHighlighter.VariableStyle = new TextStyle(brush1, null, FontStyle.Regular);
+
             SyntaxHighlighter.InitStyleSchema(Language.CSharp);
             InitBraces();
             OnTextChanged(Range);
@@ -131,6 +143,11 @@ namespace FastColoredTextBoxNS
                 return;
             }
 
+            
+            SolidBrush brush1 = new SolidBrush(VariablesColor);
+            SyntaxHighlighter.VariableStyle = new TextStyle(brush1, null, FontStyle.Regular);
+
+
             //highlight syntax
             ClearStyle(StyleIndex.All);
             foreach (var t in tree.Tokens)
@@ -147,11 +164,17 @@ namespace FastColoredTextBoxNS
                     continue;
                 }
 
+
+                
+
                 switch (t.Terminal.Name)
                 {
                     case "INTERVAL":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.FunctionsStyle);
-                        continue;
+                        break;
+                    case "Identifier":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        break;
                 }
 
                 switch (t.Terminal.GetType().Name)
@@ -165,6 +188,7 @@ namespace FastColoredTextBoxNS
                         break;
                     case "Identifier":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        
                         break;
                     case "NumberLiteral":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.NumberStyle);
@@ -233,6 +257,22 @@ namespace FastColoredTextBoxNS
                 LeftBracket = '(';
                 RightBracket = ')';
             }
+        }
+
+        private void InitializeComponent()
+        {
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // IronyFCTB
+            // 
+            this.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            
+            this.Name = "IronyFCTB";
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+            this.ResumeLayout(false);
+
         }
     }
 

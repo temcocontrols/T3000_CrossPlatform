@@ -247,6 +247,9 @@ namespace PRGReaderLibrary.Utilities
 
                     #region Identifiers: VARS, INS, OUTS, etc 3 bytes
                     case "Identifier":
+                    case "VARS":
+                    case "INS":
+                    case "OUTS":
                         //Encode directly: Token + Index + Type
 
                         result.Add((byte)token.Token);

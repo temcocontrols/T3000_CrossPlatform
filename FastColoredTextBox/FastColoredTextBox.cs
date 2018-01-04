@@ -125,6 +125,9 @@ namespace FastColoredTextBoxNS
         private int reservedCountOfLineNumberChars = 1;
         private int zoom = 100;
         private Size localAutoScrollMinSize;
+
+        private Color variablesColor= Color.DarkBlue;
+
  
         /// <summary>
         /// Constructor
@@ -697,6 +700,41 @@ namespace FastColoredTextBoxNS
                 Invalidate();
             }
         }
+
+
+        [Category("Color")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "DarkBlue")]
+        [Description("Text Color for Variables")]
+        public Color VariablesColor
+        {
+            get
+            {
+                return variablesColor;
+            }
+            set
+            {
+                variablesColor = value;
+                SolidBrush VariableBrush
+                     = new SolidBrush(variablesColor);
+                SyntaxHighlighter.VariableStyle = new TextStyle(VariableBrush, null, FontStyle.Regular);
+                
+                Invalidate();
+
+            }
+        }
+        
+        [Category("Color")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Green")]
+        [Description("Text Color for Inputs")]
+        public Color InputsColor { get; set; }
+
+        [Category("Color")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Blue")]
+        [Description("Text Color for Outputs")]
+        public Color OutputsColor { get; set; }
 
         /// <summary>
         /// Padings of text area

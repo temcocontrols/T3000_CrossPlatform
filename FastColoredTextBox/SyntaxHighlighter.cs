@@ -22,6 +22,7 @@ namespace FastColoredTextBoxNS
         public readonly Style MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
         public readonly Style RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
         public readonly Style BlackStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
+       
         //
         protected readonly Dictionary<string, SyntaxDescriptor> descByXMLfileNames =
             new Dictionary<string, SyntaxDescriptor>();
@@ -33,7 +34,8 @@ namespace FastColoredTextBoxNS
 
         protected Regex CSharpCommentRegex1,
                       CSharpCommentRegex2,
-                      CSharpCommentRegex3;
+                      CSharpCommentRegex3,
+                      CSharpCommentRegex4;
 
         protected Regex CSharpKeywordRegex;
         protected Regex CSharpNumberRegex;
@@ -615,6 +617,9 @@ namespace FastColoredTextBoxNS
             CSharpCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
             CSharpCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
                                             RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+            CSharpCommentRegex4 = new Regex(@"(REM)(.+)",
+                                            RegexOptions.Singleline | RegexOptions.Singleline | RegexCompiledOption);
+
             CSharpNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
                                           RegexCompiledOption);
             CSharpAttributeRegex = new Regex(@"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline | RegexCompiledOption);
@@ -637,6 +642,7 @@ namespace FastColoredTextBoxNS
                     ClassNameStyle = BoldStyle;
                     KeywordStyle = BlueStyle;
                     CommentTagStyle = GrayStyle;
+                    VariableStyle = MaroonStyle;
                     break;
                 case Language.VB:
                     StringStyle = BrownStyle;
@@ -726,6 +732,7 @@ namespace FastColoredTextBoxNS
             range.SetStyle(CommentStyle, CSharpCommentRegex1);
             range.SetStyle(CommentStyle, CSharpCommentRegex2);
             range.SetStyle(CommentStyle, CSharpCommentRegex3);
+            range.SetStyle(CommentStyle, CSharpCommentRegex4);
             //number highlighting
             range.SetStyle(NumberStyle, CSharpNumberRegex);
             //attribute highlighting

@@ -722,7 +722,7 @@
                             string output = Regex.Match(tokentext, @"\d+").Value;
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                                                                               //Prepare token identifier to encode: Token + Index + Type
-                            EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, "Identifier");
+                            EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, tok.Terminal.Name);
                             CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
                             CPIdentifier.Index = (short)CtrlPointIndex;
                             CPIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
