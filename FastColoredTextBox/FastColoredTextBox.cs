@@ -609,6 +609,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Teal")]
         [Description("Color of line numbers.")]
+        [Category("Color")]
         public Color LineNumberColor
         {
             get { return lineNumberColor; }
@@ -640,6 +641,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof(Color), "WhiteSmoke")]
         [Description("Background color of indent area")]
+        [Category("Color")]
         public Color IndentBackColor
         {
             get { return indentBackColor; }
@@ -655,6 +657,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Transparent")]
         [Description("Background color of padding area")]
+        [Category("Color")]
         public Color PaddingBackColor
         {
             get { return paddingBackColor; }
@@ -670,6 +673,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "100;180;180;180")]
         [Description("Color of disabled component")]
+        [Category("Color")]
         public Color DisabledColor { get; set; }
 
         /// <summary>
@@ -677,6 +681,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Black")]
         [Description("Color of caret.")]
+        [Category("Color")]
         public Color CaretColor { get; set; }
 
         /// <summary>
@@ -691,6 +696,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Silver")]
         [Description("Color of service lines (folding lines, borders of blocks etc.)")]
+        [Category("Color")]
         public Color ServiceLinesColor
         {
             get { return serviceLinesColor; }
@@ -768,6 +774,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Green")]
         [Description("Color of folding area indicator.")]
+        [Category("Color")]
         public Color FoldingIndicatorColor
         {
             get { return foldingIndicatorColor; }
@@ -1216,6 +1223,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "White")]
         [Description("Background color.")]
+        [Category("Color")]
         public override Color BackColor
         {
             get { return base.BackColor; }
