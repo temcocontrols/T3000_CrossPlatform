@@ -29,7 +29,7 @@
     <HelpFileVersion>1.0.0.1</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
-    <SyntaxFilters>C#, Visual Basic, Visual Basic Usage, Managed C++</SyntaxFilters>
+    <SyntaxFilters>C#, Visual Basic, Visual Basic Usage</SyntaxFilters>
     <SdkLinkTarget>Self</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
@@ -43,7 +43,7 @@
       <DocumentationSource sourceFile="..\FastColoredTextBoxNS\bin\Debug\FastColoredTextBoxNS.dll" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
-    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <BuildAssemblerVerbosity>OnlyErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
