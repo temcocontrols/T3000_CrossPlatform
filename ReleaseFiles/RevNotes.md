@@ -2,6 +2,13 @@
 The latest release notes, windows and linux release files are stored here
 
 
+## Updated: 20180103.2207
+### New FastColoredTextBoxNS.IronyFCBT control (editor with syntax highlighting based on irony grammar)
+#### Version 1.1 [COM VISIBLE And Registered for COM InterOP]
+\ReleaseFiles\FastColoredTextBox.IronyFCTB.rar is a simple compressed release for this control to be tested in T3000 C++
+plus documentation files (Basic API (word document) and Help File (.chm)
+
+
 ## Updated: 20171214.1452
 ### No more commands encoded, but a new version of FastColoredTextBoxNS.IronyFCBT control (editor with syntax highlighting based on irony grammar)
 #### Version 1.1 [COM VISIBLE And Registered for COM InterOP]
@@ -77,7 +84,7 @@ Original Bytes = { 36 0 1 10 0 9 156 0 3 156 0 3 157 232 3 0 0 107 156 1 3 157 2
 Code:
 10 INIT = AVG ( INIT + 1 , VAR2 * 2 , VAR3 - 3 ) 
 Tokens:
- LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· NumberÂ· PLUSÂ· IdentifierÂ· NumberÂ· MULÂ· IdentifierÂ· NumberÂ· MINUSÂ· AVGÂ· EOFÂ· EOFÂ·
+ LineNumber· ASSIGN· Identifier· Identifier· Number· PLUS· Identifier· Number· MUL· Identifier· Number· MINUS· AVG· EOF· EOF·
 Encoded Bytes = { 36 0 1 10 0 9 156 0 3 156 0 3 157 232 3 0 0 107 156 1 3 157 208 7 0 0 103 156 2 3 157 184 11 0 0 108 51 3 254 }
 Original Bytes = { 36 0 1 10 0 9 156 0 3 156 0 3 157 232 3 0 0 107 156 1 3 157 208 7 0 0 103 156 2 3 157 184 11 0 0 108 51 3 254 }
 ```
@@ -101,7 +108,7 @@ Functions encoded so far: ABS AVG INTERVAL INT LN LN-1 SQR STATUS MAX MIN
 Code:
 10 INIT = AVG ( INIT + 3 , 2 , 4 ) + INIT
 Tokens:
- LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· NumberÂ· PLUSÂ· NumberÂ· NumberÂ· AVGÂ· IdentifierÂ· PLUSÂ· EOFÂ· EOFÂ·
+ LineNumber· ASSIGN· Identifier· Identifier· Number· PLUS· Number· Number· AVG· Identifier· PLUS· EOF· EOF·
 Encoded Bytes = { 32 0 1 10 0 9 156 0 3 156 0 3 157 184 11 0 0 107 157 208 7 0 0 157 160 15 0 0 51 3 156 0 3 107 254 }
 
 ---------------------DEBUG STRINGS-----------------------
@@ -109,7 +116,7 @@ Encoded Bytes = { 32 0 1 10 0 9 156 0 3 156 0 3 157 184 11 0 0 107 157 208 7 0 0
 Code:
 10 INIT = AVG ( ABS(INIT) + 3 , 2 , 4 ) + INIT
 Tokens:
- LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· ABSÂ· NumberÂ· PLUSÂ· NumberÂ· NumberÂ· AVGÂ· IdentifierÂ· PLUSÂ· EOFÂ· EOFÂ·
+ LineNumber· ASSIGN· Identifier· Identifier· ABS· Number· PLUS· Number· Number· AVG· Identifier· PLUS· EOF· EOF·
 Encoded Bytes = { 33 0 1 10 0 9 156 0 3 156 0 3 50 157 184 11 0 0 107 157 208 7 0 0 157 160 15 0 0 51 3 156 0 3 107 254 }
 ```
 
@@ -129,7 +136,7 @@ Working on Issue #2:
 Code:
 10 INIT = INIT + PMPSPEED * 10 - INIT / 20
 Tokens:
- LineNumberÂ· ASSIGNÂ· IdentifierÂ· IdentifierÂ· IdentifierÂ· NumberÂ· MULÂ· PLUSÂ· IdentifierÂ· NumberÂ· DIVÂ· MINUSÂ· EOFÂ·
+ LineNumber· ASSIGN· Identifier· Identifier· Identifier· Number· MUL· PLUS· Identifier· Number· DIV· MINUS· EOF·
 Bytes = {30 0 1 10 0 9 156 0 3 156 0 3 156 1 3 157 16 39 0 0 103 107 156 0 3 157 32 78 0 0 104 108 254 }
 ```
 
