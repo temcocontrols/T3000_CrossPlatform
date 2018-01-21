@@ -37,6 +37,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ControlPointWrappers.cs" />
     <Compile Include="Types\Enums\CODEC_Enums.cs" />
     <Compile Include="Types\Enums\TcpType.cs" />
     <Compile Include="Types\Enums\Periodicity.cs" />

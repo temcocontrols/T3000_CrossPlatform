@@ -1,14 +1,14 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
+    using PRGReaderLibrary.Extensions;
     using PRGReaderLibrary.Types.Enums.Codecs;
     using PRGReaderLibrary.Utilities;
-    using ProgramEditor.Extensions;
     using Properties;
     using System;
     using System.Collections.Generic;
     using System.Drawing;
-    using System.Text;
+
     using System.Windows.Forms;
 
     public partial class ProgramsForm : Form
@@ -208,32 +208,17 @@
                 form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
 
                 Console.WriteLine("--------------ORIGINAL CODE-------------------");
-                PRGReaderLibrary.Utilities.Encoder.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
+                Encoder.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
 
-                string ProgramText = PRGReaderLibrary.Utilities.Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);
+                Decoder.SetControlPoints(Prg);
+                string ProgramText = Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);
 
                 Console.WriteLine("--------------NEW PROGRAM TEXT-------------------");
                 Console.WriteLine(ProgramText);
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
-
-
-                #region Create local copy of identifiers from control points
-                foreach(var vars in Prg.Variables) 
-                    form.Identifiers.Add(vars.Label);
-                foreach (var ins in Prg.Inputs)
-                    form.Identifiers.Add(ins.Label,IdentifierTypes.INS);
-                foreach (var outs in Prg.Outputs)
-                    form.Identifiers.Add(outs.Label, IdentifierTypes.OUTS);
-                foreach (var prgs in Prg.Programs)
-                    form.Identifiers.Add(prgs.Label, IdentifierTypes.PRGS);
-                foreach (var schs in Prg.Schedules)
-                    form.Identifiers.Add(schs.Label, IdentifierTypes.SCHS);
-                foreach (var hols in Prg.Holidays)
-                    form.Identifiers.Add(hols.Label, IdentifierTypes.HOLS);
-
-                #endregion
-
-
+                //create a local copy of all identifiers
+                form.Identifiers = new ControlPoints(Prg);
+                
                 //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
                 form.MdiParent = this.MdiParent ;
@@ -259,9 +244,9 @@
             
 
             //Inician las pruebas de codificación
-            byte[] ByteEncoded = PRGReaderLibrary.Utilities.Encoder.EncodeBytes(e.Tokens);
+            byte[] ByteEncoded = Encoder.EncodeBytes(e.Tokens);
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            PRGReaderLibrary.Utilities.Encoder.ConsolePrintBytes(ByteEncoded, "Encoded");
+            Encoder.ConsolePrintBytes(ByteEncoded, "Encoded");
             MessageBox.Show($"Resource compiled succceded{System.Environment.NewLine}Total size 2000 bytes{System.Environment.NewLine}Already used {PSize} bytes.", "T3000");
 
            // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");

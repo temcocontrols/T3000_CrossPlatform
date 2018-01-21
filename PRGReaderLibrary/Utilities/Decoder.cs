@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PRGReaderLibrary.Types.Enums.Codecs;
+using PRGReaderLibrary.Extensions;
 
 namespace PRGReaderLibrary.Utilities
 {
@@ -12,11 +13,27 @@ namespace PRGReaderLibrary.Utilities
     /// </summary>
     public class Decoder
     {
+
+        /// <summary>
+        /// Required copy of Control Points Labels just for semantic validations
+        /// </summary>
+        static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+
+        /// <summary>
+        /// Set a local copy of all identifiers in prg
+        /// </summary>
+        /// <param name="prg">Program prg</param>
+        static public void  SetControlPoints(Prg prg)
+        {
+            Identifiers = new ControlPoints(prg);
+        }
+
+
         /// <summary>
         /// Decode a ProgramCode Into Plain Text
         /// </summary>
         /// <param name="PCode">Byte array (encoded program)</param>
-        public static string DecodeBytes(byte[] PCode)
+        static public string DecodeBytes(byte[] PCode)
         {
             byte[] prgsize = new byte[2];
             string result = "";
@@ -79,7 +96,37 @@ namespace PRGReaderLibrary.Utilities
 
         private static string GetAssigment(byte[] source,ref int offset)
         {
-            return "ASSIGMENT";
+            string result = "Assigment!?";
+            
+            //TODO: Will need fx to get identifier labels and Postfix to Infix decoder.
+
+            return result;
         }
+
+        private static string GetIdentifierLabel(byte[] source, ref int offset)
+        {
+            string result = "";
+            //get the target identifier
+            int tokentype = source[offset];
+            int index = source[offset + 1];
+            int tokenvalue = source[offset + 2];
+
+            offset += 3;
+
+            switch (tokentype)
+            {
+                case 156:
+                    //TODO: Find the index and return the identifier label
+                    break;
+                default:
+                    break;
+            }
+
+
+            return null;
+        }
+
+
+
     }
 }

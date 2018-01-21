@@ -3,13 +3,12 @@
     using FastColoredTextBoxNS;
     using Irony;
     using Irony.Parsing;
+    using PRGReaderLibrary.Extensions;
     using PRGReaderLibrary.Types.Enums.Codecs;
     using PRGReaderLibrary.Utilities;
-    using ProgramEditor.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Drawing;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
@@ -1399,16 +1398,7 @@
             return Expr;
         }
 
-        //private void ProgramEditorForm_Load(object sender, EventArgs e)
-        //{
-        //    this.Left = 0;
-        //    this.Top = 0;
-        //    Rectangle recNew = new Rectangle();
-        //    recNew = this.ParentForm.ClientRectangle;
-        //    recNew.Height -= 4;
-        //    recNew.Width -= 4;
-        //    this.Size = recNew.Size;
-        //}
+
     }
     
 }

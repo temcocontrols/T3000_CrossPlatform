@@ -1,3 +1,4 @@
+using PRGReaderLibrary.Extensions;
 using PRGReaderLibrary.Types.Enums.Codecs;
 using System;
 using System.Collections.Generic;
@@ -5,11 +6,28 @@ using System.Windows.Forms;
 
 namespace PRGReaderLibrary.Utilities
 {
+
     /// <summary>
     /// Code Control Basic into Bytes
     /// </summary>
     public class Encoder
     {
+
+        /// <summary>
+        /// Required copy of Control Points Labels just for semantic validations
+        /// </summary>
+        static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+
+        /// <summary>
+        /// Set a local copy of all identifiers in prg
+        /// </summary>
+        /// <param name="prg">Program prg</param>
+        static public void SetControlPoints(Prg prg)
+        {
+            Identifiers = new ControlPoints(prg);
+        }
+
+
 
         /// <summary>
         /// Encode a ProgramCode Into Byte Array
