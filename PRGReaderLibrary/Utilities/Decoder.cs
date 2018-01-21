@@ -127,6 +127,8 @@ namespace PRGReaderLibrary.Utilities
             {
                 switch (source[offset])
                 {
+                    #region Identifiers
+                  
                     case (byte)PCODE_CONST.LOCAL_POINT_PRG:
                         EditorTokenInfo localpoint = new EditorTokenInfo("Identifier", "Identifier");
                         localpoint.Token = source[offset];
@@ -136,6 +138,11 @@ namespace PRGReaderLibrary.Utilities
                         localpoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
                         ExprTokens.Add(localpoint);
                         break;
+
+                    #endregion
+
+                    #region Numeric Constants
+
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
                         //TODO: Set a EditorTokenInfo for a numeric constant value
                         //.Text should be ready with decoded value
@@ -145,16 +152,81 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(constvalue);
                         break;
 
+                    #endregion
+
+                    #region Single Tokens
 
                     case (byte)TYPE_TOKEN.PLUS:
                         EditorTokenInfo plustoken = new EditorTokenInfo("+","PLUS");
+                        plustoken.Token = source[offset];
                         ExprTokens.Add(plustoken);
+                        offset++;
                         break;
                     case (byte)TYPE_TOKEN.MINUS:
                         EditorTokenInfo minustoken = new EditorTokenInfo("-", "MINUS");
+                        minustoken.Token = source[offset];
                         ExprTokens.Add(minustoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.DIV:
+                        EditorTokenInfo divtoken = new EditorTokenInfo("/", "DIV");
+                        divtoken.Token = source[offset];
+                        ExprTokens.Add(divtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.IDIV:
+                        EditorTokenInfo idivtoken = new EditorTokenInfo("\\", "IDIV");
+                        idivtoken.Token = source[offset];
+                        ExprTokens.Add(idivtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.MUL:
+                        EditorTokenInfo multoken = new EditorTokenInfo("*", "MUL");
+                        multoken.Token = source[offset];
+                        ExprTokens.Add(multoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.POW:
+                        EditorTokenInfo powtoken = new EditorTokenInfo("^", "POW");
+                        powtoken.Token = source[offset];
+                        ExprTokens.Add(powtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.MOD:
+                        EditorTokenInfo modtoken = new EditorTokenInfo("MOD", "MOD");
+                        modtoken.Token = source[offset];
+                        ExprTokens.Add(modtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.LT:
+                        EditorTokenInfo lttoken = new EditorTokenInfo("<", "LT");
+                        lttoken.Token = source[offset];
+                        ExprTokens.Add(lttoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.LE:
+                        EditorTokenInfo letoken = new EditorTokenInfo("<=", "LE");
+                        letoken.Token = source[offset];
+                        ExprTokens.Add(letoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.GT:
+                        EditorTokenInfo gttoken = new EditorTokenInfo(">", "GT");
+                        gttoken.Token = source[offset];
+                        ExprTokens.Add(gttoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.GE:
+                        EditorTokenInfo getoken = new EditorTokenInfo(">=", "GE");
+                        getoken.Token = source[offset];
+                        ExprTokens.Add(getoken);
+                        offset++;
                         break;
 
+
+                    #endregion
+
+                    #region End of expressions (MARKERS)
 
 
                     case (byte)LINE_TOKEN.EOF:
@@ -167,8 +239,10 @@ namespace PRGReaderLibrary.Utilities
                         isEOL = true;
                         //expression ends here, this byte-token should be processed outside this function
                         break;
+
+                    #endregion
                 }
-               
+
             }
             return null;
         }
