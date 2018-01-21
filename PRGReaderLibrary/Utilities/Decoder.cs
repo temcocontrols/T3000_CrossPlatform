@@ -125,20 +125,37 @@ namespace PRGReaderLibrary.Utilities
 
             while (!isEOL)
             {
-                switch(source[offset])
+                switch (source[offset])
                 {
                     case (byte)PCODE_CONST.LOCAL_POINT_PRG:
                         EditorTokenInfo localpoint = new EditorTokenInfo("Identifier", "Identifier");
-                        localpoint.Token = (byte)PCODE_CONST.LOCAL_POINT_PRG;
+                        localpoint.Token = source[offset];
                         localpoint.Index = source[offset + 1];
                         localpoint.Type = source[offset + 2];
-                        localpoint.Text = GetIdentifierLabel(source, ref offset);
+                        //text will be ready with identifier label
+                        localpoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
                         ExprTokens.Add(localpoint);
                         break;
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
                         //TODO: Set a EditorTokenInfo for a numeric constant value
                         //.Text should be ready with decoded value
+                        EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
+                        constvalue.Token = source[offset];
+                        constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
+                        ExprTokens.Add(constvalue);
                         break;
+
+
+                    case (byte)TYPE_TOKEN.PLUS:
+                        EditorTokenInfo plustoken = new EditorTokenInfo("+","PLUS");
+                        ExprTokens.Add(plustoken);
+                        break;
+                    case (byte)TYPE_TOKEN.MINUS:
+                        EditorTokenInfo minustoken = new EditorTokenInfo("-", "MINUS");
+                        ExprTokens.Add(minustoken);
+                        break;
+
+
 
                     case (byte)LINE_TOKEN.EOF:
                     case (byte)LINE_TOKEN.THEN:
@@ -154,6 +171,42 @@ namespace PRGReaderLibrary.Utilities
                
             }
             return null;
+        }
+
+        /// <summary>
+        /// Get a numeric constant value from sourcec
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">start</param>
+        /// <returns></returns>
+        private static string GetConstValue(byte[] source, ref int offset)
+        {
+            string result = "";
+            byte[] value = { 0, 0, 0, 0 };
+            Int64 intvalue = 0;
+
+            for (int i = 0; i < 4; i++)
+            {
+                value[i] = source[offset + i + 1];
+            }
+
+            intvalue = BitConverter.ToInt64(value, 0);
+            double dvalue = intvalue / 1000;
+            intvalue = Convert.ToInt64 (dvalue);
+
+            //check if a whole number
+            if(dvalue % 1 == 0)
+            {
+                result = intvalue.ToString();
+            }
+            else
+            {
+                result = dvalue.ToString();
+            }
+            
+         
+            offset += 5;
+            return result;
         }
 
         private static string GetIdentifierLabel(byte[] source, ref int offset)
