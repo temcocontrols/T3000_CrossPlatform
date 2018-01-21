@@ -222,6 +222,48 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(getoken);
                         offset++;
                         break;
+                    case (byte)TYPE_TOKEN.EQ:
+                        EditorTokenInfo eqtoken = new EditorTokenInfo("=", "EQ");
+                        eqtoken.Token = source[offset];
+                        ExprTokens.Add(eqtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.NE:
+                        EditorTokenInfo netoken = new EditorTokenInfo("<>", "NE");
+                        netoken.Token = source[offset];
+                        ExprTokens.Add(netoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.XOR:
+                        EditorTokenInfo xortoken = new EditorTokenInfo("XOR", "XOR");
+                        xortoken.Token = source[offset];
+                        ExprTokens.Add(xortoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.OR:
+                        EditorTokenInfo ortoken = new EditorTokenInfo("OR", "OR");
+                        ortoken.Token = source[offset];
+                        ExprTokens.Add(ortoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.AND:
+                        EditorTokenInfo andtoken = new EditorTokenInfo("AND", "AND");
+                        andtoken.Token = source[offset];
+                        ExprTokens.Add(andtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.NOT:
+                        EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
+                        nottoken.Token = source[offset];
+                        ExprTokens.Add(nottoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.NOT:
+                        EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
+                        nottoken.Token = source[offset];
+                        ExprTokens.Add(nottoken);
+                        offset++;
+                        break;
 
 
                     #endregion
