@@ -115,8 +115,9 @@ namespace PRGReaderLibrary.Utilities
 
             switch (tokentype)
             {
-                case 156:
+                case (int)PCODE_CONST.LOCAL_POINT_PRG:
                     //TODO: Find the index and return the identifier label
+                    
                     break;
                 default:
                     break;

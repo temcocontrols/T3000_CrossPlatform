@@ -13,6 +13,7 @@
 using Irony.Parsing;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -124,7 +125,7 @@ namespace FastColoredTextBoxNS
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); //oops...
+                Debug.WriteLine(ex.Message); //oops...
                 return;
             }
 

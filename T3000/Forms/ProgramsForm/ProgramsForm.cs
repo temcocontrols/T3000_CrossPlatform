@@ -7,6 +7,7 @@
     using Properties;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Drawing;
 
     using System.Windows.Forms;
@@ -207,14 +208,14 @@
                 var form = new ProgramEditorForm();
                 form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
 
-                Console.WriteLine("--------------ORIGINAL CODE-------------------");
+                Debug.WriteLine("--------------ORIGINAL CODE-------------------");
                 Encoder.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
 
                 Decoder.SetControlPoints(Prg);
                 string ProgramText = Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);
 
-                Console.WriteLine("--------------NEW PROGRAM TEXT-------------------");
-                Console.WriteLine(ProgramText);
+                Debug.WriteLine("--------------NEW PROGRAM TEXT-------------------");
+                Debug.WriteLine(ProgramText);
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
                 //create a local copy of all identifiers
                 form.Identifiers = new ControlPoints(Prg);
@@ -235,12 +236,12 @@
 
         private void Form_Send(object sender, SendEventArgs e)
         {
-            
-            Console.WriteLine();
-            Console.WriteLine("---------------------DEBUG STRINGS-----------------------");
-            Console.WriteLine();
-            Console.WriteLine($"Code:{Environment.NewLine}{e.Code}");
-            Console.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
+
+            Debug.WriteLine("");
+            Debug.WriteLine("---------------------DEBUG STRINGS-----------------------");
+            Debug.WriteLine("");
+            Debug.WriteLine($"Code:{Environment.NewLine}{e.Code}");
+            Debug.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
             
 
             //Inician las pruebas de codificación

@@ -2,6 +2,7 @@ using PRGReaderLibrary.Extensions;
 using PRGReaderLibrary.Types.Enums.Codecs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace PRGReaderLibrary.Utilities
@@ -320,7 +321,7 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
                     default:
-                        Console.WriteLine($"Token ignored and not encoded: {token.ToString()}");
+                        Debug.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
 
                 }
@@ -376,14 +377,15 @@ namespace PRGReaderLibrary.Utilities
         public static void  ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
         {
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            Console.Write(HeaderString);
-            Console.Write(" Bytes = { ");
+            Debug.Write(HeaderString);
+            //Console.Write(HeaderString); //Works different in 2015 vs 2017
+            Debug.Write(" Bytes = { ");
+            //Console.Write(" Bytes = { ");
             for (var i = 0; i < PSize + 3; i++)
             {
-                Console.Write($"{ByteEncoded[i]} ");
-
+                Debug.Write($"{ByteEncoded[i]} ");
             }
-            Console.WriteLine("}");
+            Debug.WriteLine("}");
         }
 
     }

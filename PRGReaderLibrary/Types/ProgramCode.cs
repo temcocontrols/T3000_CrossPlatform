@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Collections.Generic;
     using PRGReaderLibrary.Types.Enums.Codecs;
+    using System.Diagnostics;
 
-    
     public static class Enum<T>
     {
         public static bool IsDefined(T value)
@@ -408,7 +408,7 @@
                     return $"{Data.GetString()}";
 
                 default:
-                    Console.WriteLine(Token);
+                    Debug.WriteLine(Token);
                     return string.Empty;
             }
         }
@@ -473,8 +473,8 @@
         {
             if (isTrace)
             {
-                Console.WriteLine("----------------------------");
-                Console.WriteLine(DebugUtilities.CompareBytes(bytes, bytes,
+                Debug.WriteLine("----------------------------");
+                Debug.WriteLine(DebugUtilities.CompareBytes(bytes, bytes,
                     onlyDif: false, toText: false, offset: offset));
             }
 
@@ -488,7 +488,7 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsVariable {offset}");
+                        Debug.WriteLine($"IsVariable {offset}");
                     }
                     var expression = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     expressions.Add(expression);
@@ -497,7 +497,7 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsLine {offset}");
+                        Debug.WriteLine($"IsLine {offset}");
                     }
                     var token = (LINE_TOKEN)bytes.ToByte(ref offset);
                     var lineExpressions = GetExpressions(bytes, prg, ref offset, version, token, isTrace);
@@ -512,7 +512,7 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsFunction {offset}");
+                        Debug.WriteLine($"IsFunction {offset}");
                     }
                     var token = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
                     if ((byte)token == (byte)LINE_TOKEN.STOP)
@@ -524,7 +524,7 @@
                     }
                     else if (expressions.Count == 0)
                     {
-                        Console.WriteLine("expressions.Count = 0");
+                        Debug.WriteLine("expressions.Count = 0");
                         var temp = 0;
                         offset -= 1;
                         expressions.Add(new VariableExpression(bytes, prg, ref offset, FileVersion));
@@ -549,7 +549,7 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsExpression {offset}");
+                        Debug.WriteLine($"IsExpression {offset}");
                     }
                     var type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     if (ProgramCodeUtilities.IsBinaryExpression(type))
@@ -577,13 +577,13 @@
 
             if (isTrace)
             {
-                Console.WriteLine($"Result: {expressions.Count} expressions. Line token: {lineToken}");
+                Debug.WriteLine($"Result: {expressions.Count} expressions. Line token: {lineToken}");
                 for (var i = 0; i < expressions.Count; ++i)
                 {
-                    Console.WriteLine($"Expression {i + 1}: {expressions[i].ToString()}");
+                    Debug.WriteLine($"Expression {i + 1}: {expressions[i].ToString()}");
                 }
-                Console.WriteLine("----------------------------");
-                Console.WriteLine("");
+                Debug.WriteLine("----------------------------");
+                Debug.WriteLine("");
             }
 
             return expressions;
@@ -596,7 +596,7 @@
 
             if (offset != bytes.Length || expressions.Count != 1)
             {
-                Console.WriteLine($@"Bad part:
+                Debug.WriteLine($@"Bad part:
 bytes: {DebugUtilities.CompareBytes(bytes, bytes, onlyDif: false, toText: false)}
 offset: {offset}
 bytes.Length: {bytes.Length}
@@ -731,7 +731,7 @@ expressions: {expressions.Count}
             byte[] result = intBytes;
 
 
-            Console.WriteLine($"Converting {Number} to bytes[] : {result}");
+            Debug.WriteLine($"Converting {Number} to bytes[] : {result}");
             returnvalue.AddRange(result);
 
 
@@ -920,7 +920,7 @@ expressions: {expressions.Count}
             }
             catch (Exception exception)
             {
-                Console.WriteLine($@"Exception on line: 
+                Debug.WriteLine($@"Exception on line: 
 Type: {Type}
 Number: {Number}
 Token: {Token}

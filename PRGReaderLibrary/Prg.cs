@@ -3,8 +3,7 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-
-
+    using System.Diagnostics;
 
     public class Prg : Version
     {
@@ -358,7 +357,7 @@
                 pcode_offset += ProgramCode.GetSize(FileVersion);
                 ProgramCodeBytes = bytes.ToBytes(pcode_offset, ProgramCode.GetSize(FileVersion));
                 ProgramCodes[i] = new ProgramCode(ProgramCodeBytes, this, 0, FileVersion);
-                Console.WriteLine($"Leído ProgramCode[{i}]");
+                Debug.WriteLine($"Leído ProgramCode[{i}]");
             }
 
 

@@ -51,9 +51,11 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         CONST_VALUE_PRG = 0x09D,
         REMOTE_POINT_PRG = 0x09E,
 
-        INDEX_OUT_OF_RANGE = 2
+        INDEX_OUT_OF_RANGE = 2,
 
-
+        OUTPOINTTYPE= 1,
+        INPOINTTYPE,
+        VARPOINTTYPE
         
     }
 

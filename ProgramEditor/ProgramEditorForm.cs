@@ -722,7 +722,22 @@
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                                                                               //Prepare token identifier to encode: Token + Index + Type
                             EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, tok.Terminal.Name);
-                            CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                            switch (tok.Terminal.Name)
+                            {
+                                case "VARS":
+                                    CPIdentifier.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                    break;
+                                case "INS":
+                                    CPIdentifier.Type = (short)PCODE_CONST.INPOINTTYPE;
+                                    break;
+                                case "OUTS":
+                                    CPIdentifier.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                    break;
+                                default:
+                                    CPIdentifier.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
+                                    break;
+                            }
+                            
                             CPIdentifier.Index = (short)CtrlPointIndex;
                             CPIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
                             Tokens.Add(CPIdentifier);
@@ -768,9 +783,9 @@
                             {
                                 //Prepare token identifier to encode: Token + Index + Type
                                 EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
-                                NewIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                                NewIdentifier.Type = (short)TokenType;
                                 NewIdentifier.Index = (short)PointIndex;
-                                NewIdentifier.Token = (short)TokenType;
+                                NewIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
                                 Tokens.Add(NewIdentifier);
                             }
                             break;
@@ -1082,16 +1097,18 @@
 
                 //Test Variables
                 Index = Identifiers.Variables.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+                if (!Index.Equals(-1)) return PCODE_CONST.VARPOINTTYPE;
 
                 //Test Inputs
                 Index = Identifiers.Inputs.FindIndex(v => v.Label == Ident);
-                if(!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+                if(!Index.Equals(-1)) return PCODE_CONST.INPOINTTYPE;
 
                 //Test Outputs
                 Index = Identifiers.Outputs.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1))  return PCODE_CONST.LOCAL_POINT_PRG;
+                if (!Index.Equals(-1))  return PCODE_CONST.OUTPOINTTYPE;
 
+
+                //TODO: SET CORRECT TOKENTYPE FOR PRG, SCH AND HOL.
                 //Test Programs
                 Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
@@ -1198,8 +1215,6 @@
                                 Expr.Add(Oper.Pop());
                             }
                         }
-
-                       
                         break;
 
                     #region END MARKERS FOR EXPRESSION
@@ -1222,7 +1237,7 @@
                     #endregion
 
                     #region Identifier
-                    //Acá faltan varios tipos de identificadores, agregarlos posteriormente
+                    //TODO: Acá faltan varios tipos de identificadores, agregarlos posteriormente
                     case "VARS":
                     case "INS":
                     case "OUTS":
@@ -1231,7 +1246,22 @@
                         int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                                                                           //Prepare token identifier to encode: Token + Index + Type
                         EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, "Identifier");
-                        CPIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                        switch (terminalname)
+                        {
+                            case "VARS":
+                                CPIdentifier.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                break;
+                            case "INS":
+                                CPIdentifier.Type = (short)PCODE_CONST.INPOINTTYPE;
+                                break;
+                            case "OUTS":
+                                CPIdentifier.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                break;
+                            default:
+                                CPIdentifier.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
+                                break;
+                        }
+                        
                         CPIdentifier.Index = (short)CtrlPointIndex;
                         CPIdentifier.Token = (short) PCODE_CONST.LOCAL_POINT_PRG;
                         Expr.Add(CPIdentifier);
@@ -1258,9 +1288,9 @@
                         {
                             //Prepare token identifier to encode: Token + Index + Type
                             EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
-                            NewIdentifier.Type = (short)TYPE_TOKEN.KEYWORD;
+                            NewIdentifier.Type = (short)TokenType;
                             NewIdentifier.Index = (short)PointIndex;
-                            NewIdentifier.Token = (short)TokenType;
+                            NewIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
                             Expr.Add(NewIdentifier);
                         }
                         break;
