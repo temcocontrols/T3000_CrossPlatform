@@ -766,7 +766,7 @@
                             //Locate Identifier and Identify Token associated ControlPoint.
                             //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
                             int PointIndex = 0;
-                            var TokenType = GetTypeIdentifier(tokentext, out PointIndex);
+                            var TokenType = Encoder.GetTypeIdentifier(tokentext, out PointIndex);
                             if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
                             {
                                 //There is a semantic error here
@@ -1076,65 +1076,7 @@
 
         }
 
-
-        /// <summary>
-        /// Returns PCODE_CONST value and Index for the especified Identifier
-        /// </summary>
-        /// <param name="Ident">Label of Point Identifier</param>
-        /// <param name="Index">Out Index of Point Identifier</param>
-        /// <returns>PCODE_CONST value and Index</returns>
-        public PCODE_CONST GetTypeIdentifier( string Ident, out int Index)
-        {
-           
-           
-            try
-            {
-                if (Identifiers == null) //Null object
-                {
-                    Index = -1;
-                    return PCODE_CONST.UNDEFINED_SYMBOL;
-                }
-
-                //Test Variables
-                Index = Identifiers.Variables.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.VARPOINTTYPE;
-
-                //Test Inputs
-                Index = Identifiers.Inputs.FindIndex(v => v.Label == Ident);
-                if(!Index.Equals(-1)) return PCODE_CONST.INPOINTTYPE;
-
-                //Test Outputs
-                Index = Identifiers.Outputs.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1))  return PCODE_CONST.OUTPOINTTYPE;
-
-
-                //TODO: SET CORRECT TOKENTYPE FOR PRG, SCH AND HOL.
-                //Test Programs
-                Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
-
-                //Test Schedules
-                Index = Identifiers.Schedules.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
-
-
-                //Test Holidays
-                Index = Identifiers.Holidays.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
-
-              
-                    
-            }
-            catch
-            {
-                Index = -1;
-                return PCODE_CONST.UNDEFINED_SYMBOL;
-            }
-
-            Index = -2;
-            return PCODE_CONST.UNDEFINED_SYMBOL;
-            
-        }
+        
 
  
         /// <summary>
@@ -1143,7 +1085,7 @@
         /// <param name="Index">Start Index</param>
         /// <param name="Cancel">Cancel processing because of at least one semantic error</param>
         /// <returns>RPN Expression, ready to be encoded</returns>
-        List<EditorTokenInfo> GetExpression(ref int Index, ref bool Cancel)
+        public List<EditorTokenInfo> GetExpression(ref int Index, ref bool Cancel)
         {
             // _parseTree.Tokens.Count
             List<EditorTokenInfo> Expr = new List<EditorTokenInfo>();
@@ -1271,7 +1213,7 @@
                         //Locate Identifier and Identify Token associated ControlPoint.
                         //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
                         int PointIndex = 0;
-                        var TokenType = GetTypeIdentifier(tokentext, out PointIndex);
+                        var TokenType = Encoder.GetTypeIdentifier(tokentext, out PointIndex);
                         if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
                         {
                             //There is a semantic error here

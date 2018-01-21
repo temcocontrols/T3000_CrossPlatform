@@ -47,8 +47,6 @@ namespace PRGReaderLibrary.Utilities
 
             int offset = 1; //offset is a count of total encoded bytes
 
-
-
             int tokenIndex = 0;
             bool isFirstToken = true;
 
@@ -321,7 +319,7 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
                     default:
-                        Debug.WriteLine($"Token ignored and not encoded: {token.ToString()}");
+                        Trace.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
 
                 }
@@ -378,7 +376,7 @@ namespace PRGReaderLibrary.Utilities
         {
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
             Debug.Write(HeaderString);
-            //Console.Write(HeaderString); //Works different in 2015 vs 2017
+            //Console.Write(HeaderString); // different in 2015 vs 2017
             Debug.Write(" Bytes = { ");
             //Console.Write(" Bytes = { ");
             for (var i = 0; i < PSize + 3; i++)
@@ -386,6 +384,61 @@ namespace PRGReaderLibrary.Utilities
                 Debug.Write($"{ByteEncoded[i]} ");
             }
             Debug.WriteLine("}");
+        }
+
+        /// <summary>
+        /// Returns PCODE_CONST value and Index for the especified Identifier
+        /// </summary>
+        /// <param name="Ident">Label of Point Identifier</param>
+        /// <param name="Index">Out Index of Point Identifier</param>
+        /// <returns>PCODE_CONST value and Index</returns>
+        static public PCODE_CONST GetTypeIdentifier(string Ident, out int Index)
+        {
+            try
+            {
+                if (Identifiers == null) //Null object
+                {
+                    Index = -1;
+                    return PCODE_CONST.UNDEFINED_SYMBOL;
+                }
+
+                //Test Variables
+                Index = Identifiers.Variables.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.VARPOINTTYPE;
+
+                //Test Inputs
+                Index = Identifiers.Inputs.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.INPOINTTYPE;
+
+                //Test Outputs
+                Index = Identifiers.Outputs.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.OUTPOINTTYPE;
+
+
+                //TODO: SET CORRECT TOKENTYPE FOR PRG, SCH AND HOL.
+                //Test Programs
+                Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+
+                //Test Schedules
+                Index = Identifiers.Schedules.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+
+
+                //Test Holidays
+                Index = Identifiers.Holidays.FindIndex(v => v.Label == Ident);
+                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
+
+            }
+            catch
+            {
+                Index = -1;
+                return PCODE_CONST.UNDEFINED_SYMBOL;
+            }
+
+            Index = -2;
+            return PCODE_CONST.UNDEFINED_SYMBOL;
+
         }
 
     }

@@ -217,8 +217,8 @@
                 Debug.WriteLine("--------------NEW PROGRAM TEXT-------------------");
                 Debug.WriteLine(ProgramText);
                 form.SetCode(Codes[Index_EditProgramCode].ToString());
-                //create a local copy of all identifiers
-                form.Identifiers = new ControlPoints(Prg);
+                //////create a local copy of all identifiers
+                ////form.Identifiers = new ControlPoints(Prg);
                 
                 //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
@@ -242,9 +242,11 @@
             Debug.WriteLine("");
             Debug.WriteLine($"Code:{Environment.NewLine}{e.Code}");
             Debug.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
-            
 
-            //Inician las pruebas de codificación
+
+            //Init a copy of controlpoints
+            Encoder.SetControlPoints(Prg);
+            //ENCODE THE PROGRAM
             byte[] ByteEncoded = Encoder.EncodeBytes(e.Tokens);
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
             Encoder.ConsolePrintBytes(ByteEncoded, "Encoded");
