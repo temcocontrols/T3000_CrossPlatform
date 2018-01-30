@@ -22,7 +22,7 @@ namespace PRGReaderLibrary.Utilities
         /// Set a local copy of all identifiers in prg
         /// </summary>
         /// <param name="prg">Program prg</param>
-        static public void  SetControlPoints(Prg prg)
+        static public void SetControlPoints(Prg prg)
         {
             Identifiers = new ControlPoints(prg);
         }
@@ -41,8 +41,9 @@ namespace PRGReaderLibrary.Utilities
 
             int offset; //offset after count of total encoded bytes
             bool isFirstToken = true;
+            offset = 2;
 
-            for (offset=2; offset <= ProgLenght;offset++)
+            while (offset <= ProgLenght)
             {
                 var tokenvalue = (byte)PCode[offset];
                 switch (tokenvalue)
@@ -50,24 +51,25 @@ namespace PRGReaderLibrary.Utilities
                     case (byte)TYPE_TOKEN.NUMBER:
                         if (isFirstToken)
                         {
-                        offset++;
-                        short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
-                        result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
+                            offset++;
+                            short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
+                            result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
                         }
 
                         isFirstToken = false;
                         break;
 
                     case (byte)LINE_TOKEN.REM:
-                        result += " " + GetComment(PCode,ref offset) + System.Environment.NewLine;
+
+                        result += " " + GetComment(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.ASSIGN:
-                        result += " " + GetAssigment(PCode,ref offset) + System.Environment.NewLine;
+                        result += " " + GetAssigment(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
-                    
+
                     default:
                         break;
                 }
@@ -76,12 +78,18 @@ namespace PRGReaderLibrary.Utilities
             return result;
         }
 
+        /// <summary>
+        /// Get comments, including REM token, autoincrements offset
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns></returns>
         private static string GetComment(byte[] source, ref int offset)
         {
             string result = "REM ";
             offset++;
             short count = source[offset++];
-            
+
             List<byte> comment = new List<byte>();
             comment = source.ToList().GetRange(offset, count);
             //Array.Copy(source, offset, comment, 0, count);
@@ -93,7 +101,13 @@ namespace PRGReaderLibrary.Utilities
 
         }
 
-        private static string GetAssigment(byte[] source,ref int offset)
+        /// <summary>
+        /// Get assigment
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns></returns>
+        private static string GetAssigment(byte[] source, ref int offset)
         {
             string result = "↑";
 
@@ -105,7 +119,7 @@ namespace PRGReaderLibrary.Utilities
 
             //Get right side of assigment (expression)
             result += GetExpression(source, ref offset);
-            
+
             return result;
         }
 
@@ -121,6 +135,8 @@ namespace PRGReaderLibrary.Utilities
             List<EditorTokenInfo> ExprTokens = new List<EditorTokenInfo>();
 
             bool isEOL = false;
+
+            EditorTokenInfo fxtoken;
 
             string Result = "";
 
@@ -142,7 +158,7 @@ namespace PRGReaderLibrary.Utilities
                 switch (source[offset])
                 {
                     #region Identifiers
-                  
+
                     case (byte)PCODE_CONST.LOCAL_POINT_PRG:
                         EditorTokenInfo localpoint = new EditorTokenInfo("Identifier", "Identifier");
                         localpoint.Token = source[offset];
@@ -171,7 +187,7 @@ namespace PRGReaderLibrary.Utilities
                     #region Single Tokens
 
                     case (byte)TYPE_TOKEN.PLUS:
-                        EditorTokenInfo plustoken = new EditorTokenInfo("+","PLUS");
+                        EditorTokenInfo plustoken = new EditorTokenInfo("+", "PLUS");
                         plustoken.Token = source[offset];
                         plustoken.Precedence = 70;
                         ExprTokens.Add(plustoken);
@@ -289,17 +305,26 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(nottoken);
                         offset++;
                         break;
-                    //case (byte)TYPE_TOKEN.NOT:
-                    //    EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
-                    //    nottoken.Token = source[offset];
-                    //    ExprTokens.Add(nottoken);
-                    //    offset++;
-                    //    break;
+
 
 
                     #endregion
 
                     //TODO: Functions
+
+                    case (byte)FUNCTION_TOKEN.ABS:
+                        fxtoken = new EditorTokenInfo("ABS", "ABS");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+
+                    #region Functions
+
+
+
+                    #endregion
 
                     #region End of expressions (MARKERS)
 
@@ -315,7 +340,7 @@ namespace PRGReaderLibrary.Utilities
                         //expression ends here, this byte-token should be processed outside this function
                         break;
 
-                    #endregion
+                        #endregion
                 }
 
             }// after this, we should have a list of all tokens in the expression.
@@ -323,24 +348,26 @@ namespace PRGReaderLibrary.Utilities
             Stack<BinaryTree<EditorTokenInfo>> BTStack =
                  new Stack<BinaryTree<EditorTokenInfo>>();
 
-         
+
 
             //parse using BTreeStack every token in RPN list of preprocessed tokens
             foreach (EditorTokenInfo token in ExprTokens)
             {
-                if(token.Precedence < 50) 
+                if (token.Precedence < 50)
                     //It's an operand, just push to stack
                     BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
-            
+
                 else
                 {
                     //it's and operator, push two operands, create a new tree and push to stack again.
                     BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
-                    operatornode.Right = BTStack.Pop();
+                    if (BTStack.Count > 1) //avoid unary operators and functions exception
+                        operatornode.Right = BTStack.Pop();
+                    
                     operatornode.Left = BTStack.Pop();
                     BTStack.Push(operatornode);
 
-                    //TODO: some exceptions may be found here for unary operators.
+                    //TODO: some exceptions may be found here for unary operators and functions
 
                 }
 
@@ -349,7 +376,8 @@ namespace PRGReaderLibrary.Utilities
 
             BinaryTree<EditorTokenInfo> root = BTStack.Peek();
             //now we end the the top most node on stack as a complete tree of RPN
-             Result = TraverseInOrder(root);
+            string rootprint = root.ToString();
+            Result = TraverseInOrder(root);
 
             return Result;
         }
@@ -366,21 +394,33 @@ namespace PRGReaderLibrary.Utilities
             string Result = "";
 
             EditorTokenInfo token = rootnode.Data;
-            if(token.Precedence < 50)
+            if (token.Precedence < 50)
             {
                 //its an operand, return the text
                 return token.Text;
             }
             else
             {
-                //its a operator, visit left, concat with root and right.
-                Result = TraverseInOrder(rootnode.Left,token.Precedence ) + " " + token.Text + " " + TraverseInOrder(rootnode.Right,token.Precedence);
-                //take account of prior precedence vs current node precedence, and add parenthesis
-                if(token.Precedence < priorPrecedence)
+                //its a operator, visit left, concatenate with root and right.
+                if (rootnode.Right == null)
                 {
-                    Result += "(" + Result + ")";
+                    if (token.Precedence == 200) //Its a function, add parenthesis here!!
+                        Result = token.Text +  "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
+                    else //just a unary operator!?
+                        Result = token.Text + " "  + TraverseInOrder(rootnode.Left, token.Precedence);
                 }
-                
+                else //left and right are not null
+                {
+                    Result = TraverseInOrder(rootnode.Left, token.Precedence) + " " + token.Text + " " + TraverseInOrder(rootnode.Right, token.Precedence);
+                }
+
+
+                //take account of prior precedence vs current node precedence, and add parenthesis
+                if (token.Precedence < priorPrecedence && priorPrecedence != 200)
+                {
+                    Result = "(" + Result + ")";
+                }
+
             }
 
             return Result;
@@ -399,19 +439,19 @@ namespace PRGReaderLibrary.Utilities
         {
             string result = "";
             byte[] value = { 0, 0, 0, 0 };
-            Int64 intvalue = 0;
+            Int32 intvalue = 0;
 
             for (int i = 0; i < 4; i++)
             {
                 value[i] = source[offset + i + 1];
             }
 
-            intvalue = BitConverter.ToInt64(value, 0);
+            intvalue = BitConverter.ToInt32(value, 0);
             double dvalue = intvalue / 1000;
-            intvalue = Convert.ToInt64 (dvalue);
+            intvalue = Convert.ToInt32(dvalue);
 
             //check if a whole number
-            if(dvalue % 1 == 0)
+            if (dvalue % 1 == 0)
             {
                 result = intvalue.ToString();
             }
@@ -419,8 +459,8 @@ namespace PRGReaderLibrary.Utilities
             {
                 result = dvalue.ToString();
             }
-            
-         
+
+
             offset += 5;
             return result;
         }
