@@ -1,10 +1,9 @@
+using PRGReaderLibrary.Extensions;
+using PRGReaderLibrary.Types.Enums.Codecs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PRGReaderLibrary.Types.Enums.Codecs;
-using PRGReaderLibrary.Extensions;
+using NGenerics.DataStructures.Trees;
 
 namespace PRGReaderLibrary.Utilities
 {
@@ -123,6 +122,21 @@ namespace PRGReaderLibrary.Utilities
 
             bool isEOL = false;
 
+            string Result = "";
+
+            // 4. Operators precedence, same as in grammar
+            ////RegisterOperators(100, Associativity.Right, EXP);
+            ////RegisterOperators(90, MUL, DIV, IDIV);
+            ////RegisterOperators(80, MOD);
+            ////RegisterOperators(70, SUM, SUB);
+
+            ////RegisterOperators(60, LT, GT, LTE, GTE, EQ, NEQ);
+
+            ////RegisterOperators(50, Associativity.Right, NOT);
+            ////RegisterOperators(50, AND, OR, XOR);
+
+
+
             while (!isEOL)
             {
                 switch (source[offset])
@@ -159,114 +173,133 @@ namespace PRGReaderLibrary.Utilities
                     case (byte)TYPE_TOKEN.PLUS:
                         EditorTokenInfo plustoken = new EditorTokenInfo("+","PLUS");
                         plustoken.Token = source[offset];
+                        plustoken.Precedence = 70;
                         ExprTokens.Add(plustoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.MINUS:
                         EditorTokenInfo minustoken = new EditorTokenInfo("-", "MINUS");
                         minustoken.Token = source[offset];
+                        minustoken.Precedence = 70;
                         ExprTokens.Add(minustoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.DIV:
                         EditorTokenInfo divtoken = new EditorTokenInfo("/", "DIV");
                         divtoken.Token = source[offset];
+                        divtoken.Precedence = 90;
                         ExprTokens.Add(divtoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.IDIV:
                         EditorTokenInfo idivtoken = new EditorTokenInfo("\\", "IDIV");
                         idivtoken.Token = source[offset];
+                        idivtoken.Precedence = 90;
                         ExprTokens.Add(idivtoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.MUL:
                         EditorTokenInfo multoken = new EditorTokenInfo("*", "MUL");
                         multoken.Token = source[offset];
+                        multoken.Precedence = 90;
                         ExprTokens.Add(multoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.POW:
                         EditorTokenInfo powtoken = new EditorTokenInfo("^", "POW");
                         powtoken.Token = source[offset];
+                        powtoken.Precedence = 100;
                         ExprTokens.Add(powtoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.MOD:
                         EditorTokenInfo modtoken = new EditorTokenInfo("MOD", "MOD");
                         modtoken.Token = source[offset];
+                        modtoken.Precedence = 80;
                         ExprTokens.Add(modtoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.LT:
                         EditorTokenInfo lttoken = new EditorTokenInfo("<", "LT");
                         lttoken.Token = source[offset];
+                        lttoken.Precedence = 60;
                         ExprTokens.Add(lttoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.LE:
                         EditorTokenInfo letoken = new EditorTokenInfo("<=", "LE");
                         letoken.Token = source[offset];
+                        letoken.Precedence = 60;
                         ExprTokens.Add(letoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.GT:
                         EditorTokenInfo gttoken = new EditorTokenInfo(">", "GT");
                         gttoken.Token = source[offset];
+                        gttoken.Precedence = 60;
                         ExprTokens.Add(gttoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.GE:
                         EditorTokenInfo getoken = new EditorTokenInfo(">=", "GE");
                         getoken.Token = source[offset];
+                        getoken.Precedence = 60;
                         ExprTokens.Add(getoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.EQ:
                         EditorTokenInfo eqtoken = new EditorTokenInfo("=", "EQ");
                         eqtoken.Token = source[offset];
+                        eqtoken.Precedence = 60;
                         ExprTokens.Add(eqtoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.NE:
                         EditorTokenInfo netoken = new EditorTokenInfo("<>", "NE");
                         netoken.Token = source[offset];
+                        netoken.Precedence = 60;
                         ExprTokens.Add(netoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.XOR:
                         EditorTokenInfo xortoken = new EditorTokenInfo("XOR", "XOR");
                         xortoken.Token = source[offset];
+                        xortoken.Precedence = 50;
                         ExprTokens.Add(xortoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.OR:
                         EditorTokenInfo ortoken = new EditorTokenInfo("OR", "OR");
                         ortoken.Token = source[offset];
+                        ortoken.Precedence = 50;
                         ExprTokens.Add(ortoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.AND:
                         EditorTokenInfo andtoken = new EditorTokenInfo("AND", "AND");
                         andtoken.Token = source[offset];
+                        andtoken.Precedence = 50;
                         ExprTokens.Add(andtoken);
                         offset++;
                         break;
                     case (byte)TYPE_TOKEN.NOT:
                         EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
                         nottoken.Token = source[offset];
+                        nottoken.Precedence = 50;
                         ExprTokens.Add(nottoken);
                         offset++;
                         break;
-                    case (byte)TYPE_TOKEN.NOT:
-                        EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
-                        nottoken.Token = source[offset];
-                        ExprTokens.Add(nottoken);
-                        offset++;
-                        break;
+                    //case (byte)TYPE_TOKEN.NOT:
+                    //    EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
+                    //    nottoken.Token = source[offset];
+                    //    ExprTokens.Add(nottoken);
+                    //    offset++;
+                    //    break;
 
 
                     #endregion
+
+                    //TODO: Functions
 
                     #region End of expressions (MARKERS)
 
@@ -285,9 +318,76 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
                 }
 
+            }// after this, we should have a list of all tokens in the expression.
+            //lets parse RPN into Infix, 
+            Stack<BinaryTree<EditorTokenInfo>> BTStack =
+                 new Stack<BinaryTree<EditorTokenInfo>>();
+
+         
+
+            //parse using BTreeStack every token in RPN list of preprocessed tokens
+            foreach (EditorTokenInfo token in ExprTokens)
+            {
+                if(token.Precedence < 50) 
+                    //It's an operand, just push to stack
+                    BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
+            
+                else
+                {
+                    //it's and operator, push two operands, create a new tree and push to stack again.
+                    BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
+                    operatornode.Right = BTStack.Pop();
+                    operatornode.Left = BTStack.Pop();
+                    BTStack.Push(operatornode);
+
+                    //TODO: some exceptions may be found here for unary operators.
+
+                }
+
+
             }
-            return null;
+
+            BinaryTree<EditorTokenInfo> root = BTStack.Peek();
+            //now we end the the top most node on stack as a complete tree of RPN
+             Result = TraverseInOrder(root);
+
+            return Result;
         }
+
+        /// <summary>
+        /// Traverse inorder (INFIX NOTATION) all nodes of Btree.
+        /// </summary>
+        /// <param name="rootnode">Current Node</param>
+        /// <param name="priorPrecedence">Prior Precedence</param>
+        /// <returns></returns>
+        static string TraverseInOrder
+            (BinaryTree<EditorTokenInfo> rootnode, int priorPrecedence = 0)
+        {
+            string Result = "";
+
+            EditorTokenInfo token = rootnode.Data;
+            if(token.Precedence < 50)
+            {
+                //its an operand, return the text
+                return token.Text;
+            }
+            else
+            {
+                //its a operator, visit left, concat with root and right.
+                Result = TraverseInOrder(rootnode.Left,token.Precedence ) + " " + token.Text + " " + TraverseInOrder(rootnode.Right,token.Precedence);
+                //take account of prior precedence vs current node precedence, and add parenthesis
+                if(token.Precedence < priorPrecedence)
+                {
+                    Result += "(" + Result + ")";
+                }
+                
+            }
+
+            return Result;
+
+        }
+
+
 
         /// <summary>
         /// Get a numeric constant value from sourcec

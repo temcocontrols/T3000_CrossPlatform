@@ -33,6 +33,9 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
+      <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
@@ -57,7 +60,7 @@
     <Compile Include="Types\HelpTypes\NameAttribute.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Types\Enums\Jumper.cs" />
-	<Compile Include="Utilities\Decoder.cs" />
+    <Compile Include="Utilities\Decoder.cs" />
     <Compile Include="Utilities\EditorJumpInfo.cs" />
     <Compile Include="Utilities\EditorLineInfo.cs" />
     <Compile Include="Utilities\EditorTokenInfo.cs" />
@@ -110,7 +113,9 @@
     <Compile Include="Utilities\FileVersionUtilities.cs" />
     <Compile Include="Utilities\DebugUtilities.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
