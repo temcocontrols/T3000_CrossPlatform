@@ -584,8 +584,9 @@
             MAX.Rule = "MAX" + PARIZQ + Expression + ExpressionListOpt + PARDER;
             //MIN::= 'MIN' PARIZQ Expression (Space ',' Space Expression)*PARDER
             MIN.Rule = "MIN" + PARIZQ + Expression + ExpressionListOpt + PARDER;
-            #endregion  
+            #endregion
 
+            #region Functions not tested yet with enconding, PENDING FROM TEMCO
             //CONPROP  ::= 'CONPROP' PARIZQ Ordinal ',' Expression PARDER 
             CONPROP.Rule = "CONPROP" + PARIZQ + CONNUMBER + Comma + Expression + PARDER;
 
@@ -594,19 +595,19 @@
 
             //CONRESET ::= 'CONRESET' PARIZQ Ordinal ',' Expression PARDER RANGE
             CONRESET.Rule = "CONRESET" + PARIZQ + CONNUMBER + Comma + Expression + PARDER;
-            
+
             //TBL ::= 'TBL' PARIZQ Expression ',' TABLENUMBER PARDER
             TBL.Rule = "TBL" + PARIZQ + Expression + Comma + TABLENUMBER + PARDER;
             //TIMEON ::= 'TIME-ON' PARIZQ Designator PARDER
 
-            TIMEON.Rule = ToTerm("TIME-ON","TIME_ON") + PARIZQ + Designator + PARDER;
-            
+            TIMEON.Rule = ToTerm("TIME-ON", "TIME_ON") + PARIZQ + Designator + PARDER;
+
             //TIMEOFF::= 'TIME-OFF' PARIZQ Designator PARDER
-            TIMEOFF.Rule = ToTerm("TIME-OFF","TIME_OFF") + PARIZQ + Designator + PARDER;
+            TIMEOFF.Rule = ToTerm("TIME-OFF", "TIME_OFF") + PARIZQ + Designator + PARDER;
             //WRON ::= 'WR-ON' PARIZQ SYSPRG ',' TIMER PARDER
-            WRON.Rule = ToTerm("WR-ON","WR_ON") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+            WRON.Rule = ToTerm("WR-ON", "WR_ON") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
             //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
-            WROFF.Rule = ToTerm("WR-OFF","WR_OFF") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+            WROFF.Rule = ToTerm("WR-OFF", "WR_OFF") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
 
 
             //COM1 ::= 'COM1' PARIZQ BAUDRATE ',' PORT (CHARS+ | ',' EnclosedString) PARDER
@@ -619,7 +620,8 @@
             BAUDRATE.Rule = ToTerm("9600") | ToTerm("115200");
             PORT.Rule = ToTerm("1") | ToTerm("Z") | ToTerm("Y") | ToTerm("X");
             ComParameters.Rule = CHARS | EnclosedString;
-            CHARS.Rule = MakePlusRule(CHARS, Comma + PrintableAscii);
+            CHARS.Rule = MakePlusRule(CHARS, Comma + PrintableAscii); 
+            #endregion
 
             #endregion
 

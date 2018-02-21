@@ -313,6 +313,63 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(nottoken);
                         offset++;
                         break;
+                        //functions that are low precedence as identifiers in expressions
+                    case (byte)FUNCTION_TOKEN.DOY:
+                        fxtoken = new EditorTokenInfo("DOY", "DOY");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.DOW:
+                        fxtoken = new EditorTokenInfo("DOW", "DOW");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.DOM:
+                        fxtoken = new EditorTokenInfo("DOM", "DOM");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.POWER_LOSS:
+                        fxtoken = new EditorTokenInfo("POWER-LOSS", "POWER_LOSS");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.USER_A:
+                        fxtoken = new EditorTokenInfo("USER-B", "USER_A");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.USER_B:
+                        fxtoken = new EditorTokenInfo("USER-B", "USER_B");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.SCANS:
+                        fxtoken = new EditorTokenInfo("SCANS", "SCANS");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.UNACK:
+                        fxtoken = new EditorTokenInfo("UNACK", "UNACK");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 0;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
 
 
 
@@ -320,7 +377,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #region Functions with single expression
 
-                   case (byte)FUNCTION_TOKEN.ABS:
+                    case (byte)FUNCTION_TOKEN.ABS:
                         fxtoken = new EditorTokenInfo("ABS", "ABS");
                         fxtoken.Token = source[offset];
                         fxtoken.Precedence = 200;
@@ -369,6 +426,81 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(fxtoken);
                         offset++;
                         break;
+
+
+                    #region This functions hadnt been tested, PENDING FROM ENCONDING
+                    case (byte)FUNCTION_TOKEN.CONPROP:
+                        fxtoken = new EditorTokenInfo("CONPROP", "CONPROP");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+
+                    case (byte)FUNCTION_TOKEN.CONRATE:
+                        fxtoken = new EditorTokenInfo("CONRATE", "CONRATE");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+
+                    case (byte)FUNCTION_TOKEN.CONRESET:
+                        fxtoken = new EditorTokenInfo("CONRESET", "CONRESET");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+
+                    case (byte)FUNCTION_TOKEN.TBL:
+                        fxtoken = new EditorTokenInfo("TBL", "TBL");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.TIME:
+                        fxtoken = new EditorTokenInfo("TIME", "TIME");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.TIME_ON:
+                        fxtoken = new EditorTokenInfo("TIME-ON", "TIME_ON");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.TIME_OFF:
+                        fxtoken = new EditorTokenInfo("TIME-OFF", "TIME_OFF");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.WR_ON:
+                        fxtoken = new EditorTokenInfo("WR-ON", "WR_ON");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.WR_OFF:
+                        fxtoken = new EditorTokenInfo("WR-OFF", "WR_OFF");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+
+
+                    #endregion
+
+
+
 
 
                     #region Functions ended with count of variable arguments
