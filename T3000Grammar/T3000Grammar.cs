@@ -484,6 +484,7 @@
             CLEAR.Rule = ToTerm("CLEAR","CLEAR");
             RETURN.Rule = ToTerm("RETURN", "RETURN");
             HANGUP.Rule = ToTerm("HANGUP");
+
             DISABLE.Rule = ToTerm("DISABLE", "DISABLEX") + Designator;
             ENABLE.Rule = ToTerm("ENABLE", "ENABLEX") + Designator;
 
@@ -509,6 +510,7 @@
             //ELSEOPT.Rule = "ELSE" + IFCLAUSE;
             ELSEOPT.Rule = PreferShiftHere() + ToTerm("ELSE","ELSE") + IFCLAUSE;
 
+            #region JUMPS
             //ON ::= 'ON' IntegerTerm (GOTO | GOSUB) (',' LineNumber)*
             ON.Rule = ToTerm("ON") + Expression + GOSELECTOR + LineNumberListOpt;
             GOSELECTOR.Rule = GOTO | GOSUB;
@@ -518,8 +520,9 @@
             //GOTO ::= 'GOTO' LineNumber
             GOTO.Rule = "GOTO" + LineNumber;
 
-            ONALARM.Rule = ToTerm("ON-ALARM","ON_ALARM") + LineNumber;
-            ONERROR.Rule = ToTerm("ON-ERROR","ON_ERROR") + LineNumber;
+            ONALARM.Rule = ToTerm("ON-ALARM", "ON_ALARM") + LineNumber;
+            ONERROR.Rule = ToTerm("ON-ERROR", "ON_ERROR") + LineNumber; 
+            #endregion
 
             #endregion
 

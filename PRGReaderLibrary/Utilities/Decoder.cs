@@ -19,6 +19,11 @@ namespace PRGReaderLibrary.Utilities
         static public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
         /// <summary>
+        /// Lists every single linenumber with it byte offset from start of programcode.
+        /// </summary>
+        static List<EditorJumpInfo> JumpLines { get; set; } = new List<EditorJumpInfo>();
+
+        /// <summary>
         /// Set a local copy of all identifiers in prg
         /// </summary>
         /// <param name="prg">Program prg</param>
@@ -38,12 +43,13 @@ namespace PRGReaderLibrary.Utilities
             string result = "";
             Array.Copy(PCode, 0, prgsize, 0, 2);
             int ProgLenght = BytesExtensions.ToInt16(prgsize);
+            
 
             int offset; //offset after count of total encoded bytes
             bool isFirstToken = true;
             offset = 2;
 
-            while (offset <= ProgLenght)
+            while (offset <= (ProgLenght + 2))
             {
                 var tokenvalue = (byte)PCode[offset];
                 switch (tokenvalue)
@@ -52,11 +58,10 @@ namespace PRGReaderLibrary.Utilities
                     case (byte)TYPE_TOKEN.NUMBER:
                         if (isFirstToken)
                         {
-                            offset++;
-                            short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
-                            result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
+                            string strLineNum = GetLineNumber(PCode, ref offset);
+                            result += strLineNum;
                         }
-
+                        //next token is not the first, 4 sure
                         isFirstToken = false;
                         break;
                     //comments
@@ -73,56 +78,137 @@ namespace PRGReaderLibrary.Utilities
                         break;
 
 
-                    //TODO:  :::: Continue here with COMMANDS
+                    //TODO: LRUIZ :::: Continue here with COMMANDS
+
+                    #region Single byte commands
 
                     case (byte)LINE_TOKEN.CLEAR:
-                        result += " " + "CLEAR";
+                        result += " " + "CLEAR" + System.Environment.NewLine;
                         offset++;
                         isFirstToken = true;
                         break;
+                    case (byte)LINE_TOKEN.HANGUP:
+                        result += " " + "HANGUP" + System.Environment.NewLine;
+                        offset++;
+                        isFirstToken = true;
+                        break;
+                    case (byte)LINE_TOKEN.RETURN:
+                        result += " " + "RETURN" + System.Environment.NewLine;
+                        offset++;
+                        isFirstToken = true;
+                        break;
+                    case (byte)LINE_TOKEN.ENDPRG:
+                        result += " " + "END" + System.Environment.NewLine;
+                        offset++;
+                        isFirstToken = true;
+                        break;
+                    #endregion
 
+                    #region 2+ bytes commands
                     case (byte)LINE_TOKEN.START:
                         result += " " + "START ";
                         offset++;
-                        result+= GetIdentifierLabel(PCode, ref offset);
+                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.STOP:
                         result += " " + "STOP ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset);
+                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.OPEN:
                         result += " " + "OPEN ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset);
+                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.CLOSE:
                         result += " " + "CLOSE ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset);
+                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.ENABLEX:
                         result += " " + "ENABLE ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset);
+                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.DISABLEX:
                         result += " " + "DISABLE ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset);
+                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        isFirstToken = true;
+                        break; 
+                    #endregion
+
+                    #region JUMPS
+                    case (byte)LINE_TOKEN.GOTO:
+                        result += " " + "GOTO ";
+                        offset++;
+                        int copyoffset = (int)PCode[offset];
+                        //TODO: Don't know what happens when offset of JumpLine is higher than 255
+                        //What about the second byte???
+                        string gotoLine = GetLineNumber(PCode, ref copyoffset);
+                        offset += 2; //2 bytes
+                        result += gotoLine + System.Environment.NewLine;
+
                         isFirstToken = true;
                         break;
 
+                    case (byte)LINE_TOKEN.GOSUB:
+                        result += " " + "GOSUB ";
+                        offset++;
+                        int copyoffset2 = (int)PCode[offset];
+                        //TODO: Don't know what happens when offset of JumpLine is higher than 255
+                        //What about the second byte???
+                        string gotoLine2 = GetLineNumber(PCode, ref copyoffset2);
+                        offset += 2; //2 bytes
+                        result += gotoLine2 + System.Environment.NewLine;
+
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.ON_ALARM:
+                        result += " " + "ON-ALARM ";
+                        offset++;
+                        int copyoffset3 = (int)PCode[offset];
+                        //TODO: Don't know what happens when offset of JumpLine is higher than 255
+                        //What about the second byte???
+                        string gotoLine3 = GetLineNumber(PCode, ref copyoffset3);
+                        offset += 2; //2 bytes
+                        result += gotoLine3 + System.Environment.NewLine;
+
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.ON_ERROR:
+                        result += " " + "ON-ERROR ";
+                        offset++;
+                        int copyoffset4 = (int)PCode[offset];
+                        //TODO: Don't know what happens when offset of JumpLine is higher than 255
+                        //What about the second byte???
+                        string gotoLine4 = GetLineNumber(PCode, ref copyoffset4);
+                        offset += 2; //2 bytes
+                        result += gotoLine4 + System.Environment.NewLine;
+
+                        isFirstToken = true;
+                        break;
+
+
+                    case (byte)LINE_TOKEN.ON:
+                        result += " " + "ON ";
+                        offset++;
+                        result += GetExpression(PCode, ref offset) + " ";
+                        isFirstToken = false;
+                        break; 
+                    #endregion
 
                     default:
                         offset++; //TODO: This line only for debugging purposes, should be removed, when decoder finished
@@ -130,6 +216,24 @@ namespace PRGReaderLibrary.Utilities
                 }
             }
 
+            return result;
+        }
+
+
+        /// <summary>
+        /// Get a linenumber
+        /// </summary>
+        /// <param name="PCode">Source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns></returns>
+        private static string GetLineNumber(byte[] PCode, ref int offset)
+        {
+            string result = "";
+            offset++; //1 byte = TOKEN {1}
+            short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
+            result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
+            //Populate a list of offsets of every linenumbers
+            JumpLines.Add(new EditorJumpInfo(JumpType.GOTO, (int)LineNumber, offset - 3));
             return result;
         }
 

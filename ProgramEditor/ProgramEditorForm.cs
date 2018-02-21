@@ -698,7 +698,7 @@
                             Tokens.Last().Token = (short)LINE_TOKEN.STRING;
                             break;
 
-                        case "IntegerNumber":
+                        case "/*IntegerNumber*/":
                             //rename to LineNumber only if first token on line.
                             Tokens.Add(new EditorTokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
                             break;
