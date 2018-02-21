@@ -72,9 +72,8 @@ namespace PRGReaderLibrary.Utilities
                         isFirstToken = true;
                         break;
 
-                    
-
                     default:
+                        offset++; //TODO: This line only for debugging purposes
                         break;
                 }
             }
@@ -139,6 +138,8 @@ namespace PRGReaderLibrary.Utilities
             List<EditorTokenInfo> ExprTokens = new List<EditorTokenInfo>();
 
             bool isEOL = false;
+            bool ExpressionAhead = false;
+            string NextExpression = "";
 
             EditorTokenInfo fxtoken;
 
@@ -181,10 +182,12 @@ namespace PRGReaderLibrary.Utilities
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
                         //TODO: Set a EditorTokenInfo for a numeric constant value
                         //.Text should be ready with decoded value
+                        
                         EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                         constvalue.Token = source[offset];
                         constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
                         ExprTokens.Add(constvalue);
+
                         break;
 
                     #endregion
@@ -366,64 +369,159 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(fxtoken);
                         offset++;
                         break;
+                    case (byte)FUNCTION_TOKEN.AVG:
+                        fxtoken = new EditorTokenInfo("AVG", "AVG");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        fxtoken.Index = source[offset+1];
+                        ExprTokens.Add(fxtoken);
+                        offset += 2;
+                        break;
 
                     #endregion
 
                     #region End of expressions (MARKERS)
 
+                    case (byte)LINE_TOKEN.EOE:
+                        ExpressionAhead = true;
+                        offset++;
+                        NextExpression = "," + GetExpression(source, ref offset);
+                        isEOL = true;
+                        break;
 
                     case (byte)LINE_TOKEN.EOF:
                     case (byte)LINE_TOKEN.THEN:
                     case (byte)LINE_TOKEN.REM:
                     case (byte)LINE_TOKEN.ELSE:
-                    case (byte)LINE_TOKEN.EOE:
-                    case (byte)TYPE_TOKEN.NUMBER:
+                    case (byte)TYPE_TOKEN.NUMBER: //line number
                     default:
                         isEOL = true;
                         //expression ends here, this byte-token should be processed outside this function
                         break;
 
-                        #endregion
+                    #endregion
                 }
 
             }// after this, we should have a list of all tokens in the expression.
             //lets parse RPN into Infix, 
+            if(ExpressionAhead)
+                Result = ParseRPN2Infix(ExprTokens) + NextExpression;
+            else
+                Result = ParseRPN2Infix(ExprTokens);
+          
+            return Result;
+        }
+
+
+        /// <summary>
+        /// Parse a postfix list of tokens into INFIX
+        /// </summary>
+        /// <param name="ExprTokens"></param>
+        /// <returns></returns>
+        static string ParseRPN2Infix(List<EditorTokenInfo> ExprTokens)
+        {
+
+
+            string Result = "";
             Stack<BinaryTree<EditorTokenInfo>> BTStack =
-                 new Stack<BinaryTree<EditorTokenInfo>>();
+               new Stack<BinaryTree<EditorTokenInfo>>();
 
 
 
             //parse using BTreeStack every token in RPN list of preprocessed tokens
-            foreach (EditorTokenInfo token in ExprTokens)
+            for(int idxtoken=0;idxtoken < ExprTokens.Count;idxtoken++)
+            
             {
+                EditorTokenInfo token = new EditorTokenInfo("","");
+                token = ExprTokens[idxtoken];
+               
                 if (token.Precedence < 50)
                     //It's an operand, just push to stack
                     BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
 
                 else
                 {
-                    //it's and operator, push two operands, create a new tree and push to stack again.
+                    //it's an operator, push two operands, create a new tree and push to stack again.
                     BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
-                    if (BTStack.Count > 1) //avoid unary operators and functions exception
-                        operatornode.Right = BTStack.Pop();
                     
-                    operatornode.Left = BTStack.Pop();
-                    BTStack.Push(operatornode);
+                    switch (operatornode.Data.TerminalName )
+                    {
+                        //Multiple expressions functions
+                        case "AVG":
 
-                    //TODO: some exceptions may be found here for unary operators and functions
+                            if(BTStack.Count < operatornode.Data.Index)
+                                throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
+
+                            for (int i = 1; i< operatornode.Data.Index; i++)
+                                NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
+
+                            NodeAddCommaToken(ref operatornode, BTStack.Pop(),true); //just add to the left
+                            BTStack.Push(operatornode);
+
+                            break;
+
+                        default: //Other simple functions and operators
+
+                            if (BTStack.Count > 1) //avoid unary operators and functions exception
+                                operatornode.Right = BTStack.Pop();
+
+                            operatornode.Left = BTStack.Pop();
+                            BTStack.Push(operatornode);
+
+                            break;
+                    }
 
                 }
 
-
             }
+
+            if (BTStack.Count > 1)
+                throw new ArgumentException("Too many expressions in final BTStack");
 
             BinaryTree<EditorTokenInfo> root = BTStack.Peek();
             //now we end the the top most node on stack as a complete tree of RPN
             string rootprint = root.ToString();
             Result = TraverseInOrder(root);
-
             return Result;
+
         }
+
+        /// <summary>
+        /// Add a comma node to the left, and a binary tree to the right.
+        /// </summary>
+        /// <param name="root">root node</param>
+        /// <param name="newTree"></param>
+        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree,bool onlyLeft = false)
+        {
+            EditorTokenInfo CommaToken = new EditorTokenInfo(",", "COMMA");
+            CommaToken.Precedence = 150;
+            
+            BinaryTree<EditorTokenInfo> current = root;
+
+            //find the the last left leaf, :) sounds like a tongue-twister
+            while (current.Left != null)
+                current = current.Left;
+
+            if (!onlyLeft)
+            {
+                //add a comma to the left
+                current.Left = new BinaryTree<EditorTokenInfo>(CommaToken);
+                //add a binary tree to the right
+                current.Left.Right = newTree;
+            }
+            else
+                current.Left = newTree;
+            
+
+            //go back to top parent
+            while (current.Parent != null)
+                current = current.Parent;
+
+            root = current;
+
+        }
+
+
 
         /// <summary>
         /// Traverse inorder (INFIX NOTATION) all nodes of Btree.
@@ -449,6 +547,7 @@ namespace PRGReaderLibrary.Utilities
                 {
                     if (token.Precedence == 200) //Its a function, add parenthesis here!!
                         Result = token.Text +  "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
+
                     else //just a unary operator!?
                         Result = token.Text + " "  + TraverseInOrder(rootnode.Left, token.Precedence);
                 }
@@ -459,7 +558,7 @@ namespace PRGReaderLibrary.Utilities
 
 
                 //take account of prior precedence vs current node precedence, and add parenthesis
-                if (token.Precedence < priorPrecedence && priorPrecedence != 200)
+                if (token.Precedence < priorPrecedence && priorPrecedence != 200 && priorPrecedence != 150)
                 {
                     Result = "(" + Result + ")";
                 }
