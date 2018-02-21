@@ -48,6 +48,7 @@ namespace PRGReaderLibrary.Utilities
                 var tokenvalue = (byte)PCode[offset];
                 switch (tokenvalue)
                 {
+                    //linenumbers
                     case (byte)TYPE_TOKEN.NUMBER:
                         if (isFirstToken)
                         {
@@ -58,17 +59,20 @@ namespace PRGReaderLibrary.Utilities
 
                         isFirstToken = false;
                         break;
-
+                    //comments
                     case (byte)LINE_TOKEN.REM:
 
                         result += " " + GetComment(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
+                    //assigments
                     case (byte)LINE_TOKEN.ASSIGN:
                         result += " " + GetAssigment(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
+
+                    
 
                     default:
                         break;
@@ -83,7 +87,7 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="source">source bytes</param>
         /// <param name="offset">position</param>
-        /// <returns></returns>
+        /// <returns>decoded comments</returns>
         private static string GetComment(byte[] source, ref int offset)
         {
             string result = "REM ";
@@ -106,7 +110,7 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="source">source bytes</param>
         /// <param name="offset">position</param>
-        /// <returns></returns>
+        /// <returns>decoded string</returns>
         private static string GetAssigment(byte[] source, ref int offset)
         {
             string result = "↑";
@@ -140,6 +144,7 @@ namespace PRGReaderLibrary.Utilities
 
             string Result = "";
 
+            #region Operators precedence, same as in grammar
             // 4. Operators precedence, same as in grammar
             ////RegisterOperators(100, Associativity.Right, EXP);
             ////RegisterOperators(90, MUL, DIV, IDIV);
@@ -151,8 +156,8 @@ namespace PRGReaderLibrary.Utilities
             ////RegisterOperators(50, Associativity.Right, NOT);
             ////RegisterOperators(50, AND, OR, XOR);
 
-
-
+            #endregion
+            
             while (!isEOL)
             {
                 switch (source[offset])
@@ -310,19 +315,57 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
-                    //TODO: Functions
+                    #region Functions with single expression
 
-                    case (byte)FUNCTION_TOKEN.ABS:
+                   case (byte)FUNCTION_TOKEN.ABS:
                         fxtoken = new EditorTokenInfo("ABS", "ABS");
                         fxtoken.Token = source[offset];
                         fxtoken.Precedence = 200;
                         ExprTokens.Add(fxtoken);
                         offset++;
                         break;
-
-                    #region Functions
-
-
+                    case (byte)FUNCTION_TOKEN._INT:
+                        fxtoken = new EditorTokenInfo("INT", "_INT");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.INTERVAL:
+                        fxtoken = new EditorTokenInfo("INTERVAL", "INTERVAL");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.LN:
+                        fxtoken = new EditorTokenInfo("LN", "LN");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.LN_1:
+                        fxtoken = new EditorTokenInfo("LN-1", "LN_1");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.SQR:
+                        fxtoken = new EditorTokenInfo("SQR", "SQR");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN._Status:
+                        fxtoken = new EditorTokenInfo("STATUS", "_Status");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
 
                     #endregion
 
@@ -465,6 +508,12 @@ namespace PRGReaderLibrary.Utilities
             return result;
         }
 
+        /// <summary>
+        /// Get label for current identifier
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns></returns>
         private static string GetIdentifierLabel(byte[] source, ref int offset)
         {
             string IdentLabel = "UNKNOWN_IDENT";
