@@ -369,15 +369,36 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(fxtoken);
                         offset++;
                         break;
+
+
+                    #region Functions ended with count of variable arguments
                     case (byte)FUNCTION_TOKEN.AVG:
                         fxtoken = new EditorTokenInfo("AVG", "AVG");
                         fxtoken.Token = source[offset];
                         fxtoken.Precedence = 200;
-                        fxtoken.Index = source[offset+1];
+                        fxtoken.Index = source[offset + 1];
+                        ExprTokens.Add(fxtoken);
+                        offset += 2;
+                        break;
+                    case (byte)FUNCTION_TOKEN.MAX:
+                        fxtoken = new EditorTokenInfo("MAX", "MAX");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        fxtoken.Index = source[offset + 1];
+                        ExprTokens.Add(fxtoken);
+                        offset += 2;
+                        break;
+                    case (byte)FUNCTION_TOKEN.MIN:
+                        fxtoken = new EditorTokenInfo("MIN", "MIN");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        fxtoken.Index = source[offset + 1];
                         ExprTokens.Add(fxtoken);
                         offset += 2;
                         break;
 
+
+                    #endregion
                     #endregion
 
                     #region End of expressions (MARKERS)

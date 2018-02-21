@@ -1317,18 +1317,19 @@
                     case "SCANS":
                     case "USER_A":
                     case "USER_B":
-                    
-                    //Functions with variable list of expressions, must add count of expressions as last token.
+
+                   
+                    #region Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
                     case "MAX":
                     case "MIN":
-                    
+
                         //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                         //To allow further transforms by RPN Parser of Expressions
                         var fxToken = new EditorTokenInfo(tokentext, terminalname);
                         FUNCTION_TOKEN tokenValue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
                         fxToken.Token = (short)tokenValue;
-                        
+
                         //fx.Precedence = (short)tok.KeyTerm.Precedence;
                         fxToken.Precedence = 200;
                         fxToken.Index = 1; //At least one expression to count
@@ -1349,7 +1350,8 @@
                             functions.Push(fxToken);
 
                         }
-                        break;
+                        break; 
+                        #endregion
 
                         #endregion
                 }

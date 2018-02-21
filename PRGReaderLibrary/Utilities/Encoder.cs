@@ -247,7 +247,8 @@ namespace PRGReaderLibrary.Utilities
 
 
 
-                    //Functions with variable list of expressions, must add count of expressions as last token.
+                    
+                    #region Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
                     case "MAX":
                     case "MIN":
@@ -255,7 +256,8 @@ namespace PRGReaderLibrary.Utilities
                         result.Add((byte)token.Token);
                         result.Add((byte)token.Index);
                         offset += 2;
-                        break;
+                        break; 
+                    #endregion
 
                     case "NOT":
                         //TODO: Learn how to encode NOT operator -> tests and errors.
