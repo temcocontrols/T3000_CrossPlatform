@@ -256,6 +256,10 @@
             //Commands
             var START = new NonTerminal("START");
             var STOP = new NonTerminal("STOP");
+
+            var OPEN = new NonTerminal("OPEN");
+            var CLOSE = new NonTerminal("CLOSE");
+
             var LET = new NonTerminal("LET");
             var ALARM = new NonTerminal("ALARM");
             var ALARMAT = new NonTerminal("ALARMAT");
@@ -417,9 +421,10 @@
             //Command ::= ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | 
             //END | HANGUP | ONALARM | ONERROR  | PHONE | PRINT | PRINTAT | REMOTEGET 
             //| REMOTESET | RETURN | RUNMACRO | SETPRINTER | START | STOP | WAIT
+            //| OPEN | CLOSE
             Command.Rule = ALARM | ALARMAT | CALL | CLEAR | DALARM | DISABLE | ENABLE | HANGUP
             | PHONE | PRINT | PRINTAT | REMOTEGET | REMOTESET | RETURN | RUNMACRO | SETPRINTER
-            | START | STOP | WAIT;
+            | START | STOP | WAIT | OPEN | CLOSE;
 
             NextCommand.Rule = MakeStarRule(NextCommand, CommandSeparator + Command);
 
@@ -431,9 +436,6 @@
             DALARM.Rule = "DALARM" + Expression + Comma + Number + Comma + StringMessage;
             //DISABLE ::= 'DISABLE' Identifier           
 
-                  
-                                 
-                      
             
 
             PRINT.Rule = "PRINT" + PrintableKeywords + PrintableListOpt;
@@ -474,6 +476,10 @@
 
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
+
+            OPEN.Rule = "OPEN" + Designator;
+            CLOSE.Rule = "CLOSE" + Designator;
+
             WAIT.Rule = "WAIT" + Expression;
             CLEAR.Rule = ToTerm("CLEAR","CLEAR");
             RETURN.Rule = ToTerm("RETURN", "RETURN");
@@ -696,7 +702,7 @@
             //Branches
             MarkReservedWords("IF", "IF+", "IF-","ON-ALARM", "ON-ERROR", "ON", "GOTO", "GOSUB", "ELSE","THEN");
             //Commands
-            MarkReservedWords("START", "STOP","LET", "ALARM", "ALARM-AT", "CALL","ALL");
+            MarkReservedWords("START", "STOP", "OPEN", "CLOSE", "LET", "ALARM", "ALARM-AT", "CALL","ALL");
             MarkReservedWords("CLEAR", "DALARM","DISABLE","ENABLE", "HANGUP","PHONE","PRINT",
                 "PRINT-AT","REMOTE-GET","REMOTE-SET","RETURN","RUN-MACRO","WAIT",
                 "SET-PRINTER","Set-Printer");

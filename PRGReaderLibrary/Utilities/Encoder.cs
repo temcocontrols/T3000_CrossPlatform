@@ -238,14 +238,13 @@ namespace PRGReaderLibrary.Utilities
                     case "ALARM_AT":
                     case "PHONE":
                     case "PRINT":
+                    case "OPEN":
+                    case "CLOSE":
 
 
                         result.Add((byte)token.Token);
                         offset++;
                         break;
-
-
-
 
                     
                     #region Functions with variable list of expressions, must add count of expressions as last token.

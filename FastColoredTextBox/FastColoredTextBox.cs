@@ -2961,7 +2961,7 @@ namespace FastColoredTextBoxNS
             
             base.WndProc(ref m);
 
-            //TODO: Test if IME Allowed
+            //=> DIsabled TEST for IME Allowed
             //if (ImeAllowed)
             //    if (m.Msg == WM_IME_SETCONTEXT && m.WParam.ToInt32() == 1)
             //    {
@@ -8064,7 +8064,7 @@ window.status = ""#print"";
                 // Refresh the control 
                 Refresh();
                 // Disable drawing
-                //TODO: Sendmessage disabled
+                //=> Sendmessage disabled
                 //SendMessage(Handle, WM_SETREDRAW, 0, 0);
             }
         }
@@ -8081,7 +8081,7 @@ window.status = ""#print"";
                 Capture = false;
                 base.Cursor = defaultCursor;
                 // Enable drawing
-                //TODO: SendMessage Disabled
+                //=> SendMessage Disabled
                 //SendMessage(Handle, WM_SETREDRAW, 1, 0);
                 Invalidate();
             }
@@ -8191,12 +8191,12 @@ window.status = ""#print"";
                 OnScroll(xea);
 
             // Enable drawing
-            //TODO: SendMessage Disabled
+            //=> SendMessage Disabled
             //SendMessage(Handle, WM_SETREDRAW, 1, 0);
             // Refresh the control 
             Refresh();
             // Disable drawing
-            //TODO: Sendmessage disabled
+            //=> Sendmessage disabled
             //SendMessage(Handle, WM_SETREDRAW, 0, 0);
         }
 

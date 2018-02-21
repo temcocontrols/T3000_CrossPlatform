@@ -36,7 +36,7 @@ namespace FastColoredTextBoxNS
 
         public static Platform GetOperationSystemPlatform()
         {
-            //TODO: Disabled API calls to GetNativeSystemInfo
+            //=> Disabled API calls to GetNativeSystemInfo
 
             //var sysInfo = new SYSTEM_INFO();
 

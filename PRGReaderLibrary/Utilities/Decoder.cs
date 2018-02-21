@@ -72,8 +72,60 @@ namespace PRGReaderLibrary.Utilities
                         isFirstToken = true;
                         break;
 
+
+                    //TODO:  :::: Continue here with COMMANDS
+
+                    case (byte)LINE_TOKEN.CLEAR:
+                        result += " " + "CLEAR";
+                        offset++;
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.START:
+                        result += " " + "START ";
+                        offset++;
+                        result+= GetIdentifierLabel(PCode, ref offset);
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.STOP:
+                        result += " " + "STOP ";
+                        offset++;
+                        result += GetIdentifierLabel(PCode, ref offset);
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.OPEN:
+                        result += " " + "OPEN ";
+                        offset++;
+                        result += GetIdentifierLabel(PCode, ref offset);
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.CLOSE:
+                        result += " " + "CLOSE ";
+                        offset++;
+                        result += GetIdentifierLabel(PCode, ref offset);
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.ENABLEX:
+                        result += " " + "ENABLE ";
+                        offset++;
+                        result += GetIdentifierLabel(PCode, ref offset);
+                        isFirstToken = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.DISABLEX:
+                        result += " " + "DISABLE ";
+                        offset++;
+                        result += GetIdentifierLabel(PCode, ref offset);
+                        isFirstToken = true;
+                        break;
+
+
                     default:
-                        offset++; //TODO: This line only for debugging purposes
+                        offset++; //TODO: This line only for debugging purposes, should be removed, when decoder finished
                         break;
                 }
             }
@@ -114,7 +166,7 @@ namespace PRGReaderLibrary.Utilities
         {
             string result = "↑";
 
-            //TODO: Will need fx to get identifier labels and Postfix to Infix decoder.
+            
             offset++; //skip LINETOKEN ASSIGNMENT
             //get left side of assigment
             result = GetIdentifierLabel(source, ref offset);
@@ -180,8 +232,6 @@ namespace PRGReaderLibrary.Utilities
                     #region Numeric Constants
 
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
-                        //TODO: Set a EditorTokenInfo for a numeric constant value
-                        //.Text should be ready with decoded value
                         
                         EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                         constvalue.Token = source[offset];
@@ -371,8 +421,6 @@ namespace PRGReaderLibrary.Utilities
                         offset++;
                         break;
 
-
-
                     #endregion
 
                     #region Functions with single expression
@@ -500,9 +548,6 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
 
-
-
-
                     #region Functions ended with count of variable arguments
                     case (byte)FUNCTION_TOKEN.AVG:
                         fxtoken = new EditorTokenInfo("AVG", "AVG");
@@ -531,16 +576,17 @@ namespace PRGReaderLibrary.Utilities
 
 
                     #endregion
+
                     #endregion
 
                     #region End of expressions (MARKERS)
 
                     case (byte)LINE_TOKEN.EOE:
-                        ExpressionAhead = true;
-                        offset++;
-                        NextExpression = "," + GetExpression(source, ref offset);
-                        isEOL = true;
-                        break;
+                        //ExpressionAhead = true;
+                        //offset++;
+                        //NextExpression = "," + GetExpression(source, ref offset);
+                        //isEOL = true;
+                        //break;
 
                     case (byte)LINE_TOKEN.EOF:
                     case (byte)LINE_TOKEN.THEN:

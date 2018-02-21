@@ -27,12 +27,12 @@
         ReadTime = 21,
         ReadMonitorData = 22,
         ReadPointIinfoTable = 24,
-        ReadGroupElements = 25,  // TODO: Original comment: read point info
+        ReadGroupElements = 25,  // Original comment: read point info
 
         ClearPanel = 28,
         SendAlarm = 32,
         ReadTStat = 33,
-        ReadAnalogCusTable = 34, // TODO: Original comment: read monitor updates
+        ReadAnalogCusTable = 34, // Original comment: read monitor updates
         ReadVarUnit = 36,
         ReadExtIO = 37,
         ReadRemotePoint = 40,
