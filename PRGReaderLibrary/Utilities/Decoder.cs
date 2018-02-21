@@ -37,19 +37,33 @@ namespace PRGReaderLibrary.Utilities
         /// Decode a ProgramCode Into Plain Text
         /// </summary>
         /// <param name="PCode">Byte array (encoded program)</param>
-        static public string DecodeBytes(byte[] PCode)
+        static public string DecodeBytes(byte[] PCode, int Start = 0, int End = 0)
         {
             byte[] prgsize = new byte[2];
             string result = "";
             Array.Copy(PCode, 0, prgsize, 0, 2);
-            int ProgLenght = BytesExtensions.ToInt16(prgsize);
+
+            //2 bytes more for total bytes count.
+            int ProgLenght = BytesExtensions.ToInt16(prgsize)+2;
+            //If defined, END for THEN or ELSE
+            if (End!=0)
+                ProgLenght = End;
+            
+            Stack<int> offsets = new Stack<int>();
             
 
-            int offset; //offset after count of total encoded bytes
-            bool isFirstToken = true;
-            offset = 2;
+            int offset = 0; //offset after count of total encoded bytes
+            bool isFirstToken = true; //default values for first decoding
 
-            while (offset <= (ProgLenght + 2))
+            if(Start != 0)
+            {
+                offset = Start;
+                isFirstToken = false;
+            }
+            else //normal start for offset
+                offset = 2;
+
+            while (offset <= ProgLenght)
             {
                 var tokenvalue = (byte)PCode[offset];
                 switch (tokenvalue)
@@ -61,6 +75,7 @@ namespace PRGReaderLibrary.Utilities
                             string strLineNum = GetLineNumber(PCode, ref offset);
                             result += strLineNum;
                         }
+                        else offset += 2;
                         //next token is not the first, 4 sure
                         isFirstToken = false;
                         break;
@@ -71,11 +86,23 @@ namespace PRGReaderLibrary.Utilities
                         isFirstToken = true;
                         break;
 
-                    //assigments
+
+                    #region ASSIGMENTS
+                    case (byte)LINE_TOKEN.LET:
+                        result += " LET";
+                        offset++;
+                        if (PCode[offset] != (byte)LINE_TOKEN.ASSIGN)
+                        {
+                            throw new Exception("Fatal Error: Next token after (deprecated) LET, is not an ASSIGMENT");
+                        }
+                        isFirstToken = false;
+                        break;
+
                     case (byte)LINE_TOKEN.ASSIGN:
                         result += " " + GetAssigment(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
+                    #endregion
 
 
                     //TODO: LRUIZ :::: Continue here with COMMANDS
@@ -145,8 +172,64 @@ namespace PRGReaderLibrary.Utilities
                         offset++;
                         result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
-                        break; 
+                        break;
                     #endregion
+
+                    #region IF THEN ELSE
+                    case (byte)LINE_TOKEN.IF:
+                    case (byte)LINE_TOKEN.IFP:
+                    case (byte)LINE_TOKEN.IFM:
+                        switch (PCode[offset])
+                        {
+                            case (byte)LINE_TOKEN.IF:
+                                result += " " + "IF ";
+                                break;
+                            case (byte)LINE_TOKEN.IFP:
+                                result += " " + "IF+ ";
+                                break;
+                            case (byte)LINE_TOKEN.IFM:
+                                result += " " + "IF- ";
+                                break;
+                        }
+                        offset++;
+                        result += GetExpression(PCode, ref offset);
+                        isFirstToken = false;
+                        result += " THEN ";
+                        offset++;
+                        //THEN is always followed by two bytes
+                        byte[] thenoffset = { 0x00, 0x00 };
+                        thenoffset[0] = PCode[offset];
+                        thenoffset[1] = PCode[offset + 1];
+                        offset += 2;
+                        int newOffset = (int)(thenoffset[0] - 4);
+                        result += RemoveCRLF(GetThenPart(PCode, ref offset, newOffset));
+
+                        break;
+
+                    case (byte)LINE_TOKEN.EOE:
+                        //ELSE
+                        if(PCode[offset + 1]==(byte)LINE_TOKEN.ELSE && PCode[offset + 2] == (byte)LINE_TOKEN.EOE)
+                        {
+                            offset += 2;
+                            byte[] elseoffset = { 0x00, 0x00 };
+                            elseoffset[0] = PCode[offset];
+                            elseoffset[1] = PCode[offset + 1];
+                            offset += 2;
+                            int newElseOffset = (int)(elseoffset[0] - 4);
+                            result += " ELSE " + GetElsePart(PCode, ref offset, newElseOffset);
+                            isFirstToken = true;
+                        }
+                        else
+                        {
+                            offset++;
+                            if (PCode[offset] != (byte)LINE_TOKEN.EOF)
+                                result += System.Environment.NewLine;
+                        }
+
+                        break;
+                    #endregion
+
+
 
                     #region JUMPS
                     case (byte)LINE_TOKEN.GOTO:
@@ -207,15 +290,52 @@ namespace PRGReaderLibrary.Utilities
                         offset++;
                         result += GetExpression(PCode, ref offset) + " ";
                         isFirstToken = false;
-                        break; 
+                        break;
                     #endregion
 
+                    case (byte)LINE_TOKEN.EOF:
                     default:
                         offset++; //TODO: This line only for debugging purposes, should be removed, when decoder finished
                         break;
                 }
             }
 
+            return result;
+        }
+
+
+        /// <summary>
+        /// Get ELSE part for branches (IF+-)
+        /// </summary>
+        /// <param name="pCode">Source bytes</param>
+        /// <param name="offset">referenced offset</param>
+        /// <param name="newElseOffset">new offset when done</param>
+        /// <returns></returns>
+        private static string GetElsePart(byte[] pCode, ref int offset, int newElseOffset)
+        {
+            string result = ""; //ELSE already decoded
+            result += DecodeBytes(pCode, offset, newElseOffset);
+            //set new referenced offset
+            offset = newElseOffset;
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Gets the THEN PART OF BRANCHES (IF+-)
+        /// </summary>
+        /// <param name="pCode">Source bytes</param>
+        /// <param name="offset">referenced offset</param>
+        /// <param name="newOffset">new offset when done</param>
+        /// <returns></returns>
+        private static string GetThenPart(byte[] pCode, ref int offset, int newOffset)
+        {
+            string result = ""; //THEN word already decoded, as is obligatory.
+            result += DecodeBytes(pCode, offset, newOffset);
+            //set new referenced offset.
+            offset = newOffset;
+           
             return result;
         }
 
@@ -685,13 +805,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #region End of expressions (MARKERS)
 
-                    case (byte)LINE_TOKEN.EOE:
-                        //ExpressionAhead = true;
-                        //offset++;
-                        //NextExpression = "," + GetExpression(source, ref offset);
-                        //isEOL = true;
-                        //break;
-
+                    case (byte)LINE_TOKEN.EOE: //Also known as end of expression marker (THEN)
                     case (byte)LINE_TOKEN.EOF:
                     case (byte)LINE_TOKEN.THEN:
                     case (byte)LINE_TOKEN.REM:
@@ -872,7 +986,10 @@ namespace PRGReaderLibrary.Utilities
 
         }
 
-
+        private static string RemoveCRLF(string s)
+        {
+            return s.TrimEnd('\r', '\n');
+        }
 
         /// <summary>
         /// Get a numeric constant value from sourcec

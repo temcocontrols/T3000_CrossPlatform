@@ -474,6 +474,7 @@
             CALLARGSLIST.Rule = MakeStarRule(CALLARGSLIST, Comma + ARG);
             ARG.Rule = Designator | Expression;
 
+            #region Decoded
             START.Rule = "START" + Designator;
             STOP.Rule = "STOP" + Designator;
 
@@ -481,12 +482,13 @@
             CLOSE.Rule = "CLOSE" + Designator;
 
             WAIT.Rule = "WAIT" + Expression;
-            CLEAR.Rule = ToTerm("CLEAR","CLEAR");
+            CLEAR.Rule = ToTerm("CLEAR", "CLEAR");
             RETURN.Rule = ToTerm("RETURN", "RETURN");
             HANGUP.Rule = ToTerm("HANGUP");
 
             DISABLE.Rule = ToTerm("DISABLE", "DISABLEX") + Designator;
-            ENABLE.Rule = ToTerm("ENABLE", "ENABLEX") + Designator;
+            ENABLE.Rule = ToTerm("ENABLE", "ENABLEX") + Designator; 
+            #endregion
 
             //Assignment ::= Designator AssignOp Expression 
             LET.Rule = "LET";
