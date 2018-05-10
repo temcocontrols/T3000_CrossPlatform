@@ -44,18 +44,18 @@ namespace PRGReaderLibrary.Utilities
             Array.Copy(PCode, 0, prgsize, 0, 2);
 
             //2 bytes more for total bytes count.
-            int ProgLenght = BytesExtensions.ToInt16(prgsize) + 2;
+            int ProgLenght = BytesExtensions.ToInt16(prgsize)+2;
             //If defined, END for THEN or ELSE
-            if (End != 0)
+            if (End!=0)
                 ProgLenght = End;
-
+            
             Stack<int> offsets = new Stack<int>();
-
+            
 
             int offset = 0; //offset after count of total encoded bytes
             bool isFirstToken = true; //default values for first decoding
 
-            if (Start != 0)
+            if(Start != 0)
             {
                 offset = Start;
                 isFirstToken = false;
@@ -208,7 +208,7 @@ namespace PRGReaderLibrary.Utilities
 
                     case (byte)LINE_TOKEN.EOE:
                         //ELSE
-                        if (PCode[offset + 1] == (byte)LINE_TOKEN.ELSE && PCode[offset + 2] == (byte)LINE_TOKEN.EOE)
+                        if(PCode[offset + 1]==(byte)LINE_TOKEN.ELSE && PCode[offset + 2] == (byte)LINE_TOKEN.EOE)
                         {
                             offset += 2;
                             byte[] elseoffset = { 0x00, 0x00 };
@@ -335,7 +335,7 @@ namespace PRGReaderLibrary.Utilities
             result += DecodeBytes(pCode, offset, newOffset);
             //set new referenced offset.
             offset = newOffset;
-
+           
             return result;
         }
 
@@ -390,7 +390,7 @@ namespace PRGReaderLibrary.Utilities
         {
             string result = "↑";
 
-
+            
             offset++; //skip LINETOKEN ASSIGNMENT
             //get left side of assigment
             result = GetIdentifierLabel(source, ref offset);
@@ -434,7 +434,7 @@ namespace PRGReaderLibrary.Utilities
             ////RegisterOperators(50, AND, OR, XOR);
 
             #endregion
-
+            
             while (!isEOL)
             {
                 switch (source[offset])
@@ -456,7 +456,7 @@ namespace PRGReaderLibrary.Utilities
                     #region Numeric Constants
 
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
-
+                        
                         EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                         constvalue.Token = source[offset];
                         constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
@@ -587,7 +587,7 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(nottoken);
                         offset++;
                         break;
-                    //functions that are low precedence as identifiers in expressions
+                        //functions that are low precedence as identifiers in expressions
                     case (byte)FUNCTION_TOKEN.DOY:
                         fxtoken = new EditorTokenInfo("DOY", "DOY");
                         fxtoken.Token = source[offset];
@@ -816,16 +816,16 @@ namespace PRGReaderLibrary.Utilities
                         //expression ends here, this byte-token should be processed outside this function
                         break;
 
-                        #endregion
+                    #endregion
                 }
 
             }// after this, we should have a list of all tokens in the expression.
             //lets parse RPN into Infix, 
-            if (ExpressionAhead)
+            if(ExpressionAhead)
                 Result = ParseRPN2Infix(ExprTokens) + NextExpression;
             else
                 Result = ParseRPN2Infix(ExprTokens);
-
+          
             return Result;
         }
 
@@ -846,12 +846,12 @@ namespace PRGReaderLibrary.Utilities
 
 
             //parse using BTreeStack every token in RPN list of preprocessed tokens
-            for (int idxtoken = 0; idxtoken < ExprTokens.Count; idxtoken++)
-
+            for(int idxtoken=0;idxtoken < ExprTokens.Count;idxtoken++)
+            
             {
-                EditorTokenInfo token = new EditorTokenInfo("", "");
+                EditorTokenInfo token = new EditorTokenInfo("","");
                 token = ExprTokens[idxtoken];
-
+               
                 if (token.Precedence < 50)
                     //It's an operand, just push to stack
                     BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
@@ -860,19 +860,19 @@ namespace PRGReaderLibrary.Utilities
                 {
                     //it's an operator, push two operands, create a new tree and push to stack again.
                     BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
-
-                    switch (operatornode.Data.TerminalName)
+                    
+                    switch (operatornode.Data.TerminalName )
                     {
                         //Multiple expressions functions
                         case "AVG":
 
-                            if (BTStack.Count < operatornode.Data.Index)
+                            if(BTStack.Count < operatornode.Data.Index)
                                 throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
 
-                            for (int i = 1; i < operatornode.Data.Index; i++)
+                            for (int i = 1; i< operatornode.Data.Index; i++)
                                 NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
 
-                            NodeAddCommaToken(ref operatornode, BTStack.Pop(), true); //just add to the left
+                            NodeAddCommaToken(ref operatornode, BTStack.Pop(),true); //just add to the left
                             BTStack.Push(operatornode);
 
                             break;
@@ -908,11 +908,11 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="root">root node</param>
         /// <param name="newTree"></param>
-        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree, bool onlyLeft = false)
+        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree,bool onlyLeft = false)
         {
             EditorTokenInfo CommaToken = new EditorTokenInfo(",", "COMMA");
             CommaToken.Precedence = 150;
-
+            
             BinaryTree<EditorTokenInfo> current = root;
 
             //find the the last left leaf, :) sounds like a tongue-twister
@@ -928,7 +928,7 @@ namespace PRGReaderLibrary.Utilities
             }
             else
                 current.Left = newTree;
-
+            
 
             //go back to top parent
             while (current.Parent != null)
@@ -963,10 +963,10 @@ namespace PRGReaderLibrary.Utilities
                 if (rootnode.Right == null)
                 {
                     if (token.Precedence == 200) //Its a function, add parenthesis here!!
-                        Result = token.Text + "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
+                        Result = token.Text +  "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
 
                     else //just a unary operator!?
-                        Result = token.Text + " " + TraverseInOrder(rootnode.Left, token.Precedence);
+                        Result = token.Text + " "  + TraverseInOrder(rootnode.Left, token.Precedence);
                 }
                 else //left and right are not null
                 {

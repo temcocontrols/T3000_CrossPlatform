@@ -1,632 +1,644 @@
-﻿namespace T3000.Forms
+﻿using PRGReaderLibrary.Extensions;
+using PRGReaderLibrary.Types.Enums.Codecs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NGenerics.DataStructures.Trees;
+
+namespace PRGReaderLibrary.Utilities
 {
-    using PRGReaderLibrary;
-    using PRGReaderLibrary.Extensions;
-    using PRGReaderLibrary.Types.Enums.Codecs;
-    using PRGReaderLibrary.Utilities;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Forms;
-
-    public partial class ProgramsForm : Form
+    /// <summary>
+    /// Decodes array of bytes into plain text Control Basic
+    /// </summary>
+    public class Decoder
     {
-        public List<ProgramPoint> Points { get; set; }
-        public List<ProgramCode> Codes { get; set; }
-        public DataGridView Progs { get; set; }
 
-        private Prg _prg;
-        public Prg Prg
+        /// <summary>
+        /// Required copy of Control Points Labels just for semantic validations
+        /// </summary>
+        static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+
+        /// <summary>
+        /// Set a local copy of all identifiers in prg
+        /// </summary>
+        /// <param name="prg">Program prg</param>
+        static public void SetControlPoints(Prg prg)
         {
-            get { return _prg; }
-
-            set { _prg = value; }
+            Identifiers = new ControlPoints(prg);
         }
-
-        public string PrgPath { get; private set; }
-
-
-        public ProgramsForm(ref Prg CurPRG, string Path)
-        {
-            Prg = CurPRG;
-            PrgPath = Path;
-
-            SetView(Prg.Programs, Prg.ProgramCodes);
-
-        }
-
-
-        public void SetView(List<ProgramPoint> points, List<ProgramCode> codes)
-        {
-            if (points == null)
-            {
-                throw new ArgumentNullException(nameof(points));
-            }
-
-            Points = points;
-            Codes = codes;
-
-            InitializeComponent();
-
-            //User input handles
-            view.AddEditHandler(StatusColumn, TViewUtilities.EditEnum<OffOn>);
-            view.AddEditHandler(AutoManualColumn, TViewUtilities.EditEnum<AutoManual>);
-            view.AddEditHandler(RunStatusColumn, TViewUtilities.EditEnum<NormalCom>);
-            view.AddEditHandler(CodeColumn, EditCodeColumn);
-
-            //Value changed handles
-            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor,
-                Color.Red, Color.Blue);
-
-            //Show points
-            view.Rows.Clear();
-            view.Rows.Add(Points.Count);
-            for (var i = 0; i < Points.Count; ++i)
-            {
-                var point = Points[i];
-                var row = view.Rows[i];
-
-                //Read only
-                row.SetValue(NumberColumn, i + 1);
-
-                SetRow(row, point);
-            }
-
-            //Validation
-            view.AddValidation(DescriptionColumn, TViewUtilities.ValidateString, 21);
-            view.AddValidation(LabelColumn, TViewUtilities.ValidateString, 9);
-            view.Validate();
-
-            Progs = view;
-        }
-
-
-        private void SetRow(DataGridViewRow row, ProgramPoint point)
-        {
-            if (row == null || point == null)
-            {
-                return;
-            }
-
-            row.SetValue(DescriptionColumn, point.Description);
-            row.SetValue(StatusColumn, point.Control);
-            row.SetValue(AutoManualColumn, point.AutoManual);
-            row.SetValue(SizeColumn, point.Length);
-            row.SetValue(RunStatusColumn, point.NormalCom);
-            row.SetValue(LabelColumn, point.Label);
-        }
-
-        #region Buttons
-
-        private void ClearSelectedRow(object sender, EventArgs e) =>
-            SetRow(view.CurrentRow, new ProgramPoint());
-
-        private void Save(object sender, EventArgs e)
-        {
-            if (!view.Validate())
-            {
-                MessageBoxUtilities.ShowWarning(Resources.ViewNotValidated);
-                DialogResult = DialogResult.None;
-                return;
-            }
-
-            try
-            {
-                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
-                {
-                    var point = Points[i];
-                    var row = view.Rows[i];
-                    point.Description = row.GetValue<string>(DescriptionColumn);
-                    point.Control = row.GetValue<OffOn>(StatusColumn);
-                    point.NormalCom = row.GetValue<NormalCom>(RunStatusColumn);
-                    point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
-                    point.Length = row.GetValue<int>(SizeColumn);
-                    point.Label = row.GetValue<string>(LabelColumn);
-
-
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-                DialogResult = DialogResult.None;
-                return;
-            }
-
-            DialogResult = DialogResult.OK;
-            Close();
-        }
-
-        public void ExternalSaveAutomanual(int pos, DataGridViewRow erow)
-        {
-            try
-            {
-                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
-                {
-                    var point = Points[i];
-                    var row = erow;
-                    if (i == pos)
-                    {
-                        point.AutoManual = ((AutoManual)row.Cells[3].Value);
-
-                    }
-
-
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-
-            }
-        }
-        public void ExternalSaveValue(int pos, DataGridViewRow erow)
-        {
-            try
-            {
-                for (var i = 0; i < view.RowCount && i < Points.Count; ++i)
-                {
-                    var point = Points[i];
-                    var row = erow;
-                    if (i == pos)
-                    {
-                        point.Control = ((OffOn)row.Cells[2].Value);
-
-                    }
-
-
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-
-            }
-        }
-
-        private void Cancel(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        #endregion
-
-        #region User input handles
-
-        int Index_EditProgramCode;
-
-        private void EditCodeColumn(object sender, EventArgs e)
-        {
-            try
-            {
-                var row = view.CurrentRow;
-                Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
-
-                var form = new ProgramEditorForm();
-                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
-
-                Console.WriteLine("--------------ORIGINAL CODE-------------------");
-                ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
-                form.SetCode(Codes[Index_EditProgramCode].ToString());
-
-
-                #region Create local copy of identifiers from control points
-                foreach (var vars in Prg.Variables)
-                    form.Identifiers.Add(vars.Label);
-                foreach (var ins in Prg.Inputs)
-                    form.Identifiers.Add(ins.Label, IdentifierTypes.INS);
-                foreach (var outs in Prg.Outputs)
-                    form.Identifiers.Add(outs.Label, IdentifierTypes.OUTS);
-                foreach (var prgs in Prg.Programs)
-                    form.Identifiers.Add(prgs.Label, IdentifierTypes.PRGS);
-                foreach (var schs in Prg.Schedules)
-                    form.Identifiers.Add(schs.Label, IdentifierTypes.SCHS);
-                foreach (var hols in Prg.Holidays)
-                    form.Identifiers.Add(hols.Label, IdentifierTypes.HOLS);
-
-                #endregion
-
-
-                //Override Send Event Handler and encode program into bytes.
-                form.Send += Form_Send;
-                form.MdiParent = this.MdiParent;
-
-                form.Show();
-                //if (form.ShowDialog() != DialogResult.OK) return;
-
-            }
-            catch (Exception exception)
-            {
-                MessageBoxUtilities.ShowException(exception);
-            }
-        }
-
-        private void Form_Send(object sender, SendEventArgs e)
-        {
-
-            Console.WriteLine();
-            Console.WriteLine("---------------------DEBUG STRINGS-----------------------");
-            Console.WriteLine();
-            Console.WriteLine($"Code:{Environment.NewLine}{e.Code}");
-            Console.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
-
-
-            //Inician las pruebas de codificación
-            byte[] ByteEncoded = EncodeBytes(e.Tokens);
-            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            ConsolePrintBytes(ByteEncoded, "Encoded");
-            MessageBox.Show($"Resource compiled succceded{System.Environment.NewLine}Total size 2000 bytes{System.Environment.NewLine}Already used {PSize} bytes.", "T3000");
-
-            // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
-            Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
-            //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
-            Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
-            Prg.Programs[Index_EditProgramCode].Length = PSize;
-            //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
-            //Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}.PRG");
-
-
-        }
-
-
 
 
         /// <summary>
-        /// Encode a ProgramCode Into Byte Array
+        /// Decode a ProgramCode Into Plain Text
         /// </summary>
-        /// <param name="Tokens">Preprocessed list of tokens</param>
-        /// <returns>byte array</returns>
-        private byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
+        /// <param name="PCode">Byte array (encoded program)</param>
+        static public string DecodeBytes(byte[] PCode)
         {
-            var result = new List<byte>();
-            byte[] prgsize = { (byte)0x00, (byte)0x00 };
-            result.AddRange(prgsize);
+            byte[] prgsize = new byte[2];
+            string result = "";
+            Array.Copy(PCode, 0, prgsize, 0, 2);
+            int ProgLenght = BytesExtensions.ToInt16(prgsize);
 
-            Stack<int> offsets = new Stack<int>();
-            Stack<EditorJumpInfo> Jumps = new Stack<EditorJumpInfo>();
-            List<EditorLineInfo> Lines = new List<EditorLineInfo>();
-
-            int offset = 1; //offset is a count of total encoded bytes
-
-
-
-            int tokenIndex = 0;
+            int offset; //offset after count of total encoded bytes
             bool isFirstToken = true;
+            offset = 2;
 
-
-            for (tokenIndex = 0; tokenIndex < Tokens.Count; tokenIndex++)
+            while (offset <= ProgLenght)
             {
-                var token = Tokens[tokenIndex];
-
-                switch (token.TerminalName)
+                var tokenvalue = (byte)PCode[offset];
+                switch (tokenvalue)
                 {
-                    #region IF IF+ IF- THEN ELSE
-                    case "IF":
-                    case "IF+":
-                    case "IF-":
-                    case "THEN":
-                    case "ELSE":
-                    case "EOE":
-                        result.Add((byte)token.Token);
-                        offset++;
-
-                        if (token.Token == (short)LINE_TOKEN.EOE)
-                        {
-                            if (offsets.Count > 0)
-                            {
-                                int newoffset = offset + 1;
-                                int idxoffset = offsets.Pop();
-                                //encode and replace
-                                short NewOffSetNumber = Convert.ToInt16(newoffset);
-                                byte[] byteoffset = NewOffSetNumber.ToBytes();
-                                result[idxoffset] = byteoffset[0];
-                                result[idxoffset + 1] = byteoffset[1];
-
-                            }
-                        }
-
-                        break;
-
-
-                    #endregion
-
-                    #region REM COMMENTS
-                    case "REM":
-                    case "ASSIGN":
-
-                        result.Add((byte)token.Token);
-                        offset++;
-                        break;
-                    case "Comment":
-                    case "PhoneNumber":
-                        result.Add((byte)token.Type); //Lenght of String
-                        offset++;
-                        result.AddRange(token.Text.ToBytes());
-                        offset += token.Type;
-                        break;
-                    #endregion
-
-                    #region Special Numbers
-                    case "LineNumber":
+                    //linenumbers
+                    case (byte)TYPE_TOKEN.NUMBER:
                         if (isFirstToken)
                         {
-                            result.Add((byte)TYPE_TOKEN.NUMBER); //TYPE OF NEXT TOKEN: NUMBER 1 Byte
-                            short LineNumber = Convert.ToInt16(token.Text);
-                            result.AddRange(LineNumber.ToBytes()); //LINE NUMBER, 2 Bytes
-                            Lines.Add(new EditorLineInfo(Convert.ToInt32(LineNumber), Convert.ToInt32(offset + 1)));
-                            offset += 3;
-                            isFirstToken = false;
-                        }
-                        else
-                        {
-                            //else: linenumber for a jump
-
-                            short LineNumber = Convert.ToInt16(token.Text);
-                            byte[] RawLineNumber = LineNumber.ToBytes();
-                            RawLineNumber[1] = (byte)LINE_TOKEN.RAWLINE;
-                            RawLineNumber[0] = (byte)LINE_TOKEN.RAWLINE;
-                            result.AddRange(RawLineNumber);
-                            Jumps.Push(new EditorJumpInfo(0, LineNumber, offset + 1));
-                            offset += 2;
-
+                            offset++;
+                            short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
+                            result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
                         }
 
-
+                        isFirstToken = false;
                         break;
+                    //comments
+                    case (byte)LINE_TOKEN.REM:
 
-                    case "OFFSET":
-                        //push index of next byte for new offset.
-                        offsets.Push(offset + 1);
-                        short OffSetNumber = Convert.ToInt16(token.Token);
-                        result.AddRange(OffSetNumber.ToBytes()); //OFFSET NUMBER, 2 Bytes
-                        offset += 2;
-
-                        break;
-
-                    //Index and Counters: 1 Byte
-                    case "ARGCOUNT":
-                    case "SYSPRG":
-                    case "PRG":
-                    case "PANEL":
-
-                        short IdentCount = Convert.ToInt16(token.Index);
-                        byte[] bytesIdentCount = IdentCount.ToBytes();
-                        result.Add(bytesIdentCount[0]); //OFFSET NUMBER, 1 Bytes
-                        offset += 1;
-
-                        break;
-
-                    case "PRT_A":
-                    case "PRT_B":
-                    case "PRT_0":
-                    case "ALL":
-                        short prt = Convert.ToInt16(token.Token);
-                        byte[] bytesPrt = prt.ToBytes();
-                        result.Add(bytesPrt[0]); //OFFSET NUMBER, 1 Bytes
-                        offset += 1;
-                        break;
-
-                    case "WAITCOUNTER":
-                        result.Add((byte)token.Token);
-                        offset++;
-                        int WaitCounter = Convert.ToInt32(token.Index);
-                        result.AddRange(WaitCounter.ToBytes()); //OFFSET NUMBER, 4 Bytes
-                        offset += 4;
-
-                        break;
-                    #endregion
-
-                    #region Operators, Functions and Commands
-                    //OPERATORS
-                    case "PLUS":
-                    case "MINUS":
-                    case "MUL":
-                    case "DIV":
-                    case "POW":
-                    case "MOD":
-                    case "LT":
-                    case "GT":
-                    case "LE":
-                    case "GE":
-                    case "EQ":
-                    case "NE":
-                    case "AND":
-                    case "XOR":
-                    case "OR":
-                    //FUNCTIONS
-                    case "ABS":
-                    case "INTERVAL":
-                    case "_INT":
-                    case "LN":
-                    case "LN_1":
-                    case "SQR":
-                    case "_Status":
-                    case "CONPROP":
-                    case "CONRATE":
-                    case "CONRESET":
-                    case "TBL":
-                    case "TIME":
-                    case "TIME_ON":
-                    case "TIME_OFF":
-                    case "WR_ON":
-                    case "WR_OFF":
-                    case "DOY":
-                    case "DOM":
-                    case "DOW":
-                    case "POWER_LOSS":
-                    case "UNACK":
-                    case "SCANS":
-                    case "USER_A":
-                    case "USER_B":
-
-                    //COMMANDS
-                    case "START":
-                    case "STOP":
-                    case "CLEAR":
-                    case "RETURN":
-                    case "WAIT":
-                    case "HANGUP":
-                    case "GOTO":
-                    case "GOSUB":
-                    case "ON_ERROR":
-                    case "ON_ALARM":
-                    case "ENABLEX":
-                    case "DISABLEX":
-                    case "ENDPRG":
-                    case "RUN_MACRO":
-                    case "CALL":
-                    case "SET_PRINTER":
-                    case "DECLARE":
-                    case "PRINT_AT":
-                    case "ALARM_AT":
-                    case "PHONE":
-
-
-                        result.Add((byte)token.Token);
-                        offset++;
-                        break;
-
-
-
-
-                    //Functions with variable list of expressions, must add count of expressions as last token.
-                    case "AVG":
-                    case "MAX":
-                    case "MIN":
-
-                        result.Add((byte)token.Token);
-                        result.Add((byte)token.Index);
-                        offset += 2;
-                        break;
-
-                    case "NOT":
-                        //TODO: Learn how to encode NOT operator -> tests and errors.
-                        break;
-                    #endregion
-
-                    #region Identifiers: VARS, INS, OUTS, etc 3 bytes
-                    case "Identifier":
-                        //Encode directly: Token + Index + Type
-
-                        result.Add((byte)token.Token);
-                        result.Add((byte)token.Index);
-                        result.Add((byte)token.Type);
-                        offset += 3;
-
-                        break;
-
-                    #endregion
-
-                    #region NUMBERS (4 BYTES ONLY)
-                    case "Number":
-                    case "CONNUMBER":
-                    case "TABLENUMBER":
-                    case "TIMER":
-
-
-                        result.Add((byte)token.Token);
-                        offset++;
-                        //And... voilá...  trick revealed.
-                        //All numbers are converted to integer 32b, multiplying by 1000.
-                        //on Decoding bytes: reverse operation dividing by 1000, so if not exact
-                        //floating point numbers only have 3 decimals
-                        int numVal = (int)(Convert.ToSingle(token.Text) * 1000);
-                        byte[] byteArray = BitConverter.GetBytes(numVal);
-                        result.AddRange(byteArray);
-                        offset += 4;
-                        break;
-                    #endregion
-
-                    case "LF":
+                        result += " " + GetComment(PCode, ref offset) + System.Environment.NewLine;
                         isFirstToken = true;
-
                         break;
 
-                    case "EOF":
-                        if ((tokenIndex + 1) == Tokens.Count)
-                        {
-                            //EOF: Last LF, should be replaced with xFE
-                            result.Add((byte)LINE_TOKEN.EOF);
-                            //No increment to offset, as EOF doesn't count on 
-                        }
-
-                        //EOL: LF, Just Ignored. Next Token should be another LineNumber
+                    //assigments
+                    case (byte)LINE_TOKEN.ASSIGN:
+                        result += " " + GetAssigment(PCode, ref offset) + System.Environment.NewLine;
+                        isFirstToken = true;
                         break;
-
-
 
                     default:
-                        Console.WriteLine($"Token ignored and not encoded: {token.ToString()}");
+                        offset++; //TODO: This line only for debugging purposes
                         break;
-
                 }
-                isFirstToken = token.TerminalName == "LF" ? true : false;
-
             }
 
-            //Set Jumps offsets
-            if (Jumps.Count > 0 && Lines.Count > 0)
-            {
-                while (Jumps.Count > 0)
-                {
-                    EditorJumpInfo NewJump = Jumps.Pop();
-                    var LineIdx = Lines.FindIndex(k => k.Before == NewJump.LineIndex);
-                    if (LineIdx >= 0)
-                    {
-                        short LineOffset = Convert.ToInt16(Lines[LineIdx].After);
-                        byte[] LObytes = LineOffset.ToBytes();
-                        result[NewJump.Offset] = LObytes[0];
-                        result[NewJump.Offset + 1] = LObytes[1];
-
-                    }
-                    else //LineIdx is -1, not found!
-                    {
-                        MessageBox.Show($"Error: Line not found: {NewJump.LineIndex}");
-                    }
-
-                }
-
-            }
-
-
-            offset--;
-            byte[] size = offset.ToBytes();
-            result[0] = size[0];
-            result[1] = size[1];
-
-            //fill with nulls til the end of block
-            while (result.Count < 2000)
-            {
-                result.Add((byte)0x00);
-            }
-            return result.ToArray();
+            return result;
         }
 
+        /// <summary>
+        /// Get comments, including REM token, autoincrements offset
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns>decoded comments</returns>
+        private static string GetComment(byte[] source, ref int offset)
+        {
+            string result = "REM ";
+            offset++;
+            short count = source[offset++];
+
+            List<byte> comment = new List<byte>();
+            comment = source.ToList().GetRange(offset, count);
+            //Array.Copy(source, offset, comment, 0, count);
+            result += System.Text.Encoding.Default.GetString(comment.ToArray()) + System.Environment.NewLine;
+            offset += count;
+
+
+            return result;
+
+        }
+
+        /// <summary>
+        /// Get assigment
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns>decoded string</returns>
+        private static string GetAssigment(byte[] source, ref int offset)
+        {
+            string result = "↑";
+
+            //TODO: Will need fx to get identifier labels and Postfix to Infix decoder.
+            offset++; //skip LINETOKEN ASSIGNMENT
+            //get left side of assigment
+            result = GetIdentifierLabel(source, ref offset);
+            result += " = ";
+
+            //Get right side of assigment (expression)
+            result += GetExpression(source, ref offset);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Parse tokens from postfix (RPN) into infix notation
+        /// </summary>
+        /// <param name="source">Byte encoded source</param>
+        /// <param name="offset">start of expression</param>
+        /// <returns></returns>
+        private static string GetExpression(byte[] source, ref int offset)
+        {
+            //Create a list of ordered tokeneditorsinfo
+            List<EditorTokenInfo> ExprTokens = new List<EditorTokenInfo>();
+
+            bool isEOL = false;
+            bool ExpressionAhead = false;
+            string NextExpression = "";
+
+            EditorTokenInfo fxtoken;
+
+            string Result = "";
+
+            #region Operators precedence, same as in grammar
+            // 4. Operators precedence, same as in grammar
+            ////RegisterOperators(100, Associativity.Right, EXP);
+            ////RegisterOperators(90, MUL, DIV, IDIV);
+            ////RegisterOperators(80, MOD);
+            ////RegisterOperators(70, SUM, SUB);
+
+            ////RegisterOperators(60, LT, GT, LTE, GTE, EQ, NEQ);
+
+            ////RegisterOperators(50, Associativity.Right, NOT);
+            ////RegisterOperators(50, AND, OR, XOR);
+
+            #endregion
+            
+            while (!isEOL)
+            {
+                switch (source[offset])
+                {
+                    #region Identifiers
+
+                    case (byte)PCODE_CONST.LOCAL_POINT_PRG:
+                        EditorTokenInfo localpoint = new EditorTokenInfo("Identifier", "Identifier");
+                        localpoint.Token = source[offset];
+                        localpoint.Index = source[offset + 1];
+                        localpoint.Type = source[offset + 2];
+                        //text will be ready with identifier label
+                        localpoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
+                        ExprTokens.Add(localpoint);
+                        break;
+
+                    #endregion
+
+                    #region Numeric Constants
+
+                    case (byte)PCODE_CONST.CONST_VALUE_PRG:
+                        //TODO: Set a EditorTokenInfo for a numeric constant value
+                        //.Text should be ready with decoded value
+                        
+                        EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
+                        constvalue.Token = source[offset];
+                        constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
+                        ExprTokens.Add(constvalue);
+
+                        break;
+
+                    #endregion
+
+                    #region Single Tokens
+
+                    case (byte)TYPE_TOKEN.PLUS:
+                        EditorTokenInfo plustoken = new EditorTokenInfo("+", "PLUS");
+                        plustoken.Token = source[offset];
+                        plustoken.Precedence = 70;
+                        ExprTokens.Add(plustoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.MINUS:
+                        EditorTokenInfo minustoken = new EditorTokenInfo("-", "MINUS");
+                        minustoken.Token = source[offset];
+                        minustoken.Precedence = 70;
+                        ExprTokens.Add(minustoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.DIV:
+                        EditorTokenInfo divtoken = new EditorTokenInfo("/", "DIV");
+                        divtoken.Token = source[offset];
+                        divtoken.Precedence = 90;
+                        ExprTokens.Add(divtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.IDIV:
+                        EditorTokenInfo idivtoken = new EditorTokenInfo("\\", "IDIV");
+                        idivtoken.Token = source[offset];
+                        idivtoken.Precedence = 90;
+                        ExprTokens.Add(idivtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.MUL:
+                        EditorTokenInfo multoken = new EditorTokenInfo("*", "MUL");
+                        multoken.Token = source[offset];
+                        multoken.Precedence = 90;
+                        ExprTokens.Add(multoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.POW:
+                        EditorTokenInfo powtoken = new EditorTokenInfo("^", "POW");
+                        powtoken.Token = source[offset];
+                        powtoken.Precedence = 100;
+                        ExprTokens.Add(powtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.MOD:
+                        EditorTokenInfo modtoken = new EditorTokenInfo("MOD", "MOD");
+                        modtoken.Token = source[offset];
+                        modtoken.Precedence = 80;
+                        ExprTokens.Add(modtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.LT:
+                        EditorTokenInfo lttoken = new EditorTokenInfo("<", "LT");
+                        lttoken.Token = source[offset];
+                        lttoken.Precedence = 60;
+                        ExprTokens.Add(lttoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.LE:
+                        EditorTokenInfo letoken = new EditorTokenInfo("<=", "LE");
+                        letoken.Token = source[offset];
+                        letoken.Precedence = 60;
+                        ExprTokens.Add(letoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.GT:
+                        EditorTokenInfo gttoken = new EditorTokenInfo(">", "GT");
+                        gttoken.Token = source[offset];
+                        gttoken.Precedence = 60;
+                        ExprTokens.Add(gttoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.GE:
+                        EditorTokenInfo getoken = new EditorTokenInfo(">=", "GE");
+                        getoken.Token = source[offset];
+                        getoken.Precedence = 60;
+                        ExprTokens.Add(getoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.EQ:
+                        EditorTokenInfo eqtoken = new EditorTokenInfo("=", "EQ");
+                        eqtoken.Token = source[offset];
+                        eqtoken.Precedence = 60;
+                        ExprTokens.Add(eqtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.NE:
+                        EditorTokenInfo netoken = new EditorTokenInfo("<>", "NE");
+                        netoken.Token = source[offset];
+                        netoken.Precedence = 60;
+                        ExprTokens.Add(netoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.XOR:
+                        EditorTokenInfo xortoken = new EditorTokenInfo("XOR", "XOR");
+                        xortoken.Token = source[offset];
+                        xortoken.Precedence = 50;
+                        ExprTokens.Add(xortoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.OR:
+                        EditorTokenInfo ortoken = new EditorTokenInfo("OR", "OR");
+                        ortoken.Token = source[offset];
+                        ortoken.Precedence = 50;
+                        ExprTokens.Add(ortoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.AND:
+                        EditorTokenInfo andtoken = new EditorTokenInfo("AND", "AND");
+                        andtoken.Token = source[offset];
+                        andtoken.Precedence = 50;
+                        ExprTokens.Add(andtoken);
+                        offset++;
+                        break;
+                    case (byte)TYPE_TOKEN.NOT:
+                        EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
+                        nottoken.Token = source[offset];
+                        nottoken.Precedence = 50;
+                        ExprTokens.Add(nottoken);
+                        offset++;
+                        break;
 
 
 
-        #endregion
+                    #endregion
+
+                    #region Functions with single expression
+
+                   case (byte)FUNCTION_TOKEN.ABS:
+                        fxtoken = new EditorTokenInfo("ABS", "ABS");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN._INT:
+                        fxtoken = new EditorTokenInfo("INT", "_INT");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.INTERVAL:
+                        fxtoken = new EditorTokenInfo("INTERVAL", "INTERVAL");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.LN:
+                        fxtoken = new EditorTokenInfo("LN", "LN");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.LN_1:
+                        fxtoken = new EditorTokenInfo("LN-1", "LN_1");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.SQR:
+                        fxtoken = new EditorTokenInfo("SQR", "SQR");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN._Status:
+                        fxtoken = new EditorTokenInfo("STATUS", "_Status");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        ExprTokens.Add(fxtoken);
+                        offset++;
+                        break;
+                    case (byte)FUNCTION_TOKEN.AVG:
+                        fxtoken = new EditorTokenInfo("AVG", "AVG");
+                        fxtoken.Token = source[offset];
+                        fxtoken.Precedence = 200;
+                        fxtoken.Index = source[offset+1];
+                        ExprTokens.Add(fxtoken);
+                        offset += 2;
+                        break;
+
+                    #endregion
+
+                    #region End of expressions (MARKERS)
+
+                    case (byte)LINE_TOKEN.EOE:
+                        ExpressionAhead = true;
+                        offset++;
+                        NextExpression = "," + GetExpression(source, ref offset);
+                        isEOL = true;
+                        break;
+
+                    case (byte)LINE_TOKEN.EOF:
+                    case (byte)LINE_TOKEN.THEN:
+                    case (byte)LINE_TOKEN.REM:
+                    case (byte)LINE_TOKEN.ELSE:
+                    case (byte)TYPE_TOKEN.NUMBER: //line number
+                    default:
+                        isEOL = true;
+                        //expression ends here, this byte-token should be processed outside this function
+                        break;
+
+                    #endregion
+                }
+
+            }// after this, we should have a list of all tokens in the expression.
+            //lets parse RPN into Infix, 
+            if(ExpressionAhead)
+                Result = ParseRPN2Infix(ExprTokens) + NextExpression;
+            else
+                Result = ParseRPN2Infix(ExprTokens);
+          
+            return Result;
+        }
 
 
         /// <summary>
-        /// Prints a byte array
+        /// Parse a postfix list of tokens into INFIX
         /// </summary>
-        /// <param name="ByteEncoded">Byte array to print</param>
-        /// <param name="HeaderString">Optional Header string</param>
-        void ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
+        /// <param name="ExprTokens"></param>
+        /// <returns></returns>
+        static string ParseRPN2Infix(List<EditorTokenInfo> ExprTokens)
         {
-            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            Console.Write(HeaderString);
-            Console.Write(" Bytes = { ");
-            for (var i = 0; i < PSize + 3; i++)
+
+
+            string Result = "";
+            Stack<BinaryTree<EditorTokenInfo>> BTStack =
+               new Stack<BinaryTree<EditorTokenInfo>>();
+
+
+
+            //parse using BTreeStack every token in RPN list of preprocessed tokens
+            for(int idxtoken=0;idxtoken < ExprTokens.Count;idxtoken++)
+            
             {
-                Console.Write($"{ByteEncoded[i]} ");
+                EditorTokenInfo token = new EditorTokenInfo("","");
+                token = ExprTokens[idxtoken];
+               
+                if (token.Precedence < 50)
+                    //It's an operand, just push to stack
+                    BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
+
+                else
+                {
+                    //it's an operator, push two operands, create a new tree and push to stack again.
+                    BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
+                    
+                    switch (operatornode.Data.TerminalName )
+                    {
+                        //Multiple expressions functions
+                        case "AVG":
+
+                            if(BTStack.Count < operatornode.Data.Index)
+                                throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
+
+                            for (int i = 1; i< operatornode.Data.Index; i++)
+                                NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
+
+                            NodeAddCommaToken(ref operatornode, BTStack.Pop(),true); //just add to the left
+                            BTStack.Push(operatornode);
+
+                            break;
+
+                        default: //Other simple functions and operators
+
+                            if (BTStack.Count > 1) //avoid unary operators and functions exception
+                                operatornode.Right = BTStack.Pop();
+
+                            operatornode.Left = BTStack.Pop();
+                            BTStack.Push(operatornode);
+
+                            break;
+                    }
+
+                }
 
             }
-            Console.WriteLine("}");
+
+            if (BTStack.Count > 1)
+                throw new ArgumentException("Too many expressions in final BTStack");
+
+            BinaryTree<EditorTokenInfo> root = BTStack.Peek();
+            //now we end the the top most node on stack as a complete tree of RPN
+            string rootprint = root.ToString();
+            Result = TraverseInOrder(root);
+            return Result;
+
         }
 
-    }
+        /// <summary>
+        /// Add a comma node to the left, and a binary tree to the right.
+        /// </summary>
+        /// <param name="root">root node</param>
+        /// <param name="newTree"></param>
+        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree,bool onlyLeft = false)
+        {
+            EditorTokenInfo CommaToken = new EditorTokenInfo(",", "COMMA");
+            CommaToken.Precedence = 150;
+            
+            BinaryTree<EditorTokenInfo> current = root;
 
+            //find the the last left leaf, :) sounds like a tongue-twister
+            while (current.Left != null)
+                current = current.Left;
+
+            if (!onlyLeft)
+            {
+                //add a comma to the left
+                current.Left = new BinaryTree<EditorTokenInfo>(CommaToken);
+                //add a binary tree to the right
+                current.Left.Right = newTree;
+            }
+            else
+                current.Left = newTree;
+            
+
+            //go back to top parent
+            while (current.Parent != null)
+                current = current.Parent;
+
+            root = current;
+
+        }
+
+
+
+        /// <summary>
+        /// Traverse inorder (INFIX NOTATION) all nodes of Btree.
+        /// </summary>
+        /// <param name="rootnode">Current Node</param>
+        /// <param name="priorPrecedence">Prior Precedence</param>
+        /// <returns></returns>
+        static string TraverseInOrder
+            (BinaryTree<EditorTokenInfo> rootnode, int priorPrecedence = 0)
+        {
+            string Result = "";
+
+            EditorTokenInfo token = rootnode.Data;
+            if (token.Precedence < 50)
+            {
+                //its an operand, return the text
+                return token.Text;
+            }
+            else
+            {
+                //its a operator, visit left, concatenate with root and right.
+                if (rootnode.Right == null)
+                {
+                    if (token.Precedence == 200) //Its a function, add parenthesis here!!
+                        Result = token.Text +  "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
+
+                    else //just a unary operator!?
+                        Result = token.Text + " "  + TraverseInOrder(rootnode.Left, token.Precedence);
+                }
+                else //left and right are not null
+                {
+                    Result = TraverseInOrder(rootnode.Left, token.Precedence) + " " + token.Text + " " + TraverseInOrder(rootnode.Right, token.Precedence);
+                }
+
+
+                //take account of prior precedence vs current node precedence, and add parenthesis
+                if (token.Precedence < priorPrecedence && priorPrecedence != 200 && priorPrecedence != 150)
+                {
+                    Result = "(" + Result + ")";
+                }
+
+            }
+
+            return Result;
+
+        }
+
+
+
+        /// <summary>
+        /// Get a numeric constant value from sourcec
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">start</param>
+        /// <returns></returns>
+        private static string GetConstValue(byte[] source, ref int offset)
+        {
+            string result = "";
+            byte[] value = { 0, 0, 0, 0 };
+            Int32 intvalue = 0;
+
+            for (int i = 0; i < 4; i++)
+            {
+                value[i] = source[offset + i + 1];
+            }
+
+            intvalue = BitConverter.ToInt32(value, 0);
+            double dvalue = intvalue / 1000;
+            intvalue = Convert.ToInt32(dvalue);
+
+            //check if a whole number
+            if (dvalue % 1 == 0)
+            {
+                result = intvalue.ToString();
+            }
+            else
+            {
+                result = dvalue.ToString();
+            }
+
+
+            offset += 5;
+            return result;
+        }
+
+        /// <summary>
+        /// Get label for current identifier
+        /// </summary>
+        /// <param name="source">source bytes</param>
+        /// <param name="offset">position</param>
+        /// <returns></returns>
+        private static string GetIdentifierLabel(byte[] source, ref int offset)
+        {
+            string IdentLabel = "UNKNOWN_IDENT";
+            //get the target identifier
+            short Token = source[offset];
+            int TokenIdx = source[offset + 1];
+            short TokenType = source[offset + 2];
+
+            offset += 3;
+
+            switch (TokenType)
+            {
+                case (short)PCODE_CONST.VARPOINTTYPE:
+                    IdentLabel = Identifiers.Variables[TokenIdx].Label;
+                    break;
+                case (short)PCODE_CONST.INPOINTTYPE:
+                    IdentLabel = Identifiers.Inputs[TokenIdx].Label;
+                    break;
+                case (short)PCODE_CONST.OUTPOINTTYPE:
+                    IdentLabel = Identifiers.Outputs[TokenIdx].Label;
+                    break;
+
+                default:
+                    break;
+            }
+            return IdentLabel;
+        }
+    }
 }
