@@ -177,6 +177,7 @@
       <DependentUpon>OutputsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\prgfilename.cs" />
+    <Compile Include="Forms\ProgramsForm\BinaryTree.cs" />
     <Compile Include="Forms\ProgramsForm\ProgramsForm.cs">
       <SubType>Form</SubType>
     </Compile>
