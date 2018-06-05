@@ -17,6 +17,45 @@
         public int Length { get; set; }
         public long Coef { get; set; }
         public bool IsUpgraded { get; set; } = false;
+        //
+        
+
+        /// <summary>
+        /// Delegate to event handler Send
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void LoadPartEventHandler(object sender, LoadPartEventArgs e);
+
+        public class LoadPartEventArgs : EventArgs
+        {
+            public int PartsCounter { get; set; } = 0;
+            public List<string> LoadedParts { get; set; } = new List<string>();
+
+            public LoadPartEventArgs()
+            {
+                PartsCounter = 0;
+                LoadedParts = new List<string>();
+            }
+
+            public LoadPartEventArgs(int counter, string part)
+            {
+                Add(counter, part);
+            }
+
+            public void Add(int counter = 1, string part = "New section")
+            {
+                PartsCounter += counter;
+                LoadedParts.Add(part);
+            }
+        }
+
+        public event LoadPartEventHandler LoadParts;
+
+        public void OnLoadParts(LoadPartEventArgs e)
+        {
+            LoadParts?.Invoke(this, e);
+        }
 
         #region Main data
 
@@ -249,26 +288,35 @@
             Signature = bytes.GetString(0, 2);
             Version = bytes.ToByte(2);
             Length = bytes.Length;
-
+            
             offset += 3;
+
+            LoadPartEventArgs e = new LoadPartEventArgs(1,"Header: 1");
+            OnLoadParts(e);
 
             //Get all inputs
             Inputs.AddRange(GetArray(bytes,
                 InputPoint.GetCount(FileVersion),
                 InputPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new InputPoint(i, 0, FileVersion)));
+            e.Add(Inputs.Count, $"InputPoints {Inputs.Count} - Offset {offset}");
+            OnLoadParts(e);
 
             //Get all outputs
             Outputs.AddRange(GetArray(bytes,
                 OutputPoint.GetCount(FileVersion),
                 OutputPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new OutputPoint(i, 0, FileVersion)));
+            e.Add(Outputs.Count, $"OutputPoints {Outputs.Count} - Offset {offset}");
+            OnLoadParts(e);
 
             //Get all variables
             Variables.AddRange(GetArray(bytes,
                 VariablePoint.GetCount(FileVersion),
                 VariablePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new VariablePoint(i, 0, FileVersion)));
+            e.Add(Variables.Count, $"VariablePoints {Variables.Count} - Offset {offset}");
+            OnLoadParts(e);
 
             //Get all programs
             Programs.AddRange(GetArray(bytes,
@@ -416,6 +464,7 @@
                     throw new NotImplementedException("This version not implemented");
             }
         }
+
 
         public byte[] ToDosFormat()
         {

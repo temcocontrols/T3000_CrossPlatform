@@ -44,21 +44,23 @@ namespace PRGReaderLibrary.Utilities
             Array.Copy(PCode, 0, prgsize, 0, 2);
 
             //2 bytes more for total bytes count.
-            int ProgLenght = BytesExtensions.ToInt16(prgsize) + 2;
+            int ProgLenght = BytesExtensions.ToInt16(prgsize)+2;
             //If defined, END for THEN or ELSE
-            if (End != 0)
+            if (End!=0)
                 ProgLenght = End;
-
+            
             Stack<int> offsets = new Stack<int>();
-
+            
 
             int offset = 0; //offset after count of total encoded bytes
             bool isFirstToken = true; //default values for first decoding
+            bool recursiveCall = false; //default value for first decoding
 
-            if (Start != 0)
+            if(Start != 0)
             {
                 offset = Start;
                 isFirstToken = false;
+                recursiveCall = true;
             }
             else //normal start for offset
                 offset = 2;
@@ -75,14 +77,14 @@ namespace PRGReaderLibrary.Utilities
                             string strLineNum = GetLineNumber(PCode, ref offset);
                             result += strLineNum;
                         }
-                        else offset += 2;
-                        //next token is not the first, 4 sure
+                        else throw new NotImplementedException($"Token NUMBER but not fistToken: {System.Environment.NewLine}{result}{System.Environment.NewLine}");
+
                         isFirstToken = false;
                         break;
                     //comments
                     case (byte)LINE_TOKEN.REM:
 
-                        result += " " + GetComment(PCode, ref offset) + System.Environment.NewLine;
+                        result += " " + GetComment(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
@@ -99,7 +101,7 @@ namespace PRGReaderLibrary.Utilities
                         break;
 
                     case (byte)LINE_TOKEN.ASSIGN:
-                        result += " " + GetAssigment(PCode, ref offset) + System.Environment.NewLine;
+                        result += " " + GetAssigment(PCode, ref offset);// + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
                     #endregion
@@ -110,22 +112,22 @@ namespace PRGReaderLibrary.Utilities
                     #region Single byte commands
 
                     case (byte)LINE_TOKEN.CLEAR:
-                        result += " " + "CLEAR" + System.Environment.NewLine;
+                        result += " " + "CLEAR";// + System.Environment.NewLine;
                         offset++;
                         isFirstToken = true;
                         break;
                     case (byte)LINE_TOKEN.HANGUP:
-                        result += " " + "HANGUP" + System.Environment.NewLine;
+                        result += " " + "HANGUP";// + System.Environment.NewLine;
                         offset++;
                         isFirstToken = true;
                         break;
                     case (byte)LINE_TOKEN.RETURN:
-                        result += " " + "RETURN" + System.Environment.NewLine;
+                        result += " " + "RETURN";// + System.Environment.NewLine;
                         offset++;
                         isFirstToken = true;
                         break;
                     case (byte)LINE_TOKEN.ENDPRG:
-                        result += " " + "END" + System.Environment.NewLine;
+                        result += " " + "END";// + System.Environment.NewLine;
                         offset++;
                         isFirstToken = true;
                         break;
@@ -135,42 +137,42 @@ namespace PRGReaderLibrary.Utilities
                     case (byte)LINE_TOKEN.START:
                         result += " " + "START ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.STOP:
                         result += " " + "STOP ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.OPEN:
                         result += " " + "OPEN ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.CLOSE:
                         result += " " + "CLOSE ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.ENABLEX:
                         result += " " + "ENABLE ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
 
                     case (byte)LINE_TOKEN.DISABLEX:
                         result += " " + "DISABLE ";
                         offset++;
-                        result += GetIdentifierLabel(PCode, ref offset) + System.Environment.NewLine;
+                        result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                         isFirstToken = true;
                         break;
                     #endregion
@@ -196,35 +198,47 @@ namespace PRGReaderLibrary.Utilities
                         isFirstToken = false;
                         result += " THEN ";
                         offset++;
+                        int prevOffset = offset;
                         //THEN is always followed by two bytes
                         byte[] thenoffset = { 0x00, 0x00 };
                         thenoffset[0] = PCode[offset];
                         thenoffset[1] = PCode[offset + 1];
                         offset += 2;
-                        int newOffset = (int)(thenoffset[0] - 4);
+                        int newOffset = (int)(thenoffset[0] -1 );
+                        
                         result += RemoveCRLF(GetThenPart(PCode, ref offset, newOffset));
+                        //offset++;
+                        if(offset < prevOffset)
+                        {
+                            throw new NotImplementedException($"ThenPart Not Found: {System.Environment.NewLine}{result}{System.Environment.NewLine}");
+                        }
+                       
+                        if(PCode[offset] == (byte)LINE_TOKEN.EOE) //optional end marker
+                        {
+                            offset++; //jump this marker
+
+                            if (PCode[offset] == (byte)LINE_TOKEN.ELSE)
+                                isFirstToken = false;
+                            else isFirstToken = true;
+                        }
 
                         break;
 
-                    case (byte)LINE_TOKEN.EOE:
+                    case (byte)LINE_TOKEN.ELSE:
                         //ELSE
-                        if (PCode[offset + 1] == (byte)LINE_TOKEN.ELSE && PCode[offset + 2] == (byte)LINE_TOKEN.EOE)
+                       
+                        offset += 2;
+                        byte[] elseoffset = { 0x00, 0x00 };
+                        elseoffset[0] = PCode[offset];
+                        elseoffset[1] = PCode[offset + 1];
+                        offset += 2;
+                        int newElseOffset = (int)(elseoffset[0] - 1);
+                        result += " ELSE " + GetElsePart(PCode, ref offset, newElseOffset);
+                        if (PCode[offset] == (byte)LINE_TOKEN.EOE) //optional end marker
                         {
-                            offset += 2;
-                            byte[] elseoffset = { 0x00, 0x00 };
-                            elseoffset[0] = PCode[offset];
-                            elseoffset[1] = PCode[offset + 1];
-                            offset += 2;
-                            int newElseOffset = (int)(elseoffset[0] - 4);
-                            result += " ELSE " + GetElsePart(PCode, ref offset, newElseOffset);
-                            isFirstToken = true;
+                            offset++; //jump this marker
                         }
-                        else
-                        {
-                            offset++;
-                            if (PCode[offset] != (byte)LINE_TOKEN.EOF)
-                                result += System.Environment.NewLine;
-                        }
+                        isFirstToken = true;
 
                         break;
                     #endregion
@@ -240,7 +254,7 @@ namespace PRGReaderLibrary.Utilities
                         //What about the second byte???
                         string gotoLine = GetLineNumber(PCode, ref copyoffset);
                         offset += 2; //2 bytes
-                        result += gotoLine + System.Environment.NewLine;
+                        result += gotoLine; // + System.Environment.NewLine;
 
                         isFirstToken = true;
                         break;
@@ -253,7 +267,7 @@ namespace PRGReaderLibrary.Utilities
                         //What about the second byte???
                         string gotoLine2 = GetLineNumber(PCode, ref copyoffset2);
                         offset += 2; //2 bytes
-                        result += gotoLine2 + System.Environment.NewLine;
+                        result += gotoLine2; // + System.Environment.NewLine;
 
                         isFirstToken = true;
                         break;
@@ -266,7 +280,7 @@ namespace PRGReaderLibrary.Utilities
                         //What about the second byte???
                         string gotoLine3 = GetLineNumber(PCode, ref copyoffset3);
                         offset += 2; //2 bytes
-                        result += gotoLine3 + System.Environment.NewLine;
+                        result += gotoLine3; // + System.Environment.NewLine;
 
                         isFirstToken = true;
                         break;
@@ -279,7 +293,7 @@ namespace PRGReaderLibrary.Utilities
                         //What about the second byte???
                         string gotoLine4 = GetLineNumber(PCode, ref copyoffset4);
                         offset += 2; //2 bytes
-                        result += gotoLine4 + System.Environment.NewLine;
+                        result += gotoLine4; // + System.Environment.NewLine;
 
                         isFirstToken = true;
                         break;
@@ -296,8 +310,11 @@ namespace PRGReaderLibrary.Utilities
                     case (byte)LINE_TOKEN.EOF:
                     default:
                         offset++; //TODO: This line only for debugging purposes, should be removed, when decoder finished
+                        result = RemoveCRLF(result);
                         break;
                 }
+                if (!recursiveCall && isFirstToken)
+                    result += System.Environment.NewLine;
             }
 
             return result;
@@ -335,7 +352,7 @@ namespace PRGReaderLibrary.Utilities
             result += DecodeBytes(pCode, offset, newOffset);
             //set new referenced offset.
             offset = newOffset;
-
+           
             return result;
         }
 
@@ -372,7 +389,7 @@ namespace PRGReaderLibrary.Utilities
             List<byte> comment = new List<byte>();
             comment = source.ToList().GetRange(offset, count);
             //Array.Copy(source, offset, comment, 0, count);
-            result += System.Text.Encoding.Default.GetString(comment.ToArray()) + System.Environment.NewLine;
+            result += System.Text.Encoding.Default.GetString(comment.ToArray());// + System.Environment.NewLine;
             offset += count;
 
 
@@ -390,7 +407,7 @@ namespace PRGReaderLibrary.Utilities
         {
             string result = "↑";
 
-
+            
             offset++; //skip LINETOKEN ASSIGNMENT
             //get left side of assigment
             result = GetIdentifierLabel(source, ref offset);
@@ -434,7 +451,7 @@ namespace PRGReaderLibrary.Utilities
             ////RegisterOperators(50, AND, OR, XOR);
 
             #endregion
-
+            
             while (!isEOL)
             {
                 switch (source[offset])
@@ -456,7 +473,7 @@ namespace PRGReaderLibrary.Utilities
                     #region Numeric Constants
 
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
-
+                        
                         EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                         constvalue.Token = source[offset];
                         constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
@@ -587,7 +604,7 @@ namespace PRGReaderLibrary.Utilities
                         ExprTokens.Add(nottoken);
                         offset++;
                         break;
-                    //functions that are low precedence as identifiers in expressions
+                        //functions that are low precedence as identifiers in expressions
                     case (byte)FUNCTION_TOKEN.DOY:
                         fxtoken = new EditorTokenInfo("DOY", "DOY");
                         fxtoken.Token = source[offset];
@@ -816,16 +833,16 @@ namespace PRGReaderLibrary.Utilities
                         //expression ends here, this byte-token should be processed outside this function
                         break;
 
-                        #endregion
+                    #endregion
                 }
 
             }// after this, we should have a list of all tokens in the expression.
             //lets parse RPN into Infix, 
-            if (ExpressionAhead)
+            if(ExpressionAhead)
                 Result = ParseRPN2Infix(ExprTokens) + NextExpression;
             else
                 Result = ParseRPN2Infix(ExprTokens);
-
+          
             return Result;
         }
 
@@ -846,12 +863,12 @@ namespace PRGReaderLibrary.Utilities
 
 
             //parse using BTreeStack every token in RPN list of preprocessed tokens
-            for (int idxtoken = 0; idxtoken < ExprTokens.Count; idxtoken++)
-
+            for(int idxtoken=0;idxtoken < ExprTokens.Count;idxtoken++)
+            
             {
-                EditorTokenInfo token = new EditorTokenInfo("", "");
+                EditorTokenInfo token = new EditorTokenInfo("","");
                 token = ExprTokens[idxtoken];
-
+               
                 if (token.Precedence < 50)
                     //It's an operand, just push to stack
                     BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
@@ -860,19 +877,19 @@ namespace PRGReaderLibrary.Utilities
                 {
                     //it's an operator, push two operands, create a new tree and push to stack again.
                     BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
-
-                    switch (operatornode.Data.TerminalName)
+                    
+                    switch (operatornode.Data.TerminalName )
                     {
                         //Multiple expressions functions
                         case "AVG":
 
-                            if (BTStack.Count < operatornode.Data.Index)
+                            if(BTStack.Count < operatornode.Data.Index)
                                 throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
 
-                            for (int i = 1; i < operatornode.Data.Index; i++)
+                            for (int i = 1; i< operatornode.Data.Index; i++)
                                 NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
 
-                            NodeAddCommaToken(ref operatornode, BTStack.Pop(), true); //just add to the left
+                            NodeAddCommaToken(ref operatornode, BTStack.Pop(),true); //just add to the left
                             BTStack.Push(operatornode);
 
                             break;
@@ -908,11 +925,11 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="root">root node</param>
         /// <param name="newTree"></param>
-        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree, bool onlyLeft = false)
+        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree,bool onlyLeft = false)
         {
             EditorTokenInfo CommaToken = new EditorTokenInfo(",", "COMMA");
             CommaToken.Precedence = 150;
-
+            
             BinaryTree<EditorTokenInfo> current = root;
 
             //find the the last left leaf, :) sounds like a tongue-twister
@@ -928,7 +945,7 @@ namespace PRGReaderLibrary.Utilities
             }
             else
                 current.Left = newTree;
-
+            
 
             //go back to top parent
             while (current.Parent != null)
@@ -963,10 +980,10 @@ namespace PRGReaderLibrary.Utilities
                 if (rootnode.Right == null)
                 {
                     if (token.Precedence == 200) //Its a function, add parenthesis here!!
-                        Result = token.Text + "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
+                        Result = token.Text +  "(" + TraverseInOrder(rootnode.Left, token.Precedence) + ")";
 
                     else //just a unary operator!?
-                        Result = token.Text + " " + TraverseInOrder(rootnode.Left, token.Precedence);
+                        Result = token.Text + " "  + TraverseInOrder(rootnode.Left, token.Precedence);
                 }
                 else //left and right are not null
                 {

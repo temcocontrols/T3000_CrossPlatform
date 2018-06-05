@@ -87,13 +87,15 @@
 
             Code = editTextBox.Text;
 
+            //if (Send != null)
+            //{
+            //    Send(this, e);
+            //}
 
-            if (Send != null)
-            {
-                Send(this,e);
-            }
 
-           
+            Send?.Invoke(this, e);
+
+
         }
 
         /// <summary>

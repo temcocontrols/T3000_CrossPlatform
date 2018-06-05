@@ -9,8 +9,8 @@
     using System.Windows.Forms;
     public partial class T3000Form : Form
     {
-        private Prg _prg; 
-        public Prg Prg
+        private Prg _prg ; 
+        public Prg PRG
         {
             get { return _prg; }
           
@@ -18,7 +18,7 @@
         }
 
         public string PrgPath { get; private set; }
-        public bool IsOpened => Prg != null;
+        public bool IsOpened => PRG != null;
 
 
 
@@ -49,9 +49,16 @@
 
                 
                 PrgPath = path;
-                Prg = Prg.Load(path);
+                ResetLoadPrgBar(0);
+
 
                 
+                
+                _prg = Prg.Load(path);
+                _prg.LoadParts += UpdateLoadPrgBar;
+                _prg = Prg.Load(path);
+
+                PRG = _prg;
 
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
 
@@ -80,7 +87,7 @@
                 schedulesButton.Enabled = true;
                 holidaysButton.Enabled = true;
 
-                if (Prg.FileVersion != FileVersion.Current)
+                if (PRG.FileVersion != FileVersion.Current)
                 {
                     upgradeMenuItem.Visible = true;
                 }
@@ -103,7 +110,7 @@
             {
                 var path = PrgPath;
 
-                Prg.Save(path);
+                PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
             }
             catch (Exception exception)
@@ -131,7 +138,7 @@
             var path = dialog.FileName;
             try
             {
-                Prg.Save(path);
+                PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
             }
             catch (Exception exception)
@@ -152,7 +159,7 @@
             {
                 var path = PrgPath;
 
-                Prg.Upgrade(FileVersion.Current);
+                PRG.Upgrade(FileVersion.Current);
                 statusLabel.Text = string.Format(Resources.Upgraded, path);
 
                 upgradeMenuItem.Visible = false;
@@ -207,7 +214,7 @@
                     return;
                 }
 
-                var form = new InputsForm(Prg.Inputs, Prg.CustomUnits);
+                var form = new InputsForm(PRG.Inputs, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -225,7 +232,7 @@
                     return;
                 }
 
-                var form = new OutputsForm(Prg.Outputs, Prg.CustomUnits);
+                var form = new OutputsForm(PRG.Outputs, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -243,7 +250,7 @@
                     return;
                 }
 
-                var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+                var form = new VariablesForm(PRG.Variables, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -261,7 +268,7 @@
                     return;
                 }
 
-                var form = new ControllersForm(Prg.Controllers, Prg.CustomUnits);
+                var form = new ControllersForm(PRG.Controllers, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -305,12 +312,12 @@
                 {
                     return;
                 }
-                var f = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+                var f = new VariablesForm(PRG.Variables, PRG.CustomUnits);
                 var f2 = new ProgramsForm(ref _prg, PrgPath );
-                var form = new ScreensForm(Prg.Screens);
-                form.Prg = Prg;
-                form.PointsP=Prg.Programs;
-                form.CodesP = Prg.ProgramCodes;
+                var form = new ScreensForm(PRG.Screens);
+                form.Prg = PRG;
+                form.PointsP=PRG.Programs;
+                form.CodesP = PRG.ProgramCodes;
                 form.PrgPath = PrgPath;
 
                 form.Vars = f.Vars;
@@ -333,7 +340,7 @@
                     return;
                 }
 
-                var form = new SchedulesForm(Prg.Schedules, Prg.ScheduleCodes);
+                var form = new SchedulesForm(PRG.Schedules, PRG.ScheduleCodes);
                 form.Show();
             }
             catch (Exception exception)
@@ -351,7 +358,7 @@
                     return;
                 }
 
-                var form = new HolidaysForm(Prg.Holidays, Prg.HolidayCodes);
+                var form = new HolidaysForm(PRG.Holidays, PRG.HolidayCodes);
                 form.Show();
             }
             catch (Exception exception)
@@ -387,6 +394,24 @@
                 }
             }
             e.Handled = true;
+        }
+
+        public void ResetLoadPrgBar(int newvalue)
+        {
+            this.LoadProgressBar.Value = newvalue;
+            this.LoadPartName.Text = "";
+        }
+
+        private void UpdateLoadPrgBar(object sender, Prg.LoadPartEventArgs e)
+        {
+            this.LoadProgressBar.Value = e.PartsCounter;
+            this.LoadProgressBar.ToolTipText = e.LoadedParts.Last();
+            this.LoadPartName.Text = e.LoadedParts.Last();
+        }
+
+        public void TickLoadPrgBar()
+        {
+            this.LoadProgressBar.PerformStep();
         }
     }
 }
