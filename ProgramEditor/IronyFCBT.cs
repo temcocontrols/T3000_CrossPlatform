@@ -15,19 +15,20 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using Irony.Parsing;
+using static System.Net.WebRequestMethods;
 
 namespace FastColoredTextBoxNS
 {
     /// <summary>
     /// FastColoredTextBox with Irony parser support
     /// </summary>
-    /// <see cref="https://github.com/PavelTorgashov/FastColoredTextBox"/>
-    /// <see cref="http://irony.codeplex.com/"/>
+    ///// <see cref="http://github.com/PavelTorgashov/FastColoredTextBox"/>
+    ///// <see cref="http://irony.codeplex.com/"/>
     public class IronyFCTB : FastColoredTextBox
     {
         public event EventHandler<StyleNeededEventArgs> StyleNeeded;
-
         protected Parser parser;
+        
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
 
         /// <summary>
@@ -56,10 +57,6 @@ namespace FastColoredTextBoxNS
             set {
                 SetParser(value);
             }
-        }
-
-        public IronyFCTB()
-        {
         }
 
         /// <summary>

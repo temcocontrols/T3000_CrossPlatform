@@ -837,6 +837,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         /// <param name="startFoldingPattern">Pattern for start folding line</param>
         /// <param name="finishFoldingPattern">Pattern for finish folding line</param>
+        /// <param name="options"></param>
         public void SetFoldingMarkers(string startFoldingPattern, string finishFoldingPattern, RegexOptions options)
         {
             if (startFoldingPattern == finishFoldingPattern)
@@ -857,7 +858,8 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Sets folding markers
         /// </summary>
-        /// <param name="startEndFoldingPattern">Pattern for start and end folding line</param>
+        /// <param name="foldingPattern">Pattern for start and end folding line</param>
+        /// <param name="options">options</param>
         public void SetFoldingMarkers(string foldingPattern, RegexOptions options)
         {
             foreach (var range in GetRanges(foldingPattern, options))
@@ -883,6 +885,7 @@ namespace FastColoredTextBoxNS
         /// Finds ranges for given regex pattern
         /// </summary>
         /// <param name="regexPattern">Regex pattern</param>
+        /// <param name="options"></param>
         /// <returns>Enumeration of ranges</returns>
         public IEnumerable<Range> GetRanges(string regexPattern, RegexOptions options)
         {
@@ -913,6 +916,7 @@ namespace FastColoredTextBoxNS
         /// This method requires less memory than GetRanges().
         /// </summary>
         /// <param name="regexPattern">Regex pattern</param>
+        /// <param name="options"></param>
         /// <returns>Enumeration of ranges</returns>
         public IEnumerable<Range> GetRangesByLines(string regexPattern, RegexOptions options)
         {
@@ -932,7 +936,8 @@ namespace FastColoredTextBoxNS
         {
             Normalize();
 
-            var fts = tb.TextSource as FileTextSource; //<----!!!! ugly
+            //var fts = tb.TextSource as FileTextSource; //<----!!!! ugly
+            var fts = (FileTextSource)tb.TextSource;
 
             //enumaerate lines
             for (int iLine = Start.iLine; iLine <= End.iLine; iLine++)
@@ -958,6 +963,7 @@ namespace FastColoredTextBoxNS
         /// This method requires less memory than GetRanges().
         /// </summary>
         /// <param name="regexPattern">Regex pattern</param>
+        /// <param name="options"></param>
         /// <returns>Enumeration of ranges</returns>
         public IEnumerable<Range> GetRangesByLinesReversed(string regexPattern, RegexOptions options)
         {
@@ -965,8 +971,8 @@ namespace FastColoredTextBoxNS
             //create regex
             Regex regex = new Regex(regexPattern, options);
             //
-            var fts = tb.TextSource as FileTextSource; //<----!!!! ugly
-
+            //var fts = tb.TextSource as FileTextSource; //<----!!!! ugly
+            var fts = (FileTextSource)tb.TextSource;
             //enumaerate lines
             for (int iLine = End.iLine; iLine >= Start.iLine; iLine--)
             {
@@ -1024,7 +1030,7 @@ namespace FastColoredTextBoxNS
             {
                 ClearStyle(tb.GetStyleIndexMask(styles));
             }
-            catch {; }
+            catch { throw; }
         }
 
         /// <summary>
@@ -1208,6 +1214,7 @@ namespace FastColoredTextBoxNS
         /// Get fragment of text around Start place. Returns maximal matched to given Style.
         /// </summary>
         /// <param name="style">Allowed style for fragment</param>
+        /// <param name="allowLineBreaks"></param>
         /// <returns>Range of found fragment</returns>
         public Range GetFragment(Style style, bool allowLineBreaks)
         {
@@ -1248,6 +1255,7 @@ namespace FastColoredTextBoxNS
         /// Get fragment of text around Start place. Returns maximal mathed to pattern fragment.
         /// </summary>
         /// <param name="allowedSymbolsPattern">Allowed chars pattern for fragment</param>
+        /// <param name="options"></param>
         /// <returns>Range of found fragment</returns>
         public Range GetFragment(string allowedSymbolsPattern, RegexOptions options)
         {

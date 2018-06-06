@@ -1,11 +1,16 @@
 ﻿namespace T3000.Forms
 {
     using PRGReaderLibrary;
+    using PRGReaderLibrary.Extensions;
+    using PRGReaderLibrary.Types.Enums.Codecs;
+    using PRGReaderLibrary.Utilities;
     using Properties;
     using System;
-    using System.Drawing;
-    using System.Windows.Forms;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Drawing;
+
+    using System.Windows.Forms;
 
     public partial class ProgramsForm : Form
     {
@@ -13,7 +18,28 @@
         public List<ProgramCode> Codes { get; set; }
         public DataGridView Progs { get; set; }
 
-        public ProgramsForm(List<ProgramPoint> points, List<ProgramCode> codes)
+        private Prg _prg;
+        public Prg Prg
+        {
+            get { return _prg; }
+
+            set { _prg = value; }
+        }
+
+        public string PrgPath { get; private set; }
+
+
+        public ProgramsForm(ref Prg  CurPRG,string Path)
+        {
+            Prg = CurPRG;
+            PrgPath = Path;
+
+            SetView(Prg.Programs, Prg.ProgramCodes);
+
+        }
+
+
+        public void  SetView(List<ProgramPoint> points, List<ProgramCode> codes)
         {
             if (points == null)
             {
@@ -32,7 +58,7 @@
             view.AddEditHandler(CodeColumn, EditCodeColumn);
 
             //Value changed handles
-            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor, 
+            view.AddChangedHandler(StatusColumn, TViewUtilities.ChangeColor,
                 Color.Red, Color.Blue);
 
             //Show points
@@ -56,6 +82,7 @@
 
             Progs = view;
         }
+
 
         private void SetRow(DataGridViewRow row, ProgramPoint point)
         {
@@ -98,6 +125,8 @@
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.Length = row.GetValue<int>(SizeColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
+                    
+                    
                 }
             }
             catch (Exception exception)
@@ -167,19 +196,38 @@
 
         #region User input handles
 
+        int Index_EditProgramCode;
+
         private void EditCodeColumn(object sender, EventArgs e)
         {
             try
             {
                 var row = view.CurrentRow;
-                var index = row.GetValue<int>(NumberColumn) - 1;
-                var form = new ProgramEditorForm(Codes[index].ToString());
-                if (form.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
+                Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
+                
+                var form = new ProgramEditorForm();
+                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
 
-                //Codes[index] = form.Code;
+                Debug.WriteLine("--------------ORIGINAL CODE-------------------");
+                Encoder.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
+
+                Decoder.SetControlPoints(Prg);
+                string ProgramText = Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);
+
+                Debug.WriteLine("--------------NEW PROGRAM TEXT-------------------");
+                Debug.WriteLine(ProgramText);
+                //form.SetCode(Codes[Index_EditProgramCode].ToString());
+                form.SetCode(ProgramText);
+                //////create a local copy of all identifiers
+                ////form.Identifiers = new ControlPoints(Prg);
+
+                //Override Send Event Handler and encode program into bytes.
+                form.Send += Form_Send;
+                form.MdiParent = this.MdiParent ;
+                
+                form.Show();
+                //if (form.ShowDialog() != DialogResult.OK) return;
+
             }
             catch (Exception exception)
             {
@@ -187,7 +235,38 @@
             }
         }
 
+        private void Form_Send(object sender, SendEventArgs e)
+        {
+
+            Debug.WriteLine("");
+            Debug.WriteLine("---------------------DEBUG STRINGS-----------------------");
+            Debug.WriteLine("");
+            Debug.WriteLine($"Code:{Environment.NewLine}{e.Code}");
+            Debug.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
+
+
+            //Init a copy of controlpoints
+            Encoder.SetControlPoints(Prg);
+            //ENCODE THE PROGRAM
+            byte[] ByteEncoded = Encoder.EncodeBytes(e.Tokens);
+            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            Encoder.ConsolePrintBytes(ByteEncoded, "Encoded");
+            MessageBox.Show($"Resource compiled succceded{System.Environment.NewLine}Total size 2000 bytes{System.Environment.NewLine}Already used {PSize} bytes.", "T3000");
+
+           // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
+            Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
+            //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
+            Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
+            Prg.Programs[Index_EditProgramCode].Length = PSize;
+            //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
+            //Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}.PRG");
+           
+
+        }
+
+
         #endregion
 
     }
+
 }

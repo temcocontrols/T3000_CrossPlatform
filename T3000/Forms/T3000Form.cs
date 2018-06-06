@@ -7,18 +7,30 @@
     using System.IO;
     using System.Linq;
     using System.Windows.Forms;
-    public partial class T3000Form : Form
-    {
-        public Prg Prg { get; private set; }
-        public string PrgPath { get; private set; }
-        public bool IsOpened => Prg != null;
+    using System.Diagnostics;
 
-        //TODO: Pendiente de averiguar la finalidad?! No encuentra el archivo SQLITE
-        //prgfilename p;
+    public partial class T3000Form : Form, ILoadMessages
+    {
+        private Prg _prg ; 
+        public Prg PRG
+        {
+            get { return _prg; }
+          
+            private set { _prg = value; }
+        }
+
+        public string PrgPath { get; private set; }
+        public bool IsOpened => PRG != null;
+
+
 
         public T3000Form()
         {
             InitializeComponent();
+            //LRUIZ: AutoExpand treeBuildingView
+            //TODO: Add dynamically nodes to tree Building View
+            treeBuildingView.ExpandAll();
+            treeBuildingView.FullRowSelect = true;
         }
 
         #region File
@@ -26,7 +38,7 @@
         private void LoadPrg(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog();
-            dialog.Filter = $"{Resources.PrgFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
             dialog.Title = Resources.SelectPrgFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {
@@ -37,11 +49,14 @@
             {
                 var path = dialog.FileName;
 
-                //TODO: Pendiente de averiguar cual es era la finalidad.
-                //p = new prgfilename(Path.GetFileName(path));
                 
                 PrgPath = path;
-                Prg = Prg.Load(path);
+                //Reset progress bar and label
+                ResetLoadPrgBar(0);
+
+
+                PRG = Prg.Load(path,this);
+                
 
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
 
@@ -70,7 +85,7 @@
                 schedulesButton.Enabled = true;
                 holidaysButton.Enabled = true;
 
-                if (Prg.FileVersion != FileVersion.Current)
+                if (PRG.FileVersion != FileVersion.Current)
                 {
                     upgradeMenuItem.Visible = true;
                 }
@@ -93,7 +108,7 @@
             {
                 var path = PrgPath;
 
-                Prg.Save(path);
+                PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
             }
             catch (Exception exception)
@@ -111,7 +126,7 @@
             }
 
             var dialog = new SaveFileDialog();
-            dialog.Filter = $"{Resources.PrgFiles} (*.prg)|*.prg|{Resources.AllFiles} (*.*)|*.*";
+            dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
             dialog.Title = Resources.SavePrgFile;
             if (dialog.ShowDialog() != DialogResult.OK)
             {
@@ -121,7 +136,7 @@
             var path = dialog.FileName;
             try
             {
-                Prg.Save(path);
+                PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
             }
             catch (Exception exception)
@@ -142,7 +157,7 @@
             {
                 var path = PrgPath;
 
-                Prg.Upgrade(FileVersion.Current);
+                PRG.Upgrade(FileVersion.Current);
                 statusLabel.Text = string.Format(Resources.Upgraded, path);
 
                 upgradeMenuItem.Visible = false;
@@ -197,7 +212,7 @@
                     return;
                 }
 
-                var form = new InputsForm(Prg.Inputs, Prg.CustomUnits);
+                var form = new InputsForm(PRG.Inputs, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -215,7 +230,7 @@
                     return;
                 }
 
-                var form = new OutputsForm(Prg.Outputs, Prg.CustomUnits);
+                var form = new OutputsForm(PRG.Outputs, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -233,7 +248,7 @@
                     return;
                 }
 
-                var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+                var form = new VariablesForm(PRG.Variables, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -251,7 +266,7 @@
                     return;
                 }
 
-                var form = new ControllersForm(Prg.Controllers, Prg.CustomUnits);
+                var form = new ControllersForm(PRG.Controllers, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -262,6 +277,11 @@
 
         private void ShowPrograms(object sender, EventArgs e)
         {
+            ShowPrograms();
+        }
+
+        private void ShowPrograms()
+        {
             try
             {
                 if (!CheckIsOpened())
@@ -269,8 +289,11 @@
                     return;
                 }
 
-                var form = new ProgramsForm(Prg.Programs, Prg.ProgramCodes);
+                var form = new ProgramsForm(ref _prg, PrgPath);
+
+                form.MdiParent = this;
                 form.Show();
+
             }
             catch (Exception exception)
             {
@@ -287,15 +310,14 @@
                 {
                     return;
                 }
-                var f = new VariablesForm(Prg.Variables, Prg.CustomUnits);
-                var f2 = new ProgramsForm(Prg.Programs, Prg.ProgramCodes);
-                var form = new ScreensForm(Prg.Screens);
-                form.Prg = Prg;
-                form.PointsP=Prg.Programs;
-                form.CodesP = Prg.ProgramCodes;
+                var f = new VariablesForm(PRG.Variables, PRG.CustomUnits);
+                var f2 = new ProgramsForm(ref _prg, PrgPath );
+                var form = new ScreensForm(PRG.Screens);
+                form.Prg = PRG;
+                form.PointsP=PRG.Programs;
+                form.CodesP = PRG.ProgramCodes;
                 form.PrgPath = PrgPath;
-                //TODO: Única referencia a las líneas con errores de carga de DB SQLITE
-                //form.Prfileid = p.Prgfileid;
+
                 form.Vars = f.Vars;
                 form.Progs = f2.Progs;
                 
@@ -316,7 +338,7 @@
                     return;
                 }
 
-                var form = new SchedulesForm(Prg.Schedules, Prg.ScheduleCodes);
+                var form = new SchedulesForm(PRG.Schedules, PRG.ScheduleCodes);
                 form.Show();
             }
             catch (Exception exception)
@@ -334,7 +356,7 @@
                     return;
                 }
 
-                var form = new HolidaysForm(Prg.Holidays, Prg.HolidayCodes);
+                var form = new HolidaysForm(PRG.Holidays, PRG.HolidayCodes);
                 form.Show();
             }
             catch (Exception exception)
@@ -358,5 +380,44 @@
 
         #endregion
 
+        private void T3000Form_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.P:
+                        ShowPrograms();
+                        break;
+                }
+            }
+            e.Handled = true;
+        }
+
+        public void ResetLoadPrgBar(int newvalue)
+        {
+            this.LoadProgressBar.Value = newvalue;
+            this.LoadPartName.Text = "";
+        }
+
+
+        public void TickLoadPrgBar()
+        {
+            this.LoadProgressBar.PerformStep();
+        }
+
+        public void PassMessage(int counter, string theMessage)
+        {
+            LoadPartName.Text = "";
+            this.LoadPartName.Text = $"Parts({counter}) => Loaded {theMessage}";
+            this.LoadProgressBar.Value = counter;
+
+            Debug.WriteLine(this.LoadPartName.Text);
+            Application.DoEvents();
+
+
+            System.Threading.Thread.Sleep(50);
+
+        }
     }
 }

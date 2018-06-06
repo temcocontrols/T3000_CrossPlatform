@@ -51,6 +51,8 @@
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LoadProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.LoadPartName = new System.Windows.Forms.ToolStripStatusLabel();
             this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
             this.inputsButton = new System.Windows.Forms.ToolStripButton();
             this.outputsButton = new System.Windows.Forms.ToolStripButton();
@@ -60,9 +62,15 @@
             this.screensButton = new System.Windows.Forms.ToolStripButton();
             this.schedulesButton = new System.Windows.Forms.ToolStripButton();
             this.holidaysButton = new System.Windows.Forms.ToolStripButton();
+            this.panelBuildingView = new System.Windows.Forms.Panel();
+            this.groupBoxBuildingView = new System.Windows.Forms.GroupBox();
+            this.treeBuildingView = new System.Windows.Forms.TreeView();
+            this.splitterMain = new System.Windows.Forms.Splitter();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.buttonsToolStrip.SuspendLayout();
+            this.panelBuildingView.SuspendLayout();
+            this.groupBoxBuildingView.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -73,6 +81,7 @@
             this.controlMenuItem,
             this.languageMenuItem});
             resources.ApplyResources(this.menuStrip, "menuStrip");
+            this.menuStrip.MdiWindowListItem = this.fileToolStripMenuItem;
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -209,7 +218,9 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
+            this.statusLabel,
+            this.LoadProgressBar,
+            this.LoadPartName});
             resources.ApplyResources(this.statusStrip, "statusStrip");
             this.statusStrip.Name = "statusStrip";
             // 
@@ -217,6 +228,18 @@
             // 
             this.statusLabel.Name = "statusLabel";
             resources.ApplyResources(this.statusLabel, "statusLabel");
+            // 
+            // LoadProgressBar
+            // 
+            this.LoadProgressBar.Maximum = 624;
+            this.LoadProgressBar.Name = "LoadProgressBar";
+            resources.ApplyResources(this.LoadProgressBar, "LoadProgressBar");
+            this.LoadProgressBar.Step = 1;
+            // 
+            // LoadPartName
+            // 
+            this.LoadPartName.Name = "LoadPartName";
+            resources.ApplyResources(this.LoadPartName, "LoadPartName");
             // 
             // buttonsToolStrip
             // 
@@ -289,22 +312,61 @@
             this.holidaysButton.Name = "holidaysButton";
             this.holidaysButton.Click += new System.EventHandler(this.ShowHolidays);
             // 
+            // panelBuildingView
+            // 
+            this.panelBuildingView.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panelBuildingView.Controls.Add(this.groupBoxBuildingView);
+            resources.ApplyResources(this.panelBuildingView, "panelBuildingView");
+            this.panelBuildingView.Name = "panelBuildingView";
+            // 
+            // groupBoxBuildingView
+            // 
+            this.groupBoxBuildingView.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.groupBoxBuildingView.Controls.Add(this.treeBuildingView);
+            resources.ApplyResources(this.groupBoxBuildingView, "groupBoxBuildingView");
+            this.groupBoxBuildingView.Name = "groupBoxBuildingView";
+            this.groupBoxBuildingView.TabStop = false;
+            // 
+            // treeBuildingView
+            // 
+            this.treeBuildingView.BackColor = System.Drawing.Color.White;
+            this.treeBuildingView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.treeBuildingView, "treeBuildingView");
+            this.treeBuildingView.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.treeBuildingView.FullRowSelect = true;
+            this.treeBuildingView.Name = "treeBuildingView";
+            this.treeBuildingView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("treeBuildingView.Nodes")))});
+            // 
+            // splitterMain
+            // 
+            resources.ApplyResources(this.splitterMain, "splitterMain");
+            this.splitterMain.Name = "splitterMain";
+            this.splitterMain.TabStop = false;
+            // 
             // T3000Form
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.splitterMain);
+            this.Controls.Add(this.panelBuildingView);
             this.Controls.Add(this.buttonsToolStrip);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
+            this.IsMdiContainer = true;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "T3000Form";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.T3000Form_KeyUp);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.buttonsToolStrip.ResumeLayout(false);
             this.buttonsToolStrip.PerformLayout();
+            this.panelBuildingView.ResumeLayout(false);
+            this.groupBoxBuildingView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -343,5 +405,11 @@
         private System.Windows.Forms.ToolStripButton screensButton;
         private System.Windows.Forms.ToolStripButton schedulesButton;
         private System.Windows.Forms.ToolStripButton holidaysButton;
+        private System.Windows.Forms.Panel panelBuildingView;
+        private System.Windows.Forms.GroupBox groupBoxBuildingView;
+        private System.Windows.Forms.TreeView treeBuildingView;
+        private System.Windows.Forms.Splitter splitterMain;
+        public System.Windows.Forms.ToolStripProgressBar LoadProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel LoadPartName;
     }
 }

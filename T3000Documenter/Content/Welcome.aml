@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="89bb7a7d-f412-42f4-9e8a-e006a1ea3406" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>For those who want to integrate new ProgramEditor into C++ T3000 Building System:</para>
+		</introduction>
+
+		<section>
+			<title>HOW TO</title>
+			<content>
+        <para>
+          The following sample (C#), demonstrate how we call editor, pass decoded program to it, and define a overload for Send event
+          handler.
+        </para>
+        <code>
+          
+        private int Index_EditProgramCode = 0;
+
+        private void EditCodeColumn(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = view.CurrentRow;
+                Index_EditProgramCode = row.GetValue/<int/>(NumberColumn) - 1;
+                
+                var form = new ProgramEditorForm();
+                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
+
+                Console.WriteLine("--------------ORIGINAL CODE-------------------");
+                ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
+                form.SetCode(Codes[Index_EditProgramCode].ToString());
+                form.Prg = this.Prg;
+                form.PrgPath = this.PrgPath;
+                //Override Send Event Handler and encode program into bytes.
+                form.Send += Form_Send;
+                form.MdiParent = this.MdiParent ;
+                
+                form.Show();
+                //if (form.ShowDialog() != DialogResult.OK) return;
+
+            }
+            catch (Exception exception)
+            {
+                MessageBoxUtilities.ShowException(exception);
+            }
+        }
+
+        private void Form_Send(object sender, SendEventArgs e)
+        {
+            //TODO: Use parse tree tokens to encode bytes and patch PRG File.
+            Console.WriteLine();
+            Console.WriteLine("---------------------DEBUG STRINGS-----------------------");
+            Console.WriteLine();
+            Console.WriteLine($"Code:{Environment.NewLine}{e.Code}");
+            Console.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
+            
+
+            //Inician las pruebas de codificación
+            byte[] ByteEncoded = EncodeBytes(e.Tokens);
+            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            ConsolePrintBytes(ByteEncoded, "Encoded");
+
+           // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
+            Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
+            //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
+            Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
+            Prg.Programs[Index_EditProgramCode].Length = PSize;
+            //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
+            Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}2.PRG");
+           
+
+        }
+        
+        </code>
+				<para>Form_Send, takes a SendEventArgs object containing Code as plain text, and a list of tokens from 
+        parser tree. This list of previosly analized tokens or the text (code), must be used as starting point to a new Encoder method.</para>
+
+			
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20faef03-2fe4-4b0b-a61c-d2090728eea9" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

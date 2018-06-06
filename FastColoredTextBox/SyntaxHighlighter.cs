@@ -22,6 +22,7 @@ namespace FastColoredTextBoxNS
         public readonly Style MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
         public readonly Style RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
         public readonly Style BlackStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
+       
         //
         protected readonly Dictionary<string, SyntaxDescriptor> descByXMLfileNames =
             new Dictionary<string, SyntaxDescriptor>();
@@ -33,11 +34,13 @@ namespace FastColoredTextBoxNS
 
         protected Regex CSharpCommentRegex1,
                       CSharpCommentRegex2,
-                      CSharpCommentRegex3;
+                      CSharpCommentRegex3,
+                      CSharpCommentRegex4;
 
         protected Regex CSharpKeywordRegex;
         protected Regex CSharpNumberRegex;
         protected Regex CSharpStringRegex;
+        protected Regex CSharpVariablesRegex;
 
         protected Regex HTMLAttrRegex,
                       HTMLAttrValRegex,
@@ -127,8 +130,21 @@ namespace FastColoredTextBoxNS
             }
         }
 
+        /// <summary>
+        /// Constructor SyntaxHighlighter
+        /// </summary>
+        /// <param name="currentTb">TextBox</param>
         public SyntaxHighlighter(FastColoredTextBox currentTb) {
-            this.currentTb = currentTb;
+            try
+            {
+                this.currentTb = currentTb;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         #region IDisposable Members
@@ -316,7 +332,7 @@ namespace FastColoredTextBoxNS
             }
 
             //Char _
-            if (args.PrevLineText.TrimEnd().EndsWith("_"))
+            if (args.PrevLineText.TrimEnd().EndsWith("_", StringComparison.Ordinal))
             {
                 args.Shift = args.TabLength;
                 return;
@@ -503,7 +519,7 @@ namespace FastColoredTextBoxNS
 
         protected static Color ParseColor(string s)
         {
-            if (s.StartsWith("#"))
+            if (s.StartsWith("#", StringComparison.Ordinal))
             {
                 if (s.Length <= 7)
                     return Color.FromArgb(255,
@@ -602,6 +618,9 @@ namespace FastColoredTextBoxNS
             CSharpCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
             CSharpCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
                                             RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+            CSharpCommentRegex4 = new Regex(@"(REM)(.+)",
+                                            RegexOptions.Singleline | RegexOptions.Singleline | RegexCompiledOption);
+
             CSharpNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
                                           RegexCompiledOption);
             CSharpAttributeRegex = new Regex(@"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline | RegexCompiledOption);
@@ -610,6 +629,8 @@ namespace FastColoredTextBoxNS
                 new Regex(
                     @"\b(abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|using|virtual|void|volatile|while|add|alias|ascending|descending|dynamic|from|get|global|group|into|join|let|orderby|partial|remove|select|set|value|var|where|yield)\b|#region\b|#endregion\b",
                     RegexCompiledOption);
+
+            CSharpVariablesRegex = new Regex(@"VAR(12[0-8]|1[0-1][0-9]|[1-9][0-9]?)",RegexCompiledOption);
         }
 
         public void InitStyleSchema(Language lang)
@@ -624,6 +645,7 @@ namespace FastColoredTextBoxNS
                     ClassNameStyle = BoldStyle;
                     KeywordStyle = BlueStyle;
                     CommentTagStyle = GrayStyle;
+                    VariableStyle = MaroonStyle;
                     break;
                 case Language.VB:
                     StringStyle = BrownStyle;
@@ -713,6 +735,7 @@ namespace FastColoredTextBoxNS
             range.SetStyle(CommentStyle, CSharpCommentRegex1);
             range.SetStyle(CommentStyle, CSharpCommentRegex2);
             range.SetStyle(CommentStyle, CSharpCommentRegex3);
+            range.SetStyle(CommentStyle, CSharpCommentRegex4);
             //number highlighting
             range.SetStyle(NumberStyle, CSharpNumberRegex);
             //attribute highlighting
@@ -721,6 +744,7 @@ namespace FastColoredTextBoxNS
             range.SetStyle(ClassNameStyle, CSharpClassNameRegex);
             //keyword highlighting
             range.SetStyle(KeywordStyle, CSharpKeywordRegex);
+            range.SetStyle(VariableStyle, CSharpVariablesRegex);
 
             //find document comments
             foreach (Range r in range.GetRanges(@"^\s*///.*$", RegexOptions.Multiline))

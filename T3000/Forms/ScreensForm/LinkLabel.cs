@@ -14,7 +14,7 @@ namespace T3000.Forms
 {
     public partial class LinkLabel : Form
     {
-        public string PrgPath { get; set; }
+        
         private int _pos;
         private String _label;
         private String _description;
@@ -24,7 +24,14 @@ namespace T3000.Forms
         public Boolean flag { get; set; }
         public DataGridView dgv { get; set; }
         public int id { get; set; }
-        public Prg Prg { get; set; }
+
+        Prg _prg;
+        public Prg Prg
+        {
+            get { return _prg; }
+            set { _prg = value; }
+        }
+        public string PrgPath { get; set; }
         public List<ProgramPoint> PointsP { get; set; }
         public List<ProgramCode> CodesP { get; set; }
 
@@ -111,7 +118,7 @@ namespace T3000.Forms
             if (Type==0)
             {
                 textBox1.Enabled = flag;
-                var form = new ProgramsForm(PointsP, CodesP);
+                var form = new ProgramsForm(ref _prg, PrgPath );
                 dgv.Rows[Pos].Cells[3].Value = ((AutoManual)dgv.Rows[Pos].Cells[3].Value).NextValue();
                 form.ExternalSaveAutomanual(Pos, dgv.Rows[Pos]);
             }
@@ -141,7 +148,8 @@ namespace T3000.Forms
         {
            
            textBox1.Text = ((textBox1.Text.Equals("On")) ? "Off" : "On");
-            var form = new ProgramsForm(PointsP, CodesP);
+            //var form = new ProgramsForm(PointsP, CodesP);
+            var form = new ProgramsForm(ref _prg, PrgPath);
             dgv.Rows[Pos].Cells[2].Value = ((OffOn)dgv.Rows[Pos].Cells[2].Value).NextValue();
             form.ExternalSaveValue(Pos, dgv.Rows[Pos]);
 

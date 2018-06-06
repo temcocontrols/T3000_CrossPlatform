@@ -3,176 +3,8 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-
-    public enum ExpressionType
-    {
-        DELIMITER,
-        NUMBER,
-        IDENTIFIER,
-        KEYWORD,
-        TEMP,
-        BLOCKX,
-        TIMES,
-        COLON,
-        SEMICOLON,
-        GE = 96,
-        LE,
-        NL,
-        POW = 101,
-        MOD,
-        [Name("*")]
-        MUL,
-        [Name("/")]
-        DIV,
-        [Name("-")]
-        MINUSUNAR,
-        [Name("+")]
-        PLUS = 107,
-        [Name("-")]
-        MINUS,
-        [Name("<")]
-        LT,
-        [Name(">")]
-        GT,
-        EQ = 113,
-        NE,
-        XOR,
-        AND,
-        OR,
-        NOT,
-        EOI,
-        TTIME,
-        BIT_AND,
-        BIT_OR
-    }
-
-    public enum LineToken
-    {
-        BEEP = 7,
-        ASSIGNAR,
-        ASSIGN,
-        CLEARX,
-        FOR,
-        NEXT = 13,
-        IF,
-        ELSE = 16,
-        [Name("IF+")]
-        IFP,
-        [Name("IF-")]
-        IFM,
-        GOTO,
-        GOSUB,
-        RETURN,
-        ENDPRG = 23,
-        PRINT,
-        REM = 26,
-        PRINT_AT,
-        STARTPRG,
-        STOP,
-        WAIT,
-        HANGUP,
-        PHONE,
-        ALARM_AT,
-        REMOTE_SET,
-        RUN_MACRO,
-        REMOTE_GET,
-        ENABLEX,
-        DISABLEX,
-        ON_ERROR,
-        SET_PRINTER,
-        ASSIGNARRAY_1,
-        GOTOIF,
-        ON_ALARM,
-        ASSIGNARRAY_2,
-        OPEN,
-        CLOSE,
-        CALLB,
-        DECLARE,
-        ASSIGNARRAY,
-        ON = 64,
-        Alarm,
-        DALARM = 67,
-        USER_A = 69,
-        USER_B,
-        DIM = 138,
-        _DATE = 160,
-        PTIME,
-        SENSOR_ON = 164,
-        SENSOR_OFF,
-        TO,
-        STEP,
-        THEN,
-        LET,
-        ALARM_AT_ALL,
-        FINISHED,
-        PRINT_ALARM_AT,
-        PRINT_ALARM_AT_ALL,
-        ARG,
-        DO,
-        WHILE,
-        SWITCH,
-        EOL,
-        STRING
-    }
-
-    public enum FunctionToken
-    {
-        TUE = 2,
-        WED,
-        THU,
-        FRI,
-        SAT,
-        SUN,
-        MON,
-        COM1 = 16,
-        ABS = 50,
-        AVG,
-        DOY,
-        DOW,
-        _INT,
-        MAX,
-        MIN,
-        SQR,
-        Tbl,
-        TIME,
-        [Name("TIME-ON")]
-        TIME_ON,
-        TIME_OFF,
-        INTERVAL,
-        TIME_FORMAT,
-        WR_ON,
-        WR_OFF,
-        UNACK,
-        _Status = 71,
-        RUNTIME,
-        SCANS = 75,
-        POWER_LOSS,
-        LN,
-        LN_1,
-        OUTPUTD = 80,
-        INKEYD,
-        DOM,
-        MOY,
-        CONPROP = 86,
-        CONRATE,
-        CONRESET,
-        CLEARPORT,
-        JAN = 193,
-        FEB,
-        MAR,
-        APR,
-        MAY,
-        JUN,
-        JUL,
-        AUG,
-        SEP,
-        OCT,
-        NOV,
-        DEC,
-        LOCAL_POINT_PRG = 156,
-        CONST_VALUE_PRG,
-        REMOTE_POINT_PRG
-    }
+    using PRGReaderLibrary.Types.Enums.Codecs;
+    using System.Diagnostics;
 
     public static class Enum<T>
     {
@@ -185,13 +17,13 @@
     public static class ProgramCodeUtilities
     {
         public static bool IsLine(byte value) =>
-            value == (byte)LineToken.ASSIGN;
+            value == (byte)LINE_TOKEN.ASSIGN;
 
         public static bool IsVariable(byte value) =>
-            value == (byte)FunctionToken.CONST_VALUE_PRG ||
-            value == (byte)FunctionToken.REMOTE_POINT_PRG ||
-            value == (byte)FunctionToken.LOCAL_POINT_PRG ||
-            value == (byte)FunctionToken.TIME_ON;
+            value == (byte)FUNCTION_TOKEN.CONST_VALUE_PRG ||
+            value == (byte)FUNCTION_TOKEN.REMOTE_POINT_PRG ||
+            value == (byte)FUNCTION_TOKEN.LOCAL_POINT_PRG ||
+            value == (byte)FUNCTION_TOKEN.TIME_ON;
 
         public static bool IsFunction(byte value)
         {
@@ -200,12 +32,12 @@
                 return false;
             }
 
-            if (value == (byte)LineToken.STOP)
+            if (value == (byte)LINE_TOKEN.STOP)
             {
                 return true;
             }
 
-            return Enum<FunctionToken>.IsDefined((FunctionToken)value);
+            return Enum<FUNCTION_TOKEN>.IsDefined((FUNCTION_TOKEN)value);
         }
 
         public static bool IsExpression(byte value)
@@ -215,13 +47,13 @@
                 return false;
             }
 
-            return Enum<ExpressionType>.IsDefined((ExpressionType)value);
+            return Enum<TYPE_TOKEN>.IsDefined((TYPE_TOKEN)value);
         }
 
-        public static bool IsBinaryExpression(ExpressionType value)
+        public static bool IsBinaryExpression(TYPE_TOKEN value)
         {
-            return value != ExpressionType.NOT &&
-                   value != ExpressionType.MINUSUNAR;
+            return value != TYPE_TOKEN.NOT &&
+                   value != TYPE_TOKEN.MINUSUNAR;
         }
 
         public enum ByteType
@@ -252,7 +84,7 @@
 
     public class Expression : Version
     {
-        public ExpressionType Type { get; set; }
+        public TYPE_TOKEN Type { get; set; }
 
         public Expression(FileVersion version = FileVersion.Current)
             : base(version)
@@ -260,18 +92,18 @@
 
         public static Expression operator +(Expression expression1, Expression expression2) =>
             new BinaryExpression(expression1, expression2,
-                ExpressionType.PLUS, expression1.FileVersion);
+                TYPE_TOKEN.PLUS, expression1.FileVersion);
 
         public static Expression operator -(Expression expression1, Expression expression2) =>
             new BinaryExpression(expression1, expression2,
-                ExpressionType.MINUS, expression1.FileVersion);
+                TYPE_TOKEN.MINUS, expression1.FileVersion);
     }
 
     public class VariableExpression : Expression
     {
         public Prg Prg { get; set; }
 
-        public FunctionToken Token { get; set; }
+        public FUNCTION_TOKEN Token { get; set; }
         public int Number { get; set; }
 
         public int Number2 { get; set; }
@@ -285,10 +117,10 @@
         {
             switch (Token)
             {
-                case FunctionToken.TIME_ON:
+                case FUNCTION_TOKEN.TIME_ON:
                     return $"{Token.GetName()} ( INIT )";
 
-                case FunctionToken.CONST_VALUE_PRG:
+                case FUNCTION_TOKEN.CONST_VALUE_PRG:
                     var text = Value.Unit == Unit.Time
                         ? $"{Value}"
                         : $"{((double)Value.ToObject()).ToString("####")}";
@@ -296,10 +128,10 @@
                         ? "0"
                         : text;
 
-                case FunctionToken.LOCAL_POINT_PRG:
+                case FUNCTION_TOKEN.LOCAL_POINT_PRG:
                     return Prg.Variables[Number].Label ?? $"VAR{Number}";
 
-                case FunctionToken.REMOTE_POINT_PRG:
+                case FUNCTION_TOKEN.REMOTE_POINT_PRG:
                     return $"{Number3}.{Number4}.REG{Number + 1}";
 
                 default:
@@ -315,21 +147,21 @@
             : base(version)
         {
             Prg = prg;
-            Token = (FunctionToken)bytes.ToByte(ref offset);
+            Token = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
 
             switch (Token)
             {
-                case FunctionToken.TIME_ON:
+                case FUNCTION_TOKEN.TIME_ON:
                     Number = bytes.ToByte(ref offset);
-                    Type = (ExpressionType)bytes.ToByte(ref offset);
+                    Type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     break;
 
-                case FunctionToken.LOCAL_POINT_PRG:
+                case FUNCTION_TOKEN.LOCAL_POINT_PRG:
                     Number = bytes.ToByte(ref offset);
-                    Type = (ExpressionType)bytes.ToByte(ref offset);
+                    Type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     break;
 
-                case FunctionToken.REMOTE_POINT_PRG:
+                case FUNCTION_TOKEN.REMOTE_POINT_PRG:
                     Number = bytes.ToByte(ref offset);
                     Number2 = bytes.ToByte(ref offset);
                     Number3 = bytes.ToByte(ref offset);
@@ -337,13 +169,13 @@
                     Number5 = bytes.ToByte(ref offset);
                     break;
 
-                case FunctionToken.CONST_VALUE_PRG:
+                case FUNCTION_TOKEN.CONST_VALUE_PRG:
                     var value = bytes.ToInt32(ref offset);
                     var unit = Unit.Unused;
                     if (offset < bytes.Length)
                     {
-                        var valueType = (FunctionToken)bytes.ToByte(ref offset);
-                        if (valueType == FunctionToken.TIME_FORMAT)
+                        var valueType = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
+                        if (valueType == FUNCTION_TOKEN.TIME_FORMAT)
                         {
                             unit = Unit.Time;
                         }
@@ -377,11 +209,11 @@
 
     public class FunctionExpression : Expression
     {
-        public FunctionToken Token { get; set; }
+        public FUNCTION_TOKEN Token { get; set; }
         public List<Expression> Arguments { get; set; } = new List<Expression>();
 
         public FunctionExpression(
-            FunctionToken token,
+            FUNCTION_TOKEN token,
             FileVersion version = FileVersion.Current, params Expression[] arguments)
             : base(version)
         {
@@ -394,7 +226,7 @@
         {
             switch (Type)
             {
-                case (ExpressionType)29:
+                case (TYPE_TOKEN)29:
                     return $"STOP {string.Join(" , ", Arguments.Select(i => i.ToString()))}";
 
                 default:
@@ -417,7 +249,7 @@
                 Arguments.Add(new VariableExpression(bytes, prg, ref offset, FileVersion));
                 token = bytes.ToByte(ref offset);
             }
-            Token = (FunctionToken)token;
+            Token = (FUNCTION_TOKEN)token;
         }
 
         public byte[] ToBytes()
@@ -436,7 +268,7 @@
         public Expression Expression { get; set; }
 
         public UnaryExpression(Expression expression,
-            ExpressionType type,
+            TYPE_TOKEN type,
             FileVersion version = FileVersion.Current)
             : base(version)
         {
@@ -448,13 +280,13 @@
         {
             switch (Type)
             {
-                case ExpressionType.MINUSUNAR:
+                case TYPE_TOKEN.MINUSUNAR:
                     return $"{Type.GetName()}{Expression.ToString()}";
 
-                case ExpressionType.NOT:
+                case TYPE_TOKEN.NOT:
                     return $"{Type.GetName()} {Expression.ToString()}";
 
-                case (ExpressionType)LineToken.STOP:
+                case (TYPE_TOKEN)LINE_TOKEN.STOP:
                     return $"STOP {Expression.ToString()}";
 
                 default:
@@ -469,7 +301,7 @@
             : base(version)
         {
             Expression = new VariableExpression(bytes, prg, ref offset, FileVersion);
-            Type = (ExpressionType)bytes.ToByte(ref offset);
+            Type = (TYPE_TOKEN)bytes.ToByte(ref offset);
         }
 
         public byte[] ToBytes()
@@ -489,7 +321,7 @@
         public Expression Second { get; set; }
 
         public BinaryExpression(Expression first, Expression second,
-            ExpressionType type,
+            TYPE_TOKEN type,
             FileVersion version = FileVersion.Current)
             : base(version)
         {
@@ -502,10 +334,10 @@
         {
             switch (Type)
             {
-                case (ExpressionType)9:
+                case (TYPE_TOKEN)9:
                     return $"{First.ToString()} = {Second.ToString()}";
 
-                case ExpressionType.DELIMITER:
+                case TYPE_TOKEN.DELIMITER:
                     return $"{First.ToString()} {Second.ToString()}";
 
                 default:
@@ -521,7 +353,7 @@
         {
             First = new VariableExpression(bytes, prg, ref offset, FileVersion);
             Second = new VariableExpression(bytes, prg, ref offset, FileVersion);
-            Type = (ExpressionType)bytes.ToByte(ref offset);
+            Type = (TYPE_TOKEN)bytes.ToByte(ref offset);
         }
 
         public byte[] ToBytes()
@@ -537,9 +369,9 @@
 
     public class Line : Version
     {
-        public ExpressionType Type { get; set; }
+        public TYPE_TOKEN Type { get; set; }
         public int Number { get; set; }
-        public LineToken Token { get; set; }
+        public LINE_TOKEN Token { get; set; }
         public byte[] Data { get; set; }
         public List<Expression> Expressions { get; set; } = new List<Expression>();
 
@@ -547,12 +379,12 @@
         {
             switch (Token)
             {
-                case LineToken.REM:
+                case LINE_TOKEN.REM:
                     return $"{Number} {Token} {Data.GetString()}";
 
-                case LineToken.IF:
-                case LineToken.IFM:
-                case LineToken.IFP:
+                case LINE_TOKEN.IF:
+                case LINE_TOKEN.IFM:
+                case LINE_TOKEN.IFP:
                     var text = $"{Number} {Token.GetName()} {Expressions[0]?.ToString()}";
 
                     if (Expressions.Count >= 2)
@@ -568,11 +400,15 @@
                     return text;
 
 
-                case LineToken.ASSIGN:
+                case LINE_TOKEN.ASSIGN:
                     return $"{Number} {Expressions[0].ToString()} = {Expressions[1].ToString()}";
+                //LRUIZ:
+                //Additions of raw lines, preproccessed by a real PARSER
+                case LINE_TOKEN.RAWLINE:
+                    return $"{Data.GetString()}";
 
                 default:
-                    Console.WriteLine(Token);
+                    Debug.WriteLine(Token);
                     return string.Empty;
             }
         }
@@ -585,7 +421,10 @@
             int nextPart = 0)
         {
             var i = offset;
-            for (; bytes[i] != 255; ++i) ;
+            for (; bytes[i] != 255; ++i)
+            {
+            }
+
             if (nextPart != 0)
             {
                 i = bytes[nextPart - 1] != 255 ? nextPart : nextPart - 1;
@@ -601,14 +440,41 @@
             return part;
         }
 
+
+
+
+
+
+        const char Srt = '`';
+
+        /* return true if c is a space or a tab*/
+        private bool iswhite(char c)
+        {
+
+            return (c == ' ' || c == '\t' || c == Srt) ? true : false;
+
+        }
+
+
+        /* return true if c is a delimiter */
+        private bool isdelim(char c)
+
+        {
+            string delimiters = " :!;,<>'*^=()[]";
+            if (c == 9 || c == '\r' || c == 0) return true;
+            return delimiters.Contains(c) ? true : false;
+
+        }
+
+
         private List<Expression> GetExpressions(byte[] bytes, Prg prg, ref int offset,
-            FileVersion version = FileVersion.Current, LineToken lineToken = 0,
+            FileVersion version = FileVersion.Current, LINE_TOKEN lineToken = 0,
             bool isTrace = false)
         {
             if (isTrace)
             {
-                Console.WriteLine("----------------------------");
-                Console.WriteLine(DebugUtilities.CompareBytes(bytes, bytes,
+                Debug.WriteLine("----------------------------");
+                Debug.WriteLine(DebugUtilities.CompareBytes(bytes, bytes,
                     onlyDif: false, toText: false, offset: offset));
             }
 
@@ -622,7 +488,7 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsVariable {offset}");
+                        Debug.WriteLine($"IsVariable {offset}");
                     }
                     var expression = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     expressions.Add(expression);
@@ -631,14 +497,14 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsLine {offset}");
+                        Debug.WriteLine($"IsLine {offset}");
                     }
-                    var token = (LineToken)bytes.ToByte(ref offset);
+                    var token = (LINE_TOKEN)bytes.ToByte(ref offset);
                     var lineExpressions = GetExpressions(bytes, prg, ref offset, version, token, isTrace);
                     var expression = lineExpressions.Count > 1 ? new BinaryExpression(
                         lineExpressions[0],
                         lineExpressions[1],
-                        (ExpressionType)token, FileVersion) :
+                        (TYPE_TOKEN)token, FileVersion) :
                         lineExpressions[0];
                     expressions.Add(expression);
                 }
@@ -646,19 +512,19 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsFunction {offset}");
+                        Debug.WriteLine($"IsFunction {offset}");
                     }
-                    var token = (FunctionToken)bytes.ToByte(ref offset);
-                    if ((byte)token == (byte)LineToken.STOP)
+                    var token = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
+                    if ((byte)token == (byte)LINE_TOKEN.STOP)
                     {
                         var variable = new VariableExpression(bytes, prg, ref offset, FileVersion);
-                        var expression = new UnaryExpression(variable, (ExpressionType)LineToken.STOP, version);
+                        var expression = new UnaryExpression(variable, (TYPE_TOKEN)LINE_TOKEN.STOP, version);
 
                         expressions.Add(expression);
                     }
                     else if (expressions.Count == 0)
                     {
-                        Console.WriteLine("expressions.Count = 0");
+                        Debug.WriteLine("expressions.Count = 0");
                         var temp = 0;
                         offset -= 1;
                         expressions.Add(new VariableExpression(bytes, prg, ref offset, FileVersion));
@@ -669,7 +535,7 @@
                         var lastExpression = expressions[expressions.Count - 1];
                         expressions.RemoveAt(expressions.Count - 1);
                         expressions.RemoveAt(expressions.Count - 1);
-                        var expression = new BinaryExpression(prevLastExpression, lastExpression, ExpressionType.DELIMITER, FileVersion);
+                        var expression = new BinaryExpression(prevLastExpression, lastExpression, TYPE_TOKEN.DELIMITER, FileVersion);
                         expressions.Add(expression);
                     }
                     else
@@ -683,9 +549,9 @@
                 {
                     if (isTrace)
                     {
-                        Console.WriteLine($"IsExpression {offset}");
+                        Debug.WriteLine($"IsExpression {offset}");
                     }
-                    var type = (ExpressionType)bytes.ToByte(ref offset);
+                    var type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     if (ProgramCodeUtilities.IsBinaryExpression(type))
                     {
                         var prevLastExpression = expressions[expressions.Count - 2];
@@ -711,13 +577,13 @@
 
             if (isTrace)
             {
-                Console.WriteLine($"Result: {expressions.Count} expressions. Line token: {lineToken}");
+                Debug.WriteLine($"Result: {expressions.Count} expressions. Line token: {lineToken}");
                 for (var i = 0; i < expressions.Count; ++i)
                 {
-                    Console.WriteLine($"Expression {i + 1}: {expressions[i].ToString()}");
+                    Debug.WriteLine($"Expression {i + 1}: {expressions[i].ToString()}");
                 }
-                Console.WriteLine("----------------------------");
-                Console.WriteLine("");
+                Debug.WriteLine("----------------------------");
+                Debug.WriteLine("");
             }
 
             return expressions;
@@ -730,12 +596,12 @@
 
             if (offset != bytes.Length || expressions.Count != 1)
             {
-                Console.WriteLine($@"Bad part:
-bytes: {DebugUtilities.CompareBytes(bytes, bytes, onlyDif: false, toText: false)}
-offset: {offset}
-bytes.Length: {bytes.Length}
-expressions: {expressions.Count}
-");
+                Debug.WriteLine($@"Bad part:
+    bytes: {DebugUtilities.CompareBytes(bytes, bytes, onlyDif: false, toText: false)}
+    offset: {offset}
+    bytes.Length: {bytes.Length}
+    expressions: {expressions.Count}
+    ");
             }
 
             //One expression
@@ -754,24 +620,24 @@ expressions: {expressions.Count}
 
             var first = new VariableExpression(bytes, prg, ref offset, FileVersion);
             var second = new VariableExpression(bytes, prg, ref offset, FileVersion);
-            var type = (ExpressionType)bytes.ToByte(ref offset);
+            var type = (TYPE_TOKEN)bytes.ToByte(ref offset);
             Expression expression = new BinaryExpression(first, second, type, FileVersion);
 
             //var temp = offset;
             var check = bytes.ToByte(ref offset);
             --offset;
             //Console.WriteLine($"{Number} {check} before");
-            if (check != (byte)ExpressionType.NUMBER)
+            if (check != (byte)TYPE_TOKEN.NUMBER)
             {
                 if (ProgramCodeUtilities.IsVariable(check))
                 {
                     var third = new VariableExpression(bytes, prg, ref offset, FileVersion);
-                    var type2 = (ExpressionType)bytes.ToByte(ref offset);
+                    var type2 = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     expression = new BinaryExpression(expression, third, type2, FileVersion);
                 }
                 else if (ProgramCodeUtilities.IsFunction(check))
                 {
-                    var token = (FunctionToken)bytes.ToByte(ref offset);
+                    var token = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
                     expression = new FunctionExpression(token, FileVersion, expression);
                 }
 
@@ -819,17 +685,115 @@ expressions: {expressions.Count}
             return;
         }
 
+
+        //DEPRECATED: Not used, because it's a obsolte method too, just like LINE
+        /////// <summary>
+        /////// Raw Lines Constructor
+        /////// </summary>
+        /////// <remarks>Author: LRUIZ</remarks>
+
+        ////static public byte[] RawLine(string line)
+        ////{
+
+        ////    List<byte> returnvalue = new List<byte>();
+        ////    List<byte> Data = new List<byte>();
+        ////    byte Type, Token;
+        ////    short Number;
+
+        ////    Type = (byte)TYPE_TOKEN.NUMBER; //1 Byte
+        ////    returnvalue.Add((byte)Type);
+
+
+        ////    string[] separators = { " " };
+        ////    string[] LineParts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+        ////    if (!LineParts.Any())
+        ////    {
+        ////        throw new Exception($"Not enough tokens in line: {line}");
+        ////    }
+
+        ////    if (String.IsNullOrEmpty(LineParts[0]))
+        ////    {
+        ////        Number = 0;
+        ////    }
+        ////    else
+        ////    {
+        ////        Number = Convert.ToInt16(LineParts[0]);
+        ////    }
+
+
+
+        ////    byte[] intBytes = BitConverter.GetBytes(Number);
+        ////    //if (BitConverter.IsLittleEndian)
+        ////    //    Array.Reverse(intBytes);
+        ////    if (intBytes.Count() < 2)
+        ////    {
+        ////        throw new Exception("Line Number less than 2 bytes");
+        ////    }
+        ////    byte[] result = intBytes;
+
+
+        ////    Debug.WriteLine($"Converting {Number} to bytes[] : {result}");
+        ////    returnvalue.AddRange(result);
+
+
+        ////    switch (LineParts[1] ?? "RAW")
+        ////    {
+        ////        case "REM":
+        ////            Token = (byte)LINE_TOKEN.REM;
+        ////            break;
+        ////        //case "IF+":
+        ////        //    Token = (byte)LineToken.IFP;
+        ////        //    break;
+
+        ////        //case "IF-":
+        ////        //    Token = (byte)LineToken.IFM;
+        ////        //    break;
+        ////        //case "IF":
+        ////        //    Token = (byte)LineToken.IF;
+        ////        //    break;
+        ////        default:
+        ////            Token = (byte)LINE_TOKEN.RAWLINE;
+        ////            break;
+
+
+        ////    }
+        ////    returnvalue.Add(Token);
+
+
+        ////    //Number = bytes.ToInt16(ref offset); //2 Bytes
+        ////    int OffSet = (Token == (byte)LINE_TOKEN.RAWLINE ? 1 : 2);
+
+        ////    line = string.Join(" ", LineParts, OffSet, LineParts.Count() - OffSet);
+
+        ////    Data.AddRange(line.ToBytes());
+
+        ////    //Data = PRGReaderLibrary.BytesExtensions.ToBytes(line.ToBytes());
+        ////    byte size = (byte)Data.Count();
+
+        ////    returnvalue.Add(size);
+        ////    returnvalue.AddRange(Data);
+
+        ////    return returnvalue.ToArray();
+        ////}
+
+
+        //DEPRECATED: Incomplete and obsolete version to decode line by line a Program.
+
         public Line(byte[] bytes, Prg prg, ref int offset,
             FileVersion version = FileVersion.Current)
             : base(version)
         {
-            Type = (ExpressionType)bytes.ToByte(ref offset);
-            Number = bytes.ToInt16(ref offset);
-            Token = (LineToken)bytes.ToByte(ref offset);
+            Type = (TYPE_TOKEN)bytes.ToByte(ref offset); //1 Byte
+            Number = bytes.ToInt16(ref offset); //2 Bytes
+            Token = (LINE_TOKEN)bytes.ToByte(ref offset); //1 Byte
+
+
+            //Offset is 4
 
             try
             {
-                if (Number == 140)
+                if (Number == 140) //8C 00
                 {
 
                     var ifPart = GetLinePart(bytes, ref offset, FileVersion);
@@ -862,17 +826,17 @@ expressions: {expressions.Count}
                     return;
                 }
 
-                if (Number == 300)
+                if (Number == 300) //2C 01
                 {
                     Expressions.Add(new UnaryExpression(bytes, prg, ref offset, FileVersion));
                     offset += 3;
-                    var type = (ExpressionType)bytes.ToByte(ref offset);
+                    var type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     var first = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     var expression = new VariableExpression(bytes, prg, ref offset, FileVersion) +
                          new VariableExpression(bytes, prg, ref offset, FileVersion);
-                    expression.Type = (ExpressionType)bytes.ToByte(ref offset);
+                    expression.Type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     expression = new FunctionExpression(
-                        (FunctionToken)bytes.ToByte(ref offset), FileVersion,
+                        (FUNCTION_TOKEN)bytes.ToByte(ref offset), FileVersion,
                         expression);
                     expression = first + expression;
                     expression.Type = type;
@@ -881,19 +845,19 @@ expressions: {expressions.Count}
                     return;
                 }
 
-                if (Number == 350)
+                if (Number == 350) //5E 01
                 {
                     var ifPart = GetLinePart(bytes, ref offset, FileVersion);
                     Expressions.Add(ToExpression(ifPart, prg, 0, FileVersion));
                     offset += 3;
-                    var type = (ExpressionType)bytes.ToByte(ref offset);
+                    var type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     var first = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     var second = new UnaryExpression(bytes, prg, ref offset, FileVersion);
                     var third = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     var four = new VariableExpression(bytes, prg, ref offset, FileVersion);
-                    var type2 = (FunctionToken)bytes.ToByte(ref offset);
+                    var type2 = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
                     offset += 1;
-                    var type3 = (FunctionToken)bytes.ToByte(ref offset);
+                    var type3 = (FUNCTION_TOKEN)bytes.ToByte(ref offset);
                     offset += 1;
                     Expression expression = new FunctionExpression(type2, FileVersion, third, four);
                     expression = new FunctionExpression(type3, FileVersion, second, expression);
@@ -903,24 +867,24 @@ expressions: {expressions.Count}
                     return;
                 }
 
-                if (Number == 360)
+                if (Number == 360) //68 01
                 {
                     var ifPart = GetLinePart(bytes, ref offset, FileVersion);
                     Expressions.Add(ToExpression(ifPart, prg, 0, FileVersion));
                     offset += 3;
-                    var type = (ExpressionType)bytes.ToByte(ref offset);
+                    var type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     var first = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     var second = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     var third = new VariableExpression(bytes, prg, ref offset, FileVersion);
-                    var type2 = (ExpressionType)bytes.ToByte(ref offset);
+                    var type2 = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     var four = new VariableExpression(bytes, prg, ref offset, FileVersion);
-                    var type3 = (ExpressionType)bytes.ToByte(ref offset);
+                    var type3 = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     Expression expression = new BinaryExpression(second, third, type2, FileVersion);
                     expression = new BinaryExpression(expression, four, type3, FileVersion);
                     expression = new BinaryExpression(first, expression, type, FileVersion);
                     Expressions.Add(expression);
                     offset += 5;
-                    type = (ExpressionType)bytes.ToByte(ref offset);
+                    type = (TYPE_TOKEN)bytes.ToByte(ref offset);
                     first = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     second = new VariableExpression(bytes, prg, ref offset, FileVersion);
                     expression = new BinaryExpression(first, second, type, FileVersion);
@@ -931,37 +895,38 @@ expressions: {expressions.Count}
 
                 switch (Token)
                 {
-                    case LineToken.IF:
+                    case LINE_TOKEN.IF:
                         FromIF(bytes, prg, ref offset, FileVersion);
                         break;
 
-                    case LineToken.IFM:
+                    case LINE_TOKEN.IFM:
                         FromIFM(bytes, prg, ref offset, FileVersion);
                         break;
 
-                    case LineToken.ASSIGN:
+                    case LINE_TOKEN.ASSIGN:
                         FromASSIGN(bytes, prg, ref offset, FileVersion);
                         break;
 
-                    case LineToken.REM:
+                    case LINE_TOKEN.REM:
+                    case LINE_TOKEN.RAWLINE:
                     default:
                         var size = bytes.ToByte(ref offset);
                         Data = bytes.ToBytes(ref offset, size);
                         break;
                 }
 
-                if (Number == 380)
+                if (Number == 380) //7C 01
                 {
                     offset += 115;
                 }
             }
             catch (Exception exception)
             {
-                Console.WriteLine($@"Exception on line: 
-Type: {Type}
-Number: {Number}
-Token: {Token}
-{exception.Message}");
+                Debug.WriteLine($@"Exception on line: 
+        Type: {Type}
+        Number: {Number}
+        Token: {Token}
+        {exception.Message}");
                 throw;
             }
         }
@@ -990,6 +955,7 @@ Token: {Token}
         {
             Code = code;
         }
+
 
         #region Binary data
 
@@ -1030,13 +996,17 @@ Token: {Token}
             var maxSize = GetSize(FileVersion);
 
             Version = bytes.ToInt16(ref offset);
-            while (offset < maxSize)
-            {
-                //Console.WriteLine($"{offset}: Line {Lines.Count}");
-                var line = new Line(bytes, prg, ref offset, FileVersion);
 
-                Lines.Add(line);
-            }
+            //DEPRECATED: Line objects are incomplete to decode Program.
+            //Leaving this task to the REAL DECODER
+
+            ////////while (offset < maxSize)
+            ////////{
+            ////////    //Console.WriteLine($"{offset}: Line {Lines.Count}");
+            ////////    var line = new Line(bytes, prg, ref offset, FileVersion);
+
+            ////////    Lines.Add(line);
+            ////////}
 
             offset = 2000;
             CheckOffset(offset, GetSize(FileVersion));
@@ -1058,4 +1028,33 @@ Token: {Token}
         #endregion
 
     }
+
+
+   
+
+
+    //struct variable_table
+    //{
+    //    char[] name; //= new char [20];
+    //    char[] label; // = new char[9];
+    //    char type;
+    //    char var_type;
+    //    int l;
+    //    int c;
+    //    byte network;
+    //    byte sub_panel;
+    //    char panel;
+    //    char point_type;
+    //    //char num_point;
+    //    short num_point;
+    //};
+
+    //struct buf_str
+    //{
+    //    int v;
+    //    char[] var;//[20];
+    //    float fvar;
+    //    char[] op;//[10];
+    //};
+
 }

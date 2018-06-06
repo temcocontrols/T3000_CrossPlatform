@@ -44,7 +44,7 @@ namespace FastColoredTextBoxNS
     /// <summary>
     /// Fast colored textbox
     /// </summary>
-    public partial class FastColoredTextBox : UserControl, ISupportInitialize
+    public class FastColoredTextBox : UserControl, ISupportInitialize
     {
         internal const int minLeftIndent = 8;
         private const int maxBracketSearchIterations = 1000;
@@ -94,7 +94,7 @@ namespace FastColoredTextBoxNS
         private uint lineNumberStartValue;
         private int lineSelectFrom;
         private TextSource lines;
-        private IntPtr m_hImc;
+        //private IntPtr m_hImc;
         private int maxLineLength;
         private bool mouseIsDrag;
         private bool mouseIsDragDrop;
@@ -125,6 +125,9 @@ namespace FastColoredTextBoxNS
         private int reservedCountOfLineNumberChars = 1;
         private int zoom = 100;
         private Size localAutoScrollMinSize;
+
+        private Color variablesColor= Color.DarkBlue;
+
  
         /// <summary>
         /// Constructor
@@ -220,6 +223,9 @@ namespace FastColoredTextBoxNS
 
         private char[] autoCompleteBracketsList = { '(', ')', '{', '}', '[', ']', '"', '"', '\'', '\'' };
 
+        /// <summary>
+        /// AutoCompleteBracketsList
+        /// </summary>
         public char[] AutoCompleteBracketsList
         {
             get { return autoCompleteBracketsList; }
@@ -603,6 +609,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Teal")]
         [Description("Color of line numbers.")]
+        [Category("Color")]
         public Color LineNumberColor
         {
             get { return lineNumberColor; }
@@ -634,6 +641,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof(Color), "WhiteSmoke")]
         [Description("Background color of indent area")]
+        [Category("Color")]
         public Color IndentBackColor
         {
             get { return indentBackColor; }
@@ -649,6 +657,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Transparent")]
         [Description("Background color of padding area")]
+        [Category("Color")]
         public Color PaddingBackColor
         {
             get { return paddingBackColor; }
@@ -664,6 +673,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "100;180;180;180")]
         [Description("Color of disabled component")]
+        [Category("Color")]
         public Color DisabledColor { get; set; }
 
         /// <summary>
@@ -671,6 +681,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Black")]
         [Description("Color of caret.")]
+        [Category("Color")]
         public Color CaretColor { get; set; }
 
         /// <summary>
@@ -685,6 +696,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Silver")]
         [Description("Color of service lines (folding lines, borders of blocks etc.)")]
+        [Category("Color")]
         public Color ServiceLinesColor
         {
             get { return serviceLinesColor; }
@@ -694,6 +706,41 @@ namespace FastColoredTextBoxNS
                 Invalidate();
             }
         }
+
+
+        [Category("Color")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "DarkBlue")]
+        [Description("Text Color for Variables")]
+        public Color VariablesColor
+        {
+            get
+            {
+                return variablesColor;
+            }
+            set
+            {
+                variablesColor = value;
+                SolidBrush VariableBrush
+                     = new SolidBrush(variablesColor);
+                SyntaxHighlighter.VariableStyle = new TextStyle(VariableBrush, null, FontStyle.Regular);
+                
+                Invalidate();
+
+            }
+        }
+        
+        [Category("Color")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Green")]
+        [Description("Text Color for Inputs")]
+        public Color InputsColor { get; set; }
+
+        [Category("Color")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Blue")]
+        [Description("Text Color for Outputs")]
+        public Color OutputsColor { get; set; }
 
         /// <summary>
         /// Padings of text area
@@ -727,6 +774,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "Green")]
         [Description("Color of folding area indicator.")]
+        [Category("Color")]
         public Color FoldingIndicatorColor
         {
             get { return foldingIndicatorColor; }
@@ -1175,6 +1223,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [DefaultValue(typeof (Color), "White")]
         [Description("Background color.")]
+        [Category("Color")]
         public override Color BackColor
         {
             get { return base.BackColor; }
@@ -1256,7 +1305,10 @@ namespace FastColoredTextBoxNS
                 if (wordWrap == value) return;
                 wordWrap = value;
                 if (wordWrap)
+                {
                     Selection.ColumnSelectionMode = false;
+                }
+
                 NeedRecalc(false, true);
                 //RecalcWordWrap(0, LinesCount - 1);
                 Invalidate();
@@ -1315,7 +1367,7 @@ namespace FastColoredTextBoxNS
         public override bool AutoScroll
         {
             get { return base.AutoScroll; }
-            set { ; }
+            set { }
         }
 
         /// <summary>
@@ -2238,7 +2290,7 @@ namespace FastColoredTextBoxNS
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            m_hImc = ImmGetContext(Handle);
+            //m_hImc = ImmGetContext(Handle);
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -2351,6 +2403,7 @@ namespace FastColoredTextBoxNS
 
             i = CheckStylesBufferSize();
             Styles[i] = style;
+            //TODO: CHECK INDEX OUT OF RANGE
             return i;
         }
 
@@ -2368,7 +2421,7 @@ namespace FastColoredTextBoxNS
                     break;
 
             i++;
-            if (i >= Styles.Length)
+            if (i > Styles.Length)
                 throw new Exception("Maximum count of Styles is exceeded.");
 
             return i;
@@ -2436,7 +2489,7 @@ namespace FastColoredTextBoxNS
         public int GetLineLength(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
 
             return lines[iLine].Count;
         }
@@ -2448,7 +2501,7 @@ namespace FastColoredTextBoxNS
         public Range GetLine(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
 
             var sel = new Range(this);
             sel.Start = new Place(0, iLine);
@@ -2488,11 +2541,11 @@ namespace FastColoredTextBoxNS
             data.SetData(DataFormats.Rtf, new ExportToRTF().GetRtf(Selection.Clone()));
         }
 
-        [DllImport("user32.dll")]
-        static extern IntPtr GetOpenClipboardWindow();
+        //[DllImport("user32.dll")]
+        //static extern IntPtr GetOpenClipboardWindow();
 
-        [DllImport("user32.dll")]
-        static extern IntPtr CloseClipboard();
+        //[DllImport("user32.dll")]
+        //static extern IntPtr CloseClipboard();
 
         protected void SetClipboard(DataObject data)
         {
@@ -2501,7 +2554,8 @@ namespace FastColoredTextBoxNS
                     /*
                     while (GetOpenClipboardWindow() != IntPtr.Zero)
                         Thread.Sleep(0);*/
-                    CloseClipboard();
+                    //CloseClipboard();
+                    Clipboard.Clear();
                     Clipboard.SetDataObject(data, true, 5, 100);
                 }
                 catch(ExternalException)
@@ -2713,6 +2767,7 @@ namespace FastColoredTextBoxNS
         /// Insert text into current selected position
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="jumpToCaret">Jump to caret</param>
         public virtual void InsertText(string text, bool jumpToCaret)
         {
             if (text == null)
@@ -2747,6 +2802,7 @@ namespace FastColoredTextBoxNS
         /// Insert text into current selection position (with predefined style)
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="style"></param>
         public virtual Range InsertText(string text, Style style)
         {
             return InsertText(text, style, true);
@@ -2892,11 +2948,11 @@ namespace FastColoredTextBoxNS
             return new SizeF(sz2.Width - sz3.Width + 1, /*sz2.Height*/font.Height);
         }
 
-        [DllImport("Imm32.dll")]
-        public static extern IntPtr ImmGetContext(IntPtr hWnd);
+        //[DllImport("Imm32.dll")]
+        //public static extern IntPtr ImmGetContext(IntPtr hWnd);
 
-        [DllImport("Imm32.dll")]
-        public static extern IntPtr ImmAssociateContext(IntPtr hWnd, IntPtr hIMC);
+        //[DllImport("Imm32.dll")]
+        //public static extern IntPtr ImmAssociateContext(IntPtr hWnd, IntPtr hIMC);
 
         protected override void WndProc(ref Message m)
         {
@@ -2906,11 +2962,12 @@ namespace FastColoredTextBoxNS
             
             base.WndProc(ref m);
 
-            if (ImeAllowed)
-                if (m.Msg == WM_IME_SETCONTEXT && m.WParam.ToInt32() == 1)
-                {
-                    ImmAssociateContext(Handle, m_hImc);
-                }
+            //=> DIsabled TEST for IME Allowed
+            //if (ImeAllowed)
+            //    if (m.Msg == WM_IME_SETCONTEXT && m.WParam.ToInt32() == 1)
+            //    {
+            //        ImmAssociateContext(Handle, m_hImc);
+            //    }
         }
 
         List<Control> tempHintsList = new List<Control>();
@@ -3348,7 +3405,6 @@ namespace FastColoredTextBoxNS
             }
             catch (ArgumentOutOfRangeException)
             {
-                ;
             }
 
             UpdateScrollbars();
@@ -4851,20 +4907,20 @@ namespace FastColoredTextBoxNS
             return base.IsInputKey(keyData);
         }
 
-        [DllImport("User32.dll")]
-        private static extern bool CreateCaret(IntPtr hWnd, int hBitmap, int nWidth, int nHeight);
+        //[DllImport("User32.dll")]
+        //private static extern bool CreateCaret(IntPtr hWnd, int hBitmap, int nWidth, int nHeight);
 
-        [DllImport("User32.dll")]
-        private static extern bool SetCaretPos(int x, int y);
+        //[DllImport("User32.dll")]
+        //private static extern bool SetCaretPos(int x, int y);
 
-        [DllImport("User32.dll")]
-        private static extern bool DestroyCaret();
+        //[DllImport("User32.dll")]
+        //private static extern bool DestroyCaret();
 
-        [DllImport("User32.dll")]
-        private static extern bool ShowCaret(IntPtr hWnd);
+        //[DllImport("User32.dll")]
+        //private static extern bool ShowCaret(IntPtr hWnd);
 
-        [DllImport("User32.dll")]
-        private static extern bool HideCaret(IntPtr hWnd);
+        //[DllImport("User32.dll")]
+        //private static extern bool HideCaret(IntPtr hWnd);
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -5148,16 +5204,16 @@ namespace FastColoredTextBoxNS
                 if (CaretBlinking)
                 if (prevCaretRect != caretRect || !ShowScrollBars)
                 {
-                    CreateCaret(Handle, 0, carWidth, caretHeight + 1);
-                    SetCaretPos(car.X, car.Y);
-                    ShowCaret(Handle);
+                    //CreateCaret(Handle, 0, carWidth, caretHeight + 1);
+                    //SetCaretPos(car.X, car.Y);
+                    //ShowCaret(Handle);
                 }
 
                 prevCaretRect = caretRect;
             }
             else
             {
-                HideCaret(Handle);
+                //HideCaret(Handle);
                 prevCaretRect = Rectangle.Empty;
             }
 
@@ -6289,6 +6345,7 @@ namespace FastColoredTextBoxNS
         /// Finds ranges for given regex pattern
         /// </summary>
         /// <param name="regexPattern">Regex pattern</param>
+        /// <param name="options"></param>
         /// <returns>Enumeration of ranges</returns>
         public IEnumerable<Range> GetRanges(string regexPattern, RegexOptions options)
         {
@@ -6307,7 +6364,7 @@ namespace FastColoredTextBoxNS
         public string GetLineText(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
             var sb = new StringBuilder(lines[iLine].Count);
             foreach (Char c in lines[iLine])
                 sb.Append(c.c);
@@ -6321,7 +6378,7 @@ namespace FastColoredTextBoxNS
         public virtual void ExpandFoldedBlock(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
             //find all hidden lines afetr iLine
             int end = iLine;
             for (; end < LinesCount - 1; end++)
@@ -6418,7 +6475,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Exapnds all folded blocks
         /// </summary>
-        /// <param name="iLine"></param>
+
         public virtual void ExpandAllFoldingBlocks()
         {
             for (int i = 0; i < LinesCount; i++)
@@ -6438,9 +6495,9 @@ namespace FastColoredTextBoxNS
         public virtual void CollapseFoldingBlock(int iLine)
         {
             if (iLine < 0 || iLine >= lines.Count)
-                throw new ArgumentOutOfRangeException("Line index out of range");
+                throw new ArgumentOutOfRangeException($"Line index out of range");
             if (string.IsNullOrEmpty(lines[iLine].FoldingStartMarker))
-                throw new ArgumentOutOfRangeException("This line is not folding start line");
+                throw new ArgumentOutOfRangeException($"This line is not folding start line");
             //find end of block
             int i = FindEndOfFoldingBlock(iLine);
             //collapse
@@ -6475,7 +6532,10 @@ namespace FastColoredTextBoxNS
                         if (lines.LineHasFoldingEndMarker(i))
                         {
                             string m = lines[i].FoldingEndMarker;
-                            while (stack.Count > 0 && stack.Pop() != m) ;
+                            while (stack.Count > 0 && stack.Pop() != m)
+                            {
+                            }
+
                             if (stack.Count == 0)
                                 return i;
                         }
@@ -6492,7 +6552,10 @@ namespace FastColoredTextBoxNS
                         if (lines.LineHasFoldingEndMarker(i))
                         {
                             string m = lines[i].FoldingEndMarker;
-                            while (stack.Count > 0 && stack.Pop() != m) ;
+                            while (stack.Count > 0 && stack.Pop() != m)
+                            {
+                            }
+
                             if (stack.Count == 0)
                                 return i;
                         }
@@ -7608,6 +7671,7 @@ window.status = ""#print"";
             TextSource.Manager.ExecuteCommand(new RemoveLinesCommand(TextSource, iLines));
             if (iLines.Count > 0)
                 IsChanged = true;
+
             if (LinesCount == 0)
                 Text = "";
             NeedRecalc();
@@ -8001,7 +8065,8 @@ window.status = ""#print"";
                 // Refresh the control 
                 Refresh();
                 // Disable drawing
-                SendMessage(Handle, WM_SETREDRAW, 0, 0);
+                //=> Sendmessage disabled
+                //SendMessage(Handle, WM_SETREDRAW, 0, 0);
             }
         }
 
@@ -8017,7 +8082,8 @@ window.status = ""#print"";
                 Capture = false;
                 base.Cursor = defaultCursor;
                 // Enable drawing
-                SendMessage(Handle, WM_SETREDRAW, 1, 0);
+                //=> SendMessage Disabled
+                //SendMessage(Handle, WM_SETREDRAW, 1, 0);
                 Invalidate();
             }
         }
@@ -8040,8 +8106,8 @@ window.status = ""#print"";
             OnScroll(yea);
         }
 
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        //[DllImport("user32.dll")]
+        //private static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
         private const int WM_SETREDRAW = 0xB;
 
         void middleClickScrollingTimer_Tick(object sender, EventArgs e)
@@ -8126,11 +8192,13 @@ window.status = ""#print"";
                 OnScroll(xea);
 
             // Enable drawing
-            SendMessage(Handle, WM_SETREDRAW, 1, 0);
+            //=> SendMessage Disabled
+            //SendMessage(Handle, WM_SETREDRAW, 1, 0);
             // Refresh the control 
             Refresh();
             // Disable drawing
-            SendMessage(Handle, WM_SETREDRAW, 0, 0);
+            //=> Sendmessage disabled
+            //SendMessage(Handle, WM_SETREDRAW, 0, 0);
         }
 
         private void DrawMiddleClickScrolling(Graphics gr)
@@ -8349,14 +8417,12 @@ window.status = ""#print"";
         /// <summary>
         /// Footer of page.
         /// Here you can use special codes: &amp;w (Window title), &amp;D, &amp;d (Date), &amp;t(), &amp;4 (Time), &amp;p (Current page number), &amp;P (Total number of pages),  &amp;&amp; (A single ampersand), &amp;b (Right justify text, Center text. If &amp;b occurs once, then anything after the &amp;b is right justified. If &amp;b occurs twice, then anything between the two &amp;b is centered, and anything after the second &amp;b is right justified).
-        /// More detailed see <see cref="http://msdn.microsoft.com/en-us/library/aa969429(v=vs.85).aspx">here</see>
         /// </summary>
         public string Footer { get; set; }
 
         /// <summary>
         /// Header of page
         /// Here you can use special codes: &amp;w (Window title), &amp;D, &amp;d (Date), &amp;t(), &amp;4 (Time), &amp;p (Current page number), &amp;P (Total number of pages),  &amp;&amp; (A single ampersand), &amp;b (Right justify text, Center text. If &amp;b occurs once, then anything after the &amp;b is right justified. If &amp;b occurs twice, then anything between the two &amp;b is centered, and anything after the second &amp;b is right justified).
-        /// More detailed see <see cref="http://msdn.microsoft.com/en-us/library/aa969429(v=vs.85).aspx">here</see>
         /// </summary>
         public string Header { get; set; }
 

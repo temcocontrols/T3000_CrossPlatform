@@ -301,8 +301,7 @@ namespace FastColoredTextBoxNS
                 text = args.InsertingText;
                 if (args.Cancel)
                     text = string.Empty;
-            };
-        }
+            }        }
 
         public virtual int GetLineLength(int i)
         {
@@ -321,7 +320,6 @@ namespace FastColoredTextBoxNS
 
         public virtual void Dispose()
         {
-            ;
         }
 
         public virtual void SaveToFile(string fileName, Encoding enc)
