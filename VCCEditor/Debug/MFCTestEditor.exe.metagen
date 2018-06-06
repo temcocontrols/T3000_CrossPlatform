@@ -1,0 +1,53 @@
+  MFCTestEditor.VCCEditBox.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly MFCTestEditor, Version=0.0.*, Culture=Todos los idiomas (todos los países): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly FastColoredTextBox, Version=2.16.23.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b: 
+	hash=None, flags=None
+Assembly FastColoredTextBoxNS, Version=1.1.*, Culture=Todos los idiomas (todos los países): 
+	hash=None, flags=None
+Assembly Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47: 
+	hash=None, flags=None
+Assembly System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly T3000Grammar, Version=1.0.*, Culture=Todos los idiomas (todos los países): 
+	hash=None, flags=None
+Assembly Microsoft.VisualC, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly MFCMIFC80, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Class Microsoft.VisualC.MFC.CWin32Window: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(HWND__*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.Windows.Forms.IWin32Window
+  Properties:
+    IntPtr Handle 'get ' : 
+  Methods:
+    get_Handle(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+Class Microsoft.VisualC.MFC.CWinFormsEventsHelper: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.Windows.Forms.Control m_pControl : Public
+    Microsoft.VisualC.MFC.IHandleEvents* m_pSink : Public
+  Properties:
+    System.Windows.Forms.Control Control 'get set' : 
+  Methods:
+    get_Control(): PrivateScope, Public, HideBySig, SpecialName
+    set_Control(Control): PrivateScope, Public, HideBySig, SpecialName
+    Advise(IHandleEvents*): PrivateScope, Public, HideBySig
+    Unadvise(IHandleEvents*): PrivateScope, Public, HideBySig
+Class MFCTestEditor.VCCEditBox: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.UserControl
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
