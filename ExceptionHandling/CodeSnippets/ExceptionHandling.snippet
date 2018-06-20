@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+        <SnippetType>SurroundsWith</SnippetType>
+      </SnippetTypes>
+      <AlternativeShortcuts>
+        <Shortcut Value="eh">Exception Handler</Shortcut>
+      </AlternativeShortcuts>
+      <Title>ExceptionHandling</Title>
+      <Author>Luis Danilo Ruiz</Author>
+      <Description>Customized Exception Handler</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>EH</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[try 
+    {
+    $selected$
+    }
+catch(Exception ex) {
+    ExceptionHandler.Show(ex,"Custom Message");
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
