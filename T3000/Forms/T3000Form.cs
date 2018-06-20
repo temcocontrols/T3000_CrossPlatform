@@ -32,7 +32,7 @@
             {
                 InitializeComponent();
                 //LRUIZ: AutoExpand treeBuildingView
-                //TODO: Add dynamically nodes to tree Building View
+                //TODO: NOT MINE: Add dynamically nodes to tree Building View
                 treeBuildingView.ExpandAll();
                 treeBuildingView.FullRowSelect = true;
             }

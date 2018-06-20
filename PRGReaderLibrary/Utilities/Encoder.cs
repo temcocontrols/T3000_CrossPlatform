@@ -259,7 +259,7 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
                     case "NOT":
-                        //TODO: Learn how to encode NOT operator -> tests and errors.
+                        //TODO: IMPORTANT: Learn how to encode NOT operator -> tests and errors.
                         break;
                     #endregion
 
@@ -285,7 +285,7 @@ namespace PRGReaderLibrary.Utilities
                     case "TABLENUMBER":
                     case "TIMER":
 
-
+                        //TODO: NEW: Add special treatment for TIME FORMAT numbers, see related TODO for DECODER
                         result.Add((byte)token.Token);
                         offset++;
                         //And... voilá...  trick revealed.
@@ -375,14 +375,27 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="HeaderString">Optional Header string</param>
         public static void  ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
         {
+            
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            int STEPBYTES = 50;
             Debug.Write(HeaderString);
             //Console.Write(HeaderString); // different in 2015 vs 2017
+            int countByLine = 0;
+            int countLines = 0;
             Debug.Write(" Bytes = { ");
             //Console.Write(" Bytes = { ");
             for (var i = 0; i < PSize + 3; i++)
             {
                 Debug.Write($"{ByteEncoded[i]} ");
+                countByLine++;
+                if(countByLine == STEPBYTES)
+                {
+                    countByLine = 0;
+                    countLines++;
+                    Debug.Write(System.Environment.NewLine + $"[{countLines*STEPBYTES}]-> ");
+                    
+
+                }
             }
             Debug.WriteLine("}");
         }
@@ -417,6 +430,8 @@ namespace PRGReaderLibrary.Utilities
 
 
                 //TODO: SET CORRECT TOKENTYPE FOR PRG, SCH AND HOL.
+                //TODO: NEW: SET CORRECT TOKENYYPE FOR PIDS (Alias Controllers)
+
                 //Test Programs
                 Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);
                 if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;

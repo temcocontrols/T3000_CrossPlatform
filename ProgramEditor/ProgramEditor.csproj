@@ -58,6 +58,10 @@
     <Compile Include="SendEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
+      <Project>{f32c40df-730f-4cb2-9a37-2b0950829c93}</Project>
+      <Name>ExceptionHandling</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FastColoredTextBoxNS\FastColoredTextBoxNS.csproj">
       <Project>{21d9406b-9a90-4a82-9894-abeb07393e78}</Project>
       <Name>FastColoredTextBoxNS</Name>

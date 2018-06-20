@@ -325,7 +325,7 @@
 
             //Get all graphics
 
-            //TODO: Constants to object static Size(FileVersion) Count(FileVersion)
+            //TODO: NOT MINE: Constants to object static Size(FileVersion) Count(FileVersion)
 
             Graphics.AddRange(GetArray(bytes,
                 GraphicPoint.GetCount(FileVersion),
