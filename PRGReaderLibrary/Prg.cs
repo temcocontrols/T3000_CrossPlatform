@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using ExceptionHandling;
 
     public class Prg : Version
     {
@@ -476,33 +477,39 @@
         /// </summary>
         /// <param name="bytes">Sequencec of bytes</param>
         /// <param name="parent">Parent Object</param>
-        public Prg(byte[] bytes, Object  parent) 
+        public Prg(byte[] bytes, Object parent)
             : base(FileVersionUtilities.GetFileVersion(bytes))
         {
             //Set the parent object
             this.SetParentClass(parent);
-
-            if (FileVersion == FileVersion.Unsupported)
+            try
             {
-                throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
+
+                if (FileVersion == FileVersion.Unsupported)
+                {
+                    throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
 {bytes.GetString(0, Math.Min(100, bytes.Length))}");
+                }
+
+                switch (FileVersion)
+                {
+                    case FileVersion.Dos:
+                        FromDosFormat(bytes);
+                        break;
+
+                    case FileVersion.Current:
+                        FromCurrentFormat(bytes);
+                        break;
+
+                    default:
+                        throw new NotImplementedException("This version not implemented");
+                }
             }
-
-            switch (FileVersion)
-            {
-                case FileVersion.Dos:
-                    FromDosFormat(bytes);
-                    break;
-
-                case FileVersion.Current:
-                    FromCurrentFormat(bytes);
-                    break;
-
-                default:
-                    throw new NotImplementedException("This version not implemented");
+            catch(Exception ex){
+                ExceptionHandler.Show(ex, "Creating new PRG object exception found!", true);
             }
-        }
-
+            
+            }
 
         public byte[] ToDosFormat()
         {

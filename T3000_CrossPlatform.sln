@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRGReaderLibrary", "PRGReaderLibrary\PRGReaderLibrary.csproj", "{573991EF-5A2B-4BBF-8283-1307DA619967}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBoxNS", "FastColoredTextBoxNS\FastColoredTextBoxNS.csproj", "{21D9406B-9A90-4A82-9894-ABEB07393E78}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "T3000Documenter", "T3000Documenter\T3000Documenter.shfbproj", "{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionHandling", "ExceptionHandling\ExceptionHandling.csproj", "{F32C40DF-730F-4CB2-9A37-2B0950829C93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,8 +163,23 @@ Global
 		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x64.Build.0 = Release|Any CPU
 		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x86.ActiveCfg = Release|Any CPU
 		{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}.Release|x86.Build.0 = Release|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Debug|x64.Build.0 = Debug|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Debug|x86.Build.0 = Debug|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Release|x64.ActiveCfg = Release|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Release|x64.Build.0 = Release|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Release|x86.ActiveCfg = Release|Any CPU
+		{F32C40DF-730F-4CB2-9A37-2B0950829C93}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81B8895D-433D-4A3A-AEAA-701811D26D43}
 	EndGlobalSection
 EndGlobal
