@@ -450,6 +450,10 @@
     <None Include="Resources\lock.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
+      <Project>{f32c40df-730f-4cb2-9a37-2b0950829c93}</Project>
+      <Name>ExceptionHandling</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
       <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
       <Name>PRGReaderLibrary</Name>

@@ -506,8 +506,11 @@
                 }
             }
             catch(Exception ex){
-                ExceptionHandler.Show(ex, "Creating new PRG object exception found!", true);
+   
+                ExceptionHandler.Show(ex, "public Prg(byte[] bytes, Object parent)", true);
             }
+            
+
             
             }
 
@@ -739,30 +742,9 @@
 
         public void Upgrade(FileVersion version = FileVersion.Current)
         {
-            if (FileVersion == version)
-            {
-                return;
-            }
+           
+            
 
-            FileVersion = version;
-            IsUpgraded = true;
-            switch (version)
-            {
-                case FileVersion.Current:
-                    Signature = FileVersionUtilities.Rev6Signature;
-                    Version = 6;
-                    break;
-
-                case FileVersion.Dos:
-                    Signature = FileVersionUtilities.DosSignature;
-                    break;
-
-            }
-
-            foreach (var variable in Variables)
-            {
-                variable.FileVersion = version;
-            }
         }
 
         /// <summary>

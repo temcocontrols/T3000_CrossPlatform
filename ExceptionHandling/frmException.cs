@@ -58,7 +58,7 @@ namespace ExceptionHandling
         /// <param name="e"></param>
         private void cmdSaveToFile_Click(object sender, EventArgs e)
         {
-            string copyText = string.Format("{0}{1}{1}{2}{1}{3}", CustomMessage?.ToString(), System.Environment.NewLine,
+            string copyText = string.Format("# {0}{1}{1}## {2}{1}{3}", CustomMessage?.ToString(), System.Environment.NewLine,
                ExceptionObject.Message.ToString(), ExceptionObject.StackTrace.ToString());
             //Save this text to a file
             string path = Application.StartupPath + "\\" + String.Format("T3000Exception-{0}{1}{2}{3}{4}.txt",DateTime.Now.Year,DateTime.Now.Month.ToString("00"),DateTime.Now.Day.ToString("00"),DateTime.Now.Hour.ToString("00"),DateTime.Now.Minute.ToString("00"));

@@ -8,14 +8,15 @@
     using System.Linq;
     using System.Windows.Forms;
     using System.Diagnostics;
+    using ExceptionHandling;
 
     public partial class T3000Form : Form, ILoadMessages
     {
-        private Prg _prg ; 
+        private Prg _prg;
         public Prg PRG
         {
             get { return _prg; }
-          
+
             private set { _prg = value; }
         }
 
@@ -26,11 +27,19 @@
 
         public T3000Form()
         {
-            InitializeComponent();
-            //LRUIZ: AutoExpand treeBuildingView
-            //TODO: Add dynamically nodes to tree Building View
-            treeBuildingView.ExpandAll();
-            treeBuildingView.FullRowSelect = true;
+
+            try
+            {
+                InitializeComponent();
+                //LRUIZ: AutoExpand treeBuildingView
+                //TODO: Add dynamically nodes to tree Building View
+                treeBuildingView.ExpandAll();
+                treeBuildingView.FullRowSelect = true;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Initializing T3000");
+            }
         }
 
         #region File
@@ -47,16 +56,19 @@
 
             try
             {
+
                 var path = dialog.FileName;
 
-                
+
                 PrgPath = path;
                 //Reset progress bar and label
                 ResetLoadPrgBar(0);
 
 
-                PRG = Prg.Load(path,this);
-                
+
+                PRG = Prg.Load(path, this);
+
+
 
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
 
@@ -89,10 +101,11 @@
                 {
                     upgradeMenuItem.Visible = true;
                 }
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Loading Program File");
             }
         }
 
@@ -104,6 +117,8 @@
                 return;
             }
 
+
+
             try
             {
                 var path = PrgPath;
@@ -111,81 +126,96 @@
                 PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Saving PRG File Exception Found");
             }
+
         }
 
         private void SaveAsPrg(object sender, EventArgs e)
         {
-            if (!IsOpened)
-            {
-                statusLabel.Text = Resources.FileIsNotOpen;
-                return;
-            }
 
-            var dialog = new SaveFileDialog();
-            dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
-            dialog.Title = Resources.SavePrgFile;
-            if (dialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-
-            var path = dialog.FileName;
             try
             {
+                if (!IsOpened)
+                {
+                    statusLabel.Text = Resources.FileIsNotOpen;
+                    return;
+                }
+
+                var dialog = new SaveFileDialog();
+                dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
+                dialog.Title = Resources.SavePrgFile;
+                if (dialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                var path = dialog.FileName;
+
                 PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Saving As .PRG, exception found");
             }
         }
 
         private void Upgrade(object sender, EventArgs e)
         {
-            if (!IsOpened)
-            {
-                statusLabel.Text = Resources.FileIsNotOpen;
-                return;
-            }
 
             try
             {
+                if (!IsOpened)
+                {
+                    statusLabel.Text = Resources.FileIsNotOpen;
+                    return;
+                }
+
+
                 var path = PrgPath;
 
                 PRG.Upgrade(FileVersion.Current);
                 statusLabel.Text = string.Format(Resources.Upgraded, path);
 
                 upgradeMenuItem.Visible = false;
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Upgrading File, Exception Found!");
             }
         }
 
         private void Exit(object sender, EventArgs e)
         {
-            if (IsOpened)
-            {
-                var result = MessageBox.Show(Resources.SaveBeforeExit,
-                    Resources.SaveBeforeExitTitle,
-                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (result == DialogResult.Cancel)
-                {
-                    return;
-                }
-                else if (result == DialogResult.Yes)
-                {
-                    SavePrg(sender, e);
-                }
-            }
 
-            Close();
+            try
+            {
+                if (IsOpened)
+                {
+                    var result = MessageBox.Show(Resources.SaveBeforeExit,
+                        Resources.SaveBeforeExitTitle,
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                    else if (result == DialogResult.Yes)
+                    {
+                        SavePrg(sender, e);
+                    }
+                }
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex);
+            }
         }
 
         #endregion
@@ -205,8 +235,10 @@
 
         private void ShowInputs(object sender, EventArgs e)
         {
+
             try
             {
+
                 if (!CheckIsOpened())
                 {
                     return;
@@ -214,10 +246,11 @@
 
                 var form = new InputsForm(PRG.Inputs, PRG.CustomUnits);
                 form.Show();
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex);
             }
         }
 
@@ -282,8 +315,10 @@
 
         private void ShowPrograms()
         {
+
             try
             {
+
                 if (!CheckIsOpened())
                 {
                     return;
@@ -294,38 +329,42 @@
                 form.MdiParent = this;
                 form.Show();
 
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, Resources.ShowProgramException);
             }
         }
 
         private void ShowScreens(object sender, EventArgs e)
         {
-            
+
+
             try
             {
+
                 if (!CheckIsOpened())
                 {
                     return;
                 }
                 var f = new VariablesForm(PRG.Variables, PRG.CustomUnits);
-                var f2 = new ProgramsForm(ref _prg, PrgPath );
+                var f2 = new ProgramsForm(ref _prg, PrgPath);
                 var form = new ScreensForm(PRG.Screens);
                 form.Prg = PRG;
-                form.PointsP=PRG.Programs;
+                form.PointsP = PRG.Programs;
                 form.CodesP = PRG.ProgramCodes;
                 form.PrgPath = PrgPath;
 
                 form.Vars = f.Vars;
                 form.Progs = f2.Progs;
-                
+
                 form.Show();
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex);
             }
         }
 
@@ -343,7 +382,7 @@
             }
             catch (Exception exception)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(exception);
             }
         }
 
@@ -361,7 +400,7 @@
             }
             catch (Exception exception)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(exception);
             }
         }
 
@@ -408,15 +447,23 @@
 
         public void PassMessage(int counter, string theMessage)
         {
-            LoadPartName.Text = "";
-            this.LoadPartName.Text = $"Parts({counter}) => Loaded {theMessage}";
-            this.LoadProgressBar.Value = counter;
 
-            Debug.WriteLine(this.LoadPartName.Text);
-            Application.DoEvents();
+            try
+            {
+                LoadPartName.Text = "";
+                this.LoadPartName.Text = $"Parts({counter}) => Loaded {theMessage}";
+                this.LoadProgressBar.Value = counter;
+
+                Debug.WriteLine(this.LoadPartName.Text);
+                Application.DoEvents();
 
 
-            System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(50);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex);
+            }
 
         }
     }
