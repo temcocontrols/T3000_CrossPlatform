@@ -12,8 +12,6 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
-    using System.Runtime.InteropServices;
-    using System.ComponentModel;
 
 
 
@@ -25,10 +23,10 @@
     /// <param name="e"></param>
     public delegate void SendEventHandler(object sender, SendEventArgs e);
 
-
-    [Guid("E8789EA8-CA99-48DF-B920-1A1DCB4FF6AD")]
-    [ClassInterface(ClassInterfaceType.None)]
-    public partial class ProgramEditorForm : UserControl, IProgramEditor
+    /// <summary>
+    /// ProgramEditor Form
+    /// </summary>
+    public partial class ProgramEditorForm : Form
     {
 
         /// <summary>
@@ -36,12 +34,8 @@
         /// </summary>
         public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
-        [Description("Code Text"), Category("ProgramEditor")]
-        public string Code
-        {
-           get { return editTextBox.Text; }
-           set { editTextBox.Text = value; ParseCode(false); }
-        }
+      
+        private string Code { get; set; }
 
 
         List<EditorTokenInfo> Tokens = new List<EditorTokenInfo>();
@@ -51,7 +45,6 @@
         /// <summary>
         /// Form caption
         /// </summary>
-        [Description("Window Caption"), Category("ProgramEditor")]
         public string Caption
         {
             get { return this.Text; }
@@ -153,7 +146,7 @@
             //autocompleteMenu.Items.SetAutocompleteItems(items);
 
 
-           // this.WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Maximized;
             //this.WindowState = FormWindowState.Normal;
 
             
@@ -1381,13 +1374,7 @@
             return Expr;
         }
 
-        [ComRegisterFunction()]
-        public static void RegisterClass(Type type) => ComUtilities.RegisterControlClass(type);
-
-        [ComUnregisterFunction()]
-        public static void UnregisterClass(Type type) => ComUtilities.UnregisterControlClass(type);
-
 
     }
-
+    
 }
