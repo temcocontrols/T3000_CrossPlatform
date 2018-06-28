@@ -1,4 +1,4 @@
-namespace ExceptionHandling
+﻿namespace ExceptionHandling
 {
     partial class frmException
     {

@@ -1079,7 +1079,7 @@
                         case "LET":
                         default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
-
+                            Console.WriteLine($"ProcessTokens(): TOKEN TerminalName:{terminalname}-Text:{tokentext} passed by defautl");
                             break;
                             #endregion
                     }

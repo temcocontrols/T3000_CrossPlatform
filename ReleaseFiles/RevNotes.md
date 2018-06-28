@@ -1,6 +1,11 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+## Updated: 20180615.2052
+### IF IF+ IF- THEN ELSE redesigned.
+Tested against env14.prg
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
 
 ## Updated: 20180214.0100
 ### DECODER 90% Ready, BUG FIX: IF THEN ELSE Decoding with recursive calls of DecodeBytes()

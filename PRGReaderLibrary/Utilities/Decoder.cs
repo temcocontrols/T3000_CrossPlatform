@@ -434,13 +434,21 @@ namespace PRGReaderLibrary.Utilities
             string result = "↑";
 
 
-            offset++; //skip LINETOKEN ASSIGNMENT
-            //get left side of assigment
-            result = GetIdentifierLabel(source, ref offset);
-            result += " = ";
 
-            //Get right side of assigment (expression)
-            result += GetExpression(source, ref offset);
+            try
+            {
+                offset++; //skip LINETOKEN ASSIGNMENT
+                          //get left side of assigment
+                result = GetIdentifierLabel(source, ref offset);
+                result += " = ";
+
+                //Get right side of assigment (expression)
+                result += GetExpression(source, ref offset);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "GetAssigment()");
+            }
 
             return result;
         }
@@ -464,411 +472,420 @@ namespace PRGReaderLibrary.Utilities
 
             string Result = "";
 
-            #region Operators precedence, same as in grammar
-            // 4. Operators precedence, same as in grammar
-            ////RegisterOperators(100, Associativity.Right, EXP);
-            ////RegisterOperators(90, MUL, DIV, IDIV);
-            ////RegisterOperators(80, MOD);
-            ////RegisterOperators(70, SUM, SUB);
 
-            ////RegisterOperators(60, LT, GT, LTE, GTE, EQ, NEQ);
-
-            ////RegisterOperators(50, Associativity.Right, NOT);
-            ////RegisterOperators(50, AND, OR, XOR);
-
-            #endregion
-
-            while (!isEOL)
+            try
             {
-                switch (source[offset])
+
+                #region Operators precedence, same as in grammar
+                // 4. Operators precedence, same as in grammar
+                ////RegisterOperators(100, Associativity.Right, EXP);
+                ////RegisterOperators(90, MUL, DIV, IDIV);
+                ////RegisterOperators(80, MOD);
+                ////RegisterOperators(70, SUM, SUB);
+
+                ////RegisterOperators(60, LT, GT, LTE, GTE, EQ, NEQ);
+
+                ////RegisterOperators(50, Associativity.Right, NOT);
+                ////RegisterOperators(50, AND, OR, XOR);
+
+                #endregion
+
+                while (!isEOL)
                 {
-                    #region Identifiers
+                    switch (source[offset])
+                    {
+                        #region Identifiers
 
-                    case (byte)PCODE_CONST.LOCAL_POINT_PRG:
-                        EditorTokenInfo localpoint = new EditorTokenInfo("Identifier", "Identifier");
-                        localpoint.Token = source[offset];
-                        localpoint.Index = source[offset + 1];
-                        localpoint.Type = source[offset + 2];
-                        //text will be ready with identifier label
-                        localpoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
-                        ExprTokens.Add(localpoint);
-                        break;
-
-                    #endregion
-
-                    #region Numeric Constants
-
-                    case (byte)PCODE_CONST.CONST_VALUE_PRG:
-
-                        EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
-                        constvalue.Token = source[offset];
-                        constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
-                        ExprTokens.Add(constvalue);
-
-                        break;
-
-
-                    #endregion
-
-                    #region Single Tokens
-
-                    case (byte)TYPE_TOKEN.PLUS:
-                        EditorTokenInfo plustoken = new EditorTokenInfo("+", "PLUS");
-                        plustoken.Token = source[offset];
-                        plustoken.Precedence = 70;
-                        ExprTokens.Add(plustoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.MINUS:
-                        EditorTokenInfo minustoken = new EditorTokenInfo("-", "MINUS");
-                        minustoken.Token = source[offset];
-                        minustoken.Precedence = 70;
-                        ExprTokens.Add(minustoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.DIV:
-                        EditorTokenInfo divtoken = new EditorTokenInfo("/", "DIV");
-                        divtoken.Token = source[offset];
-                        divtoken.Precedence = 90;
-                        ExprTokens.Add(divtoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.IDIV:
-                        EditorTokenInfo idivtoken = new EditorTokenInfo("\\", "IDIV");
-                        idivtoken.Token = source[offset];
-                        idivtoken.Precedence = 90;
-                        ExprTokens.Add(idivtoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.MUL:
-                        EditorTokenInfo multoken = new EditorTokenInfo("*", "MUL");
-                        multoken.Token = source[offset];
-                        multoken.Precedence = 90;
-                        ExprTokens.Add(multoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.POW:
-                        EditorTokenInfo powtoken = new EditorTokenInfo("^", "POW");
-                        powtoken.Token = source[offset];
-                        powtoken.Precedence = 100;
-                        ExprTokens.Add(powtoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.MOD:
-                        EditorTokenInfo modtoken = new EditorTokenInfo("MOD", "MOD");
-                        modtoken.Token = source[offset];
-                        modtoken.Precedence = 80;
-                        ExprTokens.Add(modtoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.LT:
-                        EditorTokenInfo lttoken = new EditorTokenInfo("<", "LT");
-                        lttoken.Token = source[offset];
-                        lttoken.Precedence = 60;
-                        ExprTokens.Add(lttoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.LE:
-                        EditorTokenInfo letoken = new EditorTokenInfo("<=", "LE");
-                        letoken.Token = source[offset];
-                        letoken.Precedence = 60;
-                        ExprTokens.Add(letoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.GT:
-                        EditorTokenInfo gttoken = new EditorTokenInfo(">", "GT");
-                        gttoken.Token = source[offset];
-                        gttoken.Precedence = 60;
-                        ExprTokens.Add(gttoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.GE:
-                        EditorTokenInfo getoken = new EditorTokenInfo(">=", "GE");
-                        getoken.Token = source[offset];
-                        getoken.Precedence = 60;
-                        ExprTokens.Add(getoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.EQ:
-                        EditorTokenInfo eqtoken = new EditorTokenInfo("=", "EQ");
-                        eqtoken.Token = source[offset];
-                        eqtoken.Precedence = 60;
-                        ExprTokens.Add(eqtoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.NE:
-                        EditorTokenInfo netoken = new EditorTokenInfo("<>", "NE");
-                        netoken.Token = source[offset];
-                        netoken.Precedence = 60;
-                        ExprTokens.Add(netoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.XOR:
-                        EditorTokenInfo xortoken = new EditorTokenInfo("XOR", "XOR");
-                        xortoken.Token = source[offset];
-                        xortoken.Precedence = 50;
-                        ExprTokens.Add(xortoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.OR:
-                        EditorTokenInfo ortoken = new EditorTokenInfo("OR", "OR");
-                        ortoken.Token = source[offset];
-                        ortoken.Precedence = 50;
-                        ExprTokens.Add(ortoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.AND:
-                        EditorTokenInfo andtoken = new EditorTokenInfo("AND", "AND");
-                        andtoken.Token = source[offset];
-                        andtoken.Precedence = 50;
-                        ExprTokens.Add(andtoken);
-                        offset++;
-                        break;
-                    case (byte)TYPE_TOKEN.NOT:
-                        EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
-                        nottoken.Token = source[offset];
-                        nottoken.Precedence = 50;
-                        ExprTokens.Add(nottoken);
-                        offset++;
-                        break;
-                    //functions that are low precedence as identifiers in expressions
-                    case (byte)FUNCTION_TOKEN.DOY:
-                        fxtoken = new EditorTokenInfo("DOY", "DOY");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.DOW:
-                        fxtoken = new EditorTokenInfo("DOW", "DOW");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.DOM:
-                        fxtoken = new EditorTokenInfo("DOM", "DOM");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.POWER_LOSS:
-                        fxtoken = new EditorTokenInfo("POWER-LOSS", "POWER_LOSS");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.USER_A:
-                        fxtoken = new EditorTokenInfo("USER-B", "USER_A");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.USER_B:
-                        fxtoken = new EditorTokenInfo("USER-B", "USER_B");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.SCANS:
-                        fxtoken = new EditorTokenInfo("SCANS", "SCANS");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.UNACK:
-                        fxtoken = new EditorTokenInfo("UNACK", "UNACK");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 0;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-
-                    #endregion
-
-                    #region Functions with single expression
-
-                    case (byte)FUNCTION_TOKEN.ABS:
-                        fxtoken = new EditorTokenInfo("ABS", "ABS");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN._INT:
-                        fxtoken = new EditorTokenInfo("INT", "_INT");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.INTERVAL:
-                        fxtoken = new EditorTokenInfo("INTERVAL", "INTERVAL");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.LN:
-                        fxtoken = new EditorTokenInfo("LN", "LN");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.LN_1:
-                        fxtoken = new EditorTokenInfo("LN-1", "LN_1");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.SQR:
-                        fxtoken = new EditorTokenInfo("SQR", "SQR");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN._Status:
-                        fxtoken = new EditorTokenInfo("STATUS", "_Status");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-
-
-                    #region This functions hadnt been tested, PENDING FROM ENCONDING
-                    case (byte)FUNCTION_TOKEN.CONPROP:
-                        fxtoken = new EditorTokenInfo("CONPROP", "CONPROP");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-
-                    case (byte)FUNCTION_TOKEN.CONRATE:
-                        fxtoken = new EditorTokenInfo("CONRATE", "CONRATE");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-
-                    case (byte)FUNCTION_TOKEN.CONRESET:
-                        fxtoken = new EditorTokenInfo("CONRESET", "CONRESET");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-
-                    case (byte)FUNCTION_TOKEN.TBL:
-                        fxtoken = new EditorTokenInfo("TBL", "TBL");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.TIME:
-                        fxtoken = new EditorTokenInfo("TIME", "TIME");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.TIME_ON:
-                        fxtoken = new EditorTokenInfo("TIME-ON", "TIME_ON");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.TIME_OFF:
-                        fxtoken = new EditorTokenInfo("TIME-OFF", "TIME_OFF");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.WR_ON:
-                        fxtoken = new EditorTokenInfo("WR-ON", "WR_ON");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-                    case (byte)FUNCTION_TOKEN.WR_OFF:
-                        fxtoken = new EditorTokenInfo("WR-OFF", "WR_OFF");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        ExprTokens.Add(fxtoken);
-                        offset++;
-                        break;
-
-
-                    #endregion
-
-
-                    #region Functions ended with count of variable arguments
-                    case (byte)FUNCTION_TOKEN.AVG:
-                        fxtoken = new EditorTokenInfo("AVG", "AVG");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        fxtoken.Index = source[offset + 1];
-                        ExprTokens.Add(fxtoken);
-                        offset += 2;
-                        break;
-                    case (byte)FUNCTION_TOKEN.MAX:
-                        fxtoken = new EditorTokenInfo("MAX", "MAX");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        fxtoken.Index = source[offset + 1];
-                        ExprTokens.Add(fxtoken);
-                        offset += 2;
-                        break;
-                    case (byte)FUNCTION_TOKEN.MIN:
-                        fxtoken = new EditorTokenInfo("MIN", "MIN");
-                        fxtoken.Token = source[offset];
-                        fxtoken.Precedence = 200;
-                        fxtoken.Index = source[offset + 1];
-                        ExprTokens.Add(fxtoken);
-                        offset += 2;
-                        break;
-
-
-                    #endregion
-
-                    #endregion
-
-                    #region End of expressions (MARKERS)
-
-                    case (byte)LINE_TOKEN.EOE: //Also known as end of expression marker (THEN)
-                    case (byte)LINE_TOKEN.EOF:
-                    case (byte)LINE_TOKEN.THEN:
-                    case (byte)LINE_TOKEN.REM:
-                    case (byte)LINE_TOKEN.ELSE:
-                    case (byte)TYPE_TOKEN.NUMBER: //line number
-                    default:
-                        isEOL = true;
-                        //expression ends here, this byte-token should be processed outside this function
-                        break;
+                        case (byte)PCODE_CONST.LOCAL_POINT_PRG:
+                            EditorTokenInfo localpoint = new EditorTokenInfo("Identifier", "Identifier");
+                            localpoint.Token = source[offset];
+                            localpoint.Index = source[offset + 1];
+                            localpoint.Type = source[offset + 2];
+                            //text will be ready with identifier label
+                            localpoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
+                            ExprTokens.Add(localpoint);
+                            break;
 
                         #endregion
-                }
 
-            }// after this, we should have a list of all tokens in the expression.
-            //lets parse RPN into Infix, 
-            if (ExpressionAhead)
-                Result = ParseRPN2Infix(ExprTokens) + NextExpression;
-            else
-                Result = ParseRPN2Infix(ExprTokens);
+                        #region Numeric Constants
+
+                        case (byte)PCODE_CONST.CONST_VALUE_PRG:
+
+                            EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
+                            constvalue.Token = source[offset];
+                            constvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
+                            ExprTokens.Add(constvalue);
+
+                            break;
+
+
+                        #endregion
+
+                        #region Single Tokens
+
+                        case (byte)TYPE_TOKEN.PLUS:
+                            EditorTokenInfo plustoken = new EditorTokenInfo("+", "PLUS");
+                            plustoken.Token = source[offset];
+                            plustoken.Precedence = 70;
+                            ExprTokens.Add(plustoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.MINUS:
+                            EditorTokenInfo minustoken = new EditorTokenInfo("-", "MINUS");
+                            minustoken.Token = source[offset];
+                            minustoken.Precedence = 70;
+                            ExprTokens.Add(minustoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.DIV:
+                            EditorTokenInfo divtoken = new EditorTokenInfo("/", "DIV");
+                            divtoken.Token = source[offset];
+                            divtoken.Precedence = 90;
+                            ExprTokens.Add(divtoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.IDIV:
+                            EditorTokenInfo idivtoken = new EditorTokenInfo("\\", "IDIV");
+                            idivtoken.Token = source[offset];
+                            idivtoken.Precedence = 90;
+                            ExprTokens.Add(idivtoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.MUL:
+                            EditorTokenInfo multoken = new EditorTokenInfo("*", "MUL");
+                            multoken.Token = source[offset];
+                            multoken.Precedence = 90;
+                            ExprTokens.Add(multoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.POW:
+                            EditorTokenInfo powtoken = new EditorTokenInfo("^", "POW");
+                            powtoken.Token = source[offset];
+                            powtoken.Precedence = 100;
+                            ExprTokens.Add(powtoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.MOD:
+                            EditorTokenInfo modtoken = new EditorTokenInfo("MOD", "MOD");
+                            modtoken.Token = source[offset];
+                            modtoken.Precedence = 80;
+                            ExprTokens.Add(modtoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.LT:
+                            EditorTokenInfo lttoken = new EditorTokenInfo("<", "LT");
+                            lttoken.Token = source[offset];
+                            lttoken.Precedence = 60;
+                            ExprTokens.Add(lttoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.LE:
+                            EditorTokenInfo letoken = new EditorTokenInfo("<=", "LE");
+                            letoken.Token = source[offset];
+                            letoken.Precedence = 60;
+                            ExprTokens.Add(letoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.GT:
+                            EditorTokenInfo gttoken = new EditorTokenInfo(">", "GT");
+                            gttoken.Token = source[offset];
+                            gttoken.Precedence = 60;
+                            ExprTokens.Add(gttoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.GE:
+                            EditorTokenInfo getoken = new EditorTokenInfo(">=", "GE");
+                            getoken.Token = source[offset];
+                            getoken.Precedence = 60;
+                            ExprTokens.Add(getoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.EQ:
+                            EditorTokenInfo eqtoken = new EditorTokenInfo("=", "EQ");
+                            eqtoken.Token = source[offset];
+                            eqtoken.Precedence = 60;
+                            ExprTokens.Add(eqtoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.NE:
+                            EditorTokenInfo netoken = new EditorTokenInfo("<>", "NE");
+                            netoken.Token = source[offset];
+                            netoken.Precedence = 60;
+                            ExprTokens.Add(netoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.XOR:
+                            EditorTokenInfo xortoken = new EditorTokenInfo("XOR", "XOR");
+                            xortoken.Token = source[offset];
+                            xortoken.Precedence = 50;
+                            ExprTokens.Add(xortoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.OR:
+                            EditorTokenInfo ortoken = new EditorTokenInfo("OR", "OR");
+                            ortoken.Token = source[offset];
+                            ortoken.Precedence = 50;
+                            ExprTokens.Add(ortoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.AND:
+                            EditorTokenInfo andtoken = new EditorTokenInfo("AND", "AND");
+                            andtoken.Token = source[offset];
+                            andtoken.Precedence = 50;
+                            ExprTokens.Add(andtoken);
+                            offset++;
+                            break;
+                        case (byte)TYPE_TOKEN.NOT:
+                            EditorTokenInfo nottoken = new EditorTokenInfo("NOT", "NOT");
+                            nottoken.Token = source[offset];
+                            nottoken.Precedence = 50;
+                            ExprTokens.Add(nottoken);
+                            offset++;
+                            break;
+                        //functions that are low precedence as identifiers in expressions
+                        case (byte)FUNCTION_TOKEN.DOY:
+                            fxtoken = new EditorTokenInfo("DOY", "DOY");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.DOW:
+                            fxtoken = new EditorTokenInfo("DOW", "DOW");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.DOM:
+                            fxtoken = new EditorTokenInfo("DOM", "DOM");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.POWER_LOSS:
+                            fxtoken = new EditorTokenInfo("POWER-LOSS", "POWER_LOSS");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.USER_A:
+                            fxtoken = new EditorTokenInfo("USER-B", "USER_A");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.USER_B:
+                            fxtoken = new EditorTokenInfo("USER-B", "USER_B");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.SCANS:
+                            fxtoken = new EditorTokenInfo("SCANS", "SCANS");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.UNACK:
+                            fxtoken = new EditorTokenInfo("UNACK", "UNACK");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 0;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+
+                        #endregion
+
+                        #region Functions with single expression
+
+                        case (byte)FUNCTION_TOKEN.ABS:
+                            fxtoken = new EditorTokenInfo("ABS", "ABS");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN._INT:
+                            fxtoken = new EditorTokenInfo("INT", "_INT");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.INTERVAL:
+                            fxtoken = new EditorTokenInfo("INTERVAL", "INTERVAL");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.LN:
+                            fxtoken = new EditorTokenInfo("LN", "LN");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.LN_1:
+                            fxtoken = new EditorTokenInfo("LN-1", "LN_1");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.SQR:
+                            fxtoken = new EditorTokenInfo("SQR", "SQR");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN._Status:
+                            fxtoken = new EditorTokenInfo("STATUS", "_Status");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+
+
+                        #region This functions hadnt been tested, PENDING FROM ENCONDING
+                        case (byte)FUNCTION_TOKEN.CONPROP:
+                            fxtoken = new EditorTokenInfo("CONPROP", "CONPROP");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+
+                        case (byte)FUNCTION_TOKEN.CONRATE:
+                            fxtoken = new EditorTokenInfo("CONRATE", "CONRATE");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+
+                        case (byte)FUNCTION_TOKEN.CONRESET:
+                            fxtoken = new EditorTokenInfo("CONRESET", "CONRESET");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+
+                        case (byte)FUNCTION_TOKEN.TBL:
+                            fxtoken = new EditorTokenInfo("TBL", "TBL");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.TIME:
+                            fxtoken = new EditorTokenInfo("TIME", "TIME");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.TIME_ON:
+                            fxtoken = new EditorTokenInfo("TIME-ON", "TIME_ON");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.TIME_OFF:
+                            fxtoken = new EditorTokenInfo("TIME-OFF", "TIME_OFF");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.WR_ON:
+                            fxtoken = new EditorTokenInfo("WR-ON", "WR_ON");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+                        case (byte)FUNCTION_TOKEN.WR_OFF:
+                            fxtoken = new EditorTokenInfo("WR-OFF", "WR_OFF");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            ExprTokens.Add(fxtoken);
+                            offset++;
+                            break;
+
+
+                        #endregion
+
+
+                        #region Functions ended with count of variable arguments
+                        case (byte)FUNCTION_TOKEN.AVG:
+                            fxtoken = new EditorTokenInfo("AVG", "AVG");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            fxtoken.Index = source[offset + 1];
+                            ExprTokens.Add(fxtoken);
+                            offset += 2;
+                            break;
+                        case (byte)FUNCTION_TOKEN.MAX:
+                            fxtoken = new EditorTokenInfo("MAX", "MAX");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            fxtoken.Index = source[offset + 1];
+                            ExprTokens.Add(fxtoken);
+                            offset += 2;
+                            break;
+                        case (byte)FUNCTION_TOKEN.MIN:
+                            fxtoken = new EditorTokenInfo("MIN", "MIN");
+                            fxtoken.Token = source[offset];
+                            fxtoken.Precedence = 200;
+                            fxtoken.Index = source[offset + 1];
+                            ExprTokens.Add(fxtoken);
+                            offset += 2;
+                            break;
+
+
+                        #endregion
+
+                        #endregion
+
+                        #region End of expressions (MARKERS)
+
+                        case (byte)LINE_TOKEN.EOE: //Also known as end of expression marker (THEN)
+                        case (byte)LINE_TOKEN.EOF:
+                        case (byte)LINE_TOKEN.THEN:
+                        case (byte)LINE_TOKEN.REM:
+                        case (byte)LINE_TOKEN.ELSE:
+                        case (byte)TYPE_TOKEN.NUMBER: //line number
+                        default:
+                            isEOL = true;
+                            //expression ends here, this byte-token should be processed outside this function
+                            break;
+
+                            #endregion
+                    }
+
+                }// after this, we should have a list of all tokens in the expression.
+                 //lets parse RPN into Infix, 
+                if (ExpressionAhead)
+                    Result = ParseRPN2Infix(ExprTokens) + NextExpression;
+                else
+                    Result = ParseRPN2Infix(ExprTokens);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "GetExpression()");
+            }
 
             return Result;
         }
@@ -889,60 +906,70 @@ namespace PRGReaderLibrary.Utilities
 
 
 
-            //parse using BTreeStack every token in RPN list of preprocessed tokens
-            for (int idxtoken = 0; idxtoken < ExprTokens.Count; idxtoken++)
-
+            try
             {
-                EditorTokenInfo token = new EditorTokenInfo("", "");
-                token = ExprTokens[idxtoken];
 
-                if (token.Precedence < 50)
-                    //It's an operand, just push to stack
-                    BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
+                //parse using BTreeStack every token in RPN list of preprocessed tokens
+                for (int idxtoken = 0; idxtoken < ExprTokens.Count; idxtoken++)
 
-                else
                 {
-                    //it's an operator, push two operands, create a new tree and push to stack again.
-                    BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
+                    EditorTokenInfo token = new EditorTokenInfo("", "");
+                    token = ExprTokens[idxtoken];
 
-                    switch (operatornode.Data.TerminalName)
+                    if (token.Precedence < 50)
+                        //It's an operand, just push to stack
+                        BTStack.Push(new BinaryTree<EditorTokenInfo>(token));
+
+                    else
                     {
-                        //Multiple expressions functions
-                        case "AVG":
+                        //it's an operator, push two operands, create a new tree and push to stack again.
+                        BinaryTree<EditorTokenInfo> operatornode = new BinaryTree<EditorTokenInfo>(token);
 
-                            if (BTStack.Count < operatornode.Data.Index)
-                                throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
+                        switch (operatornode.Data.TerminalName)
+                        {
+                            //Multiple expressions functions
+                            case "AVG":
 
-                            for (int i = 1; i < operatornode.Data.Index; i++)
-                                NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
+                                if (BTStack.Count < operatornode.Data.Index)
+                                    throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
 
-                            NodeAddCommaToken(ref operatornode, BTStack.Pop(), true); //just add to the left
-                            BTStack.Push(operatornode);
+                                for (int i = 1; i < operatornode.Data.Index; i++)
+                                    NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
 
-                            break;
+                                NodeAddCommaToken(ref operatornode, BTStack.Pop(), true); //just add to the left
+                                BTStack.Push(operatornode);
 
-                        default: //Other simple functions and operators
+                                break;
 
-                            if (BTStack.Count > 1) //avoid unary operators and functions exception
-                                operatornode.Right = BTStack.Pop();
+                            default: //Other simple functions and operators
 
-                            operatornode.Left = BTStack.Pop();
-                            BTStack.Push(operatornode);
+                                if (BTStack.Count > 1) //avoid unary operators and functions exception
+                                    operatornode.Right = BTStack.Pop();
 
-                            break;
+                                operatornode.Left = BTStack.Pop();
+                                BTStack.Push(operatornode);
+
+                                break;
+                        }
+
                     }
 
                 }
 
+                if (BTStack.Count > 1)
+                    throw new ArgumentException("Too many expressions in final BTStack");
+
+                BinaryTree<EditorTokenInfo> root = BTStack.Peek();
+                //now we end the the top most node on stack as a complete tree of RPN
+                string rootprint = root.ToString();
+                Result = TraverseInOrder(root);
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "ParseRPN2Infix()");
             }
 
-            if (BTStack.Count > 1)
-                throw new ArgumentException("Too many expressions in final BTStack");
-
-            BinaryTree<EditorTokenInfo> root = BTStack.Peek();
-            //now we end the the top most node on stack as a complete tree of RPN
-            string rootprint = root.ToString();
-            Result = TraverseInOrder(root);
             return Result;
 
         }
@@ -1031,7 +1058,7 @@ namespace PRGReaderLibrary.Utilities
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Show(ex, "System Stack Overflow()?");
+                ExceptionHandler.Show(ex, "TraverseInOrder()");
             }
 
             return Result;
@@ -1058,35 +1085,43 @@ namespace PRGReaderLibrary.Utilities
             byte[] value = { 0, 0, 0, 0 };
             Int32 intvalue = 0;
 
-            for (int i = 0; i < 4; i++)
+
+            try
             {
-                value[i] = source[offset + i + 1]; 
+                for (int i = 0; i < 4; i++)
+                {
+                    value[i] = source[offset + i + 1];
+                }
+
+                intvalue = BitConverter.ToInt32(value, 0);
+                double dvalue = intvalue / 1000;
+                intvalue = Convert.ToInt32(dvalue);
+
+                //check if a whole number
+                if (dvalue % 1 == 0)
+                {
+                    result = intvalue.ToString();
+                }
+                else
+                {
+                    result = dvalue.ToString();
+                }
+
+                offset += 5;
+
+
+                //lookahead, if a TIME FORMAT value
+                if (source[offset] == (byte)FUNCTION_TOKEN.TIME_FORMAT)
+                {
+                    //Return a TIME FORMATTTED STRING
+                    TimeSpan t = TimeSpan.FromSeconds(intvalue);
+                    result = string.Format("{0:D2}:{1:D2}:{2:D2}", t.Hours, t.Minutes, t.Seconds);
+                    offset++;
+                }
             }
-
-            intvalue = BitConverter.ToInt32(value, 0);
-            double dvalue = intvalue / 1000;
-            intvalue = Convert.ToInt32(dvalue);
-
-            //check if a whole number
-            if (dvalue % 1 == 0)
+            catch (Exception ex)
             {
-                result = intvalue.ToString();
-            }
-            else
-            {
-                result = dvalue.ToString();
-            }
-
-            offset += 5;
-
-            
-            //lookahead, if a TIME FORMAT value
-            if(source[offset] == (byte)FUNCTION_TOKEN.TIME_FORMAT)
-            {
-                //Return a TIME FORMATTTED STRING
-                TimeSpan t = TimeSpan.FromSeconds(intvalue);
-                result = string.Format("{0:D2}:{1:D2}:{2:D2}", t.Hours, t.Minutes, t.Seconds);
-                offset++;
+                ExceptionHandler.Show(ex, "GetConstValue()");
             }
             
             return result;
