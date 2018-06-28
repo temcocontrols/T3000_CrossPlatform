@@ -430,7 +430,6 @@ namespace PRGReaderLibrary.Utilities
 
 
                 //TODO: SET CORRECT TOKENTYPE FOR PRG, SCH AND HOL.
-                //TODO: NEW: SET CORRECT TOKENYYPE FOR PIDS (Alias Controllers)
 
                 //Test Programs
                 Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);

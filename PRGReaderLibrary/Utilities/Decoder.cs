@@ -210,7 +210,7 @@ namespace PRGReaderLibrary.Utilities
                             result += GetExpression(PCode, ref offset);
                             isFirstToken = false;
                             //THEN PART BEGINS
-                            result += " THEN ";
+                            result += " THEN";
                             offset++;
                             int OffsetTHEN = BitConverter.ToInt16(PCode, offset);
                             if(OffsetTHEN > 2000)
@@ -228,7 +228,7 @@ namespace PRGReaderLibrary.Utilities
                                 }
                             }
 
-                            result += RemoveCRLF(GetThenPart(PCode, ref offset, OffsetTHEN));
+                            result += RemoveCRLF(GetThenElsePart(PCode, ref offset, OffsetTHEN));
 
                             if (PCode[offset] == (byte)LINE_TOKEN.EOE) offset++; //Ignore the token.
 
@@ -238,7 +238,7 @@ namespace PRGReaderLibrary.Utilities
                                     isFirstToken = true;
                                     break;
                                 case (byte)LINE_TOKEN.ELSE:
-                                    result += " ELSE ";
+                                    result += " ELSE";
                                     offset+=2; //ELSE and MKR
                                     int newElseOffset = BitConverter.ToInt16(PCode, offset);
                                     if (newElseOffset > 2000)
@@ -246,7 +246,7 @@ namespace PRGReaderLibrary.Utilities
                                         throw new Exception("Out of bounds: ELSE Offset it's over PRG capacity ");
                                     }
                                     offset += 2; //offset +2 bytes
-                                    result += RemoveCRLF(GetElsePart(PCode, ref offset, newElseOffset));
+                                    result += RemoveCRLF(GetThenElsePart(PCode, ref offset, newElseOffset));
 
                                     if (PCode[offset] == (byte)LINE_TOKEN.EOE) offset++; //Ignore the token.
                                     //After ELSE PART only new line allowed.
@@ -258,24 +258,6 @@ namespace PRGReaderLibrary.Utilities
 
                             break;
 
-                        //case (byte)LINE_TOKEN.ELSE:
-                        //    //ELSE
-
-                            
-                        //    result += " ELSE ";
-                        //    offset++;
-
-                        //    if (PCode[offset] == (byte)LINE_TOKEN.EOE) //optional end marker
-                        //    {
-                        //        offset++; //jump this marker
-                        //    }
-                        //    else
-                        //        if (PCode[offset] == (byte)TYPE_TOKEN.NUMBER) { isFirstToken = true;
-                                
-                        //    }
-                        //    isFirstToken = true;
-
-                        //    break;
                         #endregion
 
 
@@ -356,35 +338,6 @@ namespace PRGReaderLibrary.Utilities
             return result;
         }
 
-
-        /// <summary>
-        /// Get ELSE part for branches (IF+-)
-        /// </summary>
-        /// <param name="pCode">Source bytes</param>
-        /// <param name="offset">referenced offset</param>
-        /// <param name="newElseOffset">new offset when done</param>
-        /// <returns></returns>
-        private static string GetElsePart(byte[] pCode, ref int offset, int newElseOffset)
-        {
-            string result = ""; //ELSE already decoded
-
-            try
-            {
-                //el nuevo offset ya apunta a la siguiente instrucción después de la parte ELSE
-                //Para garantizar que solo se decodifica ELSE PART, se resta 1
-                result += DecodeBytes(pCode, offset, newElseOffset - 1);
-                //set new referenced offset
-                offset = newElseOffset;
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.Show(ex, "GetElsePart(), Exception found!");
-            }
-
-            return result;
-        }
-
-
         /// <summary>
         /// Gets the THEN PART OF BRANCHES (IF+-)
         /// </summary>
@@ -392,21 +345,21 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="offset">referenced offset</param>
         /// <param name="newOffset">new offset when done</param>
         /// <returns></returns>
-        private static string GetThenPart(byte[] pCode, ref int offset, int newOffset)
+        private static string GetThenElsePart(byte[] pCode, ref int offset, int newOffset)
         {
-            string result = ""; //THEN word already decoded, as is obligatory.
+            string result = ""; //THEN or ELSE word already decoded, as is obligatory.
 
             try
             {
                 //el nuevo offset ya apunta a la siguiente instrucción después de la parte THEN
                 //Para garantizar que solo se decodifica THEN PART, se resta 1
-                result += DecodeBytes(pCode, offset, newOffset - 1);
+                result += RemoveCRLF(DecodeBytes(pCode, offset, newOffset - 1));
                 //set new referenced offset.
                 offset = newOffset;
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Show(ex, "GetThenPart(), Exception Found");
+                ExceptionHandler.Show(ex, "GetThenElsePart(), Exception Found");
             }
 
             return result;
@@ -487,7 +440,6 @@ namespace PRGReaderLibrary.Utilities
             result += " = ";
 
             //Get right side of assigment (expression)
-            Debug.Assert(CurrentLine != "330");
             result += GetExpression(source, ref offset);
 
             return result;
@@ -547,9 +499,6 @@ namespace PRGReaderLibrary.Utilities
                     #region Numeric Constants
 
                     case (byte)PCODE_CONST.CONST_VALUE_PRG:
-
-                        //TODO: NEW: Decoder needs to evaluate TIME FORMAT, as it ends With TIME_FORMAT token to differentiate from a common number literal.
-                        
 
                         EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                         constvalue.Token = source[offset];
@@ -1094,33 +1043,7 @@ namespace PRGReaderLibrary.Utilities
             return s.TrimEnd('\r', '\n');
         }
 
-        /// <summary>
-        /// Gets the value of new limit offset for a THEN or ELSE part
-        /// </summary>
-        /// <param name="source">source bytes</param>
-        /// <param name="offset">start</param>
-        /// <returns>int value of new limit offset</returns>
-        private static int GetThenElseOffset(byte[] source, ref int offset)
-        {
-            
-            byte[] value = { 0, 0, 0, 0 };
-            Int32 intvalue = 0;
-
-            for (int i = 0; i < 2; i++)
-            {
-                value[i] = source[offset + i + 1];
-            }
-            
-            value[2] = 0;
-            value[3] = 0;
-
-            intvalue = BitConverter.ToInt32(value, 0);
-
-            offset += 3;
-            return intvalue;
-
-        }
-
+        
 
         /// <summary>
         /// Get a numeric constant value from sourcec
