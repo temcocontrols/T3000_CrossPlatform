@@ -209,48 +209,73 @@ namespace PRGReaderLibrary.Utilities
                             offset++;
                             result += GetExpression(PCode, ref offset);
                             isFirstToken = false;
+                            //THEN PART BEGINS
                             result += " THEN ";
-
-                            int newOffset = GetThenElseOffset(PCode, ref offset)-1;
-
-                            result += RemoveCRLF(GetThenPart(PCode, ref offset, newOffset));
                             offset++;
+                            int OffsetTHEN = BitConverter.ToInt16(PCode, offset);
+                            if(OffsetTHEN > 2000)
+                            {
+                                throw new Exception("Out of bounds: THEN Offset it's over PRG capacity ");
+                            }
+                            offset += 2;
+
+                            //Look ahead for ELSE token to adjust OffsetTHEN
+                            for(int pos = offset; pos <= OffsetTHEN; pos++)
+                            {
+                                if (PCode[pos] == (byte)LINE_TOKEN.ELSE)
+                                {
+                                    OffsetTHEN = pos;
+                                }
+                            }
+
+                            result += RemoveCRLF(GetThenPart(PCode, ref offset, OffsetTHEN));
+
+                            if (PCode[offset] == (byte)LINE_TOKEN.EOE) offset++; //Ignore the token.
+
+                            switch (PCode[offset])
+                            {
+                                case (byte)TYPE_TOKEN.NUMBER:
+                                    isFirstToken = true;
+                                    break;
+                                case (byte)LINE_TOKEN.ELSE:
+                                    result += " ELSE ";
+                                    offset+=2; //ELSE and MKR
+                                    int newElseOffset = BitConverter.ToInt16(PCode, offset);
+                                    if (newElseOffset > 2000)
+                                    {
+                                        throw new Exception("Out of bounds: ELSE Offset it's over PRG capacity ");
+                                    }
+                                    offset += 2; //offset +2 bytes
+                                    result += RemoveCRLF(GetElsePart(PCode, ref offset, newElseOffset));
+
+                                    if (PCode[offset] == (byte)LINE_TOKEN.EOE) offset++; //Ignore the token.
+                                    //After ELSE PART only new line allowed.
+                                    isFirstToken = true;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            break;
+
+                        //case (byte)LINE_TOKEN.ELSE:
+                        //    //ELSE
 
                             
-                            if (PCode[offset] == (byte)LINE_TOKEN.EOE) //optional end marker
-                            {
-                                offset++; //jump this marker
+                        //    result += " ELSE ";
+                        //    offset++;
 
-                                if (PCode[offset] == (byte)LINE_TOKEN.ELSE)
-                                    isFirstToken = false;
-                                else isFirstToken = true;
-                            }
-                            else
-                                if (PCode[offset] == (byte)TYPE_TOKEN.NUMBER) { isFirstToken = true; }
+                        //    if (PCode[offset] == (byte)LINE_TOKEN.EOE) //optional end marker
+                        //    {
+                        //        offset++; //jump this marker
+                        //    }
+                        //    else
+                        //        if (PCode[offset] == (byte)TYPE_TOKEN.NUMBER) { isFirstToken = true;
+                                
+                        //    }
+                        //    isFirstToken = true;
 
-                            break;
-
-                        case (byte)LINE_TOKEN.ELSE:
-                            //ELSE
-
-                            offset += 1;
-                            result += " ELSE ";
-
-                            int newElseOffset = GetThenElseOffset(PCode, ref offset) - 1;
-                            result += GetElsePart(PCode, ref offset, newElseOffset);
-                            offset++;
-
-                            if (PCode[offset] == (byte)LINE_TOKEN.EOE) //optional end marker
-                            {
-                                offset++; //jump this marker
-                            }
-                            else
-                                if (PCode[offset] == (byte)TYPE_TOKEN.NUMBER) { isFirstToken = true;
-                                offset++;
-                            }
-                            isFirstToken = true;
-
-                            break;
+                        //    break;
                         #endregion
 
 
@@ -345,7 +370,9 @@ namespace PRGReaderLibrary.Utilities
 
             try
             {
-                result += DecodeBytes(pCode, offset, newElseOffset);
+                //el nuevo offset ya apunta a la siguiente instrucción después de la parte ELSE
+                //Para garantizar que solo se decodifica ELSE PART, se resta 1
+                result += DecodeBytes(pCode, offset, newElseOffset - 1);
                 //set new referenced offset
                 offset = newElseOffset;
             }
@@ -371,7 +398,9 @@ namespace PRGReaderLibrary.Utilities
 
             try
             {
-                result += DecodeBytes(pCode, offset, newOffset);
+                //el nuevo offset ya apunta a la siguiente instrucción después de la parte THEN
+                //Para garantizar que solo se decodifica THEN PART, se resta 1
+                result += DecodeBytes(pCode, offset, newOffset - 1);
                 //set new referenced offset.
                 offset = newOffset;
             }
