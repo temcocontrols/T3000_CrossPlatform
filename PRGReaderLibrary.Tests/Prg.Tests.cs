@@ -34,7 +34,7 @@ Value.ToFromToString(): {tempValue.ToString()}
         public void BaseTest(string name)
         {
             var path = TestUtilities.GetFullPathForPrgFile(name);
-            var prg = Prg.Load(path);
+            var prg = Prg.Load(path, null);
 
             var temp = Path.GetTempFileName();
 
