@@ -590,6 +590,79 @@
 </FileData>
 <FileData>
 <FldRef>0</FldRef>
+<FullName>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation\System.Data.SQLite.xml</FullName>
+<FileName>System.Data.SQLite.xml</FileName>
+<Source>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation</Source>
+<Ext>xml</Ext>
+<RTSource>Archive</RTSource>
+<Desc/>
+<Recurse>1</Recurse>
+<MatchMode>0</MatchMode>
+<Dest>%AppFolder%</Dest>
+<Overwrite>1</Overwrite>
+<Backup>0</Backup>
+<Protect>0</Protect>
+<InstallOrder>1000</InstallOrder>
+<SCStartRoot>0</SCStartRoot>
+<SCStartProgs>0</SCStartProgs>
+<SCAppFld>0</SCAppFld>
+<SCStartup>0</SCStartup>
+<SCDesk>0</SCDesk>
+<SCQLaunch>0</SCQLaunch>
+<SCStartPinOption>0</SCStartPinOption>
+<SCCust>0</SCCust>
+<CustSCPath/>
+<SCDesc/>
+<SCComment/>
+<SCArgs/>
+<SCWork/>
+<UseExtIco>0</UseExtIco>
+<IcoFN/>
+<IcoIdx>0</IcoIdx>
+<IcoShowMd>0</IcoShowMd>
+<IcoHK>0</IcoHK>
+<RegTTF>0</RegTTF>
+<TTFName/>
+<RegOCX>0</RegOCX>
+<RegTLB>0</RegTLB>
+<SupInUse>0</SupInUse>
+<Compress>1</Compress>
+<UseOrigAttr>1</UseOrigAttr>
+<Attr>0</Attr>
+<NoCRC>0</NoCRC>
+<NoRemove>0</NoRemove>
+<Shared>0</Shared>
+<OSCond>
+<OS>32768</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+<OS>65535</OS>
+</OSCond>
+<RTCond/>
+<BuildConfigs>
+<Cfg>All</Cfg>
+</BuildConfigs>
+<Package>None</Package>
+<Packages/>
+<Notes/>
+<CompSize>0</CompSize>
+<CRC>0</CRC>
+<StoreOnly>0</StoreOnly>
+</FileData>
+<FileData>
+<FldRef>0</FldRef>
 <FullName>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation\T3000.exe</FullName>
 <FileName>T3000.exe</FileName>
 <Source>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation</Source>
@@ -1246,20 +1319,20 @@ Otherwise, click Next to continue.
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Bienvenido</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>Bienvenido al programa de instalación de %ProductName% %ProductVer%</IDS_SUBHEADER_TEXT>
+<IDS_SUBHEADER_TEXT>Bienvenido al programa de instalaciÃ³n de %ProductName% %ProductVer%</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
-<IDS_CTRL_STATICTEXT_BODY>Bienvenido al programa de instalación de %ProductName% %ProductVer%.
+<IDS_CTRL_STATICTEXT_BODY>Bienvenido al programa de instalaciÃ³n de %ProductName% %ProductVer%.
 
-Se recomienda que cierre todos los programas en ejecución antes de continuar con la instalación.
+Se recomienda que cierre todos los programas en ejecuciÃ³n antes de continuar con la instalaciÃ³n.
 
-Si Ud. tiene algún otro programa en ejecución, por favor haga clic en Cancelar, cierre los programas y ejecute la instalación de nuevo.
+Si Ud. tiene algÃºn otro programa en ejecuciÃ³n, por favor haga clic en Cancelar, cierre los programas y ejecute la instalaciÃ³n de nuevo.
 
-De no ser así, haga clic en Siguiente.
+De no ser asÃ­, haga clic en Siguiente.
 </IDS_CTRL_STATICTEXT_BODY>
 <IDS_CTRL_HEADINGTEXT_BODY>Bienvenido</IDS_CTRL_HEADINGTEXT_BODY>
 </Messages>
@@ -1788,16 +1861,16 @@ OR
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Acuerdo de Licencia</IDS_HEADER_TEXT>
 <IDS_SUBHEADER_TEXT>Por favor, lea cuidadosamente el siguiente acuerdo de licencia.</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
-<IDS_CTRL_SCROLLTEXT_BODY>Introduzca el texto de su acuerdo de licencia aquí...</IDS_CTRL_SCROLLTEXT_BODY>
-<IDS_CTRL_RADIOBTN_AGREE>Acepto los términos del acuerdo de licencia</IDS_CTRL_RADIOBTN_AGREE>
-<IDS_CTRL_RADIOBTN_DISAGREE>No acepto los términos del acuerdo de licencia</IDS_CTRL_RADIOBTN_DISAGREE>
+<IDS_CTRL_SCROLLTEXT_BODY>Introduzca el texto de su acuerdo de licencia aquÃ­...</IDS_CTRL_SCROLLTEXT_BODY>
+<IDS_CTRL_RADIOBTN_AGREE>Acepto los tÃ©rminos del acuerdo de licencia</IDS_CTRL_RADIOBTN_AGREE>
+<IDS_CTRL_RADIOBTN_DISAGREE>No acepto los tÃ©rminos del acuerdo de licencia</IDS_CTRL_RADIOBTN_DISAGREE>
 <IDS_CTRL_SCROLLTEXT_FILE/>
 </Messages>
 </SUF70Messages>
@@ -3212,11 +3285,11 @@ end
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
-<IDS_HEADER_TEXT>Información del usuario</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>Introduzca su información de usuario y haga clic en Siguiente.</IDS_SUBHEADER_TEXT>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_HEADER_TEXT>InformaciÃ³n del usuario</IDS_HEADER_TEXT>
+<IDS_SUBHEADER_TEXT>Introduzca su informaciÃ³n de usuario y haga clic en Siguiente.</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
 <IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS/>
@@ -3226,7 +3299,7 @@ end
 <IDS_CTRL_BUTTON_01>...</IDS_CTRL_BUTTON_01>
 <IDS_CTRL_EDIT_MASK_01>####</IDS_CTRL_EDIT_MASK_01>
 <IDS_CTRL_EDIT_MASK_PLACE_HOLDER_01> </IDS_CTRL_EDIT_MASK_PLACE_HOLDER_01>
-<IDS_CTRL_STATICTEXT_LABEL_02>Compañía:</IDS_CTRL_STATICTEXT_LABEL_02>
+<IDS_CTRL_STATICTEXT_LABEL_02>CompaÃ±Ã­a:</IDS_CTRL_STATICTEXT_LABEL_02>
 <IDS_CTRL_EDIT_02>%RegOrganization%</IDS_CTRL_EDIT_02>
 <IDS_CTRL_BUTTON_02>...</IDS_CTRL_BUTTON_02>
 <IDS_CTRL_EDIT_MASK_02>####</IDS_CTRL_EDIT_MASK_02>
@@ -3656,16 +3729,16 @@ end
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
-<IDS_HEADER_TEXT>Carpeta de instalación</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>¿Donde quiere que se instale %ProductName%?</IDS_SUBHEADER_TEXT>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_HEADER_TEXT>Carpeta de instalaciÃ³n</IDS_HEADER_TEXT>
+<IDS_SUBHEADER_TEXT>Â¿Donde quiere que se instale %ProductName%?</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
 <IDS_CTRL_BUTTON_BROWSE>Cambiar...</IDS_CTRL_BUTTON_BROWSE>
 <IDS_CTRL_EDIT_FOLDER>%AppFolder%</IDS_CTRL_EDIT_FOLDER>
-<IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>El software será instalado en la carpeta indicada a continuación. Para seleccionar una nueva ubicación, teclee una nueva dirección o haga clic en Cambiar para seleccionar una carpeta ya existente.</IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>
+<IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>El software serÃ¡ instalado en la carpeta indicada a continuaciÃ³n. Para seleccionar una nueva ubicaciÃ³n, teclee una nueva direcciÃ³n o haga clic en Cambiar para seleccionar una carpeta ya existente.</IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>
 <IDS_CTRL_STATICTEXT_LABEL_01>Instalar %ProductName% en:</IDS_CTRL_STATICTEXT_LABEL_01>
 <IDS_CTRL_STATICTEXT_SPACEREQUIRED>Espacio requerido: %SpaceRequired%</IDS_CTRL_STATICTEXT_SPACEREQUIRED>
 <IDS_CTRL_STATICTEXT_SPACEAVAILABLE>Espacio disponible en la unidad seleccionada: %SpaceAvailable%</IDS_CTRL_STATICTEXT_SPACEAVAILABLE>
@@ -4071,16 +4144,16 @@ end
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Carpeta para los accesos directos</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>¿Dónde quiere que se instalen los accesos directos?</IDS_SUBHEADER_TEXT>
+<IDS_SUBHEADER_TEXT>Â¿DÃ³nde quiere que se instalen los accesos directos?</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
-<IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>Los iconos de acceso directo serán creados en la carpeta indicada a continuación. Si Ud. no quiere usar la carpeta por defecto, puede indicar un nuevo nombre o seleccionar una carpeta ya existente de la lista.</IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>
+<IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>Los iconos de acceso directo serÃ¡n creados en la carpeta indicada a continuaciÃ³n. Si Ud. no quiere usar la carpeta por defecto, puede indicar un nuevo nombre o seleccionar una carpeta ya existente de la lista.</IDS_CTRL_STATICTEXT_TOPINSTRUCTIONS>
 <IDS_CTRL_STATICTEXT_LABEL_01>Carpeta para los accesos directos:</IDS_CTRL_STATICTEXT_LABEL_01>
-<IDS_CTRL_RADIOBTN_PERUSER>Instalar sólo accesos directos para el usuario activo</IDS_CTRL_RADIOBTN_PERUSER>
+<IDS_CTRL_RADIOBTN_PERUSER>Instalar sÃ³lo accesos directos para el usuario activo</IDS_CTRL_RADIOBTN_PERUSER>
 <IDS_CTRL_RADIOBTN_ALLUSERS>Hacer los accesos directos disponibles para todos los usuarios</IDS_CTRL_RADIOBTN_ALLUSERS>
 <IDS_CTRL_COMBOBOX_SHORTCUTFOLDERS>%AppShortcutFolderName%</IDS_CTRL_COMBOBOX_SHORTCUTFOLDERS>
 </Messages>
@@ -4380,25 +4453,25 @@ Please click Next to proceed with the installation.</IDS_CTRL_STATICTEXT_BODY>
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Listo para Instalar</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>Ya está listo para instalar %ProductName% %ProductVer%</IDS_SUBHEADER_TEXT>
+<IDS_SUBHEADER_TEXT>Ya estÃ¡ listo para instalar %ProductName% %ProductVer%</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
-<IDS_CTRL_STATICTEXT_BODY>El programa de instalación ya tiene toda la información para instalar %ProductName% en su ordenador.
+<IDS_CTRL_STATICTEXT_BODY>El programa de instalaciÃ³n ya tiene toda la informaciÃ³n para instalar %ProductName% en su ordenador.
 
 
-Las siguientes opciones serán usadas:
+Las siguientes opciones serÃ¡n usadas:
 
-Carpeta de instalación:        %AppFolder%
+Carpeta de instalaciÃ³n:        %AppFolder%
 
-Carpeta donde se crearán los accesos directos:    %AppShortcutFolderName%
+Carpeta donde se crearÃ¡n los accesos directos:    %AppShortcutFolderName%
 
 
-Por favor, haga clic en Siguiente para llevar a cabo la instalación.</IDS_CTRL_STATICTEXT_BODY>
-<IDS_CTRL_HEADINGTEXT_BODY>Título</IDS_CTRL_HEADINGTEXT_BODY>
+Por favor, haga clic en Siguiente para llevar a cabo la instalaciÃ³n.</IDS_CTRL_STATICTEXT_BODY>
+<IDS_CTRL_HEADINGTEXT_BODY>TÃ­tulo</IDS_CTRL_HEADINGTEXT_BODY>
 </Messages>
 </SUF70Messages>
 </Languages>
@@ -4728,7 +4801,7 @@ end
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Instalando %ProductName%</IDS_HEADER_TEXT>
 <IDS_SUBHEADER_TEXT>Por favor, espere...</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
@@ -5034,20 +5107,20 @@ Please click Finish to exit this installer.
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de instalación de %ProductName%</IDS_WINDOW_TITLE>
-<IDS_HEADER_TEXT>Instalación Terminada</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>La instalación se ha completado.</IDS_SUBHEADER_TEXT>
+<IDS_WINDOW_TITLE>Programa de instalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_HEADER_TEXT>InstalaciÃ³n Terminada</IDS_HEADER_TEXT>
+<IDS_SUBHEADER_TEXT>La instalaciÃ³n se ha completado.</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Terminar</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
-<IDS_CTRL_STATICTEXT_BODY>La instalación de %ProductName% %ProductVer% ha terminado.
+<IDS_CTRL_STATICTEXT_BODY>La instalaciÃ³n de %ProductName% %ProductVer% ha terminado.
 
 Gracias por elegir %ProductName% !
 
-Por favor, haga clic en “Finalizar” para salir del programa de instalación.
+Por favor, haga clic en Â“FinalizarÂ” para salir del programa de instalaciÃ³n.
 </IDS_CTRL_STATICTEXT_BODY>
-<IDS_CTRL_HEADINGTEXT_BODY>Instalación Completada</IDS_CTRL_HEADINGTEXT_BODY>
+<IDS_CTRL_HEADINGTEXT_BODY>InstalaciÃ³n Completada</IDS_CTRL_HEADINGTEXT_BODY>
 </Messages>
 </SUF70Messages>
 </Languages>
@@ -5457,18 +5530,18 @@ Otherwise, click Next to continue.
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de desinstalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de desinstalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Bienvenido</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>Bienvenido al programa de desinstalación de %ProductName% %ProductVer%</IDS_SUBHEADER_TEXT>
+<IDS_SUBHEADER_TEXT>Bienvenido al programa de desinstalaciÃ³n de %ProductName% %ProductVer%</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Siguiente &gt;</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
-<IDS_CTRL_STATICTEXT_BODY>Este programa desinstalará %ProductName% %Product Ver%.
+<IDS_CTRL_STATICTEXT_BODY>Este programa desinstalarÃ¡ %ProductName% %Product Ver%.
 
-Si %ProductName% está siendo ejecutado, por favor ciérrelo antes de proceder a su desinstalación.
+Si %ProductName% estÃ¡ siendo ejecutado, por favor ciÃ©rrelo antes de proceder a su desinstalaciÃ³n.
 
-De no ser así, haga clic en Siguiente para continuar.
+De no ser asÃ­, haga clic en Siguiente para continuar.
 </IDS_CTRL_STATICTEXT_BODY>
 <IDS_CTRL_HEADINGTEXT_BODY>Desinstalar %ProductName%</IDS_CTRL_HEADINGTEXT_BODY>
 </Messages>
@@ -5794,7 +5867,7 @@ end
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de desinstalación de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_WINDOW_TITLE>Programa de desinstalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
 <IDS_HEADER_TEXT>Borrando %ProductName%</IDS_HEADER_TEXT>
 <IDS_SUBHEADER_TEXT>Por favor, espere...</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
@@ -6098,18 +6171,18 @@ Please click Finish to exit.
 </Secondary>
 </Language>
 <Messages>
-<IDS_WINDOW_TITLE>Programa de desinstalación de %ProductName%</IDS_WINDOW_TITLE>
-<IDS_HEADER_TEXT>Deinstalación Terminada</IDS_HEADER_TEXT>
-<IDS_SUBHEADER_TEXT>La deinstalación se ha completado.</IDS_SUBHEADER_TEXT>
+<IDS_WINDOW_TITLE>Programa de desinstalaciÃ³n de %ProductName%</IDS_WINDOW_TITLE>
+<IDS_HEADER_TEXT>DeinstalaciÃ³n Terminada</IDS_HEADER_TEXT>
+<IDS_SUBHEADER_TEXT>La deinstalaciÃ³n se ha completado.</IDS_SUBHEADER_TEXT>
 <IDS_CTRL_BUTTON_NEXT>&amp;Terminar</IDS_CTRL_BUTTON_NEXT>
-<IDS_CTRL_BUTTON_BACK>&lt; &amp;Atrás</IDS_CTRL_BUTTON_BACK>
+<IDS_CTRL_BUTTON_BACK>&lt; &amp;AtrÃ¡s</IDS_CTRL_BUTTON_BACK>
 <IDS_CTRL_BUTTON_CANCEL>&amp;Cancelar</IDS_CTRL_BUTTON_CANCEL>
 <IDS_CTRL_BUTTON_HELP>A&amp;yuda</IDS_CTRL_BUTTON_HELP>
 <IDS_CTRL_STATICTEXT_BODY>%ProductName% %ProductVer% ha sido desinstalado.
 
 Por favor, haga clic en Finalizar para salir.
 </IDS_CTRL_STATICTEXT_BODY>
-<IDS_CTRL_HEADINGTEXT_BODY>Deinstalación Completada</IDS_CTRL_HEADINGTEXT_BODY>
+<IDS_CTRL_HEADINGTEXT_BODY>DeinstalaciÃ³n Completada</IDS_CTRL_HEADINGTEXT_BODY>
 </Messages>
 </SUF70Messages>
 </Languages>
@@ -6810,7 +6883,7 @@ g_HandleSystemReboot();
 </SessionVar>
 <SessionVar>
 <Name>%Copyright%</Name>
-<Value>Copyright © 2017 %CompanyName%</Value>
+<Value>Copyright Â© 2017 %CompanyName%</Value>
 <Type>1</Type>
 </SessionVar>
 <SessionVar>
@@ -6849,7 +6922,7 @@ g_HandleSystemReboot();
 <PostBuildCmdLine/>
 <PostBuildWait>0</PostBuildWait>
 <Filename>Setup32.exe</Filename>
-<OutputFolder>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\Setup</OutputFolder>
+<OutputFolder>D:\SISTEMAS\AIMSERVICES\t3000\ReleaseFiles\Setup</OutputFolder>
 <SegmentSizeMode>0</SegmentSizeMode>
 <CustomSegSize>0</CustomSegSize>
 <CustomSegSizeMode>0</CustomSegSizeMode>
@@ -6873,7 +6946,7 @@ g_HandleSystemReboot();
 <ResourceComments>Created with Setup Factory</ResourceComments>
 <ResourceInternalName>sf_rt</ResourceInternalName>
 <ResourceFileDescription>Setup Application</ResourceFileDescription>
-<ResourceCopyright>Setup Engine Copyright © 1992-2015 Indigo Rose Corporation</ResourceCopyright>
+<ResourceCopyright>Setup Engine Copyright Â© 1992-2015 Indigo Rose Corporation</ResourceCopyright>
 <ResourceTrademarks>Setup Factory is a trademark of Indigo Rose Corporation</ResourceTrademarks>
 <ResourcePrivateBuild>1</ResourcePrivateBuild>
 <ResourceSpecialBuild>1</ResourceSpecialBuild>
@@ -6890,7 +6963,7 @@ g_HandleSystemReboot();
 <PostBuildCmdLine/>
 <PostBuildWait>0</PostBuildWait>
 <Filename>Setup64.exe</Filename>
-<OutputFolder>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\Setup</OutputFolder>
+<OutputFolder>D:\SISTEMAS\AIMSERVICES\t3000\ReleaseFiles\Setup</OutputFolder>
 <SegmentSizeMode>0</SegmentSizeMode>
 <CustomSegSize>0</CustomSegSize>
 <CustomSegSizeMode>0</CustomSegSizeMode>
@@ -6914,7 +6987,7 @@ g_HandleSystemReboot();
 <ResourceComments>Created with Setup Factory</ResourceComments>
 <ResourceInternalName>sf_rt</ResourceInternalName>
 <ResourceFileDescription>Setup Application</ResourceFileDescription>
-<ResourceCopyright>Setup Engine Copyright © 1992-2015 Indigo Rose Corporation</ResourceCopyright>
+<ResourceCopyright>Setup Engine Copyright Â© 1992-2015 Indigo Rose Corporation</ResourceCopyright>
 <ResourceTrademarks>Setup Factory is a trademark of Indigo Rose Corporation</ResourceTrademarks>
 <ResourcePrivateBuild/>
 <ResourceSpecialBuild/>
