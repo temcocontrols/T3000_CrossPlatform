@@ -16,7 +16,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using PRGReaderLibrary.Extensions;
 
 
 namespace FastColoredTextBoxNS
@@ -33,11 +32,6 @@ namespace FastColoredTextBoxNS
         
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
 
-
-        /// <summary>
-        /// Required copy of Control Points Labels just for semantic validations
-        /// </summary>
-        public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
 
         /// <summary>

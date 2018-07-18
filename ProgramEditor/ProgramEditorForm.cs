@@ -110,6 +110,7 @@
             {
                 InitializeComponent();
 
+                editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
                 editTextBox.Grammar = new T3000Grammar();
                 editTextBox.SetParser(new LanguageData(editTextBox.Grammar));
                 //LRUIZ :: Enable a new set of grammar, language and parser, to get Program Code Errors
@@ -487,7 +488,21 @@
         }
         private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if(ModifierKeys == Keys.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Insert:
+                        if(editTextBox.SelectedText != null)
+                        {
+                            ShowIdentifier(editTextBox.SelectedText);
 
+                        }
+                        break;
+                    
+                }
+                e.Handled = true;
+            }
 
 
             switch (e.KeyCode)
@@ -506,6 +521,18 @@
                     LinesValidator(); e.Handled = true; break;
 
             }//switch.
+
+        }
+
+        private void ShowIdentifier(string selectedText)
+        {
+            frmIdentifierInfo frm = new frmIdentifierInfo();
+
+            frm.Text = selectedText;
+            frm.Label.Text = selectedText;
+            frm.Show();
+
+
 
         }
 
