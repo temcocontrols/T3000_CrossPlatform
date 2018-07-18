@@ -1,4 +1,0 @@
-# DecodeBytes(), Exception Found
-
-## Índice fuera de los límites de la matriz.
-   en PRGReaderLibrary.Utilities.Decoder.DecodeBytes(Byte[] PCode, Int32 Start, Int32 End) en D:\SISTEMAS\AIMSERVICES\T3000 AIM\PRGReaderLibrary\Utilities\Decoder.cs:línea 233

@@ -1,4 +1,0 @@
-# ParseRPN2Infix()
-
-## Too many expressions in final BTStack
-   en PRGReaderLibrary.Utilities.Decoder.ParseRPN2Infix(List`1 ExprTokens) en D:\SISTEMAS\AIMSERVICES\T3000 AIM\PRGReaderLibrary\Utilities\Decoder.cs:línea 973

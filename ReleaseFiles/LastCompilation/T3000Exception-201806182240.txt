@@ -1,8 +1,0 @@
-# GetExpression() found an exception
-
-## La cadena de entrada no tiene el formato correcto.
-   en System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
-   en System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
-   en System.Int16.Parse(String s, NumberStyles style, NumberFormatInfo info)
-   en System.Convert.ToInt16(String value)
-   en T3000.Forms.ProgramEditorForm.GetExpression(Int32& Index, Boolean& Cancel) en D:\SISTEMAS\AIMSERVICES\T3000 AIM\ProgramEditor\ProgramEditorForm.cs:línea 1326
