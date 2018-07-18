@@ -1,6 +1,446 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='GitLab Community Edition' name='description'>
+<title>
+t3000/ProgramEditor/frmIdentifierInfo.resx at 04d1a0c6fd995bb0b730114d3ed87357ad1188aa - C programming / T3000 | 
+GitLab
+</title>
+<link href="/assets/favicon-baaa14bade1248aa6165e9d34e7d83c0.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+<link href="/assets/application-8afcf791d7afe64a25e5240b75fcf084.css" media="all" rel="stylesheet" />
+<link href="/assets/print-1df3ea9b8ff148a6745321899e0cb213.css" media="print" rel="stylesheet" />
+<script src="/assets/application-c8cd2dd87cbf8a023b21baf4d6996ac9.js"></script>
+<meta content="authenticity_token" name="csrf-param" />
+<meta content="zeFZ/KGipiN3yNnDwTN7rYVUizM6fL9wh++aiIjMx9U=" name="csrf-token" />
+<script type="text/javascript">
+//<![CDATA[
+window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relative_url_root="";gon.default_avatar_url="https://phoenix.aimservices.tech:8082/assets/no_avatar-adffbfe10d45b20495cd2a9b88974150.png";gon.current_user_id=4;gon.api_token="pyGw9sAbr2CRk9BrPd2x";
+//]]>
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+</head>
+
+<body class='ui_mars project' data-page='projects:blob:show' data-project-id='36'>
+
+<header class='navbar navbar-static-top navbar-gitlab'>
+<div class='navbar-inner'>
+<div class='container'>
+<div class='app_logo'>
+<span class='separator'></span>
+<a class="home has_bottom_tooltip" href="/" title="Dashboard"><h1>GITLAB</h1>
+</a><span class='separator'></span>
+</div>
+<h1 class='title'><span><a href="/groups/c-programming">C programming</a> / T3000</span></h1>
+<button class='navbar-toggle' data-target='.navbar-collapse' data-toggle='collapse' type='button'>
+<span class='sr-only'>Toggle navigation</span>
+<i class='icon-reorder'></i>
+</button>
+<div class='navbar-collapse collapse'>
+<ul class='nav navbar-nav'>
+<li class='hidden-sm hidden-xs'>
+<div class='search'>
+<form accept-charset="UTF-8" action="/search" class="navbar-form pull-left" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+<input class="search-input" id="search" name="search" placeholder="Search in this project" type="search" />
+<input id="group_id" name="group_id" type="hidden" />
+<input id="project_id" name="project_id" type="hidden" value="36" />
+<input id="search_code" name="search_code" type="hidden" value="true" />
+<input id="repository_ref" name="repository_ref" type="hidden" value="04d1a0c6fd995bb0b730114d3ed87357ad1188aa" />
+
+<div class='search-autocomplete-opts hide' data-autocomplete-path='/search/autocomplete' data-autocomplete-project-id='36' data-autocomplete-project-ref='04d1a0c6fd995bb0b730114d3ed87357ad1188aa'></div>
+</form>
+
+</div>
+
+</li>
+<li class='visible-sm visible-xs'>
+<a class="has_bottom_tooltip" data-original-title="Search area" href="/search" title="Search"><i class='icon-search'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Help" href="/help" title="Help"><i class='icon-question-sign'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Public area" href="/public" title="Public area"><i class='icon-globe'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="My snippets" href="/s/allgama" title="My snippets"><i class='icon-paste'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Admin area" href="/admin" title="Admin area"><i class='icon-cogs'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="New project" href="/projects/new" title="New project"><i class='icon-plus'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-original-title="Profile settings&quot;" href="/profile" title="Profile settings"><i class='icon-user'></i>
+</a></li>
+<li>
+<a class="has_bottom_tooltip" data-method="delete" data-original-title="Logout" href="/users/sign_out" rel="nofollow" title="Logout"><i class='icon-signout'></i>
+</a></li>
+<li class='hidden-xs'>
+<a class="profile-pic" href="/u/allgama" id="profile-pic"><img alt="User activity" src="https://phoenix.aimservices.tech:8082//uploads/user/avatar/4/logo_5.jpg" />
+</a></li>
+</ul>
+</div>
+</div>
+</div>
+</header>
+
+<script>
+  GitLab.GfmAutoComplete.dataSource = "/c-programming/t3000/autocomplete_sources?type=NilClass&type_id=04d1a0c6fd995bb0b730114d3ed87357ad1188aa%2FProgramEditor%2FfrmIdentifierInfo.resx"
+  GitLab.GfmAutoComplete.setup();
+</script>
+
+<div class='flash-container'>
+</div>
+
+
+<nav class='main-nav navbar-collapse collapse'>
+<div class='container'><ul>
+<li class="home"><a href="/c-programming/t3000" title="Project">Activity
+</a></li><li class="active"><a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Files</a>
+</li><li class=""><a href="/c-programming/t3000/commits/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Commits</a>
+</li><li class=""><a href="/c-programming/t3000/network/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Network</a>
+</li><li class=""><a href="/c-programming/t3000/graphs/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Graphs</a>
+</li><li class=""><a href="/c-programming/t3000/issues">Issues
+<span class='count issue_counter'>0</span>
+</a></li><li class=""><a href="/c-programming/t3000/merge_requests">Merge Requests
+<span class='count merge_counter'>0</span>
+</a></li><li class=""><a href="/c-programming/t3000/wikis/home">Wiki</a>
+</li><li class=""><a class="stat-tab tab " href="/c-programming/t3000/edit">Settings
+</a></li></ul>
+</div>
+</nav>
+<div class='container'>
+<div class='content'><div class='tree-ref-holder'>
+<form accept-charset="UTF-8" action="/c-programming/t3000/refs/switch" class="project-refs-form" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+<select class="project-refs-select select2 select2-sm" id="ref" name="ref"><optgroup label="Branches"><option value="master">master</option></optgroup><optgroup label="Tags"><option value="v1.0_ISSUE1_BUG_FIXED">v1.0_ISSUE1_BUG_FIXED</option>
+<option value="v1.0.1___EDITOR+PRG_FIXING">v1.0.1___EDITOR+PRG_FIXING</option>
+<option value="PARSER_COMPLETE">PARSER_COMPLETE</option>
+<option value="ISSUE3_BUG_FOUND">ISSUE3_BUG_FOUND</option>
+<option value="API_CALLS_REMOVED">API_CALLS_REMOVED</option></optgroup><optgroup label="Commit"><option selected="selected" value="04d1a0c6fd995bb0b730114d3ed87357ad1188aa">04d1a0c6fd995bb0b730114d3ed87357ad1188aa</option></optgroup></select>
+<input id="destination" name="destination" type="hidden" value="blob" />
+<input id="path" name="path" type="hidden" value="ProgramEditor/frmIdentifierInfo.resx" />
+</form>
+
+
+</div>
+<div class='tree-holder' id='tree-holder'>
+<ul class='breadcrumb repo-breadcrumb'>
+<li>
+<i class='icon-angle-right'></i>
+<a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">t3000
+</a></li>
+<li>
+<a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ProgramEditor">ProgramEditor</a>
+</li>
+<li>
+<a href="/c-programming/t3000/blob/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ProgramEditor/frmIdentifierInfo.resx"><strong>
+frmIdentifierInfo.resx
+</strong>
+</a></li>
+</ul>
+<ul class='blob-commit-info bs-callout bs-callout-info hidden-xs'>
+<li class='commit js-toggle-container'>
+<div class='commit-row-title'>
+<a class="commit_short_id" href="/c-programming/t3000/commit/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">04d1a0c6f</a>
+&nbsp;
+<span class='str-truncated'>
+<a class="commit-row-message" href="/c-programming/t3000/commit/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">ControlPoints copy remastered. Also new form frmIdentifierInfo to display when C&hellip;</a>
+<a class='text-expander js-toggle-button'>...</a>
+</span>
+<a class="pull-right" href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Browse Code »</a>
+<div class='notes_count'>
+</div>
+</div>
+<div class='commit-row-description js-toggle-content'>
+<pre>&hellip;TRL+INS on ProgramEditorForm. Need previous selection of text on Editor. NOTE: Editor doesn&#39;t have the method to do so, but ProgramEditorForm does.</pre>
+</div>
+<div class='commit-row-info'>
+<a class="commit-author-link has_tooltip" data-original-title="lruiz@aimservices.tech" href="/u/lruiz"><img alt="" class="avatar s16" src="https://phoenix.aimservices.tech:8082//uploads/user/avatar/10/LRUIZ.jpg" width="16" /> <span class="commit-author-name">Luis Danilo Ruiz Tórrez</span></a>
+<div class='committed_ago'>
+<time class='time_ago' data-placement='top' data-toggle='tooltip' datetime='2018-06-25T23:42:39Z' title='Jun 25, 2018 7:42pm'>2018-06-25 19:42:39 -0400</time>
+<script>$('.time_ago').timeago().tooltip()</script>
+ &nbsp;
+</div>
+</div>
+</li>
+
+</ul>
+<div class='tree-content-holder' id='tree-content-holder'>
+<article class='file-holder'>
+<div class='file-title clearfix'>
+<i class='icon-file'></i>
+<span class='file_name'>
+frmIdentifierInfo.resx
+<small>5.73 KB</small>
+</span>
+<span class='options hidden-xs'><div class='btn-group tree-btn-group'>
+<span class='btn btn-small disabled'>edit</span>
+<a class="btn btn-small" href="/c-programming/t3000/raw/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ProgramEditor/frmIdentifierInfo.resx" target="_blank">raw</a>
+<a class="btn btn-small" href="/c-programming/t3000/blame/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ProgramEditor/frmIdentifierInfo.resx">blame</a>
+<a class="btn btn-small" href="/c-programming/t3000/commits/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ProgramEditor/frmIdentifierInfo.resx">history</a>
+</div>
+</span>
+</div>
+<div class='file-content code'>
+<div class='highlighted-data white'>
+<div class='line-numbers'>
+<a href="#L1" id="L1" rel="#L1"><i class='icon-link'></i>
+1
+</a><a href="#L2" id="L2" rel="#L2"><i class='icon-link'></i>
+2
+</a><a href="#L3" id="L3" rel="#L3"><i class='icon-link'></i>
+3
+</a><a href="#L4" id="L4" rel="#L4"><i class='icon-link'></i>
+4
+</a><a href="#L5" id="L5" rel="#L5"><i class='icon-link'></i>
+5
+</a><a href="#L6" id="L6" rel="#L6"><i class='icon-link'></i>
+6
+</a><a href="#L7" id="L7" rel="#L7"><i class='icon-link'></i>
+7
+</a><a href="#L8" id="L8" rel="#L8"><i class='icon-link'></i>
+8
+</a><a href="#L9" id="L9" rel="#L9"><i class='icon-link'></i>
+9
+</a><a href="#L10" id="L10" rel="#L10"><i class='icon-link'></i>
+10
+</a><a href="#L11" id="L11" rel="#L11"><i class='icon-link'></i>
+11
+</a><a href="#L12" id="L12" rel="#L12"><i class='icon-link'></i>
+12
+</a><a href="#L13" id="L13" rel="#L13"><i class='icon-link'></i>
+13
+</a><a href="#L14" id="L14" rel="#L14"><i class='icon-link'></i>
+14
+</a><a href="#L15" id="L15" rel="#L15"><i class='icon-link'></i>
+15
+</a><a href="#L16" id="L16" rel="#L16"><i class='icon-link'></i>
+16
+</a><a href="#L17" id="L17" rel="#L17"><i class='icon-link'></i>
+17
+</a><a href="#L18" id="L18" rel="#L18"><i class='icon-link'></i>
+18
+</a><a href="#L19" id="L19" rel="#L19"><i class='icon-link'></i>
+19
+</a><a href="#L20" id="L20" rel="#L20"><i class='icon-link'></i>
+20
+</a><a href="#L21" id="L21" rel="#L21"><i class='icon-link'></i>
+21
+</a><a href="#L22" id="L22" rel="#L22"><i class='icon-link'></i>
+22
+</a><a href="#L23" id="L23" rel="#L23"><i class='icon-link'></i>
+23
+</a><a href="#L24" id="L24" rel="#L24"><i class='icon-link'></i>
+24
+</a><a href="#L25" id="L25" rel="#L25"><i class='icon-link'></i>
+25
+</a><a href="#L26" id="L26" rel="#L26"><i class='icon-link'></i>
+26
+</a><a href="#L27" id="L27" rel="#L27"><i class='icon-link'></i>
+27
+</a><a href="#L28" id="L28" rel="#L28"><i class='icon-link'></i>
+28
+</a><a href="#L29" id="L29" rel="#L29"><i class='icon-link'></i>
+29
+</a><a href="#L30" id="L30" rel="#L30"><i class='icon-link'></i>
+30
+</a><a href="#L31" id="L31" rel="#L31"><i class='icon-link'></i>
+31
+</a><a href="#L32" id="L32" rel="#L32"><i class='icon-link'></i>
+32
+</a><a href="#L33" id="L33" rel="#L33"><i class='icon-link'></i>
+33
+</a><a href="#L34" id="L34" rel="#L34"><i class='icon-link'></i>
+34
+</a><a href="#L35" id="L35" rel="#L35"><i class='icon-link'></i>
+35
+</a><a href="#L36" id="L36" rel="#L36"><i class='icon-link'></i>
+36
+</a><a href="#L37" id="L37" rel="#L37"><i class='icon-link'></i>
+37
+</a><a href="#L38" id="L38" rel="#L38"><i class='icon-link'></i>
+38
+</a><a href="#L39" id="L39" rel="#L39"><i class='icon-link'></i>
+39
+</a><a href="#L40" id="L40" rel="#L40"><i class='icon-link'></i>
+40
+</a><a href="#L41" id="L41" rel="#L41"><i class='icon-link'></i>
+41
+</a><a href="#L42" id="L42" rel="#L42"><i class='icon-link'></i>
+42
+</a><a href="#L43" id="L43" rel="#L43"><i class='icon-link'></i>
+43
+</a><a href="#L44" id="L44" rel="#L44"><i class='icon-link'></i>
+44
+</a><a href="#L45" id="L45" rel="#L45"><i class='icon-link'></i>
+45
+</a><a href="#L46" id="L46" rel="#L46"><i class='icon-link'></i>
+46
+</a><a href="#L47" id="L47" rel="#L47"><i class='icon-link'></i>
+47
+</a><a href="#L48" id="L48" rel="#L48"><i class='icon-link'></i>
+48
+</a><a href="#L49" id="L49" rel="#L49"><i class='icon-link'></i>
+49
+</a><a href="#L50" id="L50" rel="#L50"><i class='icon-link'></i>
+50
+</a><a href="#L51" id="L51" rel="#L51"><i class='icon-link'></i>
+51
+</a><a href="#L52" id="L52" rel="#L52"><i class='icon-link'></i>
+52
+</a><a href="#L53" id="L53" rel="#L53"><i class='icon-link'></i>
+53
+</a><a href="#L54" id="L54" rel="#L54"><i class='icon-link'></i>
+54
+</a><a href="#L55" id="L55" rel="#L55"><i class='icon-link'></i>
+55
+</a><a href="#L56" id="L56" rel="#L56"><i class='icon-link'></i>
+56
+</a><a href="#L57" id="L57" rel="#L57"><i class='icon-link'></i>
+57
+</a><a href="#L58" id="L58" rel="#L58"><i class='icon-link'></i>
+58
+</a><a href="#L59" id="L59" rel="#L59"><i class='icon-link'></i>
+59
+</a><a href="#L60" id="L60" rel="#L60"><i class='icon-link'></i>
+60
+</a><a href="#L61" id="L61" rel="#L61"><i class='icon-link'></i>
+61
+</a><a href="#L62" id="L62" rel="#L62"><i class='icon-link'></i>
+62
+</a><a href="#L63" id="L63" rel="#L63"><i class='icon-link'></i>
+63
+</a><a href="#L64" id="L64" rel="#L64"><i class='icon-link'></i>
+64
+</a><a href="#L65" id="L65" rel="#L65"><i class='icon-link'></i>
+65
+</a><a href="#L66" id="L66" rel="#L66"><i class='icon-link'></i>
+66
+</a><a href="#L67" id="L67" rel="#L67"><i class='icon-link'></i>
+67
+</a><a href="#L68" id="L68" rel="#L68"><i class='icon-link'></i>
+68
+</a><a href="#L69" id="L69" rel="#L69"><i class='icon-link'></i>
+69
+</a><a href="#L70" id="L70" rel="#L70"><i class='icon-link'></i>
+70
+</a><a href="#L71" id="L71" rel="#L71"><i class='icon-link'></i>
+71
+</a><a href="#L72" id="L72" rel="#L72"><i class='icon-link'></i>
+72
+</a><a href="#L73" id="L73" rel="#L73"><i class='icon-link'></i>
+73
+</a><a href="#L74" id="L74" rel="#L74"><i class='icon-link'></i>
+74
+</a><a href="#L75" id="L75" rel="#L75"><i class='icon-link'></i>
+75
+</a><a href="#L76" id="L76" rel="#L76"><i class='icon-link'></i>
+76
+</a><a href="#L77" id="L77" rel="#L77"><i class='icon-link'></i>
+77
+</a><a href="#L78" id="L78" rel="#L78"><i class='icon-link'></i>
+78
+</a><a href="#L79" id="L79" rel="#L79"><i class='icon-link'></i>
+79
+</a><a href="#L80" id="L80" rel="#L80"><i class='icon-link'></i>
+80
+</a><a href="#L81" id="L81" rel="#L81"><i class='icon-link'></i>
+81
+</a><a href="#L82" id="L82" rel="#L82"><i class='icon-link'></i>
+82
+</a><a href="#L83" id="L83" rel="#L83"><i class='icon-link'></i>
+83
+</a><a href="#L84" id="L84" rel="#L84"><i class='icon-link'></i>
+84
+</a><a href="#L85" id="L85" rel="#L85"><i class='icon-link'></i>
+85
+</a><a href="#L86" id="L86" rel="#L86"><i class='icon-link'></i>
+86
+</a><a href="#L87" id="L87" rel="#L87"><i class='icon-link'></i>
+87
+</a><a href="#L88" id="L88" rel="#L88"><i class='icon-link'></i>
+88
+</a><a href="#L89" id="L89" rel="#L89"><i class='icon-link'></i>
+89
+</a><a href="#L90" id="L90" rel="#L90"><i class='icon-link'></i>
+90
+</a><a href="#L91" id="L91" rel="#L91"><i class='icon-link'></i>
+91
+</a><a href="#L92" id="L92" rel="#L92"><i class='icon-link'></i>
+92
+</a><a href="#L93" id="L93" rel="#L93"><i class='icon-link'></i>
+93
+</a><a href="#L94" id="L94" rel="#L94"><i class='icon-link'></i>
+94
+</a><a href="#L95" id="L95" rel="#L95"><i class='icon-link'></i>
+95
+</a><a href="#L96" id="L96" rel="#L96"><i class='icon-link'></i>
+96
+</a><a href="#L97" id="L97" rel="#L97"><i class='icon-link'></i>
+97
+</a><a href="#L98" id="L98" rel="#L98"><i class='icon-link'></i>
+98
+</a><a href="#L99" id="L99" rel="#L99"><i class='icon-link'></i>
+99
+</a><a href="#L100" id="L100" rel="#L100"><i class='icon-link'></i>
+100
+</a><a href="#L101" id="L101" rel="#L101"><i class='icon-link'></i>
+101
+</a><a href="#L102" id="L102" rel="#L102"><i class='icon-link'></i>
+102
+</a><a href="#L103" id="L103" rel="#L103"><i class='icon-link'></i>
+103
+</a><a href="#L104" id="L104" rel="#L104"><i class='icon-link'></i>
+104
+</a><a href="#L105" id="L105" rel="#L105"><i class='icon-link'></i>
+105
+</a><a href="#L106" id="L106" rel="#L106"><i class='icon-link'></i>
+106
+</a><a href="#L107" id="L107" rel="#L107"><i class='icon-link'></i>
+107
+</a><a href="#L108" id="L108" rel="#L108"><i class='icon-link'></i>
+108
+</a><a href="#L109" id="L109" rel="#L109"><i class='icon-link'></i>
+109
+</a><a href="#L110" id="L110" rel="#L110"><i class='icon-link'></i>
+110
+</a><a href="#L111" id="L111" rel="#L111"><i class='icon-link'></i>
+111
+</a><a href="#L112" id="L112" rel="#L112"><i class='icon-link'></i>
+112
+</a><a href="#L113" id="L113" rel="#L113"><i class='icon-link'></i>
+113
+</a><a href="#L114" id="L114" rel="#L114"><i class='icon-link'></i>
+114
+</a><a href="#L115" id="L115" rel="#L115"><i class='icon-link'></i>
+115
+</a><a href="#L116" id="L116" rel="#L116"><i class='icon-link'></i>
+116
+</a><a href="#L117" id="L117" rel="#L117"><i class='icon-link'></i>
+117
+</a><a href="#L118" id="L118" rel="#L118"><i class='icon-link'></i>
+118
+</a><a href="#L119" id="L119" rel="#L119"><i class='icon-link'></i>
+119
+</a><a href="#L120" id="L120" rel="#L120"><i class='icon-link'></i>
+120
+</a><a href="#L121" id="L121" rel="#L121"><i class='icon-link'></i>
+121
+</a><a href="#L122" id="L122" rel="#L122"><i class='icon-link'></i>
+122
+</a><a href="#L123" id="L123" rel="#L123"><i class='icon-link'></i>
+123
+</a></div>
+<div class='highlight'>
+<pre><code class='language-resx'>﻿&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;root&gt;
+  &lt;!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -12,22 +452,22 @@
     
     Example:
     
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
+    ... ado.net/XML headers &amp; schema ...
+    &lt;resheader name=&quot;resmimetype&quot;&gt;text/microsoft-resx&lt;/resheader&gt;
+    &lt;resheader name=&quot;version&quot;&gt;2.0&lt;/resheader&gt;
+    &lt;resheader name=&quot;reader&quot;&gt;System.Resources.ResXResourceReader, System.Windows.Forms, ...&lt;/resheader&gt;
+    &lt;resheader name=&quot;writer&quot;&gt;System.Resources.ResXResourceWriter, System.Windows.Forms, ...&lt;/resheader&gt;
+    &lt;data name=&quot;Name1&quot;&gt;&lt;value&gt;this is my long string&lt;/value&gt;&lt;comment&gt;this is a comment&lt;/comment&gt;&lt;/data&gt;
+    &lt;data name=&quot;Color1&quot; type=&quot;System.Drawing.Color, System.Drawing&quot;&gt;Blue&lt;/data&gt;
+    &lt;data name=&quot;Bitmap1&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+        &lt;value&gt;[base64 mime encoded serialized .NET Framework object]&lt;/value&gt;
+    &lt;/data&gt;
+    &lt;data name=&quot;Icon1&quot; type=&quot;System.Drawing.Icon, System.Drawing&quot; mimetype=&quot;application/x-microsoft.net.object.bytearray.base64&quot;&gt;
+        &lt;value&gt;[base64 mime encoded string representing a byte array form of the .NET Framework object]&lt;/value&gt;
+        &lt;comment&gt;This is a comment&lt;/comment&gt;
+    &lt;/data&gt;
                 
-    There are any number of "resheader" rows that contain simple 
+    There are any number of &quot;resheader&quot; rows that contain simple 
     name/value pairs.
     
     Each data row contains a name, and value. The row also contains a 
@@ -58,63 +498,80 @@
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-</root>
+    --&gt;
+  &lt;xsd:schema id=&quot;root&quot; xmlns=&quot;&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;
+    &lt;xsd:import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot; /&gt;
+    &lt;xsd:element name=&quot;root&quot; msdata:IsDataSet=&quot;true&quot;&gt;
+      &lt;xsd:complexType&gt;
+        &lt;xsd:choice maxOccurs=&quot;unbounded&quot;&gt;
+          &lt;xsd:element name=&quot;metadata&quot;&gt;
+            &lt;xsd:complexType&gt;
+              &lt;xsd:sequence&gt;
+                &lt;xsd:element name=&quot;value&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; /&gt;
+              &lt;/xsd:sequence&gt;
+              &lt;xsd:attribute name=&quot;name&quot; use=&quot;required&quot; type=&quot;xsd:string&quot; /&gt;
+              &lt;xsd:attribute name=&quot;type&quot; type=&quot;xsd:string&quot; /&gt;
+              &lt;xsd:attribute name=&quot;mimetype&quot; type=&quot;xsd:string&quot; /&gt;
+              &lt;xsd:attribute ref=&quot;xml:space&quot; /&gt;
+            &lt;/xsd:complexType&gt;
+          &lt;/xsd:element&gt;
+          &lt;xsd:element name=&quot;assembly&quot;&gt;
+            &lt;xsd:complexType&gt;
+              &lt;xsd:attribute name=&quot;alias&quot; type=&quot;xsd:string&quot; /&gt;
+              &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot; /&gt;
+            &lt;/xsd:complexType&gt;
+          &lt;/xsd:element&gt;
+          &lt;xsd:element name=&quot;data&quot;&gt;
+            &lt;xsd:complexType&gt;
+              &lt;xsd:sequence&gt;
+                &lt;xsd:element name=&quot;value&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; msdata:Ordinal=&quot;1&quot; /&gt;
+                &lt;xsd:element name=&quot;comment&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; msdata:Ordinal=&quot;2&quot; /&gt;
+              &lt;/xsd:sequence&gt;
+              &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot; use=&quot;required&quot; msdata:Ordinal=&quot;1&quot; /&gt;
+              &lt;xsd:attribute name=&quot;type&quot; type=&quot;xsd:string&quot; msdata:Ordinal=&quot;3&quot; /&gt;
+              &lt;xsd:attribute name=&quot;mimetype&quot; type=&quot;xsd:string&quot; msdata:Ordinal=&quot;4&quot; /&gt;
+              &lt;xsd:attribute ref=&quot;xml:space&quot; /&gt;
+            &lt;/xsd:complexType&gt;
+          &lt;/xsd:element&gt;
+          &lt;xsd:element name=&quot;resheader&quot;&gt;
+            &lt;xsd:complexType&gt;
+              &lt;xsd:sequence&gt;
+                &lt;xsd:element name=&quot;value&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; msdata:Ordinal=&quot;1&quot; /&gt;
+              &lt;/xsd:sequence&gt;
+              &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot; use=&quot;required&quot; /&gt;
+            &lt;/xsd:complexType&gt;
+          &lt;/xsd:element&gt;
+        &lt;/xsd:choice&gt;
+      &lt;/xsd:complexType&gt;
+    &lt;/xsd:element&gt;
+  &lt;/xsd:schema&gt;
+  &lt;resheader name=&quot;resmimetype&quot;&gt;
+    &lt;value&gt;text/microsoft-resx&lt;/value&gt;
+  &lt;/resheader&gt;
+  &lt;resheader name=&quot;version&quot;&gt;
+    &lt;value&gt;2.0&lt;/value&gt;
+  &lt;/resheader&gt;
+  &lt;resheader name=&quot;reader&quot;&gt;
+    &lt;value&gt;System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&lt;/value&gt;
+  &lt;/resheader&gt;
+  &lt;resheader name=&quot;writer&quot;&gt;
+    &lt;value&gt;System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&lt;/value&gt;
+  &lt;/resheader&gt;
+  &lt;metadata name=&quot;$this.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+    &lt;value&gt;True&lt;/value&gt;
+  &lt;/metadata&gt;
+&lt;/root&gt;</code></pre>
+</div>
+</div>
+
+</div>
+
+</article>
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

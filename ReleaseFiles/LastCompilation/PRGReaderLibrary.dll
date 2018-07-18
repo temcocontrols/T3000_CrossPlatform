@@ -4,7 +4,7 @@
 <meta charset='utf-8'>
 <meta content='GitLab Community Edition' name='description'>
 <title>
-t3000/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll at 44b9482e7454e47c245d01a3d409045c59269dd8 - C programming / T3000 | 
+t3000/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll at 04d1a0c6fd995bb0b730114d3ed87357ad1188aa - C programming / T3000 | 
 GitLab
 </title>
 <link href="/assets/favicon-baaa14bade1248aa6165e9d34e7d83c0.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
@@ -49,9 +49,9 @@ window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relat
 <input id="group_id" name="group_id" type="hidden" />
 <input id="project_id" name="project_id" type="hidden" value="36" />
 <input id="search_code" name="search_code" type="hidden" value="true" />
-<input id="repository_ref" name="repository_ref" type="hidden" value="44b9482e7454e47c245d01a3d409045c59269dd8" />
+<input id="repository_ref" name="repository_ref" type="hidden" value="04d1a0c6fd995bb0b730114d3ed87357ad1188aa" />
 
-<div class='search-autocomplete-opts hide' data-autocomplete-path='/search/autocomplete' data-autocomplete-project-id='36' data-autocomplete-project-ref='44b9482e7454e47c245d01a3d409045c59269dd8'></div>
+<div class='search-autocomplete-opts hide' data-autocomplete-path='/search/autocomplete' data-autocomplete-project-id='36' data-autocomplete-project-ref='04d1a0c6fd995bb0b730114d3ed87357ad1188aa'></div>
 </form>
 
 </div>
@@ -91,7 +91,7 @@ window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relat
 </header>
 
 <script>
-  GitLab.GfmAutoComplete.dataSource = "/c-programming/t3000/autocomplete_sources?type=NilClass&type_id=44b9482e7454e47c245d01a3d409045c59269dd8%2FReleaseFiles%2FLastCompilation%2FPRGReaderLibrary.dll"
+  GitLab.GfmAutoComplete.dataSource = "/c-programming/t3000/autocomplete_sources?type=NilClass&type_id=04d1a0c6fd995bb0b730114d3ed87357ad1188aa%2FReleaseFiles%2FLastCompilation%2FPRGReaderLibrary.dll"
   GitLab.GfmAutoComplete.setup();
 </script>
 
@@ -102,10 +102,10 @@ window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relat
 <nav class='main-nav navbar-collapse collapse'>
 <div class='container'><ul>
 <li class="home"><a href="/c-programming/t3000" title="Project">Activity
-</a></li><li class="active"><a href="/c-programming/t3000/tree/44b9482e7454e47c245d01a3d409045c59269dd8">Files</a>
-</li><li class=""><a href="/c-programming/t3000/commits/44b9482e7454e47c245d01a3d409045c59269dd8">Commits</a>
-</li><li class=""><a href="/c-programming/t3000/network/44b9482e7454e47c245d01a3d409045c59269dd8">Network</a>
-</li><li class=""><a href="/c-programming/t3000/graphs/44b9482e7454e47c245d01a3d409045c59269dd8">Graphs</a>
+</a></li><li class="active"><a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Files</a>
+</li><li class=""><a href="/c-programming/t3000/commits/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Commits</a>
+</li><li class=""><a href="/c-programming/t3000/network/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Network</a>
+</li><li class=""><a href="/c-programming/t3000/graphs/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Graphs</a>
 </li><li class=""><a href="/c-programming/t3000/issues">Issues
 <span class='count issue_counter'>0</span>
 </a></li><li class=""><a href="/c-programming/t3000/merge_requests">Merge Requests
@@ -122,7 +122,7 @@ window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relat
 <option value="v1.0.1___EDITOR+PRG_FIXING">v1.0.1___EDITOR+PRG_FIXING</option>
 <option value="PARSER_COMPLETE">PARSER_COMPLETE</option>
 <option value="ISSUE3_BUG_FOUND">ISSUE3_BUG_FOUND</option>
-<option value="API_CALLS_REMOVED">API_CALLS_REMOVED</option></optgroup><optgroup label="Commit"><option selected="selected" value="44b9482e7454e47c245d01a3d409045c59269dd8">44b9482e7454e47c245d01a3d409045c59269dd8</option></optgroup></select>
+<option value="API_CALLS_REMOVED">API_CALLS_REMOVED</option></optgroup><optgroup label="Commit"><option selected="selected" value="04d1a0c6fd995bb0b730114d3ed87357ad1188aa">04d1a0c6fd995bb0b730114d3ed87357ad1188aa</option></optgroup></select>
 <input id="destination" name="destination" type="hidden" value="blob" />
 <input id="path" name="path" type="hidden" value="ReleaseFiles/LastCompilation/PRGReaderLibrary.dll" />
 </form>
@@ -133,16 +133,16 @@ window.gon={};gon.default_issues_tracker="gitlab";gon.api_version="v3";gon.relat
 <ul class='breadcrumb repo-breadcrumb'>
 <li>
 <i class='icon-angle-right'></i>
-<a href="/c-programming/t3000/tree/44b9482e7454e47c245d01a3d409045c59269dd8">t3000
+<a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">t3000
 </a></li>
 <li>
-<a href="/c-programming/t3000/tree/44b9482e7454e47c245d01a3d409045c59269dd8/ReleaseFiles">ReleaseFiles</a>
+<a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ReleaseFiles">ReleaseFiles</a>
 </li>
 <li>
-<a href="/c-programming/t3000/tree/44b9482e7454e47c245d01a3d409045c59269dd8/ReleaseFiles/LastCompilation">LastCompilation</a>
+<a href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ReleaseFiles/LastCompilation">LastCompilation</a>
 </li>
 <li>
-<a href="/c-programming/t3000/blob/44b9482e7454e47c245d01a3d409045c59269dd8/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll"><strong>
+<a href="/c-programming/t3000/blob/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll"><strong>
 PRGReaderLibrary.dll
 </strong>
 </a></li>
@@ -150,23 +150,23 @@ PRGReaderLibrary.dll
 <ul class='blob-commit-info bs-callout bs-callout-info hidden-xs'>
 <li class='commit js-toggle-container'>
 <div class='commit-row-title'>
-<a class="commit_short_id" href="/c-programming/t3000/commit/44b9482e7454e47c245d01a3d409045c59269dd8">44b9482e7</a>
+<a class="commit_short_id" href="/c-programming/t3000/commit/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">04d1a0c6f</a>
 &nbsp;
 <span class='str-truncated'>
-<a class="commit-row-message" href="/c-programming/t3000/commit/44b9482e7454e47c245d01a3d409045c59269dd8">Reversed all changes for Identifier Info on Ctrl+Insert insider FCTB. New Target&hellip;</a>
+<a class="commit-row-message" href="/c-programming/t3000/commit/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">ControlPoints copy remastered. Also new form frmIdentifierInfo to display when C&hellip;</a>
 <a class='text-expander js-toggle-button'>...</a>
 </span>
-<a class="pull-right" href="/c-programming/t3000/tree/44b9482e7454e47c245d01a3d409045c59269dd8">Browse Code »</a>
+<a class="pull-right" href="/c-programming/t3000/tree/04d1a0c6fd995bb0b730114d3ed87357ad1188aa">Browse Code »</a>
 <div class='notes_count'>
 </div>
 </div>
 <div class='commit-row-description js-toggle-content'>
-<pre>&hellip; for functionalities: ProgramEditorForm.</pre>
+<pre>&hellip;TRL+INS on ProgramEditorForm. Need previous selection of text on Editor. NOTE: Editor doesn&#39;t have the method to do so, but ProgramEditorForm does.</pre>
 </div>
 <div class='commit-row-info'>
 <a class="commit-author-link has_tooltip" data-original-title="lruiz@aimservices.tech" href="/u/lruiz"><img alt="" class="avatar s16" src="https://phoenix.aimservices.tech:8082//uploads/user/avatar/10/LRUIZ.jpg" width="16" /> <span class="commit-author-name">Luis Danilo Ruiz Tórrez</span></a>
 <div class='committed_ago'>
-<time class='time_ago' data-placement='top' data-toggle='tooltip' datetime='2018-06-24T23:06:58Z' title='Jun 24, 2018 7:06pm'>2018-06-24 19:06:58 -0400</time>
+<time class='time_ago' data-placement='top' data-toggle='tooltip' datetime='2018-06-25T23:42:39Z' title='Jun 25, 2018 7:42pm'>2018-06-25 19:42:39 -0400</time>
 <script>$('.time_ago').timeago().tooltip()</script>
  &nbsp;
 </div>
@@ -180,21 +180,21 @@ PRGReaderLibrary.dll
 <i class='icon-file'></i>
 <span class='file_name'>
 PRGReaderLibrary.dll
-<small>136 KB</small>
+<small>138 KB</small>
 </span>
 <span class='options hidden-xs'><div class='btn-group tree-btn-group'>
-<a class="btn btn-small" href="/c-programming/t3000/raw/44b9482e7454e47c245d01a3d409045c59269dd8/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll" target="_blank">raw</a>
-<a class="btn btn-small" href="/c-programming/t3000/commits/44b9482e7454e47c245d01a3d409045c59269dd8/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll">history</a>
+<a class="btn btn-small" href="/c-programming/t3000/raw/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll" target="_blank">raw</a>
+<a class="btn btn-small" href="/c-programming/t3000/commits/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll">history</a>
 </div>
 </span>
 </div>
 <div class='file-content blob_file blob-no-preview'>
 <div class='center'>
-<a href="/c-programming/t3000/raw/44b9482e7454e47c245d01a3d409045c59269dd8/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll"><h1 class='light'>
+<a href="/c-programming/t3000/raw/04d1a0c6fd995bb0b730114d3ed87357ad1188aa/ReleaseFiles/LastCompilation/PRGReaderLibrary.dll"><h1 class='light'>
 <i class='icon-download-alt'></i>
 </h1>
 <h4>
-Download (136 KB)
+Download (138 KB)
 </h4>
 </a></div>
 </div>
