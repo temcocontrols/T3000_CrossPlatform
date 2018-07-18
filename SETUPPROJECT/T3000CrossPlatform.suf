@@ -590,79 +590,6 @@
 </FileData>
 <FileData>
 <FldRef>0</FldRef>
-<FullName>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation\System.Data.SQLite.xml</FullName>
-<FileName>System.Data.SQLite.xml</FileName>
-<Source>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation</Source>
-<Ext>xml</Ext>
-<RTSource>Archive</RTSource>
-<Desc/>
-<Recurse>1</Recurse>
-<MatchMode>0</MatchMode>
-<Dest>%AppFolder%</Dest>
-<Overwrite>1</Overwrite>
-<Backup>0</Backup>
-<Protect>0</Protect>
-<InstallOrder>1000</InstallOrder>
-<SCStartRoot>0</SCStartRoot>
-<SCStartProgs>0</SCStartProgs>
-<SCAppFld>0</SCAppFld>
-<SCStartup>0</SCStartup>
-<SCDesk>0</SCDesk>
-<SCQLaunch>0</SCQLaunch>
-<SCStartPinOption>0</SCStartPinOption>
-<SCCust>0</SCCust>
-<CustSCPath/>
-<SCDesc/>
-<SCComment/>
-<SCArgs/>
-<SCWork/>
-<UseExtIco>0</UseExtIco>
-<IcoFN/>
-<IcoIdx>0</IcoIdx>
-<IcoShowMd>0</IcoShowMd>
-<IcoHK>0</IcoHK>
-<RegTTF>0</RegTTF>
-<TTFName/>
-<RegOCX>0</RegOCX>
-<RegTLB>0</RegTLB>
-<SupInUse>0</SupInUse>
-<Compress>1</Compress>
-<UseOrigAttr>1</UseOrigAttr>
-<Attr>0</Attr>
-<NoCRC>0</NoCRC>
-<NoRemove>0</NoRemove>
-<Shared>0</Shared>
-<OSCond>
-<OS>32768</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-<OS>65535</OS>
-</OSCond>
-<RTCond/>
-<BuildConfigs>
-<Cfg>All</Cfg>
-</BuildConfigs>
-<Package>None</Package>
-<Packages/>
-<Notes/>
-<CompSize>0</CompSize>
-<CRC>0</CRC>
-<StoreOnly>0</StoreOnly>
-</FileData>
-<FileData>
-<FldRef>0</FldRef>
 <FullName>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation\T3000.exe</FullName>
 <FileName>T3000.exe</FileName>
 <Source>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\LastCompilation</Source>
@@ -6922,7 +6849,7 @@ g_HandleSystemReboot();
 <PostBuildCmdLine/>
 <PostBuildWait>0</PostBuildWait>
 <Filename>Setup32.exe</Filename>
-<OutputFolder>D:\SISTEMAS\AIMSERVICES\t3000\ReleaseFiles\Setup</OutputFolder>
+<OutputFolder>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\Setup</OutputFolder>
 <SegmentSizeMode>0</SegmentSizeMode>
 <CustomSegSize>0</CustomSegSize>
 <CustomSegSizeMode>0</CustomSegSizeMode>
@@ -6963,7 +6890,7 @@ g_HandleSystemReboot();
 <PostBuildCmdLine/>
 <PostBuildWait>0</PostBuildWait>
 <Filename>Setup64.exe</Filename>
-<OutputFolder>D:\SISTEMAS\AIMSERVICES\t3000\ReleaseFiles\Setup</OutputFolder>
+<OutputFolder>D:\SISTEMAS\AIMSERVICES\T3000 AIM\ReleaseFiles\Setup</OutputFolder>
 <SegmentSizeMode>0</SegmentSizeMode>
 <CustomSegSize>0</CustomSegSize>
 <CustomSegSizeMode>0</CustomSegSizeMode>
