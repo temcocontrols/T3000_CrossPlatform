@@ -1,6 +1,16 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+## Updated: 20180619.0134
+### TIME FORMAT SUPPORT
+Revision to Encoder and Decoder Class: Static all functions and properties was a very bad idea. ControlPoints dissapears from scope.
+BUG FOUND AND SOLVED: EQ was not recognized between expressions, Grammar was sending ASSIGMENT instead of EQ.
+Editor has a debug assert for buffer overflow of Styles.
+Helper methods extracted from Encoder for better maintenance of the code.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+
 ## Updated: 20180615.2052
 ### IF IF+ IF- THEN ELSE redesigned.
 Tested against env14.prg
