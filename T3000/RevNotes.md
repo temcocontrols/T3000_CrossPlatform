@@ -1,8 +1,8 @@
-﻿# Release Files
+# Release Files
 The latest release notes, windows and linux release files are stored here
 
 ## Updated: 20180626.0318
-### TIME FORMAT SUPPORT
+### EDITOR NEW COMANDS
 Working on Editor Commands: Ctrl+Insert displays Identifier Info. Right now working outside the editor, directly from ProgramEditor Form, as its a bit hard to pass a copy of control points info to Editor. Will see how to workaround this.
 Editor now supports 3 properties for TextStyles: VariablesColor, CommmentsColor and KeywordsColor. Inputs and Outpus not working right now 'cause editor, doesn't have a copy of Control Points yet.
 ####Pending TIME-OFF, TIME-ON two bytes argument info and struct.

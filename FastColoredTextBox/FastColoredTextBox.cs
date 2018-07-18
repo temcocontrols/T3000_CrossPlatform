@@ -1,4 +1,4 @@
-﻿//
+//
 //  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
 //  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
@@ -126,9 +126,7 @@ namespace FastColoredTextBoxNS
         private int zoom = 100;
         private Size localAutoScrollMinSize;
 
-        private Color variablesColor= Color.DarkBlue;
 
- 
         /// <summary>
         /// Constructor
         /// </summary>
@@ -173,7 +171,7 @@ namespace FastColoredTextBoxNS
             LeftBracket2 = '\x0';
             RightBracket2 = '\x0';
             SyntaxHighlighter = new SyntaxHighlighter(this);
-            language = Language.Custom;
+            language = Language.ControlBasic;
             PreferredLineWidth = 0;
             needRecalc = true;
             lastNavigatedDateTime = DateTime.Now;
@@ -707,40 +705,82 @@ namespace FastColoredTextBoxNS
             }
         }
 
-
-        [Category("Color")]
+        /// <summary>
+        /// Variables Color
+        /// </summary>
+        [Category("TextStyles")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
-        [DefaultValue(typeof(Color), "DarkBlue")]
-        [Description("Text Color for Variables")]
+        [DefaultValue(typeof(Color), "Crimson")]
+        [Description("Color for Variables")]
         public Color VariablesColor
         {
             get
             {
-                return variablesColor;
+                return ((TextStyle)SyntaxHighlighter.VariableStyle).GetForeColor(); ;
             }
             set
             {
-                variablesColor = value;
-                SolidBrush VariableBrush
-                     = new SolidBrush(variablesColor);
-                SyntaxHighlighter.VariableStyle = new TextStyle(VariableBrush, null, FontStyle.Regular);
                 
+                SyntaxHighlighter.VariableStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
                 Invalidate();
 
             }
         }
-        
-        [Category("Color")]
+
+        /// <summary>
+        /// Comments Color
+        /// </summary>
+        [Category("TextStyles")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
         [DefaultValue(typeof(Color), "Green")]
-        [Description("Text Color for Inputs")]
-        public Color InputsColor { get; set; }
+        [Description("Color for Comments")]
+        public Color CommentsColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.CommentStyle).GetForeColor(); ;
+            }
+            set
+            {
 
-        [Category("Color")]
+                SyntaxHighlighter.CommentStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+        /// <summary>
+        /// Keywords Color
+        /// </summary>
+        [Category("TextStyles")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
         [DefaultValue(typeof(Color), "Blue")]
-        [Description("Text Color for Outputs")]
-        public Color OutputsColor { get; set; }
+        [Description("Color for Keywords")]
+        public Color KeywordsColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.KeywordStyle).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.KeywordStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+
 
         /// <summary>
         /// Padings of text area

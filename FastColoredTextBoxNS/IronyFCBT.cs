@@ -68,7 +68,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void SetParser(Grammar grammar)
         {
-            SetParser(new LanguageData(grammar));
+            SetParser(new LanguageData(grammar)); //call to overload based on languagedata
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void SetParser(LanguageData language)
         {
-            SetParser(new Parser(language));
+            SetParser(new Parser(language)); //call to overload based on parser
         }
 
         /// <summary>
@@ -85,20 +85,28 @@ namespace FastColoredTextBoxNS
         public virtual void SetParser(Parser parser)
         {
             this.parser = parser;
+            RefreshStyles();
+            
+        }
+
+        public virtual void RefreshStyles()
+        {
             ClearStylesBuffer();
             AddStyle(WavyStyle);
 
-            VariablesColor = Color.Crimson ;
-            InputsColor = Color.BlueViolet;
-            OutputsColor = Color.DarkBlue;
+            //VariablesColor = Color.Crimson;
+            //InputsColor = Color.BlueViolet;
+            //OutputsColor = Color.DarkBlue;
 
-            SolidBrush variablebrush = new SolidBrush(VariablesColor);
-            SyntaxHighlighter.VariableStyle = new TextStyle(variablebrush, null, FontStyle.Regular);
+            //SolidBrush variablebrush = new SolidBrush(VariablesColor);
+            SyntaxHighlighter.VariableStyle = SyntaxHighlighter.CrimsonStyle;
 
-            SyntaxHighlighter.InitStyleSchema(Language.CSharp);
+            SyntaxHighlighter.InitStyleSchema(Language.ControlBasic);
+
             InitBraces();
             OnTextChanged(Range);
         }
+
 
         /// <summary>
         /// Auto-hightlight delayed for text change
@@ -144,9 +152,6 @@ namespace FastColoredTextBoxNS
             }
 
             
-            SolidBrush brush1 = new SolidBrush(VariablesColor);
-            SyntaxHighlighter.VariableStyle = new TextStyle(brush1, null, FontStyle.Regular);
-
 
             //highlight syntax
             ClearStyle(StyleIndex.All);

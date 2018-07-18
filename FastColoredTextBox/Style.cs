@@ -115,6 +115,12 @@ namespace FastColoredTextBoxNS
             stringFormat = new StringFormat(StringFormatFlags.MeasureTrailingSpaces);
         }
 
+        public Color GetForeColor()
+        {
+            SolidBrush br = (SolidBrush) this.ForeBrush;
+            return br.Color;
+        }
+
         public override void Draw(Graphics gr, Point position, Range range)
         {
             //draw background

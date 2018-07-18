@@ -622,6 +622,12 @@
             </summary>
             <param name="range"></param>
         </member>
+        <member name="M:FastColoredTextBoxNS.SyntaxHighlighter.ControlBasicSyntaxHighlight(FastColoredTextBoxNS.Range)">
+            <summary>
+            Highlights Control Basic code
+            </summary>
+            <param name="range"></param>
+        </member>
         <member name="M:FastColoredTextBoxNS.SyntaxHighlighter.VBSyntaxHighlight(FastColoredTextBoxNS.Range)">
             <summary>
             Highlights VB code
@@ -1034,6 +1040,21 @@
         <member name="P:FastColoredTextBoxNS.FastColoredTextBox.ServiceLinesColor">
             <summary>
             Color of service lines (folding lines, borders of blocks etc.)
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.VariablesColor">
+            <summary>
+            Variables Color
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.CommentsColor">
+            <summary>
+            Comments Color
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.KeywordsColor">
+            <summary>
+            Keywords Color
             </summary>
         </member>
         <member name="P:FastColoredTextBoxNS.FastColoredTextBox.Paddings">
