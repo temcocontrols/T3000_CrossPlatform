@@ -2438,7 +2438,7 @@
         </member>
         <member name="T:FastColoredTextBoxNS.StyleIndex">
             <summary>
-            Style index mask (16 styles)
+            Style index mask (32 styles)
             </summary>
         </member>
         <member name="T:FastColoredTextBoxNS.InsertCharCommand">

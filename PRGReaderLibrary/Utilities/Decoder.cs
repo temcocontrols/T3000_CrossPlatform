@@ -756,7 +756,7 @@ namespace PRGReaderLibrary.Utilities
                             break;
 
 
-                        #region This functions hadnt been tested, PENDING FROM ENCONDING
+                        #region This functions not tested, PENDING FROM ENCONDING
                         case (byte)FUNCTION_TOKEN.CONPROP:
                             fxtoken = new EditorTokenInfo("CONPROP", "CONPROP");
                             fxtoken.Token = source[offset];
@@ -941,11 +941,13 @@ namespace PRGReaderLibrary.Utilities
 
                                 break;
 
-                            default: //Other simple functions and operators
 
+                            default: //Other simple functions and operators
+                                
                                 if (BTStack.Count > 1) //avoid unary operators and functions exception
                                     operatornode.Right = BTStack.Pop();
-
+                                //TODO: Debug of NOT Operator.
+                                Debug.Assert(operatornode.Data.TerminalName != "NOT");
                                 operatornode.Left = BTStack.Pop();
                                 BTStack.Push(operatornode);
 
