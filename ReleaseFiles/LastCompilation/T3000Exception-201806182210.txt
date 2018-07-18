@@ -1,0 +1,6 @@
+# ParseRPN2Infix()
+
+## Pila vacía.
+   en System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   en System.Collections.Generic.Stack`1.Peek()
+   en PRGReaderLibrary.Utilities.Decoder.ParseRPN2Infix(List`1 ExprTokens) en D:\SISTEMAS\AIMSERVICES\T3000 AIM\PRGReaderLibrary\Utilities\Decoder.cs:línea 964

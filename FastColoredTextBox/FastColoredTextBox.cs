@@ -2403,7 +2403,7 @@ namespace FastColoredTextBoxNS
 
             i = CheckStylesBufferSize();
             Styles[i] = style;
-            //TODO: CHECK INDEX OUT OF RANGE
+            Debug.Assert(i < 32, "Overflow of index: Styles","Index:" + i.ToString());
             return i;
         }
 

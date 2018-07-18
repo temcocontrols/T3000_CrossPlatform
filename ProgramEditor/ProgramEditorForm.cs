@@ -777,7 +777,7 @@
                             //Locate Identifier and Identify Token associated ControlPoint.
                             //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
                             int PointIndex = 0;
-                            var TokenType = Encoder.GetTypeIdentifier(tokentext, out PointIndex);
+                            var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, tokentext, out PointIndex);
                             if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
                             {
                                 //There is a semantic error here
@@ -887,13 +887,13 @@
                             Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
                             break;
-                            
-                        //case "TimeLiteral":
-                        //    Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
-                        //    Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
-                        //    Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
-                        //    Tokens.Last().Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
-                        //    break;
+
+                        case "TimeLiteral":
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
+                            Tokens.Last().Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
+                            break;
 
 
                         case "PRT_A":
@@ -946,7 +946,7 @@
 
                             }
 
-                            //Offset to be treated as a NUMBER
+                            //Offset to be treated as a 2 bytes NUMBER
                             Tokens.Add(new EditorTokenInfo("OFFSET", "OFFSET"));
                             Tokens.Last().Token = 0;
 
@@ -1236,7 +1236,7 @@
                             //Locate Identifier and Identify Token associated ControlPoint.
                             //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
                             int PointIndex = 0;
-                            var TokenType = Encoder.GetTypeIdentifier(tokentext, out PointIndex);
+                            var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, tokentext, out PointIndex);
                             if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
                             {
                                 //There is a semantic error here
@@ -1280,9 +1280,14 @@
                         case "XOR":
                         case "OR":
                         case "NOT":
+                        case "ASSIGN":
 
                             //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                             //To allow further transforms by RPN Parser of Expressions
+                            if(tokentext == "=" && terminalname == "ASSIGN")
+                            {
+                                terminalname = "EQ";
+                            }
                             var op = new EditorTokenInfo(tokentext, terminalname);
                             TYPE_TOKEN TypeToken = (TYPE_TOKEN)Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
                             op.Token = (short)TypeToken;
@@ -1312,8 +1317,16 @@
                         case "TIMER":
                             Expr.Add(new EditorTokenInfo(tokentext, terminalname));
                             Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
-                            //TODO: See if a TIME FORMAT VALUE
+                            //Possible use to dif from TimeLiteral
+                            //Expr.Last().Type = (short)PCODE_CONST.CONST_VALUE_PRG;
 
+                            break;
+                        case "TimeLiteral":
+                            //NEW: See if a TIME FORMAT VALUE
+
+                            Expr.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Expr.Last().Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
                             break;
                         #endregion
 

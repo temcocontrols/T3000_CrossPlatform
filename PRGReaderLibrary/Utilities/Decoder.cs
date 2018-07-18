@@ -18,25 +18,25 @@ namespace PRGReaderLibrary.Utilities
         /// <summary>
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
-        static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+        public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
         /// <summary>
         /// Lists every single linenumber with it byte offset from start of programcode.
         /// </summary>
-        static List<EditorJumpInfo> JumpLines { get; set; } = new List<EditorJumpInfo>();
+        List<EditorJumpInfo> JumpLines { get; set; } = new List<EditorJumpInfo>();
 
         /// <summary>
         /// Set a local copy of all identifiers in prg
         /// </summary>
         /// <param name="prg">Program prg</param>
-        static public void SetControlPoints(Prg prg)
+        public void SetControlPoints(Prg prg)
         {
             Identifiers = new ControlPoints(prg);
         }
 
         #region Debugging properties
 
-        static string CurrentLine { get; set; }
+        public string CurrentLine { get; set; }
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace PRGReaderLibrary.Utilities
         /// Decode a ProgramCode Into Plain Text
         /// </summary>
         /// <param name="PCode">Byte array (encoded program)</param>
-        static public string DecodeBytes(byte[] PCode, int Start = 0, int End = 0)
+         public string DecodeBytes(byte[] PCode, int Start = 0, int End = 0)
         {
             string result = "";
             try
@@ -345,7 +345,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="offset">referenced offset</param>
         /// <param name="newOffset">new offset when done</param>
         /// <returns></returns>
-        private static string GetThenElsePart(byte[] pCode, ref int offset, int newOffset)
+        private string GetThenElsePart(byte[] pCode, ref int offset, int newOffset)
         {
             string result = ""; //THEN or ELSE word already decoded, as is obligatory.
 
@@ -372,7 +372,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="PCode">Source bytes</param>
         /// <param name="offset">position</param>
         /// <returns>short integer, 2 bytes read</returns>
-        private static string GetLineNumber(byte[] PCode, ref int offset)
+        private  string GetLineNumber(byte[] PCode, ref int offset)
         {
             string result = "";
 
@@ -398,7 +398,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="source">source bytes</param>
         /// <param name="offset">position</param>
         /// <returns>decoded comments</returns>
-        private static string GetComment(byte[] source, ref int offset)
+        private string GetComment(byte[] source, ref int offset)
         {
             string result = "REM ";
 
@@ -429,7 +429,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="source">source bytes</param>
         /// <param name="offset">position</param>
         /// <returns>decoded string</returns>
-        private static string GetAssigment(byte[] source, ref int offset)
+        private  string GetAssigment(byte[] source, ref int offset)
         {
             string result = "↑";
 
@@ -459,7 +459,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="source">Byte encoded source</param>
         /// <param name="offset">start of expression</param>
         /// <returns></returns>
-        private static string GetExpression(byte[] source, ref int offset)
+        private  string GetExpression(byte[] source, ref int offset)
         {
             //Create a list of ordered tokeneditorsinfo
             List<EditorTokenInfo> ExprTokens = new List<EditorTokenInfo>();
@@ -519,6 +519,15 @@ namespace PRGReaderLibrary.Utilities
 
                             break;
 
+                        //case (byte)FUNCTION_TOKEN.TIME_FORMAT:
+
+                        //    EditorTokenInfo timeformatvalue = new EditorTokenInfo("NUMBER", "NUMBER");
+                        //    timeformatvalue.Token = source[offset];
+                        //    timeformatvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
+                        //    ExprTokens.Add(timeformatvalue);
+                            
+
+                        //    break;
 
                         #endregion
 
@@ -896,7 +905,7 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="ExprTokens"></param>
         /// <returns></returns>
-        static string ParseRPN2Infix(List<EditorTokenInfo> ExprTokens)
+         string ParseRPN2Infix(List<EditorTokenInfo> ExprTokens)
         {
 
 
@@ -946,8 +955,8 @@ namespace PRGReaderLibrary.Utilities
                                 
                                 if (BTStack.Count > 1) //avoid unary operators and functions exception
                                     operatornode.Right = BTStack.Pop();
-                                //TODO: Debug of NOT Operator.
-                                Debug.Assert(operatornode.Data.TerminalName != "NOT");
+                                //Decoding ok: NOT operator
+                                //Debug.Assert(operatornode.Data.TerminalName != "NOT");
                                 operatornode.Left = BTStack.Pop();
                                 BTStack.Push(operatornode);
 
@@ -981,7 +990,7 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="root">root node</param>
         /// <param name="newTree"></param>
-        private static void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree, bool onlyLeft = false)
+        private  void NodeAddCommaToken(ref BinaryTree<EditorTokenInfo> root, BinaryTree<EditorTokenInfo> newTree, bool onlyLeft = false)
         {
             EditorTokenInfo CommaToken = new EditorTokenInfo(",", "COMMA");
             CommaToken.Precedence = 150;
@@ -1019,7 +1028,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="rootnode">Current Node</param>
         /// <param name="priorPrecedence">Prior Precedence</param>
         /// <returns></returns>
-        static string TraverseInOrder
+         string TraverseInOrder
             (BinaryTree<EditorTokenInfo> rootnode, int priorPrecedence = 0)
         {
             string Result = "";
@@ -1067,7 +1076,7 @@ namespace PRGReaderLibrary.Utilities
 
         }
 
-        private static string RemoveCRLF(string s)
+        private  string RemoveCRLF(string s)
         {
             return s.TrimEnd('\r', '\n');
         }
@@ -1081,7 +1090,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="offset">start</param>
         /// <param name="FourBytes">By default take 4 bytes, if false take only 2</param>
         /// <returns></returns>
-        private static string GetConstValue(byte[] source, ref int offset)
+        private  string GetConstValue(byte[] source, ref int offset)
         {
             string result = "";
             byte[] value = { 0, 0, 0, 0 };
@@ -1135,7 +1144,7 @@ namespace PRGReaderLibrary.Utilities
         /// <param name="source">source bytes</param>
         /// <param name="offset">position</param>
         /// <returns></returns>
-        private static string GetIdentifierLabel(byte[] source, ref int offset)
+        private  string GetIdentifierLabel(byte[] source, ref int offset)
         {
             string IdentLabel = "UNKNOWN_IDENT";
             //get the target identifier

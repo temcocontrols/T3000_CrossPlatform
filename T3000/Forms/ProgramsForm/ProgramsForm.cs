@@ -19,7 +19,7 @@
         public DataGridView Progs { get; set; }
 
         private Prg _prg;
-        public Prg Prg
+        public Prg SelectedPrg
         {
             get { return _prg; }
 
@@ -31,10 +31,10 @@
 
         public ProgramsForm(ref Prg  CurPRG,string Path)
         {
-            Prg = CurPRG;
+            SelectedPrg = CurPRG;
             PrgPath = Path;
 
-            SetView(Prg.Programs, Prg.ProgramCodes);
+            SetView(SelectedPrg.Programs, SelectedPrg.ProgramCodes);
 
         }
 
@@ -206,24 +206,26 @@
                 Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
                 
                 var form = new ProgramEditorForm();
-                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
+                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {SelectedPrg.Programs[Index_EditProgramCode].Description}";
 
                 Debug.WriteLine("--------------ORIGINAL CODE-------------------");
-                Encoder.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
+                CoderHelper.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
 
-                Decoder.SetControlPoints(Prg);
-                string ProgramText = Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);
+                Decoder DECODER = new Decoder();
+                
+                DECODER.SetControlPoints(SelectedPrg);
+                string ProgramText = DECODER.DecodeBytes(Codes[Index_EditProgramCode].Code);
 
                 Debug.WriteLine("--------------NEW PROGRAM TEXT-------------------");
                 Debug.WriteLine(ProgramText);
-                //form.SetCode(Codes[Index_EditProgramCode].ToString());
+                //Create a local copy for Control Basic program text
                 form.SetCode(ProgramText);
-                //////create a local copy of all identifiers
-                ////form.Identifiers = new ControlPoints(Prg);
 
                 //Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
                 form.MdiParent = this.MdiParent ;
+                //create a local copy of all identifiers
+                form.Identifiers = DECODER.Identifiers;
                 
                 form.Show();
                 //if (form.ShowDialog() != DialogResult.OK) return;
@@ -246,18 +248,20 @@
 
 
             //Init a copy of controlpoints
-            Encoder.SetControlPoints(Prg);
+            Encoder ENCODER = new Encoder();
+
+            ENCODER.SetControlPoints(SelectedPrg);
             //ENCODE THE PROGRAM
-            byte[] ByteEncoded = Encoder.EncodeBytes(e.Tokens);
+            byte[] ByteEncoded = ENCODER.EncodeBytes(e.Tokens);
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            Encoder.ConsolePrintBytes(ByteEncoded, "Encoded");
+            CoderHelper.ConsolePrintBytes(ByteEncoded, "Encoded");
             MessageBox.Show($"Resource compiled succceded{System.Environment.NewLine}Total size 2000 bytes{System.Environment.NewLine}Already used {PSize} bytes.", "T3000");
 
            // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
-            Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
+            SelectedPrg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
             //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
-            Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;
-            Prg.Programs[Index_EditProgramCode].Length = PSize;
+            SelectedPrg.ProgramCodes[Index_EditProgramCode].Count = 2000;
+            SelectedPrg.Programs[Index_EditProgramCode].Length = PSize;
             //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
             //Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}.PRG");
            

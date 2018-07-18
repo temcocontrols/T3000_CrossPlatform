@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
+
 namespace PRGReaderLibrary.Utilities
 {
 
@@ -17,13 +18,13 @@ namespace PRGReaderLibrary.Utilities
         /// <summary>
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
-        static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+        public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
         /// <summary>
         /// Set a local copy of all identifiers in prg
         /// </summary>
         /// <param name="prg">Program prg</param>
-        static public void SetControlPoints(Prg prg)
+         public void SetControlPoints(Prg prg)
         {
             Identifiers = new ControlPoints(prg);
         }
@@ -35,7 +36,7 @@ namespace PRGReaderLibrary.Utilities
         /// </summary>
         /// <param name="Tokens">Preprocessed list of tokens</param>
         /// <returns>byte array</returns>
-        public static byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
+        public byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
         {
             var result = new List<byte>();
             byte[] prgsize = { (byte)0x00, (byte)0x00 };
@@ -104,6 +105,7 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
                     #region Special Numbers
+                    #region Line Numbers
                     case "LineNumber":
                         if (isFirstToken)
                         {
@@ -127,11 +129,10 @@ namespace PRGReaderLibrary.Utilities
                             offset += 2;
 
                         }
+                        break; 
+                    #endregion
 
-
-                        break;
-
-                    case "OFFSET":
+                    case "OFFSET": //2 Bytes
                         //push index of next byte for new offset.
                         offsets.Push(offset + 1);
                         short OffSetNumber = Convert.ToInt16(token.Token);
@@ -190,6 +191,8 @@ namespace PRGReaderLibrary.Utilities
                     case "AND":
                     case "XOR":
                     case "OR":
+                    // Encode NOT token
+                    case "NOT":
                     //FUNCTIONS
                     case "ABS":
                     case "INTERVAL":
@@ -258,9 +261,6 @@ namespace PRGReaderLibrary.Utilities
                         break; 
                     #endregion
 
-                    case "NOT":
-                        //TODO: IMPORTANT: Learn how to encode NOT operator -> tests and errors.
-                        break;
                     #endregion
 
                     #region Identifiers: VARS, INS, OUTS, etc 3 bytes
@@ -279,13 +279,12 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
-                    #region NUMBERS (4 BYTES ONLY)
+                    #region NUMBERS (4-5 BYTES ONLY)
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
                     case "TIMER":
 
-                        //TODO: NEW: Add special treatment for TIME FORMAT numbers, see related TODO for DECODER
                         result.Add((byte)token.Token);
                         offset++;
                         //And... voilá...  trick revealed.
@@ -297,6 +296,25 @@ namespace PRGReaderLibrary.Utilities
                         result.AddRange(byteArray);
                         offset += 4;
                         break;
+
+                    case "TimeLiteral":
+
+                        //NEW: Added special treatment for TIME FORMAT numbers, see related TODO for DECODER
+                        result.Add((byte)token.Token);
+                        offset++;
+                        string hh, mm, ss;
+                        hh = token.Text.Substring(0, 2);
+                        mm = token.Text.Substring(3, 2);
+                        ss = token.Text.Substring(6, 2);
+                        int numericvalue = Convert.ToInt32(hh) * 3600 + Convert.ToInt32(mm) * 60 + Convert.ToInt32(ss);
+                        numericvalue *= 1000;
+                        byte[] timeByteArray = BitConverter.GetBytes(numericvalue);
+                        result.AddRange(timeByteArray);
+                        //extra byte to mark a TIME FORMAT VALUE
+                        result.Add((byte)token.Type);
+                        offset += 5;
+                        break;
+
                     #endregion
 
                     #region EOF CRLF
@@ -319,6 +337,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
+                    
                     default:
                         Trace.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
@@ -359,6 +378,7 @@ namespace PRGReaderLibrary.Utilities
             result[1] = size[1];
 
             //fill with nulls til the end of block
+            //TODO: This is not correct. As far as I know now, there are posible time-buffer entries to add last.
             while (result.Count < 2000)
             {
                 result.Add((byte)0x00);
@@ -367,46 +387,20 @@ namespace PRGReaderLibrary.Utilities
         }
 
 
+    }
 
-        /// <summary>
-        /// Prints a byte array
-        /// </summary>
-        /// <param name="ByteEncoded">Byte array to print</param>
-        /// <param name="HeaderString">Optional Header string</param>
-        public static void  ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
-        {
-            
-            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            int STEPBYTES = 50;
-            Debug.Write(HeaderString);
-            //Console.Write(HeaderString); // different in 2015 vs 2017
-            int countByLine = 0;
-            int countLines = 0;
-            Debug.Write(" Bytes = { ");
-            //Console.Write(" Bytes = { ");
-            for (var i = 0; i < PSize + 3; i++)
-            {
-                Debug.Write($"{ByteEncoded[i]} ");
-                countByLine++;
-                if(countByLine == STEPBYTES)
-                {
-                    countByLine = 0;
-                    countLines++;
-                    Debug.Write(System.Environment.NewLine + $"[{countLines*STEPBYTES}]-> ");
-                    
-
-                }
-            }
-            Debug.WriteLine("}");
-        }
-
+    /// <summary>
+    /// Statics Helpers
+    /// </summary>
+    static public class CoderHelper
+    {
         /// <summary>
         /// Returns PCODE_CONST value and Index for the especified Identifier
         /// </summary>
         /// <param name="Ident">Label of Point Identifier</param>
         /// <param name="Index">Out Index of Point Identifier</param>
         /// <returns>PCODE_CONST value and Index</returns>
-        static public PCODE_CONST GetTypeIdentifier(string Ident, out int Index)
+        static public PCODE_CONST GetTypeIdentifier(ControlPoints Identifiers, string Ident, out int Index)
         {
             try
             {
@@ -454,6 +448,38 @@ namespace PRGReaderLibrary.Utilities
             Index = -2;
             return PCODE_CONST.UNDEFINED_SYMBOL;
 
+        }
+
+        /// <summary>
+        /// Prints a byte array - Static Helper
+        /// </summary>
+        /// <param name="ByteEncoded">Byte array to print</param>
+        /// <param name="HeaderString">Optional Header string</param>
+        public static void ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
+        {
+
+            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            int STEPBYTES = 50;
+            Debug.Write(HeaderString);
+            //Console.Write(HeaderString); // different in 2015 vs 2017
+            int countByLine = 0;
+            int countLines = 0;
+            Debug.Write(" Bytes = { ");
+            //Console.Write(" Bytes = { ");
+            for (var i = 0; i < PSize + 3; i++)
+            {
+                Debug.Write($"{ByteEncoded[i]} ");
+                countByLine++;
+                if (countByLine == STEPBYTES)
+                {
+                    countByLine = 0;
+                    countLines++;
+                    Debug.Write(System.Environment.NewLine + $"[{countLines * STEPBYTES}]-> ");
+
+
+                }
+            }
+            Debug.WriteLine("}");
         }
 
     }
