@@ -179,7 +179,18 @@ namespace FastColoredTextBoxNS
                         break;
                     case "Identifier":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        //TODO: Know the correct type for identifier
                         break;
+                    case "INS":
+                    case "OUTS":
+                    case "VARS":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.KeywordStyle2);
+                        //TODO: Separate with different styles
+                        break;
+                    default:
+
+                        break;
+                  
                 }
 
                 switch (t.Terminal.GetType().Name)
@@ -191,10 +202,13 @@ namespace FastColoredTextBoxNS
                     case "FreeTextLiteral":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
                         break;
-                    case "Identifier":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                        
-                        break;
+
+                    //case "Identifier":
+                    //    if(t.Terminal.Name=="INS" || t.Terminal.Name == "OUTS")
+                    //        GetTokenRange(t).SetStyle(SyntaxHighlighter.KeywordStyle2);
+                    //    else
+                    //        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                    //    break;
                     case "NumberLiteral":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.NumberStyle);
                         break;

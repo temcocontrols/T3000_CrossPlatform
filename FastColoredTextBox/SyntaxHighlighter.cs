@@ -660,6 +660,7 @@ namespace FastColoredTextBoxNS
                     AttributeStyle = GreenStyle;
                     ClassNameStyle = BoldStyle;
                     KeywordStyle = BlueStyle;
+                    KeywordStyle2 = RedStyle;
                     CommentTagStyle = GrayStyle;
                     VariableStyle = CrimsonStyle;
                     break;
@@ -1521,6 +1522,7 @@ namespace FastColoredTextBoxNS
         /// SQL Types style
         /// </summary>
         public Style TypesStyle { get; set; }
+
 
         #endregion
     }

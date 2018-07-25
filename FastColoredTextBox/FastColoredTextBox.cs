@@ -1,4 +1,4 @@
-//
+﻿//
 //  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
 //  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
@@ -772,6 +772,81 @@ namespace FastColoredTextBoxNS
             {
 
                 SyntaxHighlighter.KeywordStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+        /// <summary>
+        /// Numbers Color
+        /// </summary>
+        [Category("TextStyles")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Blue")]
+        [Description("Color for Numbers")]
+        public Color NumbersColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.NumberStyle).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.NumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+        /// <summary>
+        /// Strings Color
+        /// </summary>
+        [Category("TextStyles")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Blue")]
+        [Description("Color for Strings")]
+        public Color StringsColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.StringStyle).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.StringStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+        /// <summary>
+        /// Explcit named Control Points Color (ie: VAR1, IN2, OUT3)
+        /// </summary>
+        [Category("TextStyles")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Blue")]
+        [Description("Color for explicit ControlPoints")]
+        public Color ControlPointsColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.KeywordStyle2).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.KeywordStyle2 = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
                 this.IsChanged = true;
                 this.OnTextChangedDelayed(Range);

@@ -1057,6 +1057,21 @@
             Keywords Color
             </summary>
         </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.NumbersColor">
+            <summary>
+            Numbers Color
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.StringsColor">
+            <summary>
+            Strings Color
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.ControlPointsColor">
+            <summary>
+            Explcit named Control Points Color (ie: VAR1, IN2, OUT3)
+            </summary>
+        </member>
         <member name="P:FastColoredTextBoxNS.FastColoredTextBox.Paddings">
             <summary>
             Padings of text area
