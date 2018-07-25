@@ -40,9 +40,9 @@
     <FeedbackEMailLinkText>Author</FeedbackEMailLinkText>
     <FeedbackEMailAddress>lruiz75%40gmail.com</FeedbackEMailAddress>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\FastColoredTextBox\bin\Debug\FastColoredTextBox.dll" />
-      <DocumentationSource sourceFile="..\FastColoredTextBox\bin\Debug\FastColoredTextBox.xml" />
-      <DocumentationSource sourceFile="..\FastColoredTextBoxNS\bin\Debug\FastColoredTextBoxNS.dll" />
+      <DocumentationSource sourceFile="..\ReleaseFiles\LastCompilation\FastColoredTextBoxNS.dll" />
+      <DocumentationSource sourceFile="..\ReleaseFiles\LastCompilation\FastColoredTextBox.dll" />
+      <DocumentationSource sourceFile="..\ReleaseFiles\LastCompilation\FastColoredTextBox.xml" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyErrors</BuildAssemblerVerbosity>

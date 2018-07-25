@@ -46,6 +46,7 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Back] = FCTBAction.ClearWordLeft;
             this[KEYS.Insert] = FCTBAction.ReplaceMode;
             this[KEYS.Control | KEYS.Insert] = FCTBAction.Copy;
+            //PASTE
             this[KEYS.Shift | KEYS.Insert] = FCTBAction.Paste;
             this[KEYS.Delete] = FCTBAction.DeleteCharRight;
             this[KEYS.Control | KEYS.Delete] = FCTBAction.ClearWordRight;
@@ -93,8 +94,8 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.D0] = FCTBAction.ZoomNormal;
             this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;
 
-            //New KeyMapping for IdentifierInfoDialog
-            this[KEYS.Shift | KEYS.Insert] = FCTBAction.IdentifierInfo;
+            //New KeyMapping for IdentifierInfoDialog: CTRL+I
+            this[KEYS.Control | KEYS.Shift | KEYS.I] = FCTBAction.IdentifierInfo;
         }
 
         public override string ToString()

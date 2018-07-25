@@ -36,6 +36,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using ExceptionHandling;
 using Microsoft.Win32;
 using PRGReaderLibrary.Extensions;
 using PRGReaderLibrary.Types.Enums.Codecs;
@@ -133,6 +134,9 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Inner copy of Identifiers: FCTB
         /// </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
+         EditorBrowsable(EditorBrowsableState.Never)]
+        [Description("Inner copy for Control Points : FastColoredTexBox")]
         public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
 
@@ -714,228 +718,354 @@ namespace FastColoredTextBoxNS
             }
         }
 
+
+
+        Color _variablescolor = Color.Crimson;
         /// <summary>
         /// Variables Color
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Crimson")]
         [Description("Color for Variables")]
         public Color VariablesColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.VariableStyle).GetForeColor(); ;
+                return _variablescolor;
             }
             set
             {
-                
-                SyntaxHighlighter.VariableStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                _variablescolor = value;
+
+
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.VariableStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Variables Color Property");
+                }
+               
 
             }
         }
 
+
+        Color _commentscolor = Color.Green;
         /// <summary>
         /// Comments Color
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Green")]
         [Description("Color for Comments")]
         public Color CommentsColor
         {
-            private get
+             get
             {
-                return ((TextStyle)SyntaxHighlighter.CommentStyle).GetForeColor(); ;
+                return _commentscolor ;
             }
              set
             {
+                _commentscolor = value;
 
-                SyntaxHighlighter.CommentStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                        SyntaxHighlighter.CommentStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Comments Color Property");
+                }
             }
         }
 
+
+        Color _keywordscolor = Color.Blue;
         /// <summary>
         /// Keywords Color
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Blue")]
         [Description("Color for Keywords")]
         public Color KeywordsColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.KeywordStyle).GetForeColor(); ;
+                return _keywordscolor;
             }
             set
             {
+                _keywordscolor = value;
 
-                SyntaxHighlighter.KeywordStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
 
+                        SyntaxHighlighter.KeywordStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Keywords Color Property");
+                }
             }
         }
 
+
+        Color _numberscolor = Color.Blue;
         /// <summary>
         /// Numbers Color
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Blue")]
-        [Description("Color for Numbers")]
+        [Description("Color for Numeric Literals")]
         public Color NumbersColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.NumberStyle).GetForeColor(); ;
+                return _numberscolor;
             }
             set
             {
+                _numberscolor = value;
 
-                SyntaxHighlighter.NumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.NumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Numeric Literals Color Property");
+                }
 
             }
         }
 
+        Color _stringscolor = Color.Maroon;
         /// <summary>
         /// Strings Color
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
-        [DefaultValue(typeof(Color), "Blue")]
+        [Browsable(true)]
+        [DefaultValue(typeof(Color), "Maroon")]
         [Description("Color for Strings")]
         public Color StringsColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.StringStyle).GetForeColor(); ;
+                return _stringscolor;
             }
             set
             {
+                _stringscolor = value;
 
-                SyntaxHighlighter.StringStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.StringStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Strings Color Property");
+                }
 
             }
         }
 
+
+        Color _inputscolor = Color.Green;
         /// <summary>
         /// Color for Inputs : Control Basic
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Green")]
         [Description("Color for Inputs")]
         public Color InputsColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.InputStyle).GetForeColor(); ;
+                return _inputscolor;
             }
             set
             {
+                _inputscolor = value;
 
-                SyntaxHighlighter.InputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.InputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Inputs Color Property");
+                }
 
             }
         }
 
 
+        Color _outputscolor = Color.Green;
         /// <summary>
         /// Color for Outputs : Control Basic
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Green")]
         [Description("Color for Outputs")]
         public Color OutputsColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.OutputStyle).GetForeColor(); ;
+                return _outputscolor;
             }
             set
             {
+                _outputscolor = value;
 
-                SyntaxHighlighter.OutputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.OutputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Outputs Color Property");
+                }
 
             }
         }
 
+        Color _pidscolor = Color.Magenta;
         /// <summary>
         /// Color for PIDS : Control Basic
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Magenta")]
         [Description("Color for Pids")]
         public Color PidsColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.PidStyle).GetForeColor(); ;
+                return _pidscolor;
             }
             set
             {
+                _pidscolor = value;
 
-                SyntaxHighlighter.PidStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.PidStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "PIDs Color Property");
+                }
             }
         }
 
+
+        Color _innerlinenumberscolor = Color.Gray;
         /// <summary>
         /// Color for inner line numbers: Control Basic
         /// </summary>
         [Category("TextStyles")]
-        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
         [DefaultValue(typeof(Color), "Gray")]
         [Description("Color for Inner Line Numbers")]
         public Color InnerLineNumbersColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.InnerLinesNumberStyle).GetForeColor(); ;
+                return _innerlinenumberscolor;
             }
             set
             {
+                _innerlinenumberscolor = value;
 
-                SyntaxHighlighter.InnerLinesNumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
-                this.IsChanged = true;
-                this.OnTextChangedDelayed(Range);
-                Invalidate();
+                try
+                {
+                    if (SyntaxHighlighter != null)
+                    {
+                        SyntaxHighlighter.InnerLinesNumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                        this.IsChanged = true;
+                        this.OnTextChangedDelayed(Range);
+                        Invalidate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Show(ex, "Inner Line Numbers Color Property");
+                }
 
             }
         }
@@ -1051,7 +1181,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         [Description("Here you can change hotkeys for FastColoredTextBox.")]
         [Editor(typeof(HotkeysEditor), typeof(UITypeEditor))]
-        [DefaultValue("Tab=IndentIncrease, Escape=ClearHints, PgUp=GoPageUp, PgDn=GoPageDown, End=GoEnd, Home=GoHome, Left=GoLeft, Up=GoUp, Right=GoRight, Down=GoDown, Ins=ReplaceMode, Del=DeleteCharRight, F3=FindNext, Shift+Tab=IndentDecrease, Shift+PgUp=GoPageUpWithSelection, Shift+PgDn=GoPageDownWithSelection, Shift+End=GoEndWithSelection, Shift+Home=GoHomeWithSelection, Shift+Left=GoLeftWithSelection, Shift+Up=GoUpWithSelection, Shift+Right=GoRightWithSelection, Shift+Down=GoDownWithSelection, Shift+Ins=Paste, Shift+Del=Cut, Ctrl+Back=ClearWordLeft, Ctrl+Space=AutocompleteMenu, Ctrl+End=GoLastLine, Ctrl+Home=GoFirstLine, Ctrl+Left=GoWordLeft, Ctrl+Up=ScrollUp, Ctrl+Right=GoWordRight, Ctrl+Down=ScrollDown, Ctrl+Ins=Copy, Ctrl+Del=ClearWordRight, Ctrl+0=ZoomNormal, Ctrl+A=SelectAll, Ctrl+B=BookmarkLine, Ctrl+C=Copy, Ctrl+E=MacroExecute, Ctrl+F=FindDialog, Ctrl+G=GoToDialog, Ctrl+H=ReplaceDialog, Ctrl+I=AutoIndentChars, Ctrl+M=MacroRecord, Ctrl+N=GoNextBookmark, Ctrl+R=Redo, Ctrl+U=UpperCase, Ctrl+V=Paste, Ctrl+X=Cut, Ctrl+Z=Undo, Ctrl+Add=ZoomIn, Ctrl+Subtract=ZoomOut, Ctrl+OemMinus=NavigateBackward, Ctrl+Shift+End=GoLastLineWithSelection, Ctrl+Shift+Home=GoFirstLineWithSelection, Ctrl+Shift+Left=GoWordLeftWithSelection, Ctrl+Shift+Right=GoWordRightWithSelection, Ctrl+Shift+B=UnbookmarkLine, Ctrl+Shift+C=CommentSelected, Ctrl+Shift+N=GoPrevBookmark, Ctrl+Shift+U=LowerCase, Ctrl+Shift+OemMinus=NavigateForward, Alt+Back=Undo, Alt+Up=MoveSelectedLinesUp, Alt+Down=MoveSelectedLinesDown, Alt+F=FindChar, Alt+Shift+Left=GoLeft_ColumnSelectionMode, Alt+Shift+Up=GoUp_ColumnSelectionMode, Alt+Shift+Right=GoRight_ColumnSelectionMode, Alt+Shift+Down=GoDown_ColumnSelectionMode")]
+        [DefaultValue("Tab=IndentIncrease, Escape=ClearHints, PgUp=GoPageUp, PgDn=GoPageDown, End=GoEnd, Home=GoHome, Left=GoLeft, Up=GoUp, Right=GoRight, Down=GoDown, Ins=ReplaceMode, Del=DeleteCharRight, F3=FindNext, Shift+Tab=IndentDecrease, Shift+PgUp=GoPageUpWithSelection, Shift+PgDn=GoPageDownWithSelection, Shift+End=GoEndWithSelection, Shift+Home=GoHomeWithSelection, Shift+Left=GoLeftWithSelection, Shift+Up=GoUpWithSelection, Shift+Right=GoRightWithSelection, Shift+Down=GoDownWithSelection, Shift+Ins=Paste, Shift+Del=Cut, Ctrl+Back=ClearWordLeft, Ctrl+Space=AutocompleteMenu, Ctrl+End=GoLastLine, Ctrl+Home=GoFirstLine, Ctrl+Left=GoWordLeft, Ctrl+Up=ScrollUp, Ctrl+Right=GoWordRight, Ctrl+Down=ScrollDown, Ctrl+Ins=Copy, Ctrl+Del=ClearWordRight, Ctrl+0=ZoomNormal, Ctrl+A=SelectAll, Ctrl+B=BookmarkLine, Ctrl+C=Copy, Ctrl+E=MacroExecute, Ctrl+F=FindDialog, Ctrl+G=GoToDialog, Ctrl+H=ReplaceDialog, Ctrl+I=AutoIndentChars, Ctrl+M=MacroRecord, Ctrl+N=GoNextBookmark, Ctrl+R=Redo, Ctrl+U=UpperCase, Ctrl+V=Paste, Ctrl+X=Cut, Ctrl+Z=Undo, Ctrl+Add=ZoomIn, Ctrl+Subtract=ZoomOut, Ctrl+OemMinus=NavigateBackward, Ctrl+Shift+End=GoLastLineWithSelection, Ctrl+Shift+Home=GoFirstLineWithSelection, Ctrl+Shift+Left=GoWordLeftWithSelection, Ctrl+Shift+Right=GoWordRightWithSelection, Ctrl+Shift+B=UnbookmarkLine, Ctrl+Shift+C=CommentSelected, Ctrl+Shift+N=GoPrevBookmark, Ctrl+Shift+U=LowerCase, Ctrl+Shift+OemMinus=NavigateForward, Alt+Back=Undo, Alt+Up=MoveSelectedLinesUp, Alt+Down=MoveSelectedLinesDown, Alt+F=FindChar, Alt+Shift+Left=GoLeft_ColumnSelectionMode, Alt+Shift+Up=GoUp_ColumnSelectionMode, Alt+Shift+Right=GoRight_ColumnSelectionMode, Alt+Shift+Down=GoDown_ColumnSelectionMode, Ctrl+Shift+I=IdentifierInfo")]
         public string Hotkeys { 
             get { return HotkeysMapping.ToString(); }
             set { HotkeysMapping = HotkeysMapping.Parse(value); }

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramEditorForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
             this.cmdClear = new System.Windows.Forms.ToolStripButton();
@@ -266,8 +266,8 @@
             // 
             // dataGridViewTextBoxColumn3
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewTextBoxColumn3.HeaderText = "L, C";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -277,8 +277,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewTextBoxColumn4.HeaderText = "Error Message";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
@@ -289,8 +289,8 @@
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dataGridViewTextBoxColumn1.DataPropertyName = "State";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewTextBoxColumn1.HeaderText = "Parser State";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -312,24 +312,45 @@
         '\"',
         '\'',
         '\''};
-            this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(2, 14);
+            this.editTextBox.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\r\n^\\s*(case|default)\\s*[^:]" +
+    "*(?<range>:)\\s*(?<range>[^;]+);\r\n";
+            this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(202, 14);
             this.editTextBox.BackBrush = null;
-            this.editTextBox.BackColor = System.Drawing.Color.Beige;
+            this.editTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(40)))), ((int)(((byte)(33)))));
+            this.editTextBox.BookmarkColor = System.Drawing.Color.IndianRed;
+            this.editTextBox.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.editTextBox.CaretColor = System.Drawing.Color.White;
             this.editTextBox.CharHeight = 14;
             this.editTextBox.CharWidth = 8;
+            this.editTextBox.CommentPrefix = "REM";
+            this.editTextBox.CommentsColor = System.Drawing.Color.Olive;
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.editTextBox.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.editTextBox.Hotkeys = resources.GetString("editTextBox.Hotkeys");
+            this.editTextBox.InputsColor = System.Drawing.Color.Chocolate;
             this.editTextBox.IsReplaceMode = false;
+            this.editTextBox.KeywordsColor = System.Drawing.Color.Green;
+            this.editTextBox.Language = FastColoredTextBoxNS.Language.ControlBasic;
+            this.editTextBox.LeftBracket = '(';
+            this.editTextBox.LeftBracket2 = '{';
             this.editTextBox.Location = new System.Drawing.Point(3, 53);
             this.editTextBox.Name = "editTextBox";
+            this.editTextBox.NumbersColor = System.Drawing.Color.CornflowerBlue;
+            this.editTextBox.OutputsColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.editTextBox.Paddings = new System.Windows.Forms.Padding(0);
+            this.editTextBox.PidsColor = System.Drawing.Color.Tan;
+            this.editTextBox.RightBracket = ')';
+            this.editTextBox.RightBracket2 = '}';
             this.editTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.editTextBox.ServiceColors = null;
+            this.editTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("editTextBox.ServiceColors")));
             this.editTextBox.Size = new System.Drawing.Size(573, 250);
-            this.editTextBox.TabIndex = 7;
+            this.editTextBox.StringsColor = System.Drawing.Color.DarkMagenta;
+            this.editTextBox.TabIndex = 11;
+            this.editTextBox.Text = "10 IF INIT THEN STOP INIT";
             this.editTextBox.Zoom = 100;
-            this.editTextBox.TextChangedDelayed += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.editTextBox_TextChangedDelayed);
             // 
             // ruler1
             // 
@@ -346,9 +367,9 @@
             // SettingsBag
             // 
             this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.SettingsBag.Location = new System.Drawing.Point(47, 58);
+            this.SettingsBag.Location = new System.Drawing.Point(166, 58);
             this.SettingsBag.Name = "SettingsBag";
-            this.SettingsBag.Size = new System.Drawing.Size(247, 197);
+            this.SettingsBag.Size = new System.Drawing.Size(237, 197);
             this.SettingsBag.TabIndex = 10;
             this.SettingsBag.Visible = false;
             // 

@@ -30,6 +30,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBoxNS", "FastColoredTextBoxNS\FastColoredTextBoxNS.csproj", "{21D9406B-9A90-4A82-9894-ABEB07393E78}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "T3000Documenter", "T3000Documenter\T3000Documenter.shfbproj", "{D541E1C2-D3CF-4225-BCF9-273E44B27EF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{21D9406B-9A90-4A82-9894-ABEB07393E78} = {21D9406B-9A90-4A82-9894-ABEB07393E78}
+		{6DD14A85-CCFC-4774-BD26-0F5772512319} = {6DD14A85-CCFC-4774-BD26-0F5772512319}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionHandling", "ExceptionHandling\ExceptionHandling.csproj", "{F32C40DF-730F-4CB2-9A37-2B0950829C93}"
 EndProject
