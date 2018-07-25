@@ -1,4 +1,4 @@
-namespace T3000.Forms
+﻿namespace FastColoredTextBoxNS
 {
     partial class frmIdentifierInfo
     {

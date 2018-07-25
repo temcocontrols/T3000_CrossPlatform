@@ -307,6 +307,23 @@
             Use original font
             </summary>
         </member>
+        <member name="F:FastColoredTextBoxNS.frmIdentifierInfo.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.frmIdentifierInfo.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:FastColoredTextBoxNS.frmIdentifierInfo.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="F:FastColoredTextBoxNS.GoToForm.components">
             <summary>
             Required designer variable.
@@ -830,6 +847,11 @@
         <member name="T:FastColoredTextBoxNS.FastColoredTextBox">
             <summary>
             Fast colored textbox
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.Identifiers">
+            <summary>
+            Inner copy of Identifiers: FCTB
             </summary>
         </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.#ctor">
@@ -1891,6 +1913,12 @@
             <summary>
             Process control keys
             </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.FastColoredTextBox.ShowIdentifierInfoDialog(System.String)">
+            <summary>
+            Shows dialogs when Identifier selected with full info.
+            </summary>
+            <param name="SelectedText"></param>
         </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.GotoNextBookmark(System.Int32)">
             <summary>

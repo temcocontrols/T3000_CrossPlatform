@@ -4,23 +4,6 @@
         <name>ProgramEditor</name>
     </assembly>
     <members>
-        <member name="F:T3000.Forms.frmIdentifierInfo.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:T3000.Forms.frmIdentifierInfo.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:T3000.Forms.frmIdentifierInfo.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
         <member name="T:T3000.Forms.SendEventHandler">
             <summary>
             Delegate to event handler Send
@@ -140,6 +123,13 @@
             <summary>
             Refresh, reload assigned code into editBox
             </summary>
+        </member>
+        <member name="M:T3000.Forms.ProgramEditorForm.ShowIdentifier(PRGReaderLibrary.Extensions.ControlPoints,System.String)">
+            <summary>
+            Show Identifiers Information in a dialog box
+            </summary>
+            <param name="Identifiers">Identifier's information</param>
+            <param name="selectedText"></param>
         </member>
         <member name="M:T3000.Forms.ProgramEditorForm.LoadFile">
             <summary>

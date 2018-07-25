@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,15 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>bin\Debug\prgrdrlib.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
@@ -62,6 +72,7 @@
     <Compile Include="Types\HelpTypes\NameAttribute.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Types\Enums\Jumper.cs" />
+    <Compile Include="Utilities\CoderHelper.cs" />
     <Compile Include="Utilities\Decoder.cs" />
     <Compile Include="Utilities\EditorJumpInfo.cs" />
     <Compile Include="Utilities\EditorLineInfo.cs" />
@@ -116,7 +127,9 @@
     <Compile Include="Utilities\DebugUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\prgrdrlib.snk" />
     <None Include="packages.config" />
+    <None Include="PRGREADER.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">

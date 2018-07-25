@@ -42,12 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="frmIdentifierInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmIdentifierInfo.Designer.cs">
-      <DependentUpon>frmIdentifierInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProgramEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,9 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmIdentifierInfo.resx">
-      <DependentUpon>frmIdentifierInfo.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProgramEditorForm.resx">
       <DependentUpon>ProgramEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>

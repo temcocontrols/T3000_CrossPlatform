@@ -25,6 +25,7 @@
     <DocumentationFile>bin\Debug\FastColoredTextBox.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>1591</NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,10 +37,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>FCTB_key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,6 +66,12 @@
     <Compile Include="EncodingDetector.cs" />
     <Compile Include="ExportToHTML.cs" />
     <Compile Include="ExportToRTF.cs" />
+    <Compile Include="frmIdentifierInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIdentifierInfo.Designer.cs">
+      <DependentUpon>frmIdentifierInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="GoToForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +135,9 @@
     <EmbeddedResource Include="FindForm.resx">
       <DependentUpon>FindForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmIdentifierInfo.resx">
+      <DependentUpon>frmIdentifierInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GoToForm.resx">
       <DependentUpon>GoToForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +151,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FCTB_key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
+      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
+      <Name>PRGReaderLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

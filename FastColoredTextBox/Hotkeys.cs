@@ -91,7 +91,10 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Subtract] = FCTBAction.ZoomOut;
             this[KEYS.Control | KEYS.Add] = FCTBAction.ZoomIn;
             this[KEYS.Control | KEYS.D0] = FCTBAction.ZoomNormal;
-            this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;   
+            this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;
+
+            //New KeyMapping for IdentifierInfoDialog
+            this[KEYS.Shift | KEYS.Insert] = FCTBAction.IdentifierInfo;
         }
 
         public override string ToString()
@@ -207,7 +210,7 @@ namespace FastColoredTextBoxNS
         ZoomIn,
         ZoomNormal,
         ZoomOut,
-        CustomAction1,
+        IdentifierInfo,
         CustomAction2,
         CustomAction3,
         CustomAction4,

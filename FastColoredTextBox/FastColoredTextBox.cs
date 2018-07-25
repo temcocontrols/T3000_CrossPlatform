@@ -37,6 +37,9 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Microsoft.Win32;
+using PRGReaderLibrary.Extensions;
+using PRGReaderLibrary.Types.Enums.Codecs;
+using PRGReaderLibrary.Utilities;
 using Timer = System.Windows.Forms.Timer;
 
 namespace FastColoredTextBoxNS
@@ -125,6 +128,12 @@ namespace FastColoredTextBoxNS
         private int reservedCountOfLineNumberChars = 1;
         private int zoom = 100;
         private Size localAutoScrollMinSize;
+
+
+        /// <summary>
+        /// Inner copy of Identifiers: FCTB
+        /// </summary>
+        public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
 
         /// <summary>
@@ -739,11 +748,11 @@ namespace FastColoredTextBoxNS
         [Description("Color for Comments")]
         public Color CommentsColor
         {
-            get
+            private get
             {
                 return ((TextStyle)SyntaxHighlighter.CommentStyle).GetForeColor(); ;
             }
-            set
+             set
             {
 
                 SyntaxHighlighter.CommentStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
@@ -4213,7 +4222,16 @@ namespace FastColoredTextBoxNS
                         MacrosManager.ExecuteMacros();
                     }
                     break;
-                case FCTBAction.CustomAction1 :
+                //Launch IdentifierInfo Dialog from FCTBActions
+                case FCTBAction.IdentifierInfo :
+                    if (Selection.IsEmpty)
+                        Selection.Expand();
+                    if (!Selection.IsEmpty)
+                    {
+                        ShowIdentifierInfoDialog(this.SelectedText);
+                    }
+                    break;
+
                 case FCTBAction.CustomAction2 :
                 case FCTBAction.CustomAction3 :
                 case FCTBAction.CustomAction4 :
@@ -4236,6 +4254,65 @@ namespace FastColoredTextBoxNS
                     OnCustomAction(new CustomActionEventArgs(action));
                     break;
             }
+        }
+
+        /// <summary>
+        /// Shows dialogs when Identifier selected with full info.
+        /// </summary>
+        /// <param name="SelectedText"></param>
+        public void ShowIdentifierInfoDialog(string SelectedText)
+        {
+
+            frmIdentifierInfo frm = new frmIdentifierInfo();
+
+
+            int PointIndex = 0;
+            var TokenType = CoderHelper.GetTypeIdentifier(this.Identifiers, SelectedText, out PointIndex);
+            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
+                return;
+
+
+            frm.Text = SelectedText;
+
+            switch (TokenType)
+            {
+                case PCODE_CONST.OUTPOINTTYPE:
+                    frm.Label.Text = Identifiers.Outputs[PointIndex].Label;
+                    frm.FullLabel.Text = Identifiers.Outputs[PointIndex].FullLabel;
+                    frm.Value.Text = Identifiers.Outputs[PointIndex].Value;
+                    frm.Units.Text = Identifiers.Outputs[PointIndex].Units;
+                    frm.AutoManual.Text = Identifiers.Outputs[PointIndex].AutoManual;
+                    frm.ControlPointName.Text = Identifiers.Outputs[PointIndex].ControlPointName;
+                    frm.ControlPointType.Text = "OUTPUT";
+                    break;
+                case PCODE_CONST.INPOINTTYPE:
+                    frm.Label.Text = Identifiers.Inputs[PointIndex].Label;
+                    frm.FullLabel.Text = Identifiers.Inputs[PointIndex].FullLabel;
+                    frm.Value.Text = Identifiers.Inputs[PointIndex].Value;
+                    frm.Units.Text = Identifiers.Inputs[PointIndex].Units;
+                    frm.AutoManual.Text = Identifiers.Inputs[PointIndex].AutoManual;
+                    frm.ControlPointName.Text = Identifiers.Inputs[PointIndex].ControlPointName;
+                    frm.ControlPointType.Text = "INPUT";
+                    break;
+                case PCODE_CONST.VARPOINTTYPE:
+                    frm.Label.Text = Identifiers.Variables[PointIndex].Label;
+                    frm.FullLabel.Text = Identifiers.Variables[PointIndex].FullLabel;
+                    frm.Value.Text = Identifiers.Variables[PointIndex].Value;
+                    frm.Units.Text = Identifiers.Variables[PointIndex].Units;
+                    frm.AutoManual.Text = Identifiers.Variables[PointIndex].AutoManual;
+                    frm.ControlPointName.Text = Identifiers.Variables[PointIndex].ControlPointName;
+                    frm.ControlPointType.Text = "VARIABLE";
+                    break;
+                case PCODE_CONST.PID:
+                    //TODO: Resolve what's a PID? Program Identifier?
+                    break;
+                default:
+                    break;
+            }
+
+
+            frm.ShowDialog();
+
         }
 
         protected virtual void OnCustomAction(CustomActionEventArgs e)
@@ -7491,12 +7568,15 @@ namespace FastColoredTextBoxNS
 
         private void InitializeComponent()
         {
-            SuspendLayout();
+            this.SuspendLayout();
             // 
             // FastColoredTextBox
             // 
-            Name = "FastColoredTextBox";
-            ResumeLayout(false);
+            this.Name = "FastColoredTextBox";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FastColoredTextBox_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FastColoredTextBox_KeyUp);
+            this.ResumeLayout(false);
+
         }
 
         /// <summary>
@@ -8456,6 +8536,16 @@ window.status = ""#print"";
         }
 
         #endregion
+
+        private void FastColoredTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            OnKeyDown(e);
+        }
+
+        private void FastColoredTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            OnKeyUp(e);
+        }
     }
 
     public class PaintLineEventArgs : PaintEventArgs

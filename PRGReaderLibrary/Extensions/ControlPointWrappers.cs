@@ -1,4 +1,4 @@
-using ExceptionHandling;
+﻿using ExceptionHandling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,7 @@ namespace PRGReaderLibrary.Extensions
     /// </summary>
     public enum IdentifierTypes
     {
+        //TODO: Reorder to match CODEC enums values PCONST
         VARS, INS, OUTS, PRGS, SCHS, HOLS
     }
 

@@ -16,9 +16,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using PRGReaderLibrary;
-using PRGReaderLibrary.Extensions;
-using PRGReaderLibrary.Utilities;
+////using PRGReaderLibrary;
+////using PRGReaderLibrary.Extensions;
+////using PRGReaderLibrary.Utilities;
+////using PRGReaderLibrary.Types.Enums.Codecs;
 
 namespace FastColoredTextBoxNS
 {
@@ -34,7 +35,7 @@ namespace FastColoredTextBoxNS
         
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
 
-        public ControlPoints Identifiers { get; set; } = new ControlPoints();
+        //////////public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
         /// <summary>
         /// Grammar of custom language
@@ -176,33 +177,33 @@ namespace FastColoredTextBoxNS
 
                 switch (t.Terminal.Name)
                 {
-                    case "INTERVAL": //Sample of how to color a single TOKEN
+                    case "INTERVAL": //Sample of how to color a single TOKEN, not working yet
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.FunctionsStyle);
                         break;
                     case "Identifier":
-                        
-                        //TODO: Know the correct type for identifier
-                        int CPIndex = 0;
-                        var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
-                        switch (IdentType)
-                        {
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        ////Identifier: Discover the correct type for identifier and hihglight.
+                        //int CPIndex = 0;
+                        //var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
+                        //switch (IdentType)
+                        //{
 
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.OUTPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
-                                break;
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.INPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
-                                break;
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.VARPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                                break;
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.PID:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
-                                break;
-                            default:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                                break;
-                        }
+                        //    case PCODE_CONST.OUTPOINTTYPE:
+                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
+                        //        break;
+                        //    case PCODE_CONST.INPOINTTYPE:
+                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
+                        //        break;
+                        //    case PCODE_CONST.VARPOINTTYPE:
+                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        //        break;
+                        //    case PCODE_CONST.PID:
+                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
+                        //        break;
+                        //    default:
+                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        //        break;
+                        //}
                         break;
                     case "INS":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
@@ -217,7 +218,7 @@ namespace FastColoredTextBoxNS
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
                         break;
                     case "LineNumber":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.GrayStyle);
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.InnerLinesNumberStyle);
                         break;
                     default: //parse by type: General highlighting
                         switch (t.Terminal.GetType().Name)

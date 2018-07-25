@@ -490,21 +490,22 @@
         }
         private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if(ModifierKeys == Keys.Control)
-            {
-                switch (e.KeyCode)
-                {
-                    case Keys.Insert:
-                        if(editTextBox.SelectedText != null)
-                        {
-                            ShowIdentifier(editTextBox.SelectedText);
+            //if(ModifierKeys == Keys.Shift)
+            //{
+            //    switch (e.KeyCode)
+            //    {
+            //        case Keys.Insert:
+            //            if(editTextBox.SelectedText != null)
+            //            {
+            //                //Changed to Shift+Insert as CTRL+INS = COPY
+            //                ShowIdentifier(this.Identifiers, editTextBox.SelectedText);
 
-                        }
-                        break;
+            //            }
+            //            break;
                     
-                }
-                e.Handled = true;
-            }
+            //    }
+            //    e.Handled = true;
+            //}
 
 
             switch (e.KeyCode)
@@ -526,7 +527,12 @@
 
         }
 
-        private void ShowIdentifier(string selectedText)
+        /// <summary>
+        /// Show Identifiers Information in a dialog box
+        /// </summary>
+        /// <param name="Identifiers">Identifier's information</param>
+        /// <param name="selectedText"></param>
+        public static void ShowIdentifier(ControlPoints Identifiers, string selectedText)
         {
             frmIdentifierInfo frm = new frmIdentifierInfo();
 
