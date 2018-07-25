@@ -99,11 +99,17 @@
             //Control Points
             var VARS = new RegexBasedTerminal("VARS", "VAR(" + UPTO128 + ")");
             VARS.Priority = 40;
-            var OUTS = new RegexBasedTerminal("OUTS", "OUT(" + UPTO128 + ")");
+            //adjusted for Rev6
+            //TODO: Adjust EBNF too!!
+            var OUTS = new RegexBasedTerminal("OUTS", "OUT(" + UPTO64 + ")");
             OUTS.Priority = 40;
-            var INS = new RegexBasedTerminal("INS", "IN(" + UPTO128 + ")");
+            //adjusted for Rev6
+            //TODO: Adjust EBNF too!!
+            var INS = new RegexBasedTerminal("INS", "IN(" + UPTO64 + ")");
             INS.Priority = 40;
-            var PRG = new RegexBasedTerminal("PRG", "PRG(" + UPTO128 + ")");
+            //adjusted for Rev6
+            //TODO: Adjust EBNF too!!
+            var PRG = new RegexBasedTerminal("PRG", "PRG(" + UPTO16 + ")");
             PRG.Priority = 40;
             var DMON = new RegexBasedTerminal("DMON", "DMON(" + UPTO128 + ")");
             DMON.Priority = 40;

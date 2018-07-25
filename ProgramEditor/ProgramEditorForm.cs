@@ -810,7 +810,8 @@
 
                             string output = Regex.Match(tokentext, @"\d+").Value;
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
-                                                                              //Prepare token identifier to encode: Token + Index + Type
+                            
+                            //Prepare token identifier to encode: Token + Index + Type
                             EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, tok.Terminal.Name);
                             switch (tok.Terminal.Name)
                             {

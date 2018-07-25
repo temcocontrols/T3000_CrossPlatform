@@ -8,5 +8,14 @@ namespace FastColoredTextBoxNS
         {
             InitializeComponent();
         }
+
+        private void frmIdentifierInfo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Escape) //Close form with ESC
+            {
+                e.Handled = true;
+                Close();
+            }
+        }
     }
 }
