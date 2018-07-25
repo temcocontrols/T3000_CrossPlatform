@@ -16,10 +16,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-////using PRGReaderLibrary;
-////using PRGReaderLibrary.Extensions;
-////using PRGReaderLibrary.Utilities;
-////using PRGReaderLibrary.Types.Enums.Codecs;
+using PRGReaderLibrary;
+using PRGReaderLibrary.Extensions;
+using PRGReaderLibrary.Utilities;
+using PRGReaderLibrary.Types.Enums.Codecs;
 
 namespace FastColoredTextBoxNS
 {
@@ -181,29 +181,29 @@ namespace FastColoredTextBoxNS
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.FunctionsStyle);
                         break;
                     case "Identifier":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                        ////Identifier: Discover the correct type for identifier and hihglight.
-                        //int CPIndex = 0;
-                        //var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
-                        //switch (IdentType)
-                        //{
+                        //GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        //Identifier: Discover the correct type for identifier and hihglight.
+                        int CPIndex = 0;
+                        var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
+                        switch (IdentType)
+                        {
 
-                        //    case PCODE_CONST.OUTPOINTTYPE:
-                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
-                        //        break;
-                        //    case PCODE_CONST.INPOINTTYPE:
-                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
-                        //        break;
-                        //    case PCODE_CONST.VARPOINTTYPE:
-                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                        //        break;
-                        //    case PCODE_CONST.PID:
-                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
-                        //        break;
-                        //    default:
-                        //        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                        //        break;
-                        //}
+                            case PCODE_CONST.OUTPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
+                                break;
+                            case PCODE_CONST.INPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
+                                break;
+                            case PCODE_CONST.VARPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                                break;
+                            case PCODE_CONST.PID:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
+                                break;
+                            default:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                                break;
+                        }
                         break;
                     case "INS":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);

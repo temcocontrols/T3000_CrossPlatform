@@ -1,6 +1,12 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+## Updated: 20180628.0404
+### EDITOR STYLES + IDENTIFIERS INFO DIALOG
+Editor now supports all properties for TextStyles: Variables, Inputs, Outputs, Strings, Commments, Keywords, Inner Line Numbers. Editor using a local copy of Control Points Info + Improved IdentifierInfo form inside Editor (SHIFT+INS Shortcut on a selected identifier).
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
 ## Updated: 20180627.1304
 ### EDITOR STYLES
 Editor now supports all properties for TextStyles: Variables, Inputs, Outputs, Strings, Commments, Keywords, Inner Line Numbers. Editor using a local copy of Control Points Info.
