@@ -18,6 +18,7 @@ namespace FastColoredTextBoxNS
         public readonly Style BrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
         public readonly Style GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
         public readonly Style GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        public readonly Style GreenNormalStyle = new TextStyle(Brushes.Green, null, FontStyle.Regular);
         public readonly Style MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
         public readonly Style MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
         public readonly Style RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
@@ -657,12 +658,20 @@ namespace FastColoredTextBoxNS
                     StringStyle = BrownStyle;
                     CommentStyle = GreenStyle;
                     NumberStyle = MagentaStyle;
-                    AttributeStyle = GreenStyle;
+                    AttributeStyle = GreenNormalStyle;
                     ClassNameStyle = BoldStyle;
                     KeywordStyle = BlueStyle;
-                    KeywordStyle2 = RedStyle;
                     CommentTagStyle = GrayStyle;
+                    //Default values for all identifiers
                     VariableStyle = CrimsonStyle;
+                    InputStyle = GreenNormalStyle;
+                    OutputStyle = GreenNormalStyle;
+                    PidStyle = MagentaStyle;
+                    //Inner line numbers
+                    InnerLinesNumberStyle = GrayStyle;
+
+
+
                     break;
 
                 case Language.VB:
@@ -1497,6 +1506,27 @@ namespace FastColoredTextBoxNS
         /// Variable style
         /// </summary>
         public Style VariableStyle { get; set; }
+        
+        /// <summary>
+        /// Input Style : Control Basic
+        /// </summary>
+        public Style InputStyle { get; set; }
+
+        /// <summary>
+        /// Output style: Control Basic
+        /// </summary>
+        public Style OutputStyle { get; set; }
+
+        /// <summary>
+        /// PID Style: Control Basic
+        /// </summary>
+        public Style PidStyle { get; set; }
+
+        /// <summary>
+        /// Inner Lines Number: Control  Basic
+        /// </summary>
+        public Style InnerLinesNumberStyle { get; set; }
+
 
         /// <summary>
         /// Specific PHP keyword style

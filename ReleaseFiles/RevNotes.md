@@ -1,6 +1,14 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+## Updated: 20180627.1304
+### EDITOR STYLES
+Editor now supports all properties for TextStyles: Variables, Inputs, Outputs, Strings, Commments, Keywords, Inner Line Numbers. Editor using a local copy of Control Points Info.
+Next: Improve IdentifierInfo form inside Editor.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+
 ## Updated: 20180626.0318
 ### TIME FORMAT SUPPORT
 Working on Editor Commands: Ctrl+Insert displays Identifier Info. Right now working outside the editor, directly from ProgramEditor Form, as its a bit hard to pass a copy of control points info to Editor. Will see how to workaround this.

@@ -831,22 +831,22 @@ namespace FastColoredTextBoxNS
         }
 
         /// <summary>
-        /// Explcit named Control Points Color (ie: VAR1, IN2, OUT3)
+        /// Color for Inputs : Control Basic
         /// </summary>
         [Category("TextStyles")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
-        [DefaultValue(typeof(Color), "Blue")]
-        [Description("Color for explicit ControlPoints")]
-        public Color ControlPointsColor
+        [DefaultValue(typeof(Color), "Green")]
+        [Description("Color for Inputs")]
+        public Color InputsColor
         {
             get
             {
-                return ((TextStyle)SyntaxHighlighter.KeywordStyle2).GetForeColor(); ;
+                return ((TextStyle)SyntaxHighlighter.InputStyle).GetForeColor(); ;
             }
             set
             {
 
-                SyntaxHighlighter.KeywordStyle2 = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+                SyntaxHighlighter.InputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
 
                 this.IsChanged = true;
                 this.OnTextChangedDelayed(Range);
@@ -855,6 +855,81 @@ namespace FastColoredTextBoxNS
             }
         }
 
+
+        /// <summary>
+        /// Color for Outputs : Control Basic
+        /// </summary>
+        [Category("TextStyles")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Green")]
+        [Description("Color for Outputs")]
+        public Color OutputsColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.OutputStyle).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.OutputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+        /// <summary>
+        /// Color for PIDS : Control Basic
+        /// </summary>
+        [Category("TextStyles")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Magenta")]
+        [Description("Color for Pids")]
+        public Color PidsColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.PidStyle).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.PidStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
+
+        /// <summary>
+        /// Color for inner line numbers: Control Basic
+        /// </summary>
+        [Category("TextStyles")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue(typeof(Color), "Gray")]
+        [Description("Color for Inner Line Numbers")]
+        public Color InnerLineNumbersColor
+        {
+            get
+            {
+                return ((TextStyle)SyntaxHighlighter.InnerLinesNumberStyle).GetForeColor(); ;
+            }
+            set
+            {
+
+                SyntaxHighlighter.InnerLinesNumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
+
+                this.IsChanged = true;
+                this.OnTextChangedDelayed(Range);
+                Invalidate();
+
+            }
+        }
 
 
         /// <summary>

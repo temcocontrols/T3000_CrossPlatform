@@ -760,6 +760,26 @@
             Variable style
             </summary>
         </member>
+        <member name="P:FastColoredTextBoxNS.SyntaxHighlighter.InputStyle">
+            <summary>
+            Input Style : Control Basic
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.SyntaxHighlighter.OutputStyle">
+            <summary>
+            Output style: Control Basic
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.SyntaxHighlighter.PidStyle">
+            <summary>
+            PID Style: Control Basic
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.SyntaxHighlighter.InnerLinesNumberStyle">
+            <summary>
+            Inner Lines Number: Control  Basic
+            </summary>
+        </member>
         <member name="P:FastColoredTextBoxNS.SyntaxHighlighter.KeywordStyle2">
             <summary>
             Specific PHP keyword style
@@ -1067,9 +1087,24 @@
             Strings Color
             </summary>
         </member>
-        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.ControlPointsColor">
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.InputsColor">
             <summary>
-            Explcit named Control Points Color (ie: VAR1, IN2, OUT3)
+            Color for Inputs : Control Basic
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.OutputsColor">
+            <summary>
+            Color for Outputs : Control Basic
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.PidsColor">
+            <summary>
+            Color for PIDS : Control Basic
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.InnerLineNumbersColor">
+            <summary>
+            Color for inner line numbers: Control Basic
             </summary>
         </member>
         <member name="P:FastColoredTextBoxNS.FastColoredTextBox.Paddings">

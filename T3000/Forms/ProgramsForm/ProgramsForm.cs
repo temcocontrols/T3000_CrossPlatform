@@ -218,14 +218,19 @@
 
                 Debug.WriteLine("--------------NEW PROGRAM TEXT-------------------");
                 Debug.WriteLine(ProgramText);
-                //Create a local copy for Control Basic program text
+
+                //STEP 1: create a local copy of all identifiers
+                form.Identifiers = DECODER.Identifiers;
+
+                //STEP 2: Create a local copy for Control Basic program text
                 form.SetCode(ProgramText);
 
-                //Override Send Event Handler and encode program into bytes.
+                //STEP 3: Override Send Event Handler and encode program into bytes.
                 form.Send += Form_Send;
+
+                //STEP 4: Who's your daddy?!!
                 form.MdiParent = this.MdiParent ;
-                //create a local copy of all identifiers
-                form.Identifiers = DECODER.Identifiers;
+
                 
                 form.Show();
                 //if (form.ShowDialog() != DialogResult.OK) return;
