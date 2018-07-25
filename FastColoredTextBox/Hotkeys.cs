@@ -96,6 +96,10 @@ namespace FastColoredTextBoxNS
 
             //New KeyMapping for IdentifierInfoDialog: CTRL+I
             this[KEYS.Control | KEYS.Shift | KEYS.I] = FCTBAction.IdentifierInfo;
+            //New KeyMapping for Properties: F4
+            this[KEYS.F4] = FCTBAction.Properties;
+
+
         }
 
         public override string ToString()
@@ -212,7 +216,7 @@ namespace FastColoredTextBoxNS
         ZoomNormal,
         ZoomOut,
         IdentifierInfo,
-        CustomAction2,
+        Properties,
         CustomAction3,
         CustomAction4,
         CustomAction5,

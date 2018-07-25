@@ -230,6 +230,7 @@ namespace FastColoredTextBoxNS
             timer2.Tick += timer2_Tick;
             timer3.Tick += timer3_Tick;
             middleClickScrollingTimer.Tick += middleClickScrollingTimer_Tick;
+
         }
 
         private char[] autoCompleteBracketsList = { '(', ')', '{', '}', '[', ']', '"', '"', '\'', '\'' };
@@ -732,6 +733,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.VariableStyle != null)
+                {
+                    _variablescolor = ((TextStyle)SyntaxHighlighter.VariableStyle).GetForeColor();
+                }
                 return _variablescolor;
             }
             set
@@ -773,6 +778,10 @@ namespace FastColoredTextBoxNS
         {
              get
             {
+                if(SyntaxHighlighter.CommentStyle!= null)
+                {
+                    _commentscolor = ((TextStyle)SyntaxHighlighter.CommentStyle).GetForeColor();
+                }
                 return _commentscolor ;
             }
              set
@@ -812,6 +821,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.KeywordStyle != null)
+                {
+                    _keywordscolor = ((TextStyle)SyntaxHighlighter.KeywordStyle).GetForeColor();
+                }
                 return _keywordscolor;
             }
             set
@@ -852,6 +865,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.NumberStyle != null)
+                {
+                    _numberscolor = ((TextStyle)SyntaxHighlighter.NumberStyle).GetForeColor();
+                }
                 return _numberscolor;
             }
             set
@@ -889,6 +906,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.StringStyle != null)
+                {
+                    _stringscolor = ((TextStyle)SyntaxHighlighter.StringStyle).GetForeColor();
+                }
                 return _stringscolor;
             }
             set
@@ -928,6 +949,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.InputStyle != null)
+                {
+                    _inputscolor = ((TextStyle)SyntaxHighlighter.InputStyle).GetForeColor();
+                }
                 return _inputscolor;
             }
             set
@@ -967,6 +992,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.OutputStyle != null)
+                {
+                    _outputscolor = ((TextStyle)SyntaxHighlighter.OutputStyle).GetForeColor();
+                }
                 return _outputscolor;
             }
             set
@@ -1005,6 +1034,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.PidStyle != null)
+                {
+                    _pidscolor = ((TextStyle)SyntaxHighlighter.PidStyle).GetForeColor();
+                }
                 return _pidscolor;
             }
             set
@@ -1044,6 +1077,10 @@ namespace FastColoredTextBoxNS
         {
             get
             {
+                if (SyntaxHighlighter.InnerLinesNumberStyle != null)
+                {
+                    _innerlinenumberscolor = ((TextStyle)SyntaxHighlighter.InnerLinesNumberStyle).GetForeColor();
+                }
                 return _innerlinenumberscolor;
             }
             set
@@ -4362,7 +4399,12 @@ namespace FastColoredTextBoxNS
                     }
                     break;
 
-                case FCTBAction.CustomAction2 :
+                //Launch Properties Dialog from FCTBActions
+                case FCTBAction.Properties:
+                    ShowProperties();
+                    break;
+
+     
                 case FCTBAction.CustomAction3 :
                 case FCTBAction.CustomAction4 :
                 case FCTBAction.CustomAction5 :
@@ -4442,6 +4484,23 @@ namespace FastColoredTextBoxNS
 
 
             frm.ShowDialog();
+
+        }
+
+
+        /// <summary>
+        /// Shows the property grids dialog for this control
+        /// </summary>
+        public void ShowProperties()
+        {
+            PropertiesGrid pg = new PropertiesGrid();
+            pg.SettingsBag.SelectedObject = this;
+
+            pg.Top = Screen.FromControl(this).Bounds.Height / 2 - this.ParentForm.Height / 2;
+            pg.Height = this.ParentForm.Height;
+            pg.Left = Screen.FromControl(this).Bounds.Width - pg.Width - 15;
+
+            pg.ShowDialog();
 
         }
 

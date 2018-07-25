@@ -35,8 +35,6 @@ namespace FastColoredTextBoxNS
         
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
 
-        //////////public ControlPoints Identifiers { get; set; } = new ControlPoints();
-
         /// <summary>
         /// Grammar of custom language
         /// </summary>
@@ -97,14 +95,9 @@ namespace FastColoredTextBoxNS
             ClearStylesBuffer();
             AddStyle(WavyStyle);
 
-            //VariablesColor = Color.Crimson;
-            //InputsColor = Color.BlueViolet;
-            //OutputsColor = Color.DarkBlue;
+        
 
-            //SolidBrush variablebrush = new SolidBrush(VariablesColor);
-            SyntaxHighlighter.VariableStyle = SyntaxHighlighter.CrimsonStyle;
-
-            SyntaxHighlighter.InitStyleSchema(Language.ControlBasic);
+            //SyntaxHighlighter.InitStyleSchema(Language.ControlBasic);
 
             InitBraces();
             OnTextChanged(Range);

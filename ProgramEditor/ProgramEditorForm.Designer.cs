@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramEditorForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
             this.cmdClear = new System.Windows.Forms.ToolStripButton();
@@ -55,7 +55,6 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
             this.ruler1 = new FastColoredTextBoxNS.Ruler();
-            this.SettingsBag = new System.Windows.Forms.PropertyGrid();
             this.tsTopMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.layStatistics.SuspendLayout();
@@ -97,8 +96,8 @@
             this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
             this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdClear.Name = "cmdClear";
-            this.cmdClear.Size = new System.Drawing.Size(61, 22);
-            this.cmdClear.Text = "Clear (F4)";
+            this.cmdClear.Size = new System.Drawing.Size(67, 22);
+            this.cmdClear.Text = "Clear (F11)";
             this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
             // 
             // toolStripSeparator1
@@ -143,8 +142,8 @@
             this.cmdSettings.Image = ((System.Drawing.Image)(resources.GetObject("cmdSettings.Image")));
             this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdSettings.Name = "cmdSettings";
-            this.cmdSettings.Size = new System.Drawing.Size(53, 22);
-            this.cmdSettings.Text = "Settings";
+            this.cmdSettings.Size = new System.Drawing.Size(76, 22);
+            this.cmdSettings.Text = "Settings (F4)";
             this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
             // 
             // cmdRenumber
@@ -266,8 +265,8 @@
             // 
             // dataGridViewTextBoxColumn3
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewTextBoxColumn3.HeaderText = "L, C";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -277,8 +276,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewTextBoxColumn4.HeaderText = "Error Message";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
@@ -289,8 +288,8 @@
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dataGridViewTextBoxColumn1.DataPropertyName = "State";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewTextBoxColumn1.HeaderText = "Parser State";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -323,15 +322,14 @@
             this.editTextBox.CharHeight = 14;
             this.editTextBox.CharWidth = 8;
             this.editTextBox.CommentPrefix = "REM";
-            this.editTextBox.CommentsColor = System.Drawing.Color.Olive;
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.editTextBox.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.editTextBox.Hotkeys = resources.GetString("editTextBox.Hotkeys");
-            this.editTextBox.InputsColor = System.Drawing.Color.Chocolate;
+            this.editTextBox.InputsColor = System.Drawing.Color.YellowGreen;
             this.editTextBox.IsReplaceMode = false;
-            this.editTextBox.KeywordsColor = System.Drawing.Color.Green;
             this.editTextBox.Language = FastColoredTextBoxNS.Language.ControlBasic;
             this.editTextBox.LeftBracket = '(';
             this.editTextBox.LeftBracket2 = '{';
@@ -363,15 +361,6 @@
             this.ruler1.TabIndex = 11;
             this.ruler1.Target = this.editTextBox;
             // 
-            // SettingsBag
-            // 
-            this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.SettingsBag.Location = new System.Drawing.Point(166, 58);
-            this.SettingsBag.Name = "SettingsBag";
-            this.SettingsBag.Size = new System.Drawing.Size(237, 197);
-            this.SettingsBag.TabIndex = 10;
-            this.SettingsBag.Visible = false;
-            // 
             // ProgramEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -379,7 +368,6 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(579, 441);
-            this.Controls.Add(this.SettingsBag);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
             this.Name = "ProgramEditorForm";
@@ -419,7 +407,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private FastColoredTextBoxNS.Ruler ruler1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.PropertyGrid SettingsBag;
         private System.Windows.Forms.ToolStripButton cmdRenumber;
         private System.Windows.Forms.Label lblSrcLineCount;
         private System.Windows.Forms.Label lblSrcTokenCount;

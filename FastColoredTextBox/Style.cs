@@ -118,7 +118,9 @@ namespace FastColoredTextBoxNS
         public Color GetForeColor()
         {
             SolidBrush br = (SolidBrush) this.ForeBrush;
-            return br.Color;
+            if (br!=null)
+                return br.Color;
+            return SystemColors.WindowText;
         }
 
         public override void Draw(Graphics gr, Point position, Range range)

@@ -510,10 +510,12 @@
 
             switch (e.KeyCode)
             {
+                //F1: Reserved for help
                 case Keys.F2:
                     SendCode(); e.Handled = true; break;
-                case Keys.F4:
-                    ClearCode(); e.Handled = true; break;
+                //F3: Find dialog inside editor
+                //F4: Properties dialog inside editor
+                //F5: Free
                 case Keys.F6:
                     SaveFile(); e.Handled = true; break;
                 case Keys.F7:
@@ -522,6 +524,9 @@
                     RefreshCode(); e.Handled = true; break;
                 case Keys.F10:
                     LinesValidator(); e.Handled = true; break;
+                case Keys.F11:
+                    ClearCode(); e.Handled = true; break;
+                
 
             }//switch.
 
@@ -691,14 +696,7 @@
         private void EditSettings()
         {
 
-
-
-            SettingsBag.SelectedObject = editTextBox;
-            SettingsBag.Top = editTextBox.Top;
-            SettingsBag.Height = editTextBox.Height;
-            SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
-
-            SettingsBag.Visible = !SettingsBag.Visible;
+            editTextBox.ShowProperties();
 
 
             ////NOT WORKING: Serialize SettingsBag;
@@ -713,22 +711,12 @@
 
         private void ProgramEditorForm_ResizeEnd(object sender, EventArgs e)
         {
-            if (SettingsBag.Visible)
-            {
-                SettingsBag.Top = editTextBox.Top;
-                SettingsBag.Height = editTextBox.Height;
-                SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
-            }
+
         }
 
         private void ProgramEditorForm_Resize(object sender, EventArgs e)
         {
-            if (SettingsBag.Visible)
-            {
-                SettingsBag.Top = editTextBox.Top;
-                SettingsBag.Height = editTextBox.Height;
-                SettingsBag.Left = editTextBox.Width - SettingsBag.Width;
-            }
+
         }
 
         private void cmdRenumber_Click(object sender, EventArgs e)

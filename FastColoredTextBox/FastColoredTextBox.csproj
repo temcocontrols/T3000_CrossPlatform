@@ -89,6 +89,12 @@
     <Compile Include="MacrosManager.cs" />
     <Compile Include="PlatformType.cs" />
     <Compile Include="Hotkeys.cs" />
+    <Compile Include="PropertiesGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertiesGrid.Designer.cs">
+      <DependentUpon>PropertiesGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ruler.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,6 +150,9 @@
     <EmbeddedResource Include="HotkeysEditorForm.resx">
       <DependentUpon>HotkeysEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropertiesGrid.resx">
+      <DependentUpon>PropertiesGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReplaceForm.resx">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -153,6 +162,10 @@
     <None Include="FCTB_key.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
+      <Project>{F32C40DF-730F-4CB2-9A37-2B0950829C93}</Project>
+      <Name>ExceptionHandling</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
       <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
       <Name>PRGReaderLibrary</Name>
