@@ -318,6 +318,10 @@
         {
             //local member Code is not cleared, to allow recovering with REFRESH (F8)
             editTextBox.Text = "";
+
+            //TODO: Check if original method clears bookmarks too, else try this.
+            //editTextBox.SelectAll();
+            //editTextBox.ClearSelected();
         }
 
         /// <summary>
@@ -332,7 +336,7 @@
         /// <summary>
         /// Get current code
         /// </summary>
-        /// <returns></returns>
+        /// <returns> FCBT.Text </returns>
         public string GetCode()
         {
             Code = editTextBox.Text;
@@ -447,7 +451,7 @@
             }//switch
         }
 
-        /// <summary>
+        /// <summary>S
         /// Shows a caret in editTextBox for a selected token
         /// </summary>
         /// <param name="position"></param>
@@ -488,38 +492,21 @@
             editTextBox.Text = Code;
 
         }
+
         private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
         {
-            //if(ModifierKeys == Keys.Shift)
-            //{
-            //    switch (e.KeyCode)
-            //    {
-            //        case Keys.Insert:
-            //            if(editTextBox.SelectedText != null)
-            //            {
-            //                //Changed to Shift+Insert as CTRL+INS = COPY
-            //                ShowIdentifier(this.Identifiers, editTextBox.SelectedText);
-
-            //            }
-            //            break;
-                    
-            //    }
-            //    e.Handled = true;
-            //}
-
 
             switch (e.KeyCode)
             {
                 //F1: Reserved for help
                 case Keys.F2:
                     SendCode(); e.Handled = true; break;
-                //F3: Find dialog inside editor
-                //F4: Properties dialog inside editor
+                //F3: Find dialog => inside editor
+                //F4: Properties dialog =>inside editor
                 //F5: Free
-                case Keys.F6:
-                    SaveFile(); e.Handled = true; break;
-                case Keys.F7:
-                    LoadFile(); e.Handled = true; break;
+                //F6: Load File => inside editor
+                //F7: Save File =>inside editor
+
                 case Keys.F8:
                     RefreshCode(); e.Handled = true; break;
                 case Keys.F10:
@@ -532,100 +519,15 @@
 
         }
 
-        /// <summary>
-        /// Show Identifiers Information in a dialog box
-        /// </summary>
-        /// <param name="Identifiers">Identifier's information</param>
-        /// <param name="selectedText"></param>
-        public static void ShowIdentifier(ControlPoints Identifiers, string selectedText)
-        {
-            frmIdentifierInfo frm = new frmIdentifierInfo();
-
-
-            int PointIndex = 0;
-            var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, selectedText, out PointIndex);
-            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
-                return;
-        
-
-            frm.Text = selectedText;
-            
-            switch (TokenType)
-            {
-                case PCODE_CONST.OUTPOINTTYPE:
-                    frm.Label.Text = Identifiers.Outputs[PointIndex].Label;
-                    frm.FullLabel.Text = Identifiers.Outputs[PointIndex].FullLabel;
-                    frm.Value.Text = Identifiers.Outputs[PointIndex].Value;
-                    frm.Units.Text = Identifiers.Outputs[PointIndex].Units;
-                    frm.AutoManual.Text = Identifiers.Outputs[PointIndex].AutoManual;
-                    frm.ControlPointName.Text = Identifiers.Outputs[PointIndex].ControlPointName;
-                    frm.ControlPointType.Text = "OUTPUT";
-                    break;
-                case PCODE_CONST.INPOINTTYPE:
-                    frm.Label.Text = Identifiers.Inputs[PointIndex].Label;
-                    frm.FullLabel.Text = Identifiers.Inputs[PointIndex].FullLabel;
-                    frm.Value.Text = Identifiers.Inputs[PointIndex].Value;
-                    frm.Units.Text = Identifiers.Inputs[PointIndex].Units;
-                    frm.AutoManual.Text = Identifiers.Inputs[PointIndex].AutoManual;
-                    frm.ControlPointName.Text = Identifiers.Inputs[PointIndex].ControlPointName;
-                    frm.ControlPointType.Text = "INPUT";
-                    break;
-                case PCODE_CONST.VARPOINTTYPE:
-                    frm.Label.Text = Identifiers.Variables[PointIndex].Label;
-                    frm.FullLabel.Text = Identifiers.Variables[PointIndex].FullLabel;
-                    frm.Value.Text = Identifiers.Variables[PointIndex].Value;
-                    frm.Units.Text = Identifiers.Variables[PointIndex].Units;
-                    frm.AutoManual.Text = Identifiers.Variables[PointIndex].AutoManual;
-                    frm.ControlPointName.Text = Identifiers.Variables[PointIndex].ControlPointName;
-                    frm.ControlPointType.Text = "VARIABLE";
-                    break;
-                case PCODE_CONST.PID:
-                    //TODO: Resolve what's a PID? Program Identifier?
-                    break;
-                default:
-                    break;
-            }
-
-
-            frm.ShowDialog();
-
-
-
-        }
 
         private void cmdLoad_Click(object sender, EventArgs e)
         {
 
-            LoadFile();
+            editTextBox.LoadFile();
 
         }
 
-        /// <summary>
-        /// Open file dialog to load a text file into editor
-        /// </summary>
-        public void LoadFile()
-        {
-            // Create an instance of the open file dialog box.
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-            // Set filter options and filter index.
-            openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            openFileDialog1.FilterIndex = 1;
-
-            openFileDialog1.Multiselect = true;
-
-            // Call the ShowDialog method to show the dialog box.
-            DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-            // Process input if the user clicked OK.
-            if (userClickedOK == DialogResult.OK)
-            {
-                string text = System.IO.File.ReadAllText(openFileDialog1.FileName);
-
-                editTextBox.Text = text;
-
-            }
-        }
 
         /// <summary>
         /// User call to SendCode event
@@ -657,45 +559,24 @@
 
         }
 
+        /// <summary>
+        /// On Click, call to SaveFile inside editor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdSave_Click(object sender, EventArgs e)
         {
-            SaveFile();
+            editTextBox.SaveFile();
         }
+
 
         /// <summary>
-        /// Open File dialog to save a copy of program code into a file.
+        /// On Click, call to ShowProperties inside editor
         /// </summary>
-        public void SaveFile()
-        {
-            // Create an instance of the open file dialog box.
-            SaveFileDialog openFileDialog1 = new SaveFileDialog();
-
-            // Set filter options and filter index.
-            openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            openFileDialog1.FilterIndex = 1;
-
-
-
-            // Call the ShowDialog method to show the dialog box.
-            DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-            // Process input if the user clicked OK.
-            if (userClickedOK == DialogResult.OK)
-            {
-                System.IO.File.WriteAllText(openFileDialog1.FileName, editTextBox.Text);
-
-            }
-        }
-
-
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdSettings_Click(object sender, EventArgs e)
         {
-            EditSettings();
-        }
-
-        private void EditSettings()
-        {
-
             editTextBox.ShowProperties();
 
 
@@ -704,18 +585,6 @@
             //Stream stream = new FileStream("EditorSettings.bin", FileMode.Create, FileAccess.Write, FileShare.None);
             //formatter.Serialize(stream, editTextBox  );
             //stream.Close();
-
-
-
-        }
-
-        private void ProgramEditorForm_ResizeEnd(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ProgramEditorForm_Resize(object sender, EventArgs e)
-        {
 
         }
 

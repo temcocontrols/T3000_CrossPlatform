@@ -35,13 +35,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
-            this.cmdClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.cmdLoad = new System.Windows.Forms.ToolStripButton();
             this.cmdSave = new System.Windows.Forms.ToolStripButton();
             this.cmdRefresh = new System.Windows.Forms.ToolStripButton();
-            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.cmdRenumber = new System.Windows.Forms.ToolStripButton();
+            this.cmdClear = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.layStatistics = new System.Windows.Forms.FlowLayoutPanel();
             this.lblSrcLineCount = new System.Windows.Forms.Label();
@@ -67,13 +67,13 @@
             // 
             this.tsTopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmdSend,
-            this.cmdClear,
             this.toolStripSeparator1,
+            this.cmdSettings,
             this.cmdLoad,
             this.cmdSave,
             this.cmdRefresh,
-            this.cmdSettings,
-            this.cmdRenumber});
+            this.cmdRenumber,
+            this.cmdClear});
             this.tsTopMenu.Location = new System.Drawing.Point(0, 0);
             this.tsTopMenu.Name = "tsTopMenu";
             this.tsTopMenu.Size = new System.Drawing.Size(579, 25);
@@ -90,50 +90,10 @@
             this.cmdSend.Text = "Send (F2)";
             this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
             // 
-            // cmdClear
-            // 
-            this.cmdClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
-            this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdClear.Name = "cmdClear";
-            this.cmdClear.Size = new System.Drawing.Size(67, 22);
-            this.cmdClear.Text = "Clear (F11)";
-            this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // cmdLoad
-            // 
-            this.cmdLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdLoad.Image = ((System.Drawing.Image)(resources.GetObject("cmdLoad.Image")));
-            this.cmdLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdLoad.Name = "cmdLoad";
-            this.cmdLoad.Size = new System.Drawing.Size(81, 22);
-            this.cmdLoad.Text = "Load File (F7)";
-            this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
-            // 
-            // cmdSave
-            // 
-            this.cmdSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdSave.Image = ((System.Drawing.Image)(resources.GetObject("cmdSave.Image")));
-            this.cmdSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(79, 22);
-            this.cmdSave.Text = "Save File (F6)";
-            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
-            // 
-            // cmdRefresh
-            // 
-            this.cmdRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdRefresh.Image = ((System.Drawing.Image)(resources.GetObject("cmdRefresh.Image")));
-            this.cmdRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdRefresh.Name = "cmdRefresh";
-            this.cmdRefresh.Size = new System.Drawing.Size(73, 22);
-            this.cmdRefresh.Text = "Refresh (F8)";
-            this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
             // 
             // cmdSettings
             // 
@@ -146,6 +106,36 @@
             this.cmdSettings.Text = "Settings (F4)";
             this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
             // 
+            // cmdLoad
+            // 
+            this.cmdLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdLoad.Image = ((System.Drawing.Image)(resources.GetObject("cmdLoad.Image")));
+            this.cmdLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdLoad.Name = "cmdLoad";
+            this.cmdLoad.Size = new System.Drawing.Size(81, 22);
+            this.cmdLoad.Text = "Load File (F6)";
+            this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
+            // 
+            // cmdSave
+            // 
+            this.cmdSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdSave.Image = ((System.Drawing.Image)(resources.GetObject("cmdSave.Image")));
+            this.cmdSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(79, 22);
+            this.cmdSave.Text = "Save File (F7)";
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // cmdRefresh
+            // 
+            this.cmdRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdRefresh.Image = ((System.Drawing.Image)(resources.GetObject("cmdRefresh.Image")));
+            this.cmdRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdRefresh.Name = "cmdRefresh";
+            this.cmdRefresh.Size = new System.Drawing.Size(73, 22);
+            this.cmdRefresh.Text = "Refresh (F8)";
+            this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
+            // 
             // cmdRenumber
             // 
             this.cmdRenumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -156,6 +146,16 @@
             this.cmdRenumber.Text = "Renumber (F10)";
             this.cmdRenumber.ToolTipText = "Validate and Renumber Lines";
             this.cmdRenumber.Click += new System.EventHandler(this.cmdRenumber_Click);
+            // 
+            // cmdClear
+            // 
+            this.cmdClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
+            this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdClear.Name = "cmdClear";
+            this.cmdClear.Size = new System.Drawing.Size(67, 22);
+            this.cmdClear.Text = "Clear (F11)";
+            this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -315,7 +315,7 @@
     "*(?<range>:)\\s*(?<range>[^;]+);\r\n";
             this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(227, 14);
             this.editTextBox.BackBrush = null;
-            this.editTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(40)))), ((int)(((byte)(33)))));
+            this.editTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.editTextBox.BookmarkColor = System.Drawing.Color.IndianRed;
             this.editTextBox.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.editTextBox.CaretColor = System.Drawing.Color.White;
@@ -371,9 +371,7 @@
             this.Name = "ProgramEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Edit code:";
-            this.ResizeEnd += new System.EventHandler(this.ProgramEditorForm_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProgramEditorForm_KeyDown);
-            this.Resize += new System.EventHandler(this.ProgramEditorForm_Resize);
             this.tsTopMenu.ResumeLayout(false);
             this.tsTopMenu.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -98,7 +98,10 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Shift | KEYS.I] = FCTBAction.IdentifierInfo;
             //New KeyMapping for Properties: F4
             this[KEYS.F4] = FCTBAction.Properties;
-
+            //New KeyMapping for File Open: F6
+            this[KEYS.F6] = FCTBAction.FileOpen;
+            //New KeyMapping for File Save: F7
+            this[KEYS.F7] = FCTBAction.FileSave;
 
         }
 
@@ -226,8 +229,8 @@ namespace FastColoredTextBoxNS
         ZoomOut,
         IdentifierInfo,
         Properties,
-        CustomAction3,
-        CustomAction4,
+        FileOpen,
+        FileSave,
         CustomAction5,
         CustomAction6,
         CustomAction7,
