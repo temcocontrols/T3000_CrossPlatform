@@ -306,6 +306,7 @@ namespace PRGReaderLibrary.Utilities
                     case "CONNUMBER":
                     case "TABLENUMBER":
                     case "TIMER":
+                    case "WRNUMBER":
 
                         result.Add((byte)token.Token);
                         offset++;

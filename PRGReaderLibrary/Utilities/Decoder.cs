@@ -77,6 +77,7 @@ namespace PRGReaderLibrary.Utilities
                 bool isFirstToken = true; //default values for first decoding
                 bool recursiveCall = false; //default value for first decoding
 
+
                 if (Start != 0)
                 {
                     offset = Start;
@@ -85,6 +86,8 @@ namespace PRGReaderLibrary.Utilities
                 }
                 else //normal start for offset
                     offset = 2;
+
+                int countStatements = 0; //Single line multi statements counter
 
                 while (offset <= ProgLenght)
                 {
@@ -98,6 +101,7 @@ namespace PRGReaderLibrary.Utilities
                                 string strLineNum = GetLineNumber(PCode, ref offset);
                                 CurrentLine = strLineNum;
                                 result += strLineNum;
+                                countStatements = 0; //Always reset when new linenumber
                             }
                             else throw new NotImplementedException($"Token NUMBER but not fistToken: {System.Environment.NewLine}{result}{System.Environment.NewLine}");
 
@@ -108,23 +112,27 @@ namespace PRGReaderLibrary.Utilities
 
                             result += " " + GetComment(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            countStatements = 0; //Always reset after comments
                             break;
 
 
                         #region ASSIGMENTS
                         case (byte)LINE_TOKEN.LET:
-                            result += " LET";
+                            //result += " LET"; //Deprecated
                             offset++;
                             if (PCode[offset] != (byte)LINE_TOKEN.ASSIGN)
                             {
-                                throw new Exception("Fatal Error: Next token after (deprecated) LET, is not an ASSIGMENT");
+                                throw new NotSupportedException("Next token after (deprecated) LET, is not ASSIGMENT ");
                             }
                             isFirstToken = false;
                             break;
 
                         case (byte)LINE_TOKEN.ASSIGN:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + GetAssigment(PCode, ref offset);// + System.Environment.NewLine;
+                            
                             isFirstToken = true;
+                            if(recursiveCall) countStatements++;
                             break;
                         #endregion
 
@@ -134,19 +142,25 @@ namespace PRGReaderLibrary.Utilities
                         #region Single byte commands
 
                         case (byte)LINE_TOKEN.CLEAR:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "CLEAR";// + System.Environment.NewLine;
                             offset++;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
                         case (byte)LINE_TOKEN.HANGUP:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "HANGUP";// + System.Environment.NewLine;
                             offset++;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
                         case (byte)LINE_TOKEN.RETURN:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "RETURN";// + System.Environment.NewLine;
                             offset++;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
                         case (byte)LINE_TOKEN.ENDPRG:
                             result += " " + "END";// + System.Environment.NewLine;
@@ -157,45 +171,57 @@ namespace PRGReaderLibrary.Utilities
 
                         #region 2+ bytes commands
                         case (byte)LINE_TOKEN.START:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "START ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.STOP:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "STOP ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.OPEN:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "OPEN ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.CLOSE:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "CLOSE ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.ENABLEX:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "ENABLE ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.DISABLEX:
+                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "DISABLE ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
+                            if (recursiveCall) countStatements++;
                             break;
                         #endregion
 
@@ -218,6 +244,8 @@ namespace PRGReaderLibrary.Utilities
                             offset++;
                             result += GetExpression(PCode, ref offset);
                             isFirstToken = false;
+                            countStatements=0;
+
                             //THEN PART BEGINS
                             result += " THEN";
                             offset++;
@@ -245,6 +273,7 @@ namespace PRGReaderLibrary.Utilities
                             {
                                 case (byte)TYPE_TOKEN.NUMBER:
                                     isFirstToken = true;
+                                    countStatements = 0;
                                     break;
                                 case (byte)LINE_TOKEN.ELSE:
                                     result += " ELSE";
@@ -255,6 +284,7 @@ namespace PRGReaderLibrary.Utilities
                                         throw new Exception("Out of bounds: ELSE Offset it's over PRG capacity ");
                                     }
                                     offset += 2; //offset +2 bytes
+                                    countStatements = 0;
                                     result += RemoveCRLF(GetThenElsePart(PCode, ref offset, newElseOffset));
 
                                     if (PCode[offset] == (byte)LINE_TOKEN.EOE) offset++; //Ignore the token.
@@ -985,7 +1015,7 @@ namespace PRGReaderLibrary.Utilities
                             case "WR_ON":
 
                                 if (BTStack.Count < operatornode.Data.Index)
-                                    throw new ArgumentException("Not enough arguments in BTStack for AVG,MAX,MIN Function");
+                                    throw new ArgumentException("Not enough arguments in BTStack for Function");
 
                                 for (int i = 1; i < operatornode.Data.Index; i++)
                                     NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
@@ -999,8 +1029,16 @@ namespace PRGReaderLibrary.Utilities
                             default: //Other simple functions and operators
                                 
                                 if (BTStack.Count > 1) //avoid unary operators and functions exception
-                                    operatornode.Right = BTStack.Pop();
-                                //Decoding ok: NOT operator
+                                    switch (token.TerminalName)
+                                    {
+                                        case "NOT":
+                                        //Decoding ok: NOT operator
+                                            break;
+                                        default:
+                                            operatornode.Right = BTStack.Pop();
+                                            break;
+                                    }
+                                
                                 operatornode.Left = BTStack.Pop();
                                 BTStack.Push(operatornode);
 

@@ -1327,8 +1327,10 @@
                         case "CONRATE":
                         case "CONRESET":
                         case "TIME":
+
                         case "WR_ON":
                         case "WR_OFF":
+
                         case "DOY":
                         case "DOM":
                         case "DOW":
@@ -1338,7 +1340,6 @@
                         case "USER_A":
                         case "USER_B":
 
-                        //TODO: Check is ENCODER has this covered: Functions with variable list of expressions, must add count of expressions as last token.
                         case "AVG":
                         case "MAX":
                         case "MIN":
@@ -1361,9 +1362,22 @@
                             }
                             else
                             {
-                                while (Oper.Count > 0 && NewToken.Precedence <= Oper.Peek().Precedence)
+                                switch (terminalname)
                                 {
-                                    Expr.Add(Oper.Pop());
+                                    case "WR_ON":
+                                    case "WR_OFF":
+                                        if (Oper.Count >= 2)
+                                        {
+                                            for (int i = 0; i < 2; i++)
+                                                Expr.Add(Oper.Pop());
+                                        }
+                                        else throw new ArgumentException($"Not enough arguments for {terminalname}");
+                                        break;
+
+                                    default:
+                                        while (Oper.Count > 0 && NewToken.Precedence <= Oper.Peek().Precedence)
+                                            Expr.Add(Oper.Pop());
+                                        break;
                                 }
 
                                 Oper.Push(NewToken);
