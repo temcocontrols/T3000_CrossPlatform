@@ -953,12 +953,13 @@
                                 {
                                     case "THEN":
                                     case "ELSE":
-                                        var offsetIdx = branches.Pop().Index;
-                                        //references token with end marker 
+                                        var offsetIdx = branches.Pop().Index;//references token with end marker 
                                         Tokens[offsetIdx].Index = (short)Tokens.Count;
-                                        NewToken = new EditorTokenInfo("EOE", "EOE");
-                                        NewToken.Token = (short)LINE_TOKEN.EOE;
-                                        Tokens.Add(NewToken);
+                                        //TODO: Revisar si el token EOE al final de THEN Y ELSE, antes de LF Y EOF están causando un comma inncesaria en la codificación.
+                                        
+                                        //NewToken = new EditorTokenInfo("EOE", "EOE");
+                                        //NewToken.Token = (short)LINE_TOKEN.EOE;
+                                        //Tokens.Add(NewToken);
                                         break;
                                     default:
                                         break;
@@ -1036,10 +1037,18 @@
                         #endregion
 
                         #region Defaults
+
+                        case "CMDSEPARATOR":
+                            
+                            NewToken = new EditorTokenInfo("CMDSEPARATOR", "CMDSEPARATOR");
+                            NewToken.Text = ",";
+                            NewToken.Token = (short)LINE_TOKEN.EOE;
+                            Tokens.Add(NewToken);
+                            break;
                         case "LET":
                         default: // No special cases, or expected to be ready to encode.
                             Tokens.Add(NewToken);
-                            Console.WriteLine($"ProcessTokens(): TOKEN TerminalName:{terminalname}-Text:{tokentext} passed by defautl");
+                            Console.WriteLine($"ProcessTokens(): TOKEN TerminalName:{terminalname}-Text:{tokentext} passed by default");
                             break;
                             #endregion
                     }
@@ -1112,7 +1121,8 @@
                                                             //see if those parenthesis were parts of a function call.
                             if (Oper.Count > 0 && Oper.Peek().Precedence == 200)
                             {
-                                //IS a Function Call
+                                //IS A FUNCTION CALL
+                                
                                 //Add function token to expression.
                                 Expr.Add(Oper.Pop());
                                 if (functions.Count > 0)

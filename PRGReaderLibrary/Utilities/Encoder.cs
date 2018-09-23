@@ -69,6 +69,7 @@ namespace PRGReaderLibrary.Utilities
                     case "THEN":
                     case "ELSE":
                     case "EOE":
+                        //TODO: Ver si es posible eliminar el último EOE antes de LF para evitar que se guarden como comas
                         result.Add((byte)token.Token);
                         offset++;
 
@@ -340,6 +341,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
+
                     #region EOF CRLF
 
                     case "LF":
@@ -360,7 +362,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
-                    
+                    case "CMDSEPARATOR":
                     default:
                         Trace.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;

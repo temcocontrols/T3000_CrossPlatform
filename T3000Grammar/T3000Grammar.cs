@@ -174,9 +174,9 @@
             var PARIZQ = ToTerm("(");
             var PARDER = ToTerm(")");
             var PRINTCOMMANDSEPARATOR = ToTerm(";","PRGCMDSEPARATOR");
-            var COMMANDSEPARATOR = ToTerm(",","CMDSEPARATOR");
+            
             var COMMA = ToTerm(",", "COMMA");
-
+            var COMMANDSEPARATOR = ToTerm(",","CMDSEPARATOR");
             var DDOT = ToTerm(":");
 
             //Operators

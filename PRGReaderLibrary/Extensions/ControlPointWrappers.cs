@@ -354,10 +354,11 @@ namespace PRGReaderLibrary.Extensions
                 case IdentifierTypes.VARS:
                     cp = Variables[Index];
                     break;
-
+                case IdentifierTypes.PIDS:
+                    
+                    break;
                 //TODO: Return apropiate ControlPointInfo
-                //case IdentifierTypes.PIDS:
-                //    break;
+
                 //case IdentifierTypes.PRGS:
                 //    break;
                 //case IdentifierTypes.SCHS:
