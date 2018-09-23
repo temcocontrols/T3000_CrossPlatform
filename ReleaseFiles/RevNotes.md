@@ -1,6 +1,15 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+## Updated: 20180704.1146
+### EDITOR New properties dialog and improved Identifier Info Dialog
+New Shortcut for Settings (Properties) of Editor  = F4
+New Shortcut for Identifier Settings = CTRL + SHIFT + I
+Both dialogs rebuilded inside the editor: ShowIdentifierInfoDialog(SelectedText) and ShowProperties()
+####Some fixing after testing the solution under Debian 9.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries x86, x64 and Linux (tar.gz)
+
 ## Updated: 20180628.0404
 ### EDITOR STYLES + IDENTIFIERS INFO DIALOG
 Editor now supports all properties for TextStyles: Variables, Inputs, Outputs, Strings, Commments, Keywords, Inner Line Numbers. Editor using a local copy of Control Points Info + Improved IdentifierInfo form inside Editor (SHIFT+INS Shortcut on a selected identifier).

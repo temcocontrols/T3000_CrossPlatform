@@ -4435,6 +4435,8 @@ namespace FastColoredTextBoxNS
         public void ShowIdentifierInfoDialog(string SelectedText)
         {
 
+
+
             frmIdentifierInfo frm = new frmIdentifierInfo();
 
 
