@@ -122,6 +122,8 @@ namespace FastColoredTextBoxNS
 
         public static HotkeysMapping Parse(string s)
         {
+
+            //TODO: Linux error for PgUP
             var result = new HotkeysMapping();
             result.Clear();
             var cult = Thread.CurrentThread.CurrentUICulture;
@@ -131,10 +133,17 @@ namespace FastColoredTextBoxNS
             
             foreach (var p in s.Split(','))
             {
-                var pp = p.Split('=');
-                var k = (Keys)kc.ConvertFromString(pp[0].Trim());
-                var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
-                result[k] = a;
+
+                try
+                {
+                    var pp = p.Split('=');
+                    var k = (Keys)kc.ConvertFromString(pp[0].Trim());
+                    var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
+                    result[k] = a;
+                }
+                catch
+                {//Ignore this exceptions for a while.
+                }
             }
 
             Thread.CurrentThread.CurrentUICulture = cult;

@@ -1,4 +1,4 @@
-# Release Files
+﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
 ## Updated: 20180626.0318
