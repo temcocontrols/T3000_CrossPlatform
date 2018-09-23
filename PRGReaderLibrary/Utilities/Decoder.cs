@@ -62,7 +62,7 @@ namespace PRGReaderLibrary.Utilities
                 //Get a local copy of TimeBuffer
                 if (Start == 0)
                     if (Identifiers != null)
-                        TimeBuff = new TimeBuffer(PCode,Identifiers);
+                        TimeBuff = new TimeBuffer(Identifiers, PCode);
 
                 //2 bytes more for total bytes count.
                 int ProgLenght = BytesExtensions.ToInt16(prgsize) + 2;
@@ -828,10 +828,8 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken.Token = source[offset]; 
                             fxtoken.Precedence = 200;
                             
-                            //offset++;
-                            //TODO: Next 2 bytes: Position in Time Buffer
                             int BufferPosition = Convert.ToInt16(GetOffset(source, ref offset));
-                            byte[] cpi = TimeBuff.GetBytes(BufferPosition);
+                            byte[] cpi = TimeBuff.GetBytesAtPosition(BufferPosition);
                             localpoint = new EditorTokenInfo("Identifier", "Identifier");
                             localpoint.Token = cpi[0];
                             localpoint.Index = cpi[1];
@@ -847,10 +845,8 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
                             
-                            //offset++;
-                            //TODO: Next 2 bytes: Index Time Buffer
                             int BufferPosition2 = Convert.ToInt16(GetOffset(source, ref offset));
-                            byte[] cpi2 = TimeBuff.GetBytes(BufferPosition2);
+                            byte[] cpi2 = TimeBuff.GetBytesAtPosition(BufferPosition2);
                             localpoint = new EditorTokenInfo("Identifier", "Identifier");
                             localpoint.Token = cpi2[0];
                             localpoint.Index = cpi2[1];
