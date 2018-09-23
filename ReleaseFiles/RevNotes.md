@@ -2,6 +2,18 @@
 The latest release notes, windows and linux release files are stored here
 
 
+## Updated: 20180724.1525
+### PRG support for TIME-ON, TIME-OFF, variable argument's function support
+### Multiple statements comma sepparated in THEN and ELSE clauses.
+#### TimeBuffer Reading and Writing ready
+#### PIDs (controllers) support initiated
+Humidity Program encoded and decode in EV14.PRG
+BUG FOUND: READ HUM-D has  unidentified tokens 20.50.REG100 ???
+Decoded HP Program en EV14.PRG, multiple statements in THEN or ELSE Part.
+Adjustments to Grammar, including multiple commands or assigments inside a IFCLAUSE
+
+New release files and binaries x86, x64
+
 ## Updated: 20180713.1221
 ### PRG support for TIME-ON, TIME-OFF
 #### TimeBuffer Reading and Writing ready
