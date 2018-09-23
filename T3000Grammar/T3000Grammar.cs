@@ -89,10 +89,11 @@
             string UPTO64 = "6[0-4]|[1-5][0-9]?";
             string UPTO48 = "4[0-8]|[1-3][0-9]?";
             string UPTO32 = "3[0-2]|[1-2][0-9]?";
-            string UPTO16 = "1[0-6]|[1-9]";
-            //string UPTO8 = "[1-8]";
-            string UPTO4 = "[1-4]";
             string UPTO31 = "3[0-1]|[1-2][0-9]?";
+            string UPTO16 = "1[0-6]|[1-9]";
+            string UPTO8 = "[1-8]";
+            string UPTO4 = "[1-4]";
+            
             string UPTO5 = "[1-5]";
 
 
@@ -120,17 +121,22 @@
             ARR.Priority = 40;
 
             //Controllers, now known as PIDS
-            var PIDS = new RegexBasedTerminal("PIDS", "PID(" + UPTO64 + ")");
+            var PIDS = new RegexBasedTerminal("PIDS", "PID(" + UPTO16 + ")");
             PIDS.Priority = 40;
             //Controllers, for backwards compatibility
-            var CON = new RegexBasedTerminal("CON", "CON(" + UPTO64 + ")");
+            var CON = new RegexBasedTerminal("CON", "CON(" + UPTO16 + ")");
             CON.Priority = 40;
-            var CONNUMBER = new RegexBasedTerminal("CONNUMBER", "(" + UPTO64 + ")");
+
+            var CONNUMBER = new RegexBasedTerminal("CONNUMBER", "(" + UPTO16 + ")");
             CON.Priority = 40;
 
             //Weekly Routines, now known as Schedules
-            var WRS = new RegexBasedTerminal("WRS", "SCH(" + UPTO64 + ")");
+            var WRS = new RegexBasedTerminal("WRS", "SCH(" + UPTO8 + ")");
             WRS.Priority = 40;
+            //Weekly routine number as used by WR-ON and WR-OFF
+            var WRNUMBER = new RegexBasedTerminal("WRNUMBER", UPTO8);
+            WRNUMBER.Priority = 40;
+
             //Anual routines, now known as Holidays
             var ARS = new RegexBasedTerminal("ARS", "HOL(" + UPTO64 + ")");
             ARS.Priority = 40;
@@ -157,7 +163,9 @@
             var TABLENUMBER = new RegexBasedTerminal("TABLENUMBER", "(" +UPTO5 +")");
             //Same, up to 16 program codes (control Basic)
             var SYSPRG = new RegexBasedTerminal("SYSPRG", "(" + UPTO16 + ")");
+            SYSPRG.Priority = 40;
             var TIMER = new RegexBasedTerminal("TIMER", "(" + UPTO4 + ")");
+            TIMER.Priority = 40;
 
             //KEYWORDS
 
@@ -621,10 +629,12 @@
 
             //TIMEOFF::= 'TIME-OFF' PARIZQ Designator PARDER
             TIMEOFF.Rule = ToTerm("TIME-OFF", "TIME_OFF") + PARIZQ + Designator + PARDER;
+
             //WRON ::= 'WR-ON' PARIZQ SYSPRG ',' TIMER PARDER
-            WRON.Rule = ToTerm("WR-ON", "WR_ON") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+            WRON.Rule = ToTerm("WR-ON", "WR_ON") + PARIZQ + WRNUMBER + Comma + TIMER + PARDER;
+
             //WROFF::= 'WR-OFF' PARIZQ SYSPRG ',' TIMER PARDER
-            WROFF.Rule = ToTerm("WR-OFF", "WR_OFF") + PARIZQ + SYSPRG + Comma + TIMER + PARDER;
+            WROFF.Rule = ToTerm("WR-OFF", "WR_OFF") + PARIZQ + WRNUMBER + Comma + TIMER + PARDER;
 
 
             //COM1 ::= 'COM1' PARIZQ BAUDRATE ',' PORT (CHARS+ | ',' EnclosedString) PARDER

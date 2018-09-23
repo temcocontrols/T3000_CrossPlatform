@@ -1,6 +1,14 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+
+## Updated: 20180713.1221
+### PRG support for TIME-ON, TIME-OFF
+#### TimeBuffer Reading and Writing ready
+#### PIDs (controllers) support initiated
+ev14.prg sample program is now passing tests: decoding and enconding
+New release files and binaries x86, x64
+
 ## Updated: 20180706.1828
 ### EDITOR Save and Load File (inside editor)
 New Shortcut for Load File  = F6

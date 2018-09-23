@@ -861,6 +861,7 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("WR-ON", "WR_ON");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
+                            fxtoken.Index = 2;
                             ExprTokens.Add(fxtoken);
                             offset++;
                             break;
@@ -868,6 +869,7 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("WR-OFF", "WR_OFF");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
+                            fxtoken.Index = 2;
                             ExprTokens.Add(fxtoken);
                             offset++;
                             break;
@@ -979,6 +981,8 @@ namespace PRGReaderLibrary.Utilities
                             case "AVG":
                             case "MAX":
                             case "MIN":
+                            case "WR_OFF":
+                            case "WR_ON":
 
                                 if (BTStack.Count < operatornode.Data.Index)
                                     throw new ArgumentException("Not enough arguments in BTStack for AVG,MAX,MIN Function");
@@ -997,7 +1001,6 @@ namespace PRGReaderLibrary.Utilities
                                 if (BTStack.Count > 1) //avoid unary operators and functions exception
                                     operatornode.Right = BTStack.Pop();
                                 //Decoding ok: NOT operator
-                                //Debug.Assert(operatornode.Data.TerminalName != "TIME_ON");
                                 operatornode.Left = BTStack.Pop();
                                 BTStack.Push(operatornode);
 
@@ -1206,9 +1209,8 @@ namespace PRGReaderLibrary.Utilities
                 case (short)PCODE_CONST.OUTPOINTTYPE:
                     IdentLabel = Identifiers.Outputs[TokenIdx].Label;
                     break;
-                case (short)PCODE_CONST.PID:
+                case (short)PCODE_CONST.PIDPOINTTYPE:
                     IdentLabel = $"PID{TokenIdx + 1}";// Identifiers.Controllers[TokenIdx].Label;
-                    //TODO : NEW: Add same for ENCODER, and retouch grammar to understand PIDxx
                     break;
 
                 default:

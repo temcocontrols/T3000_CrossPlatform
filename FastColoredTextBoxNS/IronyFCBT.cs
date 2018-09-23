@@ -190,7 +190,7 @@ namespace FastColoredTextBoxNS
                             case PCODE_CONST.VARPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
                                 break;
-                            case PCODE_CONST.PID:
+                            case PCODE_CONST.PIDPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
                                 break;
                             default:

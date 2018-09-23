@@ -1170,20 +1170,24 @@
                         case "INS":
                         case "OUTS":
                         case "PRG":
+                        case "PIDS":
                             string output = Regex.Match(tokentext, @"\d+").Value;
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                             //Prepare token identifier to encode: Token + Index + Type
 
                             switch (terminalname)
                             {
-                                case "VARS":
-                                    NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                case "OUTS":
+                                    NewToken.Type = (short)PCODE_CONST.OUTPOINTTYPE;
                                     break;
                                 case "INS":
                                     NewToken.Type = (short)PCODE_CONST.INPOINTTYPE;
                                     break;
-                                case "OUTS":
-                                    NewToken.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                case "VARS":
+                                    NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                    break;
+                                case "PIDS":
+                                    NewToken.Type = (short)PCODE_CONST.PIDPOINTTYPE;
                                     break;
                                 default:
                                     NewToken.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
@@ -1280,6 +1284,7 @@
                         case "TABLENUMBER":
                         case "SYSPRG":
                         case "TIMER":
+                        case "WRNUMBER":
                             NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
                             Expr.Add(NewToken);
                             //Note: Time format values are encoded with a lookahead algorithm by ENCODER
