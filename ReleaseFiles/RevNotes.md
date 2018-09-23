@@ -1,6 +1,14 @@
 ﻿# Release Files
 The latest release notes, windows and linux release files are stored here
 
+## Updated: 20180706.1828
+### EDITOR Save and Load File (inside editor)
+New Shortcut for Load File  = F6
+New Shortcut for Save File  = F7
+Menú for ProgramEditorForm rearranged.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries x86, x64
+
 ## Updated: 20180704.1146
 ### EDITOR New properties dialog and improved Identifier Info Dialog
 New Shortcut for Settings (Properties) of Editor  = F4

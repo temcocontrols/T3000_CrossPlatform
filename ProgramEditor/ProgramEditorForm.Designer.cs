@@ -325,6 +325,7 @@
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.editTextBox.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.editTextBox.Hotkeys = resources.GetString("editTextBox.Hotkeys");
             this.editTextBox.IsReplaceMode = false;

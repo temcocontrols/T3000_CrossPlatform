@@ -177,7 +177,7 @@ See console log for details.
 
             if (prg.Variables.Count > 0)
             {
-                prg = Prg.Load(temp);
+                prg = Prg.Load(temp,null);
                 prg.Variables[0].Value = new VariableValue("9998.8999", Unit.DegreesC);
                 prg.Save(temp);
                 FileAssert.AreNotEqual(path, temp);
@@ -188,7 +188,7 @@ See console log for details.
             {
                 prg.Upgrade(FileVersion.Current);
                 prg.Save(temp);
-                prg = Prg.Load(temp);
+                prg = Prg.Load(temp,null);
                 Assert.AreEqual(FileVersion.Current, prg.FileVersion);
             }
         }
@@ -197,7 +197,7 @@ See console log for details.
         {
             var exception = Assert.Catch(() =>
             {
-                var prg = Prg.Load(TestUtilities.GetFullPathForPrgFile(name));
+                var prg = Prg.Load(TestUtilities.GetFullPathForPrgFile(name),null);
 
                 Console.WriteLine(prg.PropertiesText());
             });
@@ -208,7 +208,7 @@ See console log for details.
         public void Prg_BTUMeter()
         {
             var path = TestUtilities.GetFullPathForPrgFile("BTUMeter.prg");
-            var prg = Prg.Load(path);
+            var prg = Prg.Load(path,null);
 
             ObjectAssert.AreEqual(new CustomDigitalUnitsPoint(false, "TANK1", "TANK2"), prg.CustomUnits.Digital[0]);
 
@@ -393,7 +393,7 @@ See console log for details.
             #region TestData
 
             var path = TestUtilities.GetFullPathForPrgFile("BTUMeter.prg");
-            var prg = Prg.Load(path);
+            var prg = Prg.Load(path, null);
 
             #endregion
 
@@ -431,7 +431,7 @@ See console log for details.
         [Test]
         public void Prg_TestVariables()
         {
-            var prg = Prg.Load(TestUtilities.GetFullPathForPrgFile("testvariables.prg"));
+            var prg = Prg.Load(TestUtilities.GetFullPathForPrgFile("testvariables.prg"),null);
 
             var variable1 = prg.Variables[0];
             Assert.AreEqual("FirstDescription    ", variable1.Description);
