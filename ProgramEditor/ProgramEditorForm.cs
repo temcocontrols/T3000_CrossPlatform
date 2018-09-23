@@ -720,6 +720,23 @@
 
                             break;
 
+                        case "Register":
+                            //Prepare token Register to encode: Token + Index + Type + PanelID + SubNet + 1
+
+                            string[] tokenparts = tokentext.Split('.');
+
+
+                            //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                            NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                            NewToken.Index = (short) (Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
+                            NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
+                            NewToken.PanelID = tokenparts[0];
+                            NewToken.Subnet = tokenparts[1];
+                            //the final byte = 1, assumed to be added later by EncodeBytes
+                        
+                            Tokens.Add(NewToken);
+
+                            break;
                         case "Identifier":
                             //Locate Identifier and Identify Token associated ControlPoint.
                             //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
@@ -753,24 +770,27 @@
                         #region Assigments and Expressions
                         case "ASSIGN":
 
+                            //CALL PRG ASSIGMENT ARGS ...
                             if (Tokens.Last().TerminalName == "PRG")
                             {
-                                //CALL PRG ASSIGMENT ARGS ...
-                                //counter for identifiers as arguments
+                                
+                                //counter for identifiers and registers as arguments
                                 NewToken = new EditorTokenInfo("ARGCOUNT", "ARGCOUNT");
                                 Tokens.Add(NewToken);
 
-                                //count identifiers (arguments)
+                                //count arguments
                                 var ArgIdx = Tokens.Count - 1;
                                 var idCnt = 0;
                                 var NxtId = idxToken + 1;
 
                                 while (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
+                                    || _parseTree.Tokens[NxtId].Terminal.Name == "Register"
                                     || _parseTree.Tokens[NxtId].Terminal.Name == "COMMA")
                                 {
-                                    if (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier")
+                                    if (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
+                                        || _parseTree.Tokens[NxtId].Terminal.Name == "Register")
                                     {
-                                        //count this identifier
+                                        //count this argument
                                         idCnt++;
                                     }
                                     else
@@ -1175,7 +1195,24 @@
                         #endregion
 
                         #region Identifier
-                        //TODO: Add PIDS too?
+
+                        case "Register":
+                            //Prepare token Register to encode: Token + Index + Type + PanelID + SubNet + 1
+
+                            string[] tokenparts = tokentext.Split('.');
+
+
+                            //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                            NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                            NewToken.Index = (short)(Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
+                            NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
+                            NewToken.PanelID = tokenparts[0];
+                            NewToken.Subnet = tokenparts[1];
+                            //the final byte = 1, assumed to be added later by EncodeBytes
+
+                            Tokens.Add(NewToken);
+                            break;
+
                         case "VARS":
                         case "INS":
                         case "OUTS":
@@ -1239,6 +1276,9 @@
                             }
                             break;
 
+
+
+                        
                         #endregion
 
                         #region OPERATORS

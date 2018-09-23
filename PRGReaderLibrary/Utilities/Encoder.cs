@@ -276,8 +276,9 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
-                    #region Identifiers: VARS, INS, OUTS, etc 3 bytes
+                    #region Identifiers, Registers, VARS, INS, OUTS, etc 3 bytes
                     case "Identifier":
+                    case "Register":
                     case "VARS":
                     case "INS":
                     case "OUTS":
@@ -289,6 +290,16 @@ namespace PRGReaderLibrary.Utilities
                             result.Add((byte)token.Index);
                             result.Add((byte)token.Type);
                             offset += 3;
+                            //Register??
+                            if(token.Token == (short) PCODE_CONST.REMOTE_POINT_PRG)
+                            {
+                                //We need to add 3 bytes: PanelID, Subnet and 1
+                                result.Add((byte)Convert.ToInt16(token.PanelID));
+                                result.Add((byte)Convert.ToInt16(token.Subnet));
+                                result.Add((byte)1);
+                                offset += 3;
+
+                            }
                         }
                         else //It's a time buffered function
                         {
