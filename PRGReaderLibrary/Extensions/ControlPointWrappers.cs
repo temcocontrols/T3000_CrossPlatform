@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PRGReaderLibrary.Types.Enums.Codecs;
 
 namespace PRGReaderLibrary.Extensions
 {
@@ -12,8 +13,8 @@ namespace PRGReaderLibrary.Extensions
     /// </summary>
     public enum IdentifierTypes
     {
-        //TODO: Reorder to match CODEC enums values PCONST
-        VARS, INS, OUTS, PRGS, SCHS, HOLS
+        //TODO: Reorder to match CODEC enums values PCONST, after PIDS
+        OUTS=1, INS, VARS, PIDS, PRGS, SCHS, HOLS
     }
 
     /// <summary>
@@ -309,5 +310,252 @@ namespace PRGReaderLibrary.Extensions
 
 
         }
+
+        /// <summary>
+        /// Get ControlPointInfo by Type and Index
+        /// </summary>
+        /// <param name="Type">Identifier Type</param>
+        /// <param name="Index">Zero based index</param>
+        /// <returns>Full Control Point Info</returns>
+        public ControlPointInfo GetControlPointInfo(IdentifierTypes Type, int Index)
+        {
+            ControlPointInfo cp = new ControlPointInfo();
+            switch (Type)
+            {
+                case IdentifierTypes.OUTS:
+                    cp = Outputs[Index];
+                    break;
+                case IdentifierTypes.INS:
+                    cp = Inputs[Index];
+                    break;
+                case IdentifierTypes.VARS:
+                    cp = Variables[Index];
+                    break;
+
+                //TODO: Return apropiate ControlPointInfo
+                //case IdentifierTypes.PIDS:
+                //    break;
+                //case IdentifierTypes.PRGS:
+                //    break;
+                //case IdentifierTypes.SCHS:
+                //    break;
+                //case IdentifierTypes.HOLS:
+                //    break;
+                default:
+                    break;
+            }
+
+            return cp;
+        }
+    }
+
+
+
+
+    public class TBufferElement
+    {
+        public ControlPointInfo Info { get; set; }
+        public int Position { get; set; } = 5;
+
+    }
+
+    /// <summary>
+    /// Time Buffer Manager
+    /// </summary>
+    public class TimeBuffer
+    {
+        /// <summary>
+        /// Bytes Array Buffer
+        /// </summary>
+        private List<byte> Buffer { get; set; } = new List<byte>();
+        /// <summary>
+        /// List of Elements in Buffer
+        /// </summary>
+        private List<TBufferElement> Elements { get; set; } = new List<TBufferElement>();
+
+        /// <summary>
+        /// Local copy of identifiers for conversions.
+        /// </summary>
+        public ControlPoints Identifiers;
+
+        private int BufferSize = 0;
+        private int BufferCount = 0;
+
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public TimeBuffer() {}
+
+        /// <summary>
+        /// TimeBuffer from source code (byte array)
+        /// </summary>
+        /// <param name="source"></param>
+        public TimeBuffer(byte[] source, ControlPoints identifiers)
+        {
+            int i = 0;
+            int POS = 0;
+            byte[] len = { 0x00, 0x00 };
+            Identifiers = identifiers;
+
+            try
+            {
+                if (source.Length > 2000)
+                {
+                    throw new Exception("Program Lenght exceeds 2000 bytes");
+                }
+                else
+                {
+                    //find EOF byte, do not trust PROG SIZE in control point
+                    do
+                        i++;
+                    while (source[i] != (byte)LINE_TOKEN.EOF);
+
+                    if (i >= 2000)
+                    {
+                        throw new Exception("Out of bounds, no EOF found!!");
+                    }
+                    POS = i + 1; //Position of TimeBuffer -> first byte after 0xFE (EOF)
+                             
+                    i = POS + 4; //Jump first 4 bytes, those are always 0x00
+                    //next two bytes are the buffer lenght
+                    len[0] = source[i];
+                    len[1] = source[i+1];
+                    int _BufferSize = BytesExtensions.ToInt16(len);
+                    int _BufferCount = (BufferSize) / 9;
+                    //Copy the time buffer
+                    //If BufferSize = 0 then Buffer will stay empty
+                    for (i = 0; i <= _BufferSize + 5; i++)
+                        Buffer.Add(source[POS + i]);
+
+                    //Convert every byte sequence into Elements
+                    for (i = 6; i < _BufferSize + 5; i += 9)
+                    {
+                        //skip first byte 0x00;
+                        byte TOKEN = Buffer[i];
+                        byte INDEX = Buffer[i + 1];
+                        IdentifierTypes  TYPE = (IdentifierTypes) Buffer[i + 2];
+                        byte Marker = Buffer[i + 3];
+                        if(Marker != (byte) LINE_TOKEN.EOE)
+                        {
+                            throw new Exception("Sync failed, in TimeBuffer Element. EOF not found");
+                        }
+
+                        if (Identifiers != null)
+                        {
+                            //TODO: Resume switch by next line, when completed all IdentifierTypes
+                            //Add(Identifiers.GetControlPointInfo(TYPE, INDEX));
+                            switch ((IdentifierTypes)TYPE)
+                            {
+                                case IdentifierTypes.OUTS:
+                                    Add(Identifiers.GetControlPointInfo(TYPE, INDEX));
+                                    break;
+                                case IdentifierTypes.INS:
+                                    Add(Identifiers.GetControlPointInfo(TYPE, INDEX));
+                                    break;
+                                case IdentifierTypes.VARS:
+                                    Add(Identifiers.GetControlPointInfo(TYPE, INDEX));
+                                    break;
+
+                                default:
+                                    break;
+                            } 
+                        }
+
+                    }
+                  
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "TimeBuffer");
+            }
+        }
+
+        /// <summary>
+        /// Read Only Indexer for time entry, used by DECODER
+        /// </summary>
+        /// <param name="index">Real index/position</param>
+        /// <returns>Label of referenced control point</returns>
+        public string this[int index]
+        {
+            get
+            {
+                string Label = "<UNKNOWN IDENT>";
+                int realIndex = Elements.FindIndex(e => e.Position == index);
+                if(realIndex > -1)
+                {
+                    Label = Elements[realIndex].Info.Label;
+                }
+                else
+                {
+                   throw new Exception("Identifier not found in TimeBuffer Elements");
+                }
+
+                return Label;
+            }
+
+        }
+
+        //public ControlPointInfo this[int index]
+        //{
+
+        //}
+
+
+        /// <summary>
+        /// Add a new ControlPointInfo reference in TimeBuffer
+        /// </summary>
+        /// <param name="newElement"></param>
+        public void Add(ControlPointInfo info)
+        {
+            int NewPosition = 5;
+            if (Elements.Count > 0)
+            {
+                NewPosition = Elements.Last().Position + 9; //9 bytes 
+            }
+            TBufferElement newElement = new TBufferElement();
+            newElement.Position = NewPosition;
+            newElement.Info = info;
+
+            Elements.Add(newElement);
+
+            BufferCount = Elements.Count();
+            BufferSize = BufferCount * 9;
+        }
+
+
+        /// <summary>
+        /// Get the control point info.
+        /// </summary>
+        /// <param name="Position">Position</param>
+        /// <returns>ControlPointInfo</returns>
+        public ControlPointInfo GetControlPointInfo(int Position)
+        {
+            ControlPointInfo cpi = new ControlPointInfo();
+            int realIndex = Elements.FindIndex(e => e.Position == Position);
+            if (realIndex > -1)
+            {
+                cpi = Elements[realIndex].Info;
+            }
+            else
+            {
+                throw new Exception("Element not found in TimeBuffer Elements");
+            }
+            return cpi;
+        }
+
+        public byte[] GetBytes(int Position)
+        {
+            byte[] result = { 0x00, 0x00, 0x00 };
+            for(int i = 0; i < 3; i++)
+            {
+                result[i] = Buffer[Position + i + 1];
+            }
+            return result;
+
+        }
+
     }
 }

@@ -19,6 +19,10 @@ namespace PRGReaderLibrary.Utilities
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
         public ControlPoints Identifiers { get; set; } = new ControlPoints();
+        /// <summary>
+        /// Required copy con TimeBuffer entries
+        /// </summary>
+        public TimeBuffer TimeBuff { get; set; }
 
         /// <summary>
         /// Lists every single linenumber with it byte offset from start of programcode.
@@ -54,6 +58,11 @@ namespace PRGReaderLibrary.Utilities
                 byte[] prgsize = new byte[2];
 
                 Array.Copy(PCode, 0, prgsize, 0, 2);
+
+                //Get a local copy of TimeBuffer
+                if (Start == 0)
+                    if (Identifiers != null)
+                        TimeBuff = new TimeBuffer(PCode,Identifiers);
 
                 //2 bytes more for total bytes count.
                 int ProgLenght = BytesExtensions.ToInt16(prgsize) + 2;
@@ -392,6 +401,26 @@ namespace PRGReaderLibrary.Utilities
             return result;
         }
 
+
+        private string GetOffset(byte[] PCode, ref int offset)
+        {
+            string result = "";
+
+            try
+            {
+                offset++; //1 byte = TOKEN {1}
+                short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
+                result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
+                                                 //Populate a list of offsets of every linenumbers
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "GetOffset(), Exception found!");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Get comments, including REM token, autoincrements offset
         /// </summary>
@@ -508,9 +537,9 @@ namespace PRGReaderLibrary.Utilities
 
                         #endregion
 
-                        #region Numeric Constants
+                        #region Numeric Constants : Numbers and Time Formatted Values
 
-                        case (byte)PCODE_CONST.CONST_VALUE_PRG:
+                        case (byte)PCODE_CONST.CONST_VALUE_PRG: //Numbers and Time Formatted Values
 
                             EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                             constvalue.Token = source[offset];
@@ -518,16 +547,6 @@ namespace PRGReaderLibrary.Utilities
                             ExprTokens.Add(constvalue);
 
                             break;
-
-                        //case (byte)FUNCTION_TOKEN.TIME_FORMAT:
-
-                        //    EditorTokenInfo timeformatvalue = new EditorTokenInfo("NUMBER", "NUMBER");
-                        //    timeformatvalue.Token = source[offset];
-                        //    timeformatvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
-                        //    ExprTokens.Add(timeformatvalue);
-                            
-
-                        //    break;
 
                         #endregion
 
@@ -806,17 +825,41 @@ namespace PRGReaderLibrary.Utilities
                             break;
                         case (byte)FUNCTION_TOKEN.TIME_ON:
                             fxtoken = new EditorTokenInfo("TIME-ON", "TIME_ON");
-                            fxtoken.Token = source[offset];
+                            fxtoken.Token = source[offset]; 
                             fxtoken.Precedence = 200;
-                            ExprTokens.Add(fxtoken);
-                            offset++;
+                            
+                            //offset++;
+                            //TODO: Next 2 bytes: Position in Time Buffer
+                            int BufferPosition = Convert.ToInt16(GetOffset(source, ref offset));
+                            byte[] cpi = TimeBuff.GetBytes(BufferPosition);
+                            localpoint = new EditorTokenInfo("Identifier", "Identifier");
+                            localpoint.Token = cpi[0];
+                            localpoint.Index = cpi[1];
+                            localpoint.Type = cpi[2];
+                            //text will be ready with identifier label
+                            localpoint.Text = TimeBuff[BufferPosition]; //increments offset after reading identifier
+                            ExprTokens.Add(localpoint);
+                            ExprTokens.Add(fxtoken); //Make it POSTFIX for decoding purposes
                             break;
+
                         case (byte)FUNCTION_TOKEN.TIME_OFF:
                             fxtoken = new EditorTokenInfo("TIME-OFF", "TIME_OFF");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            ExprTokens.Add(fxtoken);
-                            offset++;
+                            
+                            //offset++;
+                            //TODO: Next 2 bytes: Index Time Buffer
+                            int BufferPosition2 = Convert.ToInt16(GetOffset(source, ref offset));
+                            byte[] cpi2 = TimeBuff.GetBytes(BufferPosition2);
+                            localpoint = new EditorTokenInfo("Identifier", "Identifier");
+                            localpoint.Token = cpi2[0];
+                            localpoint.Index = cpi2[1];
+                            localpoint.Type = cpi2[2];
+                            //text will be ready with identifier label
+                            localpoint.Text = TimeBuff[BufferPosition2]; //increments offset after reading identifier
+                            ExprTokens.Add(localpoint);
+                            ExprTokens.Add(fxtoken);//Make it POSTFIX for decoding purposes
+
                             break;
                         case (byte)FUNCTION_TOKEN.WR_ON:
                             fxtoken = new EditorTokenInfo("WR-ON", "WR_ON");
@@ -850,7 +893,7 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("MAX", "MAX");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            fxtoken.Index = source[offset + 1];
+                            fxtoken.Index = source[offset + 1]; //Index has the count
                             ExprTokens.Add(fxtoken);
                             offset += 2;
                             break;
@@ -858,7 +901,7 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("MIN", "MIN");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            fxtoken.Index = source[offset + 1];
+                            fxtoken.Index = source[offset + 1]; //Index has the count
                             ExprTokens.Add(fxtoken);
                             offset += 2;
                             break;
@@ -938,9 +981,11 @@ namespace PRGReaderLibrary.Utilities
                         {
                             //Multiple expressions functions
                             case "AVG":
+                            case "MAX":
+                            case "MIN":
 
                                 if (BTStack.Count < operatornode.Data.Index)
-                                    throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
+                                    throw new ArgumentException("Not enough arguments in BTStack for AVG,MAX,MIN Function");
 
                                 for (int i = 1; i < operatornode.Data.Index; i++)
                                     NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
@@ -956,7 +1001,7 @@ namespace PRGReaderLibrary.Utilities
                                 if (BTStack.Count > 1) //avoid unary operators and functions exception
                                     operatornode.Right = BTStack.Pop();
                                 //Decoding ok: NOT operator
-                                //Debug.Assert(operatornode.Data.TerminalName != "NOT");
+                                //Debug.Assert(operatornode.Data.TerminalName != "TIME_ON");
                                 operatornode.Left = BTStack.Pop();
                                 BTStack.Push(operatornode);
 
@@ -1084,7 +1129,7 @@ namespace PRGReaderLibrary.Utilities
         
 
         /// <summary>
-        /// Get a numeric constant value from sourcec
+        /// Get a numeric constant value from source
         /// </summary>
         /// <param name="source">source bytes</param>
         /// <param name="offset">start</param>
