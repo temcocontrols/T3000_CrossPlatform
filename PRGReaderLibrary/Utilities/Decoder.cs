@@ -252,7 +252,7 @@ namespace PRGReaderLibrary.Utilities
                             int OffsetTHEN = BitConverter.ToInt16(PCode, offset);
                             if(OffsetTHEN > 2000)
                             {
-                                throw new Exception("Out of bounds: THEN Offset it's over PRG capacity ");
+                                throw new OverflowException("Out of bounds: THEN Offset it's over PRG capacity ");
                             }
                             offset += 2;
 
@@ -563,6 +563,16 @@ namespace PRGReaderLibrary.Utilities
                             //text will be ready with identifier label
                             localpoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
                             ExprTokens.Add(localpoint);
+                            break;
+
+                        case (byte)PCODE_CONST.REMOTE_POINT_PRG:
+                            EditorTokenInfo remotepoint = new EditorTokenInfo("Register", "Register");
+                            remotepoint.Token = source[offset];
+                            remotepoint.Index = source[offset + 1];
+                            remotepoint.Type = source[offset + 2];
+                            //text will be ready with identifier label
+                            remotepoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
+                            ExprTokens.Add(remotepoint);
                             break;
 
                         #endregion
@@ -1233,27 +1243,53 @@ namespace PRGReaderLibrary.Utilities
             short Token = source[offset];
             int TokenIdx = source[offset + 1];
             short TokenType = source[offset + 2];
+            short PanelID = source[offset + 3];
+            byte Subnet = source[offset + 4];
 
-            offset += 3;
-
-            switch (TokenType)
+            switch (Token)
             {
-                case (short)PCODE_CONST.VARPOINTTYPE:
-                    IdentLabel = Identifiers.Variables[TokenIdx].Label;
+                //LOCAL CONTROL POINTS, FIND LABEL
+                case (short)PCODE_CONST.LOCAL_POINT_PRG:
+                    offset += 3;
+
+                    switch (TokenType)
+                    {
+                        case (short)PCODE_CONST.VARPOINTTYPE:
+                            IdentLabel = Identifiers.Variables[TokenIdx].Label;
+                            break;
+                        case (short)PCODE_CONST.INPOINTTYPE:
+                            IdentLabel = Identifiers.Inputs[TokenIdx].Label;
+                            break;
+                        case (short)PCODE_CONST.OUTPOINTTYPE:
+                            IdentLabel = Identifiers.Outputs[TokenIdx].Label;
+                            break;
+                        case (short)PCODE_CONST.PIDPOINTTYPE:
+                            IdentLabel = $"PID{TokenIdx + 1}";// Identifiers.Controllers[TokenIdx].Label;
+                            break;
+
+                        default:
+                            throw new NotImplementedException($"Unsupported type of LOCAL POINT: {TokenType}");
+                    }
                     break;
-                case (short)PCODE_CONST.INPOINTTYPE:
-                    IdentLabel = Identifiers.Inputs[TokenIdx].Label;
-                    break;
-                case (short)PCODE_CONST.OUTPOINTTYPE:
-                    IdentLabel = Identifiers.Outputs[TokenIdx].Label;
-                    break;
-                case (short)PCODE_CONST.PIDPOINTTYPE:
-                    IdentLabel = $"PID{TokenIdx + 1}";// Identifiers.Controllers[TokenIdx].Label;
-                    break;
+                //REMOTE CONTROL POINTS AS REGISTERS
+                case (short)PCODE_CONST.REMOTE_POINT_PRG: //REGISTERS
+                    offset += 6;
+                    switch (TokenType)
+                    {
+                        case (short)PCODE_CONST.VARPOINTTYPE:
+                            IdentLabel = $"{PanelID}.{Subnet}.REG{TokenIdx + 1}";
+                            break;
+
+                        default:
+                            throw new NotImplementedException($"Unsupported type of REMOTE POINT: {TokenType}");
+                    }
+                break;
 
                 default:
-                    break;
+                    throw new NotImplementedException($"Unknown or unsupported type of IDENTIFIER: {Token}");
             }
+
+            
             return IdentLabel;
         }
     }

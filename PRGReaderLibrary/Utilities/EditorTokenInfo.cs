@@ -40,7 +40,7 @@ namespace PRGReaderLibrary.Utilities
 
         /// <summary>
         /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
-        /// Expected to be fulfilled with more token info
+        /// Default token precedence to ZERO
         /// </summary>
         /// <param name="Text">Plain Text tokenizable</param>
         /// <param name="TName">Terminal Name</param>

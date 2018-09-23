@@ -32,10 +32,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cmdAccept = new System.Windows.Forms.Button();
-            this.lblCustomMessage = new System.Windows.Forms.Label();
-            this.txtExceptionDetail = new System.Windows.Forms.TextBox();
             this.cmdCopy = new System.Windows.Forms.Button();
             this.cmdSaveToFile = new System.Windows.Forms.Button();
+            this.lblCustomMessage = new System.Windows.Forms.Label();
+            this.txtExceptionDetail = new System.Windows.Forms.TextBox();
+            this.cmdTerminateApp = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +63,7 @@
             this.flowLayoutPanel1.Controls.Add(this.cmdAccept);
             this.flowLayoutPanel1.Controls.Add(this.cmdCopy);
             this.flowLayoutPanel1.Controls.Add(this.cmdSaveToFile);
+            this.flowLayoutPanel1.Controls.Add(this.cmdTerminateApp);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 184);
@@ -79,6 +81,28 @@
             this.cmdAccept.Text = "&Accept";
             this.cmdAccept.UseVisualStyleBackColor = true;
             this.cmdAccept.Click += new System.EventHandler(this.cmdAccept_Click);
+            // 
+            // cmdCopy
+            // 
+            this.cmdCopy.DialogResult = System.Windows.Forms.DialogResult.Ignore;
+            this.cmdCopy.Location = new System.Drawing.Point(277, 3);
+            this.cmdCopy.Name = "cmdCopy";
+            this.cmdCopy.Size = new System.Drawing.Size(75, 23);
+            this.cmdCopy.TabIndex = 2;
+            this.cmdCopy.Text = "&Copy";
+            this.cmdCopy.UseVisualStyleBackColor = true;
+            this.cmdCopy.Click += new System.EventHandler(this.cmdCopy_Click);
+            // 
+            // cmdSaveToFile
+            // 
+            this.cmdSaveToFile.DialogResult = System.Windows.Forms.DialogResult.Ignore;
+            this.cmdSaveToFile.Location = new System.Drawing.Point(196, 3);
+            this.cmdSaveToFile.Name = "cmdSaveToFile";
+            this.cmdSaveToFile.Size = new System.Drawing.Size(75, 23);
+            this.cmdSaveToFile.TabIndex = 3;
+            this.cmdSaveToFile.Text = "&Save";
+            this.cmdSaveToFile.UseVisualStyleBackColor = true;
+            this.cmdSaveToFile.Click += new System.EventHandler(this.cmdSaveToFile_Click);
             // 
             // lblCustomMessage
             // 
@@ -103,27 +127,16 @@
             this.txtExceptionDetail.TabIndex = 2;
             this.txtExceptionDetail.Text = "Exception details goes here";
             // 
-            // cmdCopy
+            // cmdTerminateApp
             // 
-            this.cmdCopy.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCopy.Location = new System.Drawing.Point(277, 3);
-            this.cmdCopy.Name = "cmdCopy";
-            this.cmdCopy.Size = new System.Drawing.Size(75, 23);
-            this.cmdCopy.TabIndex = 2;
-            this.cmdCopy.Text = "&Copy";
-            this.cmdCopy.UseVisualStyleBackColor = true;
-            this.cmdCopy.Click += new System.EventHandler(this.cmdCopy_Click);
-            // 
-            // cmdSaveToFile
-            // 
-            this.cmdSaveToFile.DialogResult = System.Windows.Forms.DialogResult.Ignore;
-            this.cmdSaveToFile.Location = new System.Drawing.Point(196, 3);
-            this.cmdSaveToFile.Name = "cmdSaveToFile";
-            this.cmdSaveToFile.Size = new System.Drawing.Size(75, 23);
-            this.cmdSaveToFile.TabIndex = 3;
-            this.cmdSaveToFile.Text = "&Save";
-            this.cmdSaveToFile.UseVisualStyleBackColor = true;
-            this.cmdSaveToFile.Click += new System.EventHandler(this.cmdSaveToFile_Click);
+            this.cmdTerminateApp.DialogResult = System.Windows.Forms.DialogResult.Abort;
+            this.cmdTerminateApp.Location = new System.Drawing.Point(115, 3);
+            this.cmdTerminateApp.Name = "cmdTerminateApp";
+            this.cmdTerminateApp.Size = new System.Drawing.Size(75, 23);
+            this.cmdTerminateApp.TabIndex = 4;
+            this.cmdTerminateApp.Text = "&Terminate";
+            this.cmdTerminateApp.UseVisualStyleBackColor = true;
+            this.cmdTerminateApp.Click += new System.EventHandler(this.cmdTerminateApp_Click);
             // 
             // frmException
             // 
@@ -157,5 +170,6 @@
         private System.Windows.Forms.Label lblCustomMessage;
         private System.Windows.Forms.TextBox txtExceptionDetail;
         private System.Windows.Forms.Button cmdSaveToFile;
+        private System.Windows.Forms.Button cmdTerminateApp;
     }
 }

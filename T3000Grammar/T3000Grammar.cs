@@ -57,21 +57,36 @@
             var EnclosedString = new StringLiteral("EnclosedString", "\"", StringOptions.NoEscapes);
             EnclosedString.Priority = 5;
 
-            string IDTYPE1 = "[A-Z0-9]+?[\\.\\-_A-Z0-9]*(([A-Z]+[\\.]?[0-9]*)+?)";
+            //Original IDTYPE1 was too ambiguous, simplified and added IDTYPE2 for REGISTERS
+            //string IDTYPE1 = "[A-Z0-9]+?[\\.\\-_A-Z0-9]*(([A-Z]+[\\.]?[0-9]*)+?)";
+
+            //Now general rule for identifiers (labels) 
+            //Must start with a LETTER
+            //Can be followed by more letters, or _ or digits
+            string IDTYPE1 = "([A-Z])+([A-Z_0-9])*";
+            //Registers
+            string IDTYPE2 = "[1-9][0-9]*[.][1-9][0-9]*[.](REG[1-9][0-9]*)";
+            //Remote points
+            string IDTYPE3 = "([1-9][0-9]*)-(IN|OUT|VAR)([1-9][0-9]*)";
+
             var Identifier = new RegexBasedTerminal("Identifier", IDTYPE1);
             Identifier.Priority = 30;
+            var Register = new RegexBasedTerminal("Register", IDTYPE2);
+            Register.Priority = 40; //Elevated priority over IDTYPE1, must be recognized FIRST
+            var RemotePoint = new RegexBasedTerminal("RemotePoint", IDTYPE3);
+            RemotePoint.Priority = 40;
 
 
-            //123.25BAC_NET 1245.4A
-            //12.3.FLOOR
-            //FLOOR
-            //FLOOR_A2
-            //12.A 15.0A
-            // VAR1 VAR2 OUT12 IN1 THRU IN128 AY1 TRHU AY64
-            //12.5E23    <-- POSSIBLE CONFLICT BUT CORRECT NUMBER SciNotation SHOULD BE 12.5E+23
-            //19.253.REG136
-            //SCALTOT2
-            //A12 A23.3  <-- NOT SUPPORTED BY IDTYPE1
+            //123.25BAC_NET 1245.4A -> Not Supported
+            //12.3.FLOOR  -> Not Supported
+            //FLOOR  -> Identifier Type 1
+            //FLOOR_A2 -> Identifier Type 1
+            //12.A 15.0A  -> Not supported
+            // VAR1 VAR2 OUT12 IN1 THRU IN128 AY1 TRHU AY64  -> Recognized as ControlPoints
+            //12.5E23    <-- Not supported, neither a number sci notation
+            //19.253.REG136 -> Supported, Register Type 2
+            //SCALTOT2   -> Identifier Type 1
+            //A12 A23.3  <-- NOT SUPPORTED
 
 
             var LoopVariable = new RegexBasedTerminal("LoopVariable", "[A-K]");
@@ -92,9 +107,10 @@
             string UPTO31 = "3[0-1]|[1-2][0-9]?";
             string UPTO16 = "1[0-6]|[1-9]";
             string UPTO8 = "[1-8]";
+            string UPTO5 = "[1-5]";
             string UPTO4 = "[1-4]";
 
-            string UPTO5 = "[1-5]";
+            
 
 
             //Control Points
@@ -572,8 +588,9 @@
             PointIdentifier.Rule = VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON | ARR | CON;
 
             //Designator ::= Identifier | PointIdentifier | LocalVariable
-            Designator.Rule = PointIdentifier | Identifier | LocalVariable;
-            RemoteDesignator.Rule = Designator;
+            Designator.Rule = PointIdentifier | Identifier | Register | LocalVariable;
+
+            RemoteDesignator.Rule = RemotePoint; //now supported by RegExTerminal
 
             DayLiteral.Rule = SUN | MON | TUE | WED | THU | FRI | SAT;
             MonthLiteral.Rule = JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC;
