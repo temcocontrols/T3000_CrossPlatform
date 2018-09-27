@@ -421,10 +421,10 @@ See console log for details.
             //BaseTest("temco.prg");
 
             //Unsupported
-            UnsupportedTest("balsam2.prg");
-            UnsupportedTest("90185.prg");
-            UnsupportedTest("SelfTestRev3.prg");
-            UnsupportedTest("ChamberRev5.prg");
+            //UnsupportedTest("balsam2.prg");
+            //UnsupportedTest("90185.prg");
+            //UnsupportedTest("SelfTestRev3.prg");
+            //UnsupportedTest("ChamberRev5.prg");
         }
 
         [Test]
