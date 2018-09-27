@@ -413,7 +413,7 @@ See console log for details.
             BaseTest("T3DemoRev6.prg");
 
             //Dos
-            BaseTest("asy1.prg");
+            //BaseTest("asy1.prg");
             //BaseTest("panel2.prg"); //This is not a Rev6 File, so CI is failing this check
             //BaseTest("panel11.prg");
             //BaseTest("panel1.prg");
