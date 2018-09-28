@@ -24,7 +24,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>irony.snk</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
