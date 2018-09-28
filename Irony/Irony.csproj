@@ -65,6 +65,16 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Build|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -104,7 +114,6 @@
     <None Include="Parsing\_new\CompilerDirective\IfExpressionHandler.cs" />
     <None Include="Parsing\_new\CompilerDirective\_CompilerDirectiveTerminal.cs" />
     <None Include="Parsing\_new\CompilerDirective\MacroDirective.cs" />
-
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\StringUtils.cs" />
     <Compile Include="Parsing\Parser\ParserTrace.cs" />
