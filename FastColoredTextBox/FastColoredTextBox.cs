@@ -12,7 +12,6 @@
 
 // #define debug
 
-//WARNING: This project has been modified and customized, do not UPGRADE version.
 
 // -------------------------------------------------------------------------------
 // By default the FastColoredTextbox supports no more 16 styles at the same time.
@@ -20,8 +19,7 @@
 // However, you can to compile FCTB with 32 styles supporting.
 // Uncomment following definition if you need 32 styles instead of 16:
 //
-
-#define Styles32
+// #define Styles32
 
 using System;
 using System.Collections.Generic;
@@ -38,11 +36,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using ExceptionHandling;
 using Microsoft.Win32;
-using PRGReaderLibrary.Extensions;
-using PRGReaderLibrary.Types.Enums.Codecs;
-using PRGReaderLibrary.Utilities;
 using Timer = System.Windows.Forms.Timer;
 
 namespace FastColoredTextBoxNS
@@ -132,22 +126,9 @@ namespace FastColoredTextBoxNS
         private int zoom = 100;
         private Size localAutoScrollMinSize;
 
-<<<<<<< HEAD
         private Color variablesColor= Color.DarkBlue;
 
  
-=======
-
-        /// <summary>
-        /// Inner copy of Identifiers: FCTB
-        /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-         EditorBrowsable(EditorBrowsableState.Never)]
-        [Description("Inner copy for Control Points : FastColoredTexBox")]
-        public ControlPoints Identifiers { get; set; } = new ControlPoints();
-
-
->>>>>>> AIM_BRANCH
         /// <summary>
         /// Constructor
         /// </summary>
@@ -192,7 +173,7 @@ namespace FastColoredTextBoxNS
             LeftBracket2 = '\x0';
             RightBracket2 = '\x0';
             SyntaxHighlighter = new SyntaxHighlighter(this);
-            language = Language.ControlBasic;
+            language = Language.Custom;
             PreferredLineWidth = 0;
             needRecalc = true;
             lastNavigatedDateTime = DateTime.Now;
@@ -238,7 +219,6 @@ namespace FastColoredTextBoxNS
             timer2.Tick += timer2_Tick;
             timer3.Tick += timer3_Tick;
             middleClickScrollingTimer.Tick += middleClickScrollingTimer_Tick;
-
         }
 
         private char[] autoCompleteBracketsList = { '(', ')', '{', '}', '[', ']', '"', '"', '\'', '\'' };
@@ -728,27 +708,14 @@ namespace FastColoredTextBoxNS
         }
 
 
-<<<<<<< HEAD
         [Category("Color")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
         [DefaultValue(typeof(Color), "DarkBlue")]
         [Description("Text Color for Variables")]
-=======
-
-        Color _variablescolor = Color.Crimson;
-        /// <summary>
-        /// Variables Color
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Crimson")]
-        [Description("Color for Variables")]
->>>>>>> AIM_BRANCH
         public Color VariablesColor
         {
             get
             {
-<<<<<<< HEAD
                 return variablesColor;
             }
             set
@@ -774,382 +741,6 @@ namespace FastColoredTextBoxNS
         [DefaultValue(typeof(Color), "Blue")]
         [Description("Text Color for Outputs")]
         public Color OutputsColor { get; set; }
-=======
-                if (SyntaxHighlighter.VariableStyle != null)
-                {
-                    _variablescolor = ((TextStyle)SyntaxHighlighter.VariableStyle).GetForeColor();
-                }
-                return _variablescolor;
-            }
-            set
-            {
-
-                _variablescolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.VariableStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Variables Color Property");
-                }
-               
-
-            }
-        }
-
-
-        Color _commentscolor = Color.Green;
-        /// <summary>
-        /// Comments Color
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Green")]
-        [Description("Color for Comments")]
-        public Color CommentsColor
-        {
-             get
-            {
-                if(SyntaxHighlighter.CommentStyle!= null)
-                {
-                    _commentscolor = ((TextStyle)SyntaxHighlighter.CommentStyle).GetForeColor();
-                }
-                return _commentscolor ;
-            }
-             set
-            {
-                _commentscolor = value;
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-
-                        SyntaxHighlighter.CommentStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Comments Color Property");
-                }
-            }
-        }
-
-
-        Color _keywordscolor = Color.Blue;
-        /// <summary>
-        /// Keywords Color
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Blue")]
-        [Description("Color for Keywords")]
-        public Color KeywordsColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.KeywordStyle != null)
-                {
-                    _keywordscolor = ((TextStyle)SyntaxHighlighter.KeywordStyle).GetForeColor();
-                }
-                return _keywordscolor;
-            }
-            set
-            {
-                _keywordscolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-
-                        SyntaxHighlighter.KeywordStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Keywords Color Property");
-                }
-            }
-        }
-
-
-        Color _numberscolor = Color.Blue;
-        /// <summary>
-        /// Numbers Color
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Blue")]
-        [Description("Color for Numeric Literals")]
-        public Color NumbersColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.NumberStyle != null)
-                {
-                    _numberscolor = ((TextStyle)SyntaxHighlighter.NumberStyle).GetForeColor();
-                }
-                return _numberscolor;
-            }
-            set
-            {
-                _numberscolor = value;
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.NumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Numeric Literals Color Property");
-                }
-
-            }
-        }
-
-        Color _stringscolor = Color.Maroon;
-        /// <summary>
-        /// Strings Color
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Maroon")]
-        [Description("Color for Strings")]
-        public Color StringsColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.StringStyle != null)
-                {
-                    _stringscolor = ((TextStyle)SyntaxHighlighter.StringStyle).GetForeColor();
-                }
-                return _stringscolor;
-            }
-            set
-            {
-                _stringscolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.StringStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Strings Color Property");
-                }
-
-            }
-        }
-
-
-        Color _inputscolor = Color.Green;
-        /// <summary>
-        /// Color for Inputs : Control Basic
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Green")]
-        [Description("Color for Inputs")]
-        public Color InputsColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.InputStyle != null)
-                {
-                    _inputscolor = ((TextStyle)SyntaxHighlighter.InputStyle).GetForeColor();
-                }
-                return _inputscolor;
-            }
-            set
-            {
-                _inputscolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.InputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Inputs Color Property");
-                }
-
-            }
-        }
-
-
-        Color _outputscolor = Color.Green;
-        /// <summary>
-        /// Color for Outputs : Control Basic
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Green")]
-        [Description("Color for Outputs")]
-        public Color OutputsColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.OutputStyle != null)
-                {
-                    _outputscolor = ((TextStyle)SyntaxHighlighter.OutputStyle).GetForeColor();
-                }
-                return _outputscolor;
-            }
-            set
-            {
-                _outputscolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.OutputStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Outputs Color Property");
-                }
-
-            }
-        }
-
-        Color _pidscolor = Color.Magenta;
-        /// <summary>
-        /// Color for PIDS : Control Basic
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Magenta")]
-        [Description("Color for Pids")]
-        public Color PidsColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.PidStyle != null)
-                {
-                    _pidscolor = ((TextStyle)SyntaxHighlighter.PidStyle).GetForeColor();
-                }
-                return _pidscolor;
-            }
-            set
-            {
-                _pidscolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.PidStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "PIDs Color Property");
-                }
-            }
-        }
-
-
-        Color _innerlinenumberscolor = Color.Gray;
-        /// <summary>
-        /// Color for inner line numbers: Control Basic
-        /// </summary>
-        [Category("TextStyles")]
-        [Browsable(true)]
-        [DefaultValue(typeof(Color), "Gray")]
-        [Description("Color for Inner Line Numbers")]
-        public Color InnerLineNumbersColor
-        {
-            get
-            {
-                if (SyntaxHighlighter.InnerLinesNumberStyle != null)
-                {
-                    _innerlinenumberscolor = ((TextStyle)SyntaxHighlighter.InnerLinesNumberStyle).GetForeColor();
-                }
-                return _innerlinenumberscolor;
-            }
-            set
-            {
-                _innerlinenumberscolor = value;
-
-
-                try
-                {
-                    if (SyntaxHighlighter != null)
-                    {
-                        SyntaxHighlighter.InnerLinesNumberStyle = new TextStyle(new SolidBrush(value), null, FontStyle.Regular);
-
-                        this.IsChanged = true;
-                        this.OnTextChangedDelayed(Range);
-                        Invalidate();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.Show(ex, "Inner Line Numbers Color Property");
-                }
-
-            }
-        }
-
->>>>>>> AIM_BRANCH
 
         /// <summary>
         /// Padings of text area
@@ -2812,7 +2403,6 @@ namespace FastColoredTextBoxNS
 
             i = CheckStylesBufferSize();
             Styles[i] = style;
-            Debug.Assert(i < 32, "Overflow of index: Styles","Index:" + i.ToString());
             return i;
         }
 
@@ -2830,7 +2420,7 @@ namespace FastColoredTextBoxNS
                     break;
 
             i++;
-            if (i > Styles.Length)
+            if (i >= Styles.Length)
                 throw new Exception("Maximum count of Styles is exceeded.");
 
             return i;
@@ -4432,29 +4022,10 @@ namespace FastColoredTextBoxNS
                         MacrosManager.ExecuteMacros();
                     }
                     break;
-                //Launch IdentifierInfo Dialog from FCTBActions
-                case FCTBAction.IdentifierInfo :
-                    if (Selection.IsEmpty)
-                        Selection.Expand();
-                    if (!Selection.IsEmpty)
-                    {
-                        ShowIdentifierInfoDialog(this.SelectedText);
-                    }
-                    break;
-
-                //Launch Properties Dialog from FCTBActions
-                case FCTBAction.Properties:
-                    ShowProperties();
-                    break;
-     
-                case FCTBAction.FileOpen :
-                    LoadFile();
-                    break;
-
-                case FCTBAction.FileSave :
-                    SaveFile();
-                    break;
-                    
+                case FCTBAction.CustomAction1 :
+                case FCTBAction.CustomAction2 :
+                case FCTBAction.CustomAction3 :
+                case FCTBAction.CustomAction4 :
                 case FCTBAction.CustomAction5 :
                 case FCTBAction.CustomAction6 :
                 case FCTBAction.CustomAction7 :
@@ -4474,84 +4045,6 @@ namespace FastColoredTextBoxNS
                     OnCustomAction(new CustomActionEventArgs(action));
                     break;
             }
-        }
-
-        /// <summary>
-        /// Shows dialogs when Identifier selected with full info.
-        /// </summary>
-        /// <param name="SelectedText"></param>
-        public void ShowIdentifierInfoDialog(string SelectedText)
-        {
-
-
-
-            frmIdentifierInfo frm = new frmIdentifierInfo();
-
-
-            int PointIndex = 0;
-            var TokenType = CoderHelper.GetTypeIdentifier(this.Identifiers, SelectedText, out PointIndex);
-            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
-                return;
-
-
-            frm.Text = SelectedText;
-
-            switch (TokenType)
-            {
-                case PCODE_CONST.OUTPOINTTYPE:
-                    frm.Label.Text = Identifiers.Outputs[PointIndex].Label;
-                    frm.FullLabel.Text = Identifiers.Outputs[PointIndex].FullLabel;
-                    frm.Value.Text = Identifiers.Outputs[PointIndex].Value;
-                    frm.Units.Text = Identifiers.Outputs[PointIndex].Units;
-                    frm.AutoManual.Text = Identifiers.Outputs[PointIndex].AutoManual;
-                    frm.ControlPointName.Text = Identifiers.Outputs[PointIndex].ControlPointName;
-                    frm.ControlPointType.Text = "OUTPUT";
-                    break;
-                case PCODE_CONST.INPOINTTYPE:
-                    frm.Label.Text = Identifiers.Inputs[PointIndex].Label;
-                    frm.FullLabel.Text = Identifiers.Inputs[PointIndex].FullLabel;
-                    frm.Value.Text = Identifiers.Inputs[PointIndex].Value;
-                    frm.Units.Text = Identifiers.Inputs[PointIndex].Units;
-                    frm.AutoManual.Text = Identifiers.Inputs[PointIndex].AutoManual;
-                    frm.ControlPointName.Text = Identifiers.Inputs[PointIndex].ControlPointName;
-                    frm.ControlPointType.Text = "INPUT";
-                    break;
-                case PCODE_CONST.VARPOINTTYPE:
-                    frm.Label.Text = Identifiers.Variables[PointIndex].Label;
-                    frm.FullLabel.Text = Identifiers.Variables[PointIndex].FullLabel;
-                    frm.Value.Text = Identifiers.Variables[PointIndex].Value;
-                    frm.Units.Text = Identifiers.Variables[PointIndex].Units;
-                    frm.AutoManual.Text = Identifiers.Variables[PointIndex].AutoManual;
-                    frm.ControlPointName.Text = Identifiers.Variables[PointIndex].ControlPointName;
-                    frm.ControlPointType.Text = "VARIABLE";
-                    break;
-                case PCODE_CONST.PIDPOINTTYPE:
-                    //TODO: Resolve what's a PID? Program Identifier?
-                    break;
-                default:
-                    break;
-            }
-
-
-            frm.ShowDialog();
-
-        }
-
-
-        /// <summary>
-        /// Shows the property grids dialog for this control
-        /// </summary>
-        public void ShowProperties()
-        {
-            PropertiesGrid pg = new PropertiesGrid();
-            pg.SettingsBag.SelectedObject = this;
-
-            pg.Top = Screen.FromControl(this).Bounds.Height / 2 - this.ParentForm.Height / 2;
-            pg.Height = this.ParentForm.Height;
-            pg.Left = Screen.FromControl(this).Bounds.Width - pg.Width - 15;
-
-            pg.ShowDialog();
-
         }
 
         protected virtual void OnCustomAction(CustomActionEventArgs e)
@@ -7807,15 +7300,12 @@ namespace FastColoredTextBoxNS
 
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // FastColoredTextBox
             // 
-            this.Name = "FastColoredTextBox";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FastColoredTextBox_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FastColoredTextBox_KeyUp);
-            this.ResumeLayout(false);
-
+            Name = "FastColoredTextBox";
+            ResumeLayout(false);
         }
 
         /// <summary>
@@ -8084,76 +7574,6 @@ window.status = ""#print"";
             }
             Invalidate();
         }
-
-        /// <summary>
-        /// Open file dialog to load a text file into editor
-        /// </summary>
-        public void LoadFile()
-        {
-
-            try
-            {
-                // Create an instance of the open file dialog box.
-                OpenFileDialog openFileDialog1 = new OpenFileDialog();
-
-                // Set filter options and filter index.
-                openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-                openFileDialog1.FilterIndex = 1;
-
-                openFileDialog1.Multiselect = true;
-
-                // Call the ShowDialog method to show the dialog box.
-                DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-                // Process input if the user clicked OK.
-                if (userClickedOK == DialogResult.OK)
-                {
-                    string text = System.IO.File.ReadAllText(openFileDialog1.FileName);
-
-                    this.Text = text;
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.Show(ex, "Loading File");
-            }
-        }
-
-
-        /// <summary>
-        /// Open File dialog to save a copy of program code into a file.
-        /// </summary>
-        public void SaveFile()
-        {
-
-            try
-            {
-                // Create an instance of the open file dialog box.
-                SaveFileDialog openFileDialog1 = new SaveFileDialog();
-
-                // Set filter options and filter index.
-                openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-                openFileDialog1.FilterIndex = 1;
-
-
-
-                // Call the ShowDialog method to show the dialog box.
-                DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-                // Process input if the user clicked OK.
-                if (userClickedOK == DialogResult.OK)
-                {
-                    System.IO.File.WriteAllText(openFileDialog1.FileName, this.Text);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.Show(ex, "Saving File");
-            }
-        }
-
 
         /// <summary>
         /// Close file binding mode
@@ -8845,16 +8265,6 @@ window.status = ""#print"";
         }
 
         #endregion
-
-        private void FastColoredTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            OnKeyDown(e);
-        }
-
-        private void FastColoredTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            OnKeyUp(e);
-        }
     }
 
     public class PaintLineEventArgs : PaintEventArgs

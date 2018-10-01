@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 using System;
-=======
-﻿using System;
->>>>>>> AIM_BRANCH
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,8 +35,4 @@ namespace PRGReaderLibrary.Utilities
             return After.ToString();
         }
     };
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> AIM_BRANCH

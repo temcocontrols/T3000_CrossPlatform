@@ -23,23 +23,17 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-<<<<<<< HEAD
     <RegisterForComInterop>true</RegisterForComInterop>
     <NoWarn>1591</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
-=======
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <NoWarn>1591</NoWarn>
->>>>>>> AIM_BRANCH
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-<<<<<<< HEAD
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -58,35 +52,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLL\PRGReaderLibrary.dll</HintPath>
     </Reference>
-=======
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Build|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Build\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
->>>>>>> AIM_BRANCH
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-<<<<<<< HEAD
     <Reference Include="T3000Grammar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLL\T3000Grammar.dll</HintPath>
     </Reference>
-=======
-    <Reference Include="System.Xml" />
->>>>>>> AIM_BRANCH
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComUtilities.cs" />
@@ -105,35 +77,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SendEventArgs.cs" />
-<<<<<<< HEAD
-=======
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
-      <Project>{f32c40df-730f-4cb2-9a37-2b0950829c93}</Project>
-      <Name>ExceptionHandling</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FastColoredTextBoxNS\FastColoredTextBoxNS.csproj">
-      <Project>{21d9406b-9a90-4a82-9894-abeb07393e78}</Project>
-      <Name>FastColoredTextBoxNS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FastColoredTextBox\FastColoredTextBox.csproj">
-      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
-      <Name>FastColoredTextBox</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Irony\Irony.csproj">
-      <Project>{d81f5c91-d7db-46e5-bc99-49488fb6814c}</Project>
-      <Name>Irony</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
-      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
-      <Name>PRGReaderLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\T3000Grammar\T3000Grammar.csproj">
-      <Project>{6f1e65fa-e159-4543-a97d-78c0253d12fa}</Project>
-      <Name>T3000Grammar</Name>
-    </ProjectReference>
->>>>>>> AIM_BRANCH
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProgramEditorForm.resx">
@@ -144,6 +87,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

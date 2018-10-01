@@ -46,7 +46,6 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Back] = FCTBAction.ClearWordLeft;
             this[KEYS.Insert] = FCTBAction.ReplaceMode;
             this[KEYS.Control | KEYS.Insert] = FCTBAction.Copy;
-            //PASTE
             this[KEYS.Shift | KEYS.Insert] = FCTBAction.Paste;
             this[KEYS.Delete] = FCTBAction.DeleteCharRight;
             this[KEYS.Control | KEYS.Delete] = FCTBAction.ClearWordRight;
@@ -92,17 +91,7 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Subtract] = FCTBAction.ZoomOut;
             this[KEYS.Control | KEYS.Add] = FCTBAction.ZoomIn;
             this[KEYS.Control | KEYS.D0] = FCTBAction.ZoomNormal;
-            this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;
-
-            //New KeyMapping for IdentifierInfoDialog: CTRL+I
-            this[KEYS.Control | KEYS.Shift | KEYS.I] = FCTBAction.IdentifierInfo;
-            //New KeyMapping for Properties: F4
-            this[KEYS.F4] = FCTBAction.Properties;
-            //New KeyMapping for File Open: F6
-            this[KEYS.F6] = FCTBAction.FileOpen;
-            //New KeyMapping for File Save: F7
-            this[KEYS.F7] = FCTBAction.FileSave;
-
+            this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;   
         }
 
         public override string ToString()
@@ -125,8 +114,6 @@ namespace FastColoredTextBoxNS
 
         public static HotkeysMapping Parse(string s)
         {
-
-            //TODO: Linux error for PgUP
             var result = new HotkeysMapping();
             result.Clear();
             var cult = Thread.CurrentThread.CurrentUICulture;
@@ -136,17 +123,10 @@ namespace FastColoredTextBoxNS
             
             foreach (var p in s.Split(','))
             {
-
-                try
-                {
-                    var pp = p.Split('=');
-                    var k = (Keys)kc.ConvertFromString(pp[0].Trim());
-                    var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
-                    result[k] = a;
-                }
-                catch
-                {//Ignore this exceptions for a while.
-                }
+                var pp = p.Split('=');
+                var k = (Keys)kc.ConvertFromString(pp[0].Trim());
+                var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
+                result[k] = a;
             }
 
             Thread.CurrentThread.CurrentUICulture = cult;
@@ -227,10 +207,10 @@ namespace FastColoredTextBoxNS
         ZoomIn,
         ZoomNormal,
         ZoomOut,
-        IdentifierInfo,
-        Properties,
-        FileOpen,
-        FileSave,
+        CustomAction1,
+        CustomAction2,
+        CustomAction3,
+        CustomAction4,
         CustomAction5,
         CustomAction6,
         CustomAction7,

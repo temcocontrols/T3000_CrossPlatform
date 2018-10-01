@@ -55,12 +55,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
 
         OUTPOINTTYPE= 1,
         INPOINTTYPE,
-<<<<<<< HEAD
         VARPOINTTYPE
-=======
-        VARPOINTTYPE,
-        PIDPOINTTYPE
->>>>>>> AIM_BRANCH
         
     }
 
@@ -157,11 +152,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         SQR = 0x39, TBL = 0x3A,
         TIME = 0x3B,
         [Name("TIME-ON")]
-<<<<<<< HEAD
         TIME_ON = 0x3C,
-=======
-        TIME_ON = 0x3C, //60
->>>>>>> AIM_BRANCH
         TIME_OFF = 0x3D, INTERVAL = 0x3E, TIME_FORMAT = 0x3F,
         WR_ON = 0x40, WR_OFF = 0x41, UNACK = 0x42, USER_A = 0x45, USER_B = 0x46, _Status = 0x47, RUNTIME = 0x48, SCANS = 0x4B,
         POWER_LOSS = 0x4C, LN = 0x4D, LN_1 = 0x4E,
@@ -172,8 +163,4 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         REMOTE_POINT_PRG
     };
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> AIM_BRANCH

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 using System;
-=======
-﻿using System;
->>>>>>> AIM_BRANCH
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -216,8 +212,4 @@ namespace ProgramEditor.Extensions
         }
 
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> AIM_BRANCH

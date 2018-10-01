@@ -68,8 +68,4 @@ namespace T3000.Forms
         }
 
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> AIM_BRANCH
