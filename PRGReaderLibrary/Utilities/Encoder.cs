@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 using PRGReaderLibrary.Extensions;
+=======
+﻿using PRGReaderLibrary.Extensions;
+>>>>>>> AIM_BRANCH
 using PRGReaderLibrary.Types.Enums.Codecs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> AIM_BRANCH
 namespace PRGReaderLibrary.Utilities
 {
 
@@ -17,25 +25,46 @@ namespace PRGReaderLibrary.Utilities
         /// <summary>
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
+<<<<<<< HEAD
         static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+=======
+        public ControlPoints Identifiers { get; set; } = new ControlPoints();
+>>>>>>> AIM_BRANCH
 
         /// <summary>
         /// Set a local copy of all identifiers in prg
         /// </summary>
         /// <param name="prg">Program prg</param>
+<<<<<<< HEAD
         static public void SetControlPoints(Prg prg)
         {
             Identifiers = new ControlPoints(prg);
         }
 
 
+=======
+         public void SetControlPoints(Prg prg)
+        {
+            Identifiers = new ControlPoints(prg);
+            TimeBuff = new TimeBuffer(Identifiers);
+        }
+
+        /// <summary>
+        /// Required copy con TimeBuffer entries
+        /// </summary>
+        public TimeBuffer TimeBuff { get; set; }
+>>>>>>> AIM_BRANCH
 
         /// <summary>
         /// Encode a ProgramCode Into Byte Array
         /// </summary>
         /// <param name="Tokens">Preprocessed list of tokens</param>
         /// <returns>byte array</returns>
+<<<<<<< HEAD
         public static byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
+=======
+        public byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
+>>>>>>> AIM_BRANCH
         {
             var result = new List<byte>();
             byte[] prgsize = { (byte)0x00, (byte)0x00 };
@@ -49,7 +78,11 @@ namespace PRGReaderLibrary.Utilities
 
             int tokenIndex = 0;
             bool isFirstToken = true;
+<<<<<<< HEAD
 
+=======
+            bool isTimeBuffered = false;
+>>>>>>> AIM_BRANCH
 
             for (tokenIndex = 0; tokenIndex < Tokens.Count; tokenIndex++)
             {
@@ -64,6 +97,10 @@ namespace PRGReaderLibrary.Utilities
                     case "THEN":
                     case "ELSE":
                     case "EOE":
+<<<<<<< HEAD
+=======
+                        //TODO: Ver si es posible eliminar el último EOE antes de LF para evitar que se guarden como comas
+>>>>>>> AIM_BRANCH
                         result.Add((byte)token.Token);
                         offset++;
 
@@ -104,6 +141,10 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
                     #region Special Numbers
+<<<<<<< HEAD
+=======
+                    #region Line Numbers
+>>>>>>> AIM_BRANCH
                     case "LineNumber":
                         if (isFirstToken)
                         {
@@ -127,11 +168,18 @@ namespace PRGReaderLibrary.Utilities
                             offset += 2;
 
                         }
+<<<<<<< HEAD
 
 
                         break;
 
                     case "OFFSET":
+=======
+                        break; 
+                    #endregion
+
+                    case "OFFSET": //2 Bytes
+>>>>>>> AIM_BRANCH
                         //push index of next byte for new offset.
                         offsets.Push(offset + 1);
                         short OffSetNumber = Convert.ToInt16(token.Token);
@@ -190,6 +238,11 @@ namespace PRGReaderLibrary.Utilities
                     case "AND":
                     case "XOR":
                     case "OR":
+<<<<<<< HEAD
+=======
+                    case "NOT":
+
+>>>>>>> AIM_BRANCH
                     //FUNCTIONS
                     case "ABS":
                     case "INTERVAL":
@@ -203,8 +256,12 @@ namespace PRGReaderLibrary.Utilities
                     case "CONRESET":
                     case "TBL":
                     case "TIME":
+<<<<<<< HEAD
                     case "TIME_ON":
                     case "TIME_OFF":
+=======
+                    
+>>>>>>> AIM_BRANCH
                     case "WR_ON":
                     case "WR_OFF":
                     case "DOY":
@@ -246,7 +303,20 @@ namespace PRGReaderLibrary.Utilities
                         offset++;
                         break;
 
+<<<<<<< HEAD
                     
+=======
+                    #region Buffer time functions
+                    case "TIME_ON":
+                    case "TIME_OFF":
+                        result.Add((byte)token.Token);
+                        offset++;
+                        //next token will be an identifier
+                        isTimeBuffered = true;
+                        break; 
+                    #endregion
+
+>>>>>>> AIM_BRANCH
                     #region Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
                     case "MAX":
@@ -258,6 +328,7 @@ namespace PRGReaderLibrary.Utilities
                         break; 
                     #endregion
 
+<<<<<<< HEAD
                     case "NOT":
                         //TODO: Learn how to encode NOT operator -> tests and errors.
                         break;
@@ -275,16 +346,61 @@ namespace PRGReaderLibrary.Utilities
                         result.Add((byte)token.Type);
                         offset += 3;
 
+=======
+                    #endregion
+
+                    #region Identifiers, Registers, VARS, INS, OUTS, etc 3 bytes
+                    case "Identifier":
+                    case "Register":
+                    case "VARS":
+                    case "INS":
+                    case "OUTS":
+                    case "PIDS":
+                        //Encode directly: Token + Index + Type
+                        if (!isTimeBuffered)
+                        {
+                            result.Add((byte)token.Token);
+                            result.Add((byte)token.Index);
+                            result.Add((byte)token.Type);
+                            offset += 3;
+                            //Register??
+                            if(token.Token == (short) PCODE_CONST.REMOTE_POINT_PRG)
+                            {
+                                //We need to add 3 bytes: PanelID, Subnet and 1
+                                result.Add((byte)Convert.ToInt16(token.PanelID));
+                                result.Add((byte)Convert.ToInt16(token.Subnet));
+                                result.Add((byte)1);
+                                offset += 3;
+
+                            }
+                        }
+                        else //It's a time buffered function
+                        {
+                            //add to time buffer!!
+                            short TimeBufferPos= (short)TimeBuff.Add((IdentifierTypes)token.Type, token.Index);
+                            result.AddRange(TimeBufferPos.ToBytes());
+                            offset += 2;
+                        }
+                        isTimeBuffered = false;
+>>>>>>> AIM_BRANCH
                         break;
 
                     #endregion
 
+<<<<<<< HEAD
                     #region NUMBERS (4 BYTES ONLY)
+=======
+                    #region NUMBERS (4-5 BYTES ONLY)
+>>>>>>> AIM_BRANCH
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
                     case "TIMER":
+<<<<<<< HEAD
 
+=======
+                    case "WRNUMBER":
+>>>>>>> AIM_BRANCH
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -297,8 +413,33 @@ namespace PRGReaderLibrary.Utilities
                         result.AddRange(byteArray);
                         offset += 4;
                         break;
+<<<<<<< HEAD
                     #endregion
 
+=======
+
+                    case "TimeLiteral":
+
+                        //NEW: Added special treatment for TIME FORMAT numbers, see related TODO for DECODER
+                        result.Add((byte)token.Token);
+                        offset++;
+                        string hh, mm, ss;
+                        hh = token.Text.Substring(0, 2);
+                        mm = token.Text.Substring(3, 2);
+                        ss = token.Text.Substring(6, 2);
+                        int numericvalue = Convert.ToInt32(hh) * 3600 + Convert.ToInt32(mm) * 60 + Convert.ToInt32(ss);
+                        numericvalue *= 1000;
+                        byte[] timeByteArray = BitConverter.GetBytes(numericvalue);
+                        result.AddRange(timeByteArray);
+                        //extra byte to mark a TIME FORMAT VALUE
+                        result.Add((byte)token.Type);
+                        offset += 5;
+                        break;
+
+                    #endregion
+
+
+>>>>>>> AIM_BRANCH
                     #region EOF CRLF
 
                     case "LF":
@@ -319,6 +460,10 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
+<<<<<<< HEAD
+=======
+                    case "CMDSEPARATOR":
+>>>>>>> AIM_BRANCH
                     default:
                         Trace.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
@@ -352,12 +497,17 @@ namespace PRGReaderLibrary.Utilities
 
             }
 
+<<<<<<< HEAD
 
+=======
+            //calculate SIZE of Program
+>>>>>>> AIM_BRANCH
             offset--;
             byte[] size = offset.ToBytes();
             result[0] = size[0];
             result[1] = size[1];
 
+<<<<<<< HEAD
             //fill with nulls til the end of block
             while (result.Count < 2000)
             {
@@ -445,3 +595,35 @@ namespace PRGReaderLibrary.Utilities
     }
 
 }
+=======
+            //Add Time Buffer here
+
+            short bufferCount = (short)TimeBuff.BufferCount;
+
+            if (bufferCount>0)
+            {
+
+                //Test if it fits
+                byte[] btime = TimeBuff.ToBytes();
+                if (result.Count > (2000 - btime.Length))
+                    throw new OverflowException($"Time Buffer not allocated, exceeding 2000 bytes. Current PRG size is {result.Count} and TimeBuffer requires {btime.Length}");
+                else
+                    result.AddRange(btime);
+               
+
+            }
+
+            //////fill with nulls til the end of block
+
+            while (result.Count < 2000)
+            {
+                result.Add((byte)0x00);
+            }
+            return result.ToArray();
+        }
+
+
+    }
+
+}
+>>>>>>> AIM_BRANCH

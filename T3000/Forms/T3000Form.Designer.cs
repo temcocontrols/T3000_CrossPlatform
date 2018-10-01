@@ -51,6 +51,8 @@
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LoadProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.LoadPartName = new System.Windows.Forms.ToolStripStatusLabel();
             this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
             this.inputsButton = new System.Windows.Forms.ToolStripButton();
             this.outputsButton = new System.Windows.Forms.ToolStripButton();
@@ -64,8 +66,11 @@
             this.groupBoxBuildingView = new System.Windows.Forms.GroupBox();
             this.treeBuildingView = new System.Windows.Forms.TreeView();
             this.splitterMain = new System.Windows.Forms.Splitter();
+<<<<<<< HEAD
             this.LoadProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.LoadPartName = new System.Windows.Forms.ToolStripStatusLabel();
+=======
+>>>>>>> AIM_BRANCH
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.buttonsToolStrip.SuspendLayout();
@@ -229,6 +234,18 @@
             this.statusLabel.Name = "statusLabel";
             resources.ApplyResources(this.statusLabel, "statusLabel");
             // 
+            // LoadProgressBar
+            // 
+            this.LoadProgressBar.Maximum = 624;
+            this.LoadProgressBar.Name = "LoadProgressBar";
+            resources.ApplyResources(this.LoadProgressBar, "LoadProgressBar");
+            this.LoadProgressBar.Step = 1;
+            // 
+            // LoadPartName
+            // 
+            this.LoadPartName.Name = "LoadPartName";
+            resources.ApplyResources(this.LoadPartName, "LoadPartName");
+            // 
             // buttonsToolStrip
             // 
             this.buttonsToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
@@ -332,6 +349,7 @@
             this.splitterMain.Name = "splitterMain";
             this.splitterMain.TabStop = false;
             // 
+<<<<<<< HEAD
             // LoadProgressBar
             // 
             this.LoadProgressBar.Maximum = 624;
@@ -346,6 +364,8 @@
             this.LoadPartName.Name = "LoadPartName";
             resources.ApplyResources(this.LoadPartName, "LoadPartName");
             // 
+=======
+>>>>>>> AIM_BRANCH
             // T3000Form
             // 
             resources.ApplyResources(this, "$this");

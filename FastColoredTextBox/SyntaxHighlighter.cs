@@ -18,11 +18,17 @@ namespace FastColoredTextBoxNS
         public readonly Style BrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
         public readonly Style GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
         public readonly Style GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        public readonly Style GreenNormalStyle = new TextStyle(Brushes.Green, null, FontStyle.Regular);
         public readonly Style MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
         public readonly Style MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
         public readonly Style RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
         public readonly Style BlackStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
+<<<<<<< HEAD
        
+=======
+        public readonly Style CrimsonStyle = new TextStyle(Brushes.Crimson, null, FontStyle.Regular);
+
+>>>>>>> AIM_BRANCH
         //
         protected readonly Dictionary<string, SyntaxDescriptor> descByXMLfileNames =
             new Dictionary<string, SyntaxDescriptor>();
@@ -164,6 +170,9 @@ namespace FastColoredTextBoxNS
         {
             switch (language)
             {
+                case Language.ControlBasic:
+                    ControlBasicSyntaxHighlight(range);
+                    break;
                 case Language.CSharp:
                     CSharpSyntaxHighlight(range);
                     break;
@@ -647,6 +656,28 @@ namespace FastColoredTextBoxNS
                     CommentTagStyle = GrayStyle;
                     VariableStyle = MaroonStyle;
                     break;
+
+                //Start of new Language Style Schema for Control Basic
+                case Language.ControlBasic:
+                    StringStyle = BrownStyle;
+                    CommentStyle = GreenStyle;
+                    NumberStyle = MagentaStyle;
+                    AttributeStyle = GreenNormalStyle;
+                    ClassNameStyle = BoldStyle;
+                    KeywordStyle = BlueStyle;
+                    CommentTagStyle = GrayStyle;
+                    //Default values for all identifiers
+                    VariableStyle = CrimsonStyle;
+                    InputStyle = GreenNormalStyle;
+                    OutputStyle = GreenNormalStyle;
+                    PidStyle = MagentaStyle;
+                    //Inner line numbers
+                    InnerLinesNumberStyle = GrayStyle;
+
+
+
+                    break;
+
                 case Language.VB:
                     StringStyle = BrownStyle;
                     CommentStyle = GreenStyle;
@@ -777,6 +808,81 @@ namespace FastColoredTextBoxNS
             range.SetFoldingMarkers(@"#region\b", @"#endregion\b"); //allow to collapse #region blocks
             range.SetFoldingMarkers(@"/\*", @"\*/"); //allow to collapse comment block
         }
+
+        /// <summary>
+        /// Highlights Control Basic code
+        /// </summary>
+        /// <param name="range"></param>
+        public virtual void ControlBasicSyntaxHighlight(Range range)
+        {
+            range.tb.CommentPrefix = "REM";
+            range.tb.LeftBracket = '(';
+            range.tb.RightBracket = ')';
+            range.tb.LeftBracket2 = '{';
+            range.tb.RightBracket2 = '}';
+            range.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy2;
+
+            range.tb.AutoIndentCharsPatterns
+                = @"
+^\s*[\w\.]+(\s\w+)?\s*(?<range>=)\s*(?<range>[^;]+);
+^\s*(case|default)\s*[^:]*(?<range>:)\s*(?<range>[^;]+);
+";
+            //clear style of changed range
+            range.ClearStyle(StringStyle, CommentStyle, NumberStyle, AttributeStyle, ClassNameStyle, KeywordStyle, VariableStyle);
+            //
+            if (CSharpStringRegex == null)
+                InitCShaprRegex();
+            //string highlighting
+            range.SetStyle(StringStyle, CSharpStringRegex);
+            //comment highlighting
+            range.SetStyle(CommentStyle, CSharpCommentRegex1);
+            range.SetStyle(CommentStyle, CSharpCommentRegex2);
+            range.SetStyle(CommentStyle, CSharpCommentRegex3);
+            range.SetStyle(CommentStyle, CSharpCommentRegex4);
+            //number highlighting
+            range.SetStyle(NumberStyle, CSharpNumberRegex);
+            //attribute highlighting
+            range.SetStyle(AttributeStyle, CSharpAttributeRegex);
+            //class name highlighting
+            range.SetStyle(ClassNameStyle, CSharpClassNameRegex);
+            //keyword highlighting
+            range.SetStyle(KeywordStyle, CSharpKeywordRegex);
+            range.SetStyle(VariableStyle, CSharpVariablesRegex);
+
+            //find document comments
+            foreach (Range r in range.GetRanges(@"^\s*///.*$", RegexOptions.Multiline))
+            {
+                //remove C# highlighting from this fragment
+                r.ClearStyle(StyleIndex.All);
+                //do XML highlighting
+                if (HTMLTagRegex == null)
+                    InitHTMLRegex();
+                //
+                r.SetStyle(CommentStyle);
+                //tags
+                foreach (Range rr in r.GetRanges(HTMLTagContentRegex))
+                {
+                    rr.ClearStyle(StyleIndex.All);
+                    rr.SetStyle(CommentTagStyle);
+                }
+                //prefix '///'
+                foreach (Range rr in r.GetRanges(@"^\s*///", RegexOptions.Multiline))
+                {
+                    rr.ClearStyle(StyleIndex.All);
+                    rr.SetStyle(CommentTagStyle);
+                }
+            }
+
+            //clear folding markers
+            range.ClearFoldingMarkers();
+            //set folding markers
+            range.SetFoldingMarkers("{", "}"); //allow to collapse brackets block
+            range.SetFoldingMarkers(@"#region\b", @"#endregion\b"); //allow to collapse #region blocks
+            range.SetFoldingMarkers(@"/\*", @"\*/"); //allow to collapse comment block
+        }
+
+
+
 
         protected void InitVBRegex()
         {
@@ -1404,6 +1510,27 @@ namespace FastColoredTextBoxNS
         /// Variable style
         /// </summary>
         public Style VariableStyle { get; set; }
+        
+        /// <summary>
+        /// Input Style : Control Basic
+        /// </summary>
+        public Style InputStyle { get; set; }
+
+        /// <summary>
+        /// Output style: Control Basic
+        /// </summary>
+        public Style OutputStyle { get; set; }
+
+        /// <summary>
+        /// PID Style: Control Basic
+        /// </summary>
+        public Style PidStyle { get; set; }
+
+        /// <summary>
+        /// Inner Lines Number: Control  Basic
+        /// </summary>
+        public Style InnerLinesNumberStyle { get; set; }
+
 
         /// <summary>
         /// Specific PHP keyword style
@@ -1430,6 +1557,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public Style TypesStyle { get; set; }
 
+
         #endregion
     }
 
@@ -1446,6 +1574,7 @@ namespace FastColoredTextBoxNS
         SQL,
         PHP,
         JS,
-        Lua
+        Lua,
+        ControlBasic
     }
 }

@@ -1,0 +1,19 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/LEDControl/obj/Debug
+/T3000.LEDS/bin/Debug
+/T3000.LEDS/obj/Debug
+/.vs
+/LEDControl/bin/Debug
+/LED_src/bin/Debug
+/LED_src/obj/Debug
+/LED_src.zip
+/UpgradeLog.htm
+obj
+bin
+/Backup
+/LED_src
+/RPI SPI Tests
+/T3000.Driver.rar

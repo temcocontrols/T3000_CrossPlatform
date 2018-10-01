@@ -1,7 +1,93 @@
+<<<<<<< HEAD
 # Release Files
 The latest release notes, windows and linux release files are stored here
 
 
+=======
+﻿# Release Files
+The latest release notes, windows and linux release files are stored here
+
+
+## Updated: 20180724.1525
+### PRG support for TIME-ON, TIME-OFF, variable argument's function support
+### Multiple statements comma sepparated in THEN and ELSE clauses.
+#### TimeBuffer Reading and Writing ready
+#### PIDs (controllers) support initiated
+Humidity Program encoded and decode in EV14.PRG
+BUG FOUND: READ HUM-D has  unidentified tokens 20.50.REG100 ???
+Decoded HP Program en EV14.PRG, multiple statements in THEN or ELSE Part.
+Adjustments to Grammar, including multiple commands or assigments inside a IFCLAUSE
+
+New release files and binaries x86, x64
+
+## Updated: 20180713.1221
+### PRG support for TIME-ON, TIME-OFF
+#### TimeBuffer Reading and Writing ready
+#### PIDs (controllers) support initiated
+ev14.prg sample program is now passing tests: decoding and enconding
+New release files and binaries x86, x64
+
+## Updated: 20180706.1828
+### EDITOR Save and Load File (inside editor)
+New Shortcut for Load File  = F6
+New Shortcut for Save File  = F7
+Menú for ProgramEditorForm rearranged.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries x86, x64
+
+## Updated: 20180704.1146
+### EDITOR New properties dialog and improved Identifier Info Dialog
+New Shortcut for Settings (Properties) of Editor  = F4
+New Shortcut for Identifier Settings = CTRL + SHIFT + I
+Both dialogs rebuilded inside the editor: ShowIdentifierInfoDialog(SelectedText) and ShowProperties()
+####Some fixing after testing the solution under Debian 9.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries x86, x64 and Linux (tar.gz)
+
+## Updated: 20180628.0404
+### EDITOR STYLES + IDENTIFIERS INFO DIALOG
+Editor now supports all properties for TextStyles: Variables, Inputs, Outputs, Strings, Commments, Keywords, Inner Line Numbers. Editor using a local copy of Control Points Info + Improved IdentifierInfo form inside Editor (SHIFT+INS Shortcut on a selected identifier).
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+## Updated: 20180627.1304
+### EDITOR STYLES
+Editor now supports all properties for TextStyles: Variables, Inputs, Outputs, Strings, Commments, Keywords, Inner Line Numbers. Editor using a local copy of Control Points Info.
+Next: Improve IdentifierInfo form inside Editor.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+
+## Updated: 20180626.0318
+### TIME FORMAT SUPPORT
+Working on Editor Commands: Ctrl+Insert displays Identifier Info. Right now working outside the editor, directly from ProgramEditor Form, as its a bit hard to pass a copy of control points info to Editor. Will see how to workaround this.
+Editor now supports 3 properties for TextStyles: VariablesColor, CommmentsColor and KeywordsColor. Inputs and Outpus not working right now 'cause editor, doesn't have a copy of Control Points yet.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+## Updated: 20180619.0134
+### TIME FORMAT SUPPORT
+Revision to Encoder and Decoder Class: Static all functions and properties was a very bad idea. ControlPoints dissapears from scope.
+BUG FOUND AND SOLVED: EQ was not recognized between expressions, Grammar was sending ASSIGMENT instead of EQ.
+Editor has a debug assert for buffer overflow of Styles.
+Helper methods extracted from Encoder for better maintenance of the code.
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+
+## Updated: 20180615.2052
+### IF IF+ IF- THEN ELSE redesigned.
+Tested against env14.prg
+####Pending TIME-OFF, TIME-ON two bytes argument info and struct.
+New release files and binaries
+
+## Updated: 20180214.0100
+### DECODER 90% Ready, BUG FIX: IF THEN ELSE Decoding with recursive calls of DecodeBytes()
+#### 90% of Functions, 90% of Commands, IF+- Ready.  Still no info for some functions, commands and FOR
+#### Same lack of info as in Encode Process.
+Tested against T3000 C++ and Raspbian Jessie
+
+>>>>>>> AIM_BRANCH
 ## Updated: 20180103.2207
 ### New FastColoredTextBoxNS.IronyFCBT control (editor with syntax highlighting based on irony grammar)
 #### Version 1.1 [COM VISIBLE And Registered for COM InterOP]
@@ -149,7 +235,11 @@ New Issue #2 found:
 #### byte[] GetExpression(from,to) will be the function responsible of getting encoded a full expression with begin and end  markers as indexes.
 #### ForEach(token) must be changed into For() to allow better control of current element.
 
+<<<<<<< HEAD
 ![issue002]
+=======
+![issue002](https://phoenix.aimservices.tech:8082/uploads/c-programming/t3000/7d330df1cb/issue002.jpg)
+>>>>>>> AIM_BRANCH
 
 ##### Known markers so far:
 Format: Begin/End

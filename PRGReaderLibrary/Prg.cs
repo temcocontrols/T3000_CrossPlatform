@@ -4,6 +4,10 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Diagnostics;
+<<<<<<< HEAD
+=======
+    using ExceptionHandling;
+>>>>>>> AIM_BRANCH
 
     public class Prg : Version
     {
@@ -18,6 +22,7 @@
         public long Coef { get; set; }
         public bool IsUpgraded { get; set; } = false;
         //
+<<<<<<< HEAD
         
 
         /// <summary>
@@ -56,6 +61,19 @@
         {
             LoadParts?.Invoke(this, e);
         }
+=======
+
+
+        private ILoadMessages parentClass;  
+
+        public void SetParentClass(object c)  
+        {
+            parentClass = c as ILoadMessages;
+        }
+
+
+      
+>>>>>>> AIM_BRANCH
 
         #region Main data
 
@@ -82,10 +100,18 @@
 
       
 
+<<<<<<< HEAD
+
+    #region Binary data
+=======
+>>>>>>> AIM_BRANCH
 
     #region Binary data
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> AIM_BRANCH
     public byte[] RawData { get; protected set; }
 
         private void FromDosFormat(byte[] bytes)
@@ -290,6 +316,9 @@
             Length = bytes.Length;
             
             offset += 3;
+            int parts = 1;
+            this.parentClass?.PassMessage(parts, $"PRG Header 1 - Offset {offset}");
+            
 
             LoadPartEventArgs e = new LoadPartEventArgs(1,"Header: 1");
             OnLoadParts(e);
@@ -302,6 +331,10 @@
             e.Add(Inputs.Count, $"InputPoints {Inputs.Count} - Offset {offset}");
             OnLoadParts(e);
 
+            parts += Inputs.Count;
+            this.parentClass?.PassMessage(parts,$"InputPoints {Inputs.Count} - Offset {offset}");
+           
+
             //Get all outputs
             Outputs.AddRange(GetArray(bytes,
                 OutputPoint.GetCount(FileVersion),
@@ -310,13 +343,22 @@
             e.Add(Outputs.Count, $"OutputPoints {Outputs.Count} - Offset {offset}");
             OnLoadParts(e);
 
+            parts += Outputs.Count;
+            this.parentClass?.PassMessage(parts, $"OutputPoints {Outputs.Count} - Offset {offset}");
+           
+
             //Get all variables
             Variables.AddRange(GetArray(bytes,
                 VariablePoint.GetCount(FileVersion),
                 VariablePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new VariablePoint(i, 0, FileVersion)));
+<<<<<<< HEAD
             e.Add(Variables.Count, $"VariablePoints {Variables.Count} - Offset {offset}");
             OnLoadParts(e);
+=======
+            parts += Variables.Count;
+            this.parentClass?.PassMessage(parts, $"VariablePoints {Variables.Count} - Offset {offset}");
+>>>>>>> AIM_BRANCH
 
             //Get all programs
             Programs.AddRange(GetArray(bytes,
@@ -324,11 +366,17 @@
                 ProgramPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new ProgramPoint(i, 0, FileVersion)));
 
+            parts += Programs.Count;
+            this.parentClass?.PassMessage(parts, $"ProgramPoints {Programs.Count} - Offset {offset}");
+
             //Get all controllers
             Controllers.AddRange(GetArray(bytes,
                 ControllerPoint.GetCount(FileVersion),
                 ControllerPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new ControllerPoint(i, 0, FileVersion)));
+
+            parts += Controllers.Count;
+            this.parentClass?.PassMessage(parts, $"ControllerPoints {Controllers.Count} - Offset {offset}");
 
             //Get all screens
             Screens.AddRange(GetArray(bytes,
@@ -336,58 +384,94 @@
                 ScreenPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new ScreenPoint(i, 0, FileVersion)));
 
+            parts += Screens.Count;
+            this.parentClass?.PassMessage(parts, $"ScreenPoints {Screens.Count} - Offset {offset}");
+
             //Get all graphics
 
-            //TODO: Constants to object static Size(FileVersion) Count(FileVersion)
+            //TODO: NOT MINE: Constants to object static Size(FileVersion) Count(FileVersion)
 
             Graphics.AddRange(GetArray(bytes,
                 GraphicPoint.GetCount(FileVersion),
                 GraphicPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new GraphicPoint(i, 0, FileVersion)));
 
+            parts += Graphics.Count;
+            this.parentClass?.PassMessage(parts, $"GraphicPoints {Graphics.Count} - Offset {offset}");
+
             Users.AddRange(GetArray(bytes,
                 UserPoint.GetCount(FileVersion),
                 UserPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new UserPoint(i, 0, FileVersion)));
+
+            parts += Users.Count;
+            this.parentClass?.PassMessage(parts, $"UserPoints {Users.Count} - Offset {offset}");
 
             CustomUnits.Digital.AddRange(GetArray(bytes,
                 CustomDigitalUnitsPoint.GetCount(FileVersion),
                 CustomDigitalUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new CustomDigitalUnitsPoint(i, 0, FileVersion)));
 
+            parts += CustomUnits.Digital.Count;
+            this.parentClass?.PassMessage(parts, $"CustomUnits.DigitalPoints {CustomUnits.Digital.Count} - Offset {offset}");
+
             Tables.AddRange(GetArray(bytes,
                 TablePoint.GetCount(FileVersion),
                 TablePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new TablePoint(i, 0, FileVersion)));
 
+            parts += Tables.Count;
+            this.parentClass?.PassMessage(parts, $"TablePoints {Tables.Count} - Offset {offset}");
+
             Settings = new Settings(
                 GetObject(bytes, Settings.GetSize(FileVersion), ref offset), 0, FileVersion);
+
+            parts += 1;
+            this.parentClass?.PassMessage(parts, $"Settings 1 - Offset {offset}");
 
             Schedules.AddRange(GetArray(bytes,
                 SchedulePoint.GetCount(FileVersion),
                 SchedulePoint.GetSize(FileVersion), ref offset)
                 .Select(i => new SchedulePoint(i, 0, FileVersion)));
 
+            parts += Schedules.Count;
+            this.parentClass?.PassMessage(parts, $"SchedulePoints {Schedules.Count} - Offset {offset}");
+
             Holidays.AddRange(GetArray(bytes,
                 HolidayPoint.GetCount(FileVersion),
                 HolidayPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new HolidayPoint(i, 0, FileVersion)));
+
+            parts += Holidays.Count;
+            this.parentClass?.PassMessage(parts, $"HolidayPoints {Holidays.Count} - Offset {offset}");
 
             Monitors.AddRange(GetArray(bytes,
                 MonitorPoint.GetCount(FileVersion),
                 MonitorPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new MonitorPoint(i, 0, FileVersion)));
 
+            parts += Monitors.Count;
+            this.parentClass?.PassMessage(parts, $"MonitorPoints {Monitors.Count} - Offset {offset}");
+
             ScheduleCodes.AddRange(GetArray(bytes,
                 ScheduleCode.GetCount(FileVersion),
                 ScheduleCode.GetSize(FileVersion), ref offset)
                 .Select(i => new ScheduleCode(i, 0, FileVersion)));
+
+            parts += ScheduleCodes.Count;
+            this.parentClass?.PassMessage(parts, $"ScheduleCodes {ScheduleCodes.Count} - Offset {offset}");
 
             HolidayCodes.AddRange(GetArray(bytes,
                 HolidayCode.GetCount(FileVersion),
                 HolidayCode.GetSize(FileVersion), ref offset)
                 .Select(i => new HolidayCode(i, 0, FileVersion)));
 
+<<<<<<< HEAD
+=======
+            parts += HolidayCodes.Count;
+            this.parentClass?.PassMessage(parts, $"HolidayCodes {HolidayCodes.Count} - Offset {offset}");
+
+>>>>>>> AIM_BRANCH
 
             int pcode_offset = offset ;
             var ProgramCodeBytes = bytes.ToBytes(offset, ProgramCode.GetSize(FileVersion));
@@ -399,13 +483,27 @@
 
             ProgramCodes[0] = new ProgramCode(ProgramCodeBytes, this, 0, FileVersion);
 
+<<<<<<< HEAD
+=======
+            parts += 1;
+            this.parentClass?.PassMessage(parts, $"ProgramCodes 1 - Offset {pcode_offset+2000}");
+
+>>>>>>> AIM_BRANCH
 
             for (int i = 1; i < ProgramCode.GetCount(FileVersion) ; i++)
             {
                 pcode_offset += ProgramCode.GetSize(FileVersion);
                 ProgramCodeBytes = bytes.ToBytes(pcode_offset, ProgramCode.GetSize(FileVersion));
                 ProgramCodes[i] = new ProgramCode(ProgramCodeBytes, this, 0, FileVersion);
+<<<<<<< HEAD
                 Debug.WriteLine($"Leído ProgramCode[{i}]");
+=======
+
+                parts += 1;
+                this.parentClass?.PassMessage(parts, $"ProgramCodes {i+1} - Offset {pcode_offset+2000}");
+
+                //Debug.WriteLine($"Leído ProgramCode[{i}]");
+>>>>>>> AIM_BRANCH
             }
 
 
@@ -414,6 +512,9 @@
                 CustomAnalogUnitsPoint.GetCount(FileVersion),
                 CustomAnalogUnitsPoint.GetSize(FileVersion), ref offset)
                 .Select(i => new CustomAnalogUnitsPoint(i, 0, FileVersion)));
+
+            parts += CustomUnits.Analog.Count;
+            this.parentClass?.PassMessage(parts, $"CustomUnits.AnalogPoints {CustomUnits.Analog.Count} - Offset {offset}");
 
             CheckOffset(offset, Length);
 
@@ -441,29 +542,51 @@
             }
         }
 
-        public Prg(byte[] bytes) 
+        public Prg() : base() {; }
+
+
+        /// <summary>
+        /// Creates a Prg Object from a sequence of bytes
+        /// Also sets the parent object for messaging purposes. (Load Progress in a Progress Bar?!)
+        /// </summary>
+        /// <param name="bytes">Sequencec of bytes</param>
+        /// <param name="parent">Parent Object</param>
+        public Prg(byte[] bytes, Object parent)
             : base(FileVersionUtilities.GetFileVersion(bytes))
         {
-            if (FileVersion == FileVersion.Unsupported)
+            //Set the parent object
+            this.SetParentClass(parent);
+            try
             {
-                throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
+
+                if (FileVersion == FileVersion.Unsupported)
+                {
+                    throw new Exception($@"Data is corrupted or unsupported. First 100 bytes:
 {bytes.GetString(0, Math.Min(100, bytes.Length))}");
+                }
+
+                switch (FileVersion)
+                {
+                    case FileVersion.Dos:
+                        FromDosFormat(bytes);
+                        break;
+
+                    case FileVersion.Current:
+                        FromCurrentFormat(bytes);
+                        break;
+
+                    default:
+                        throw new NotImplementedException("This version not implemented");
+                }
             }
-
-            switch (FileVersion)
-            {
-                case FileVersion.Dos:
-                    FromDosFormat(bytes);
-                    break;
-
-                case FileVersion.Current:
-                    FromCurrentFormat(bytes);
-                    break;
-
-                default:
-                    throw new NotImplementedException("This version not implemented");
+            catch(Exception ex){
+   
+                ExceptionHandler.Show(ex, "public Prg(byte[] bytes, Object parent)", true);
             }
-        }
+            
+
+            
+            }
 
 
         public byte[] ToDosFormat()
@@ -694,34 +817,42 @@
 
         public void Upgrade(FileVersion version = FileVersion.Current)
         {
-            if (FileVersion == version)
-            {
-                return;
-            }
+           
+            
 
-            FileVersion = version;
-            IsUpgraded = true;
-            switch (version)
-            {
-                case FileVersion.Current:
-                    Signature = FileVersionUtilities.Rev6Signature;
-                    Version = 6;
-                    break;
-
-                case FileVersion.Dos:
-                    Signature = FileVersionUtilities.DosSignature;
-                    break;
-
-            }
-
-            foreach (var variable in Variables)
-            {
-                variable.FileVersion = version;
-            }
         }
 
-        public static Prg Load(string path) => PrgReader.Read(path);
+        /// <summary>
+        /// Read all bytes from a .PRG File to build an object.
+        /// Now it supports Class messaging with its parent.
+        /// Allows to show LOAD progress in a control of a parent FORM
+        /// </summary>
+        /// <param name="path">Path to .PRG File</param>
+        /// <param name="parent">Parent object</param>
+        /// <!--Modified by LRUIZ : 2018-06-05-->
+        /// <returns>Prg Object</returns>
+        public static Prg Load(string path, object parent)
+        {
+            Prg _prg = new Prg();
+            
+            _prg = PrgReader.Read(path,parent);
+            _prg.SetParentClass(parent);
+            return _prg;
+        }
+
+
         public void Save(string path) => PrgWriter.Write(this, path);
        
+<<<<<<< HEAD
+=======
+    }
+
+
+    public interface ILoadMessages
+    {
+        void PassMessage(int counter,  string theMessage);
+
+
+>>>>>>> AIM_BRANCH
     }
 }

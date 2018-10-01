@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 using System;
+=======
+﻿using System;
+>>>>>>> AIM_BRANCH
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,8 +43,23 @@ namespace PRGReaderLibrary.Utilities
         public short Precedence { get; set; }
 
         /// <summary>
+<<<<<<< HEAD
         /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
         /// Expected to be fulfilled with more token info
+=======
+        /// Panel ID for Registers
+        /// </summary>
+        public string PanelID { get; set; } = "";
+
+        /// <summary>
+        /// Subnet for Registers
+        /// </summary>
+        public string Subnet { get; set; } = "";
+
+        /// <summary>
+        /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
+        /// Default token precedence to ZERO
+>>>>>>> AIM_BRANCH
         /// </summary>
         /// <param name="Text">Plain Text tokenizable</param>
         /// <param name="TName">Terminal Name</param>
@@ -70,4 +89,8 @@ namespace PRGReaderLibrary.Utilities
         }
 
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> AIM_BRANCH

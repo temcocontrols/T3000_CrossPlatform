@@ -1,5 +1,6 @@
 ﻿namespace T3000.Forms
 {
+    using ExceptionHandling;
     using FastColoredTextBoxNS;
     using Irony;
     using Irony.Parsing;
@@ -18,6 +19,12 @@
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> AIM_BRANCH
     /// <summary>
     /// Delegate to event handler Send
     /// </summary>
@@ -25,10 +32,17 @@
     /// <param name="e"></param>
     public delegate void SendEventHandler(object sender, SendEventArgs e);
 
+<<<<<<< HEAD
 
     [Guid("E8789EA8-CA99-48DF-B920-1A1DCB4FF6AD")]
     [ClassInterface(ClassInterfaceType.None)]
     public partial class ProgramEditorForm : UserControl, IProgramEditor
+=======
+    /// <summary>
+    /// ProgramEditor Form
+    /// </summary>
+    public partial class ProgramEditorForm : Form
+>>>>>>> AIM_BRANCH
     {
 
         /// <summary>
@@ -36,12 +50,17 @@
         /// </summary>
         public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
+<<<<<<< HEAD
         [Description("Code Text"), Category("ProgramEditor")]
         public string Code
         {
            get { return editTextBox.Text; }
            set { editTextBox.Text = value; ParseCode(false); }
         }
+=======
+
+        private string Code { get; set; }
+>>>>>>> AIM_BRANCH
 
 
         List<EditorTokenInfo> Tokens = new List<EditorTokenInfo>();
@@ -51,14 +70,21 @@
         /// <summary>
         /// Form caption
         /// </summary>
+<<<<<<< HEAD
         [Description("Window Caption"), Category("ProgramEditor")]
+=======
+>>>>>>> AIM_BRANCH
         public string Caption
         {
             get { return this.Text; }
             set { this.Text = value; }
         }
 
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> AIM_BRANCH
 
         Grammar _grammar;
         LanguageData _language;
@@ -111,8 +137,8 @@
         /// </summary>
         public ProgramEditorForm()
         {
-            InitializeComponent();
 
+<<<<<<< HEAD
             editTextBox.Grammar = new T3000Grammar();
             editTextBox.SetParser(new LanguageData(editTextBox.Grammar));
             //LRUIZ :: Enable a new set of grammar, language and parser, to get Program Code Errors
@@ -125,6 +151,25 @@
             
             //var items = new List<AutocompleteItem>();
             var keywords = new List<string>()
+=======
+            try
+            {
+                InitializeComponent();
+
+                editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
+                editTextBox.Grammar = new T3000Grammar();
+                editTextBox.SetParser(new LanguageData(editTextBox.Grammar));
+                //LRUIZ :: Enable a new set of grammar, language and parser, to get Program Code Errors
+                _grammar = new T3000Grammar();
+                _language = new LanguageData(_grammar);
+                _parser = new Parser(_language);
+                //LRUIZ
+
+
+
+                //var items = new List<AutocompleteItem>();
+                var keywords = new List<string>()
+>>>>>>> AIM_BRANCH
             {
                 "REM",
                 "IF",
@@ -134,8 +179,9 @@
                 "ELSE",
                 "TIME-ON"
             };
-            keywords.AddRange(T3000Grammar.Functions);
+                keywords.AddRange(T3000Grammar.Functions);
 
+<<<<<<< HEAD
             //foreach (var item in keywords)
             //    items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
 
@@ -158,6 +204,35 @@
 
             
             
+=======
+                //foreach (var item in keywords)
+                //    items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
+
+                //var snippets = new[]{
+                //    "if(^)\n{\n}",
+                //    "if(^)\n{\n}\nelse\n{\n}",
+                //    "for(^;;)\n{\n}", "while(^)\n{\n}",
+                //    "do${\n^}while();",
+                //    "switch(^)\n{\n\tcase : break;\n}"
+                //};
+                //foreach (var item in snippets)
+                //    items.Add(new SnippetAutocompleteItem(item) { ImageIndex = 1 });
+
+                //set as autocomplete source
+                //autocompleteMenu.Items.SetAutocompleteItems(items);
+
+
+                this.WindowState = FormWindowState.Maximized;
+                //this.WindowState = FormWindowState.Normal;
+
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Initializing ProgramEditorForm, exception found");
+            }
+
+>>>>>>> AIM_BRANCH
         }
 
         /// <summary>
@@ -166,7 +241,11 @@
         /// <returns>new line number (string)</returns>
         string GetNextLineNumber()
         {
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> AIM_BRANCH
             Lines = new List<EditorLineInfo>();
             var lines = editTextBox.Text.ToLines(StringSplitOptions.RemoveEmptyEntries);
             //Preload ALL line numbers
@@ -178,7 +257,11 @@
                 this.Lines.Add(LINFO);
             }
 
+<<<<<<< HEAD
             return (Lines.LastOrDefault().Before  + 10).ToString();
+=======
+            return (Lines.LastOrDefault().Before + 10).ToString();
+>>>>>>> AIM_BRANCH
 
         }
 
@@ -188,8 +271,13 @@
         /// </summary>
         public void LinesValidator()
         {
+<<<<<<< HEAD
             
             if(_parseTree == null) return;
+=======
+
+            if (_parseTree == null) return;
+>>>>>>> AIM_BRANCH
 
             if (_parseTree.ParserMessages.Any()) return;
 
@@ -198,15 +286,25 @@
             bool Cancel = false;
             Lines = new List<EditorLineInfo>();
             Jumps = new List<EditorJumpInfo>();
+<<<<<<< HEAD
                        
 
             var lines = editTextBox.Text.ToLines( StringSplitOptions.RemoveEmptyEntries);
+=======
+
+
+            var lines = editTextBox.Text.ToLines(StringSplitOptions.RemoveEmptyEntries);
+>>>>>>> AIM_BRANCH
 
             //Preload ALL line numbers
             for (var i = 0; i < lines.Count; i++)
             {
                 var words = lines[i].Split(' ');
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> AIM_BRANCH
                 var LINFO = new EditorLineInfo(Convert.ToInt32(words[0]), (i + 1) * 10);
                 this.Lines.Add(LINFO);
             }
@@ -214,11 +312,19 @@
             for (var i = 0; i < lines.Count; i++)
             {
                 var words = lines[i].Split(' ');
+<<<<<<< HEAD
                 
 
                 for(var j=0; j< words.Count(); j++)
                 {
                     JumpType type = JumpType.GOTO ;
+=======
+
+
+                for (var j = 0; j < words.Count(); j++)
+                {
+                    JumpType type = JumpType.GOTO;
+>>>>>>> AIM_BRANCH
                     int linenumber = -1;
                     int offset = 0;
 
@@ -230,6 +336,7 @@
                         case "ON-ERROR":
                         case "ON-ALARM":
                         case "THEN":
+<<<<<<< HEAD
 
                             switch (words[j][0])
                             {
@@ -249,17 +356,44 @@
                             //var BeforeLineNumber = Convert.ToInt32(words[offset]);
                             linenumber = Lines.FindIndex(k => k.Before == BeforeLineNumber );
                             if(linenumber == -1)
+=======
+
+                            switch (words[j][0])
+                            {
+                                case 'G':
+                                    type = words[j] == "GOTO" ? JumpType.GOTO : JumpType.GOSUB; break;
+                                case 'O':
+                                    type = words[j] == "ON-ERROR" ? JumpType.ONERROR : JumpType.ONALARM; break;
+                                case 'T':
+                                    type = JumpType.THEN; break;
+                            }
+
+
+                            offset = j + 1;
+                            int BeforeLineNumber = -1;
+                            if (!Int32.TryParse(words[offset], out BeforeLineNumber)) break;
+
+                            //var BeforeLineNumber = Convert.ToInt32(words[offset]);
+                            linenumber = Lines.FindIndex(k => k.Before == BeforeLineNumber);
+                            if (linenumber == -1)
+>>>>>>> AIM_BRANCH
                             {
                                 //There is a semantic error here
                                 //Add error message to parser and cancel renumbering.
                                 //Don't break it inmediately, to show all possible errors of this type
                                 _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+<<<<<<< HEAD
                                     new SourceLocation(pos + words[j].Count() + 1, i , col + words[j].Count()+1), 
                                     $"Semantic Error: Line number {BeforeLineNumber.ToString()} for {words[j]} does not exist", 
+=======
+                                    new SourceLocation(pos + words[j].Count() + 1, i, col + words[j].Count() + 1),
+                                    $"Semantic Error: Line number {BeforeLineNumber.ToString()} for {words[j]} does not exist",
+>>>>>>> AIM_BRANCH
                                     new ParserState("Validating Lines")));
                                 ShowCompilerErrors();
                                 Cancel = true;
                             }
+<<<<<<< HEAD
                             EditorJumpInfo JINFO = new EditorJumpInfo(type, i, offset );
                             Jumps.Add(JINFO);
                             //Change reference to new linenumber
@@ -268,6 +402,16 @@
                             
                     }//switch jumps
                      pos += words[j].Count() + 1;
+=======
+                            EditorJumpInfo JINFO = new EditorJumpInfo(type, i, offset);
+                            Jumps.Add(JINFO);
+                            //Change reference to new linenumber
+                            words[offset] = linenumber == -1 ? BeforeLineNumber.ToString() : Lines[linenumber].ToString();
+                            break;
+
+                    }//switch jumps
+                    pos += words[j].Count() + 1;
+>>>>>>> AIM_BRANCH
                     col += words[j].Count() + 1;
                 }//for words
                 pos++;
@@ -275,7 +419,11 @@
                 //change current linenumber
                 words[0] = Lines[i].ToString();
                 lines[i] = string.Join(' '.ToString(), words);
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> AIM_BRANCH
 
             }//for lines
             string newcode = string.Join(Environment.NewLine, lines);
@@ -290,6 +438,7 @@
         public void SetCode(string code)
         {
             Code = code;
+<<<<<<< HEAD
             //editTextBox.Text = RemoveInitialNumbers(code);
             
             editTextBox.Text = Code;
@@ -300,6 +449,20 @@
             
         }
         
+=======
+            //Create a local copy of identifiers for Editor, Async Mode
+            //TODO: Identifiers copy: This has to be dynamically updated if n windows can be open at the same time.
+            if (Identifiers != null)
+                editTextBox.Identifiers = this.Identifiers;
+            editTextBox.Text = Code;
+
+            //LRUIZ: Parse and show syntax errors
+
+            ParseCode(false);
+
+        }
+
+>>>>>>> AIM_BRANCH
         private void cmdClear_Click(object sender, EventArgs e)
         {
             ClearCode();
@@ -313,6 +476,7 @@
         {
             //local member Code is not cleared, to allow recovering with REFRESH (F8)
             editTextBox.Text = "";
+<<<<<<< HEAD
         }
 
         /// <summary>
@@ -378,12 +542,249 @@
                 gridCompileErrors.Rows.Add(null, ex.Message, null);
                 
                 //throw;
+=======
+
+            //TODO: Check if original method clears bookmarks too, else try this.
+            //editTextBox.SelectAll();
+            //editTextBox.ClearSelected();
+        }
+
+        /// <summary>
+        /// Override of ToString -> GetCode
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return GetCode();
+        }
+
+        /// <summary>
+        /// Get current code
+        /// </summary>
+        /// <returns> FCBT.Text </returns>
+        public string GetCode()
+        {
+            Code = editTextBox.Text;
+            return Code;
+        }
+
+        /// <summary>
+        /// Forces parsing the code contained in EditTextBox
+        /// </summary>
+        public void ParseCode(bool fullParsing = false)
+        {
+            ClearParserOutput();
+            if (_parser == null || !_parser.Language.CanParse()) return;
+            _parseTree = null;
+            GC.Collect(); //to avoid disruption of perf times with occasional collections
+            _parser.Context.TracingEnabled = true;
+            try
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
+
+                _parser.Parse(editTextBox.Text, "<source>");
+                _parseTree = _parser.Context.CurrentParseTree;
+
+
+                if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors()) return;
+
+                if (fullParsing) //Only do this checks in full parsing.
+                {
+                    LinesValidator(); // Check semantic errors on jumps and renumber lines.
+                    ProcessTokens(); //Check for other semantic errors and make some changes to local list of tokens
+
+                    if (_parseTree.ParserMessages.Any() || _parseTree.HasErrors())
+                    {
+                        MessageBox.Show($"{_parseTree.ParserMessages.Count()} error(s) found!{Environment.NewLine}Compiler halted.", "Semantic Errors Found!");
+                        return;
+                    }
+                }
+
+
+                System.Threading.Thread.Sleep(500);
+                stopwatch.Stop();
+                LastParseTime = stopwatch.ElapsedMilliseconds - 500;
+                lblParseTime.Text = $"Parse Time: {LastParseTime}ms";
+
+            }
+            catch (Exception ex)
+            {
+                gridCompileErrors.Rows.Add(null, ex.Message, null);
+
+                //throw;
+            }
+            finally
+            {
+
+                ShowCompilerErrors();
+
+
+                ShowCompileStats();
+
+            }
+        }
+
+        private void ClearParserOutput()
+        {
+
+            lblSrcLineCount.Text = string.Empty;
+            lblSrcTokenCount.Text = "";
+            lblParseTime.Text = "";
+            lblParseErrorCount.Text = "";
+
+
+            gridCompileErrors.Rows.Clear();
+
+            Application.DoEvents();
+        }
+
+        private void ShowCompileStats()
+        {
+            lblSrcLineCount.Text = $"Lines: {editTextBox.Lines.Count()} ";
+            lblSrcTokenCount.Text = $"Tokens: {_parseTree.Tokens.Count()}";
+            lblParseTime.Text = $"Parse Time: {LastParseTime}ms";
+            lblParseErrorCount.Text = _parseTree.HasErrors() ? $"Errors: {_parseTree.ParserMessages.Count() }" : "No Errors";
+
+        }
+
+        /// <summary>
+        /// Updates Compile Errors Gridview
+        /// </summary>
+        private void ShowCompilerErrors()
+        {
+            gridCompileErrors.Rows.Clear();
+            if (_parseTree == null || _parseTree.ParserMessages.Count == 0) return;
+            foreach (var err in _parseTree.ParserMessages)
+                gridCompileErrors.Rows.Add(err.Location, err, err.ParserState);
+        }
+
+        /// <summary>
+        /// Allows to position over token at selected error.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void gridCompileErrors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= gridCompileErrors.Rows.Count) return;
+            var err = gridCompileErrors.Rows[e.RowIndex].Cells[1].Value as LogMessage;
+            switch (e.ColumnIndex)
+            {
+                case 0: //state
+                case 1: //stack top
+                    ShowSourcePosition(err.Location.Position, 1);
+                    break;
+            }//switch
+        }
+
+        /// <summary>S
+        /// Shows a caret in editTextBox for a selected token
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="length"></param>
+        private void ShowSourcePosition(int position, int length)
+        {
+            if (position < 0) return;
+            editTextBox.SelectionStart = position;
+            editTextBox.SelectionLength = length;
+            //editTextBox.Select(location.Position, length);
+            editTextBox.DoCaretVisible();
+            editTextBox.Focus();
+
+        }
+
+        /// <summary>
+        /// Parse code delayed after editing program.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editTextBox_TextChangedDelayed(object sender, TextChangedEventArgs e)
+        {
+            ParseCode(false);
+
+        }
+
+        private void cmdRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshCode();
+        }
+
+        /// <summary>
+        /// Refresh, reload assigned code into editBox
+        /// </summary>
+        public void RefreshCode()
+        {
+
+            editTextBox.Text = Code;
+
+        }
+
+        private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            switch (e.KeyCode)
+            {
+                //F1: Reserved for help
+                case Keys.F2:
+                    SendCode(); e.Handled = true; break;
+                //F3: Find dialog => inside editor
+                //F4: Properties dialog =>inside editor
+                //F5: Free
+                //F6: Load File => inside editor
+                //F7: Save File =>inside editor
+
+                case Keys.F8:
+                    RefreshCode(); e.Handled = true; break;
+                case Keys.F10:
+                    LinesValidator(); e.Handled = true; break;
+                case Keys.F11:
+                    ClearCode(); e.Handled = true; break;
+                
+
+            }//switch.
+
+        }
+
+
+        private void cmdLoad_Click(object sender, EventArgs e)
+        {
+
+            editTextBox.LoadFile();
+
+        }
+
+
+
+        /// <summary>
+        /// User call to SendCode event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdSend_Click(object sender, EventArgs e)
+        {
+            SendCode();
+        }
+
+
+
+        /// <summary>
+        /// Triggers SendCode Event
+        /// </summary>
+        private void SendCode()
+        {
+            ParseCode(true); //Performs full parsing and semantic checks
+
+            if (_parseTree.HasErrors() || _parseTree.ParserMessages.Any())
+            {
+                MessageBox.Show("Send operation, aborted", "Error(s) found");
+                return;
+>>>>>>> AIM_BRANCH
             }
             finally
             {
                 
                 ShowCompilerErrors();
 
+<<<<<<< HEAD
                
                 ShowCompileStats();
                
@@ -1088,6 +1489,542 @@
         
 
  
+=======
+            Code = editTextBox.Text;
+            OnSend(new SendEventArgs(Code, Tokens));
+
+        }
+
+        /// <summary>
+        /// On Click, call to SaveFile inside editor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdSave_Click(object sender, EventArgs e)
+        {
+            editTextBox.SaveFile();
+        }
+
+
+        /// <summary>
+        /// On Click, call to ShowProperties inside editor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdSettings_Click(object sender, EventArgs e)
+        {
+            editTextBox.ShowProperties();
+
+
+            ////NOT WORKING: Serialize SettingsBag;
+            //IFormatter formatter = new BinaryFormatter();
+            //Stream stream = new FileStream("EditorSettings.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+            //formatter.Serialize(stream, editTextBox  );
+            //stream.Close();
+
+        }
+
+        private void cmdRenumber_Click(object sender, EventArgs e)
+        {
+            LinesValidator();
+        }
+
+
+
+
+        /// <summary>
+        /// Pre-process tokens from parser
+        /// </summary>
+        /// <remarks>Expressions are converted to RPN</remarks>
+        public void ProcessTokens()
+        {
+
+            string[] excludeTokens = { "CONTROL_BASIC", "LF" };
+            bool isFirstToken = true;
+            var Cancel = false;
+
+            int WaitCount = 0;
+
+            try
+            {
+                Tokens = new List<EditorTokenInfo>();
+
+                if (_parseTree == null) return;
+
+                //foreach (var tok in _parseTree.Tokens)
+                for (var idxToken = 0; idxToken < _parseTree.Tokens.Count; idxToken++)
+                {
+                    var tok = _parseTree.Tokens[idxToken];
+                    var tokentext = tok.Text;
+                    var terminalname = tok.Terminal.Name;
+
+
+                    //Prepared New Token for debugging, inspect this variable to see what it becomes
+                    var NewToken = new EditorTokenInfo(tokentext, terminalname);
+
+                    switch (tok.Terminal.Name)
+                    {
+
+                        #region Comments
+                        case "Comment":
+                            //split Comments into two tokens
+                            Tokens.Add(new EditorTokenInfo("REM", "REM"));
+                            Tokens.Last().Type = (short)LINE_TOKEN.REM;
+                            Tokens.Last().Token = (short)LINE_TOKEN.REM;
+                            var commentString = tok.Text.Substring(4).TrimEnd(' ');
+                            Tokens.Add(new EditorTokenInfo(commentString, "Comment"));
+                            Tokens.Last().Type = (short)commentString.Length;
+                            Tokens.Last().Token = (short)LINE_TOKEN.STRING;
+                            break;
+                        #endregion
+
+                        case "PhoneNumber":
+                            var PhoneString = tok.Text.TrimEnd(' ');
+                            NewToken.Text = PhoneString;
+                            NewToken.TerminalName = "PhoneNumber";
+                            NewToken.Type = (short)PhoneString.Length;
+                            NewToken.Token = (short)LINE_TOKEN.STRING;
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "IntegerNumber":
+                            //rename to LineNumber only if first token on line.
+                            NewToken.TerminalName = isFirstToken ? "LineNumber" : terminalname;
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "LocalVariable":
+                            //EditorTokenInfo NewLocalVar = new EditorTokenInfo(tokentext, terminalname);
+                            NewToken.Type = (short)PCODE_CONST.LOCAL_VAR;
+                            NewToken.Token = (short)TYPE_TOKEN.IDENTIFIER;
+                            Tokens.Add(NewToken);
+                            break;
+
+                        #region Control Points Generics | Identifiers, before any expressions
+                        //Before any expression, as in assigments
+                        //Acá faltan varios tipos de identificadores, agregarlos posteriormente
+                        //VARS | PIDS | WRS | ARS | OUTS | INS | PRG | GRP | DMON | AMON
+                        case "VARS":
+                        case "INS":
+                        case "OUTS":
+
+                            string output = Regex.Match(tokentext, @"\d+").Value;
+                            int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
+                            
+                            //Prepare token identifier to encode: Token + Index + Type
+                            //EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, tok.Terminal.Name);
+                            NewToken.TerminalName = tok.Terminal.Name;
+                            switch (tok.Terminal.Name)
+                            {
+                                case "VARS":
+                                    NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                    break;
+                                case "INS":
+                                    NewToken.Type = (short)PCODE_CONST.INPOINTTYPE;
+                                    break;
+                                case "OUTS":
+                                    NewToken.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                    break;
+                                default:
+                                    NewToken.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
+                                    break;
+                            }
+
+                            NewToken.Index = (short)CtrlPointIndex;
+                            NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "PRG":
+                            string idxPRG = Regex.Match(tokentext, @"\d+").Value;
+                            int CPIdx = Convert.ToInt16(idxPRG) - 1; //PRG1 will get index 0, and so on.
+                                                                     //Prepare token identifier to encode: Index (single Byte)
+                            //EditorTokenInfo CPIdPRG = new EditorTokenInfo(tokentext, "PRG");
+                            NewToken.TerminalName = "PRG";
+                            NewToken.Type = (short)TYPE_TOKEN.KEYWORD;
+                            NewToken.Index = (short)CPIdx;
+                            NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "MRK": //termporary marker for commas between arguments, generated when
+                            //encoding ARGCOUNT for CALL PRG
+                            //Translated to EOE
+                            NewToken = new EditorTokenInfo("EOE", "EOE");
+                            NewToken.Token = (short)LINE_TOKEN.EOE;
+                            Tokens.Add(NewToken);
+
+                            break;
+
+                        case "Register":
+                            //Prepare token Register to encode: Token + Index + Type + PanelID + SubNet + 1
+
+                            string[] tokenparts = tokentext.Split('.');
+
+
+                            //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                            NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                            NewToken.Index = (short) (Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
+                            NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
+                            NewToken.PanelID = tokenparts[0];
+                            NewToken.Subnet = tokenparts[1];
+                            //the final byte = 1, assumed to be added later by EncodeBytes
+                        
+                            Tokens.Add(NewToken);
+
+                            break;
+                        case "Identifier":
+                            //Locate Identifier and Identify Token associated ControlPoint.
+                            //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
+                            int PointIndex = 0;
+                            var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, tokentext, out PointIndex);
+                            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
+                            {
+                                //There is a semantic error here
+                                //Add error message to parser and cancel renumbering.
+                                //Don't break it inmediately, to show all possible errors of this type
+                                _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+                                    tok.Location,
+                                    $"Semantic Error: Undefined Identifier: {tok.Text}{System.Environment.NewLine}Check if PRG object is valid.",
+                                    new ParserState("Validating Tokens")));
+                                ShowCompilerErrors();
+                                Cancel = true;
+                            }
+                            else
+                            {
+                                //Prepare token identifier to encode: Token + Index + Type
+                                //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                                NewToken.Type = (short)TokenType;
+                                NewToken.Index = (short)PointIndex;
+                                NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                                Tokens.Add(NewToken);
+                            }
+                            break;
+
+                        #endregion
+
+                        #region Assigments and Expressions
+                        case "ASSIGN":
+
+                            //CALL PRG ASSIGMENT ARGS ...
+                            if (Tokens.Last().TerminalName == "PRG")
+                            {
+                                
+                                //counter for identifiers and registers as arguments
+                                NewToken = new EditorTokenInfo("ARGCOUNT", "ARGCOUNT");
+                                Tokens.Add(NewToken);
+
+                                //count arguments
+                                var ArgIdx = Tokens.Count - 1;
+                                var idCnt = 0;
+                                var NxtId = idxToken + 1;
+
+                                while (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
+                                    || _parseTree.Tokens[NxtId].Terminal.Name == "Register"
+                                    || _parseTree.Tokens[NxtId].Terminal.Name == "COMMA")
+                                {
+                                    if (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
+                                        || _parseTree.Tokens[NxtId].Terminal.Name == "Register")
+                                    {
+                                        //count this argument
+                                        idCnt++;
+                                    }
+                                    else
+                                    {
+                                        //It's a comma, change it to marker 0xFF
+                                        _parseTree.Tokens[NxtId].Terminal.Name = "MRK";
+                                    }
+                                    NxtId++;
+                                }
+                                //Also produce a new token here, last MRK = 0xFF
+                                _parseTree.Tokens.Insert(NxtId, new Token(new Terminal("MRK"), new SourceLocation(0, 0, 0), "MRK", null));
+                                Tokens[ArgIdx].Index = (short)idCnt;
+
+                                break; //Only when ASSIGN found after  PRG
+                            }
+
+                            //Any other way, encode an assigment ↓ ↓ ↓ ↓ 
+
+                            //Get the assignar token
+                            var index = Tokens.Count - 1;
+                            EditorTokenInfo AssignarToken = Tokens[index];
+                            Tokens.RemoveAt(index);
+
+                            NewToken = new EditorTokenInfo(tokentext, terminalname);
+                            NewToken.Token = (short)LINE_TOKEN.ASSIGN;
+                            //insert it before assignar var.
+                            Tokens.Add(NewToken);
+                            Tokens.Add(AssignarToken);
+                            //get the expression in postfix
+                            functions = new Stack<EditorTokenInfo>();
+
+                            ///////////////////////////////////////////////
+                            // GET ALL FUNCTIONS AND LITERALS IN EXPRESSIONS
+                            ///////////////////////////////////////////////
+
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+                            //En caso que haya un then o un else en la pila
+                            //extraer y poner un delimintador EOE
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().TerminalName)
+                                {
+                                    case "THEN":
+                                    case "ELSE":
+                                        branches.Pop();
+                                        NewToken = new EditorTokenInfo("EOE", "EOE");
+                                        NewToken.Token = (short)LINE_TOKEN.EOE;
+                                        NewToken.Index = 0;
+                                        Tokens.Add(NewToken);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                        #endregion
+
+                        #region Numeric Literals and Constants
+                        case "Number":
+                        case "CONNUMBER":
+                        case "TABLENUMBER":
+                        case "SYSPRG":
+                        case "TIMER":
+                        case "PANEL":
+
+                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            NewToken.Index = (short)Convert.ToInt16(tokentext);
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "TimeLiteral":
+
+                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            NewToken.Index = (short)Convert.ToInt16(tokentext);
+                            NewToken.Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
+                            Tokens.Add(NewToken);
+                            break;
+
+
+                        case "PRT_A":
+                        case "PRT_B":
+                        case "PRT_0":
+                        case "ALL":
+                            
+                            PRT_TOKEN PrtToken = (PRT_TOKEN)Enum.Parse(typeof(PRT_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)PrtToken;
+                            Tokens.Add(NewToken);
+                            break;
+                        #endregion
+
+                        #region IF IF+ IF- THEN ELSE
+                        case "IF":
+                        case "IF+":
+                        case "IF-":
+                            //EditorTokenInfo IfToken = new EditorTokenInfo(tokentext, terminalname);
+
+                            LINE_TOKEN TypeToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)TypeToken;
+                            NewToken.Precedence = 200;
+                            Tokens.Add(NewToken);
+                            branches.Push(NewToken);
+                            var LastIdx = idxToken;
+                            //GET IF CLAUSE
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+
+                            break;
+
+                        case "THEN":
+                            //START MARKER FOR THEN PART
+
+                            NewToken.Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            NewToken.Index = (short) (Tokens.Count + 1) ; //Next token will be OFFSET
+                            Tokens.Add(NewToken);
+
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().Text)
+                                {
+                                    case "IF":
+                                    case "IF+":
+                                    case "IF-":
+                                        branches.Pop();//Pop last IF*
+                                        branches.Push(NewToken); //Push corresponding THEN
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+
+                            //Offset to be treated as a 2 bytes NUMBER
+                            NewToken = new EditorTokenInfo("OFFSET", "OFFSET");
+                            NewToken.Token = 0;
+                            Tokens.Add(NewToken);
+
+                            break;
+
+                        case "ELSE":
+                            //ELSE
+                            NewToken.Token = (short)LINE_TOKEN.ELSE; //End marker for Expr.
+                            Tokens.Add(NewToken);
+
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().Text)
+                                {
+                                    case "THEN":
+
+                                        branches.Pop();//Pop last THEN*
+
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+
+                            branches.Push(NewToken); //Push corresponding ELSE
+
+                            //START MARKER FOR ELSE PART
+                            NewToken = new EditorTokenInfo("EOE", "EOE");
+                            NewToken.Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            NewToken.Index = (short) (Tokens.Count + 1); //Next token will be OFFSET
+                            Tokens.Add(NewToken);
+
+
+                            //Offset to be treated as a NUMBER
+                            NewToken = new EditorTokenInfo("OFFSET", "OFFSET");
+                            NewToken.Token = 0;
+                            Tokens.Add(NewToken);
+
+                            break;
+                        #endregion
+
+                        case "LF":
+                        case "EOF":
+                            if (branches.Count > 0)
+                            {
+                                switch (branches.Peek().Text)
+                                {
+                                    case "THEN":
+                                    case "ELSE":
+                                        var offsetIdx = branches.Pop().Index;//references token with end marker 
+                                        Tokens[offsetIdx].Index = (short)Tokens.Count;
+                                        //TODO: Revisar si el token EOE al final de THEN Y ELSE, antes de LF Y EOF están causando un comma inncesaria en la codificación.
+                                        
+                                        //NewToken = new EditorTokenInfo("EOE", "EOE");
+                                        //NewToken.Token = (short)LINE_TOKEN.EOE;
+                                        //Tokens.Add(NewToken);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            NewToken= new EditorTokenInfo(tokentext, terminalname);
+                            Tokens.Add(NewToken);
+                            break;
+
+                        #region Commands
+                        //Simple Commands
+                        case "START":
+                        case "STOP":
+                        case "CLEAR":
+                        case "RETURN":
+                        case "HANGUP":
+                        case "GOTO":
+                        case "GOSUB":
+                        case "ON_ALARM":
+                        case "ON_ERROR":
+                        case "ENABLEX":
+                        case "DISABLEX":
+                        case "ENDPRG":
+                        case "RUN_MACRO":
+                        case "CALL":
+                        case "SET_PRINTER":
+                        case "PRINT_AT":
+                        case "ALARM_AT":
+                        case "PHONE":
+                        case "PRINT":
+
+                            LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)SimpleToken;
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "DECLARE":
+
+                            LINE_TOKEN DeclareToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)DeclareToken;
+                            Tokens.Add(NewToken);
+
+                            NewToken = new EditorTokenInfo("ARGCOUNT", "ARGCOUNT");
+                            Tokens.Add(NewToken);
+
+                            //count identifiers (arguments)
+                            var DeclareIdx = Tokens.Count - 1;
+                            var idCount = 0;
+                            var NextId = idxToken + 1;
+
+                            while (_parseTree.Tokens[NextId].Terminal.Name == "Identifier")
+                            {
+                                idCount++;
+                                NextId++;
+                            }
+                            Tokens[DeclareIdx].Index = (short)idCount;
+
+                            break;
+
+                        case "WAIT":
+                            LINE_TOKEN WaitToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)WaitToken;
+                            Tokens.Add(NewToken);
+
+                            Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
+                            //Add EOE and counter
+                            WaitCount++;
+                            NewToken = new EditorTokenInfo("WAITCOUNTER", "WAITCOUNTER");
+                            NewToken.Token = (short)LINE_TOKEN.EOE;
+                            NewToken.Index = (short)WaitCount;
+                            Tokens.Add(NewToken);
+
+                            break;
+                        #endregion
+
+                        #region Defaults
+
+                        case "CMDSEPARATOR":
+                            
+                            NewToken = new EditorTokenInfo("CMDSEPARATOR", "CMDSEPARATOR");
+                            NewToken.Text = ",";
+                            NewToken.Token = (short)LINE_TOKEN.EOE;
+                            Tokens.Add(NewToken);
+                            break;
+                        case "LET":
+                        default: // No special cases, or expected to be ready to encode.
+                            Tokens.Add(NewToken);
+                            Console.WriteLine($"ProcessTokens(): TOKEN TerminalName:{terminalname}-Text:{tokentext} passed by default");
+                            break;
+                            #endregion
+                    }
+                    isFirstToken = terminalname == "LF" ? true : false;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "ProcessTokens()");
+                ex = null;
+            }
+
+
+        }
+
+
+
+
+>>>>>>> AIM_BRANCH
         /// <summary>
         /// Parse tokens from infix notation into postfix (RPN)
         /// </summary>
@@ -1096,6 +2033,7 @@
         /// <returns>RPN Expression, ready to be encoded</returns>
         public List<EditorTokenInfo> GetExpression(ref int Index, ref bool Cancel)
         {
+<<<<<<< HEAD
             // _parseTree.Tokens.Count
             List<EditorTokenInfo> Expr = new List<EditorTokenInfo>();
             Stack<EditorTokenInfo> Oper = new Stack<EditorTokenInfo>();
@@ -1351,10 +2289,103 @@
                         else
                         {
                             while (Oper.Count > 0 && fxToken.Precedence <= Oper.Peek().Precedence)
+=======
+            //List of Prepared Tokens for Expression
+            List<EditorTokenInfo> Expr = new List<EditorTokenInfo>();
+            //Stack of OPERATORS
+            Stack<EditorTokenInfo> Oper = new Stack<EditorTokenInfo>();
+
+
+            try
+            {
+                //Last processed token was a BEGIN EXPRESSION MARKER
+                Index++; //Jump over next token.
+
+                for (; Index < _parseTree.Tokens.Count; Index++)
+                {
+                    var tok = _parseTree.Tokens[Index];
+                    var tokentext = tok.Text;
+                    var terminalname = tok.Terminal.Name;
+
+                    //Prepared New Token for debugging, inspect this variable to see what it becomes
+                    var NewToken = new EditorTokenInfo(tokentext, terminalname);
+
+                    switch (terminalname)
+                    {
+
+                        #region PARENTHESIS
+
+                        case "(":
+                            //If the incoming symbol is a left parenthesis, push it on the stack.
+                            Oper.Push(NewToken);
+                            break;
+
+                        case ")":
+                            //	If the incoming symbol is a right parenthesis, 
+                            // pop the stack and print the operators until you see a left parenthesis. 
+                            // Discard the pair of parentheses.
+                            if (Oper.Count > 0)
+                            {
+                                while (Oper.Peek().TerminalName != "(")
+                                {
+                                    Expr.Add(Oper.Pop());
+                                }
+                            }
+                            if (Oper.Count > 0) Oper.Pop(); //Discard left parenthesis
+                                                            //see if those parenthesis were parts of a function call.
+                            if (Oper.Count > 0 && Oper.Peek().Precedence == 200)
+                            {
+                                //IS A FUNCTION CALL
+                                
+                                //Add function token to expression.
+                                Expr.Add(Oper.Pop());
+                                if (functions.Count > 0)
+                                {
+                                    if (Expr.Last().TerminalName == functions.Peek().TerminalName)
+                                    {
+                                        //Add the counter into Index property of token function
+
+                                        Expr.Last().Index = functions.Peek().Index;
+                                        functions.Pop();
+                                    }
+
+                                }
+
+                            }
+                            break;
+
+                        #endregion
+
+                        case "COMMA":
+                            //Add 1 to counter of subexpressions, comma means here comes another one.
+                            if (functions.Count > 0) functions.Peek().Index++;
+                            //Save everything down to Left Parenthesis but don't discard it
+                            if (Oper.Count > 0)
+                            {
+                                while (Oper.Peek().TerminalName != "(")
+                                {
+                                    Expr.Add(Oper.Pop());
+                                }
+                            }
+                            break;
+
+                        #region END MARKERS FOR EXPRESSION
+                        case "LF":
+                        case "THEN":
+                        case "EOF":
+                        case "REM":
+                        case "ELSE":
+
+
+                            //Pop all operators remaining in stack.
+                            //Return expression
+                            while (Oper.Count > 0)
+>>>>>>> AIM_BRANCH
                             {
                                 Expr.Add(Oper.Pop());
                             }
 
+<<<<<<< HEAD
                             Oper.Push(fxToken);
                             functions.Push(fxToken);
 
@@ -1391,3 +2422,274 @@
     }
 
 }
+=======
+                            Index--; //Get back, this token should be processed by parent function.
+                            return Expr;
+                        #endregion
+
+                        #region Identifier
+
+                        case "Register":
+                            //Prepare token Register to encode: Token + Index + Type + PanelID + SubNet + 1
+
+                            string[] tokenparts = tokentext.Split('.');
+
+
+                            //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                            NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                            NewToken.Index = (short)(Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
+                            NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
+                            NewToken.PanelID = tokenparts[0];
+                            NewToken.Subnet = tokenparts[1];
+                            //the final byte = 1, assumed to be added later by EncodeBytes
+
+                            Tokens.Add(NewToken);
+                            break;
+
+                        case "VARS":
+                        case "INS":
+                        case "OUTS":
+                        case "PRG":
+                        case "PIDS":
+                            string output = Regex.Match(tokentext, @"\d+").Value;
+                            int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
+                            //Prepare token identifier to encode: Token + Index + Type
+
+                            switch (terminalname)
+                            {
+                                case "OUTS":
+                                    NewToken.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                    break;
+                                case "INS":
+                                    NewToken.Type = (short)PCODE_CONST.INPOINTTYPE;
+                                    break;
+                                case "VARS":
+                                    NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                    break;
+                                case "PIDS":
+                                    NewToken.Type = (short)PCODE_CONST.PIDPOINTTYPE;
+                                    break;
+                                default:
+                                    NewToken.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
+                                    break;
+                            }
+                            //Rename the Raw ControlPoint to Identifier
+                            NewToken.TerminalName = "Identifier";
+                            NewToken.Index = (short)CtrlPointIndex;
+                            NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Expr.Add(NewToken);
+                            break;
+
+                        case "Identifier":
+                            //Locate Identifier and get associated ControlPoint.
+                            //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
+                            int PointIndex = 0;
+                            var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, tokentext, out PointIndex);
+                            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
+                            {
+                                //Semantic Error
+                                //Add error message to parser and cancel renumbering.
+                                //Don't break it inmediately, to show all possible errors of this type
+                                _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
+                                    tok.Location,
+                                    $"Semantic Error: Undefined Identifier: {tok.Text}",
+                                    new ParserState("Validating Tokens")));
+                                ShowCompilerErrors();
+                                Cancel = true;
+                            }
+                            else
+                            {
+                                //Prepare token identifier to encode: Token + Index + Type
+                                ////EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+
+                                NewToken.Type = (short)TokenType;
+                                NewToken.Index = (short)PointIndex;
+                                NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                                Expr.Add(NewToken);
+                            }
+                            break;
+
+
+
+                        
+                        #endregion
+
+                        #region OPERATORS
+
+                        case "PLUS":
+                        case "MINUS":
+                        case "MUL":
+                        case "DIV":
+                        case "POW":
+                        case "MOD":
+                        case "LT":
+                        case "GT":
+                        case "LE":
+                        case "GE":
+                        case "EQ":
+                        case "NE":
+                        case "AND":
+                        case "XOR":
+                        case "OR":
+                        case "NOT":
+                        case "ASSIGN":
+
+                            //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
+                            //To allow further transforms by RPN Parser of Expressions
+                            if(tokentext == "=" && terminalname == "ASSIGN")
+                            {
+                                terminalname = "EQ";
+                            }
+                            NewToken.TerminalName = terminalname;
+                            TYPE_TOKEN TypeToken = (TYPE_TOKEN)Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)TypeToken;
+                            NewToken.Precedence = (short)tok.KeyTerm.Precedence;
+
+                            if (Oper.Count == 0)
+                            {
+                                Oper.Push(NewToken);
+                            }
+                            else
+                            {
+                                while (Oper.Count > 0 && NewToken.Precedence <= Oper.Peek().Precedence)
+                                {
+                                    Expr.Add(Oper.Pop());
+                                }
+
+                                Oper.Push(NewToken);
+                            }
+                            break;
+                        #endregion
+
+                        #region Number
+                        case "Number":
+                        case "CONNUMBER":
+                        case "TABLENUMBER":
+                        case "SYSPRG":
+                        case "TIMER":
+                        case "WRNUMBER":
+                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Expr.Add(NewToken);
+                            //Note: Time format values are encoded with a lookahead algorithm by ENCODER
+
+
+                            break;
+                        case "TimeLiteral":
+                            //TODO: I don't think this works. As ProcessTokens only sees NUMBERS. To See if a TIME FORMAT VALUE
+                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            NewToken.Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
+                            Expr.Add(NewToken);
+                            break;
+                        #endregion
+
+                        #region Non PostFix FUNCTIONS
+                        //This functions are not encoded as postix
+                        case "TIME_ON":
+                        case "TIME_OFF":
+                            FUNCTION_TOKEN fxtokenvalue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)fxtokenvalue;
+
+                            NewToken.Precedence = 200;
+                            NewToken.Index = 1; //ONLY one expression to count
+                            //Token is ready
+                            Expr.Add(NewToken); //send to Expr as soon as they appear (INFIX).
+
+                            break;
+                        #endregion
+
+                        #region Posfix FUNCTIONS
+                        case "ABS":
+                        case "INTERVAL":
+                        case "_INT":
+                        case "LN":
+                        case "LN_1":
+                        case "SQR":
+                        case "_Status":
+                        case "TBL":
+                        case "CONPROP":
+                        case "CONRATE":
+                        case "CONRESET":
+                        case "TIME":
+
+                        case "WR_ON":
+                        case "WR_OFF":
+
+                        case "DOY":
+                        case "DOM":
+                        case "DOW":
+                        case "POWER_LOSS":
+                        case "UNACK":
+                        case "SCANS":
+                        case "USER_A":
+                        case "USER_B":
+
+                        case "AVG":
+                        case "MAX":
+                        case "MIN":
+
+                            //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
+                            //To allow further transforms by RPN Parser of Expressions
+
+                            FUNCTION_TOKEN tokenValue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
+                            NewToken.Token = (short)tokenValue;
+
+                            NewToken.Precedence = 200;
+                            NewToken.Index = 1; //At least one expression to count
+                            //Token is ready
+
+                            if (Oper.Count == 0)
+                            {
+                                Oper.Push(NewToken);
+                                functions.Push(NewToken);
+
+                            }
+                            else
+                            {
+                                switch (terminalname)
+                                {
+                                    case "WR_ON":
+                                    case "WR_OFF":
+                                        if (Oper.Count >= 2)
+                                        {
+                                            for (int i = 0; i < 2; i++)
+                                                Expr.Add(Oper.Pop());
+                                        }
+                                        else throw new ArgumentException($"Not enough arguments for {terminalname}");
+                                        break;
+
+                                    default:
+                                        while (Oper.Count > 0 && NewToken.Precedence <= Oper.Peek().Precedence)
+                                            Expr.Add(Oper.Pop());
+                                        break;
+                                }
+
+                                Oper.Push(NewToken);
+                                functions.Push(NewToken);
+
+                            }
+                            break;
+                            #endregion
+                    }
+
+                }
+
+                //Pop All operators remaining in stack.
+                while (Oper.Count > 0)
+                {
+                    Expr.Add(Oper.Pop());
+                }
+
+                //Check: If Expr.Count < 1 then semantic error found, expected Expression.
+                Index -= 1;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "ProcessTokens()=>GetExpression() found an exception");
+            }
+
+            return Expr;
+        }
+    }
+
+}
+>>>>>>> AIM_BRANCH

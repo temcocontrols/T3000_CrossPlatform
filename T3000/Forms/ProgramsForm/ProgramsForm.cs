@@ -7,7 +7,12 @@
     using Properties;
     using System;
     using System.Collections.Generic;
+<<<<<<< HEAD
+=======
+    using System.Diagnostics;
+>>>>>>> AIM_BRANCH
     using System.Drawing;
+
     using System.Windows.Forms;
 
     public partial class ProgramsForm : Form
@@ -17,7 +22,11 @@
         public DataGridView Progs { get; set; }
 
         private Prg _prg;
+<<<<<<< HEAD
         public Prg Prg
+=======
+        public Prg SelectedPrg
+>>>>>>> AIM_BRANCH
         {
             get { return _prg; }
 
@@ -27,17 +36,30 @@
         public string PrgPath { get; private set; }
 
 
+<<<<<<< HEAD
         public ProgramsForm(ref Prg CurPRG, string Path)
         {
             Prg = CurPRG;
             PrgPath = Path;
 
             SetView(Prg.Programs, Prg.ProgramCodes);
+=======
+        public ProgramsForm(ref Prg  CurPRG,string Path)
+        {
+            SelectedPrg = CurPRG;
+            PrgPath = Path;
+
+            SetView(SelectedPrg.Programs, SelectedPrg.ProgramCodes);
+>>>>>>> AIM_BRANCH
 
         }
 
 
+<<<<<<< HEAD
         public void SetView(List<ProgramPoint> points, List<ProgramCode> codes)
+=======
+        public void  SetView(List<ProgramPoint> points, List<ProgramCode> codes)
+>>>>>>> AIM_BRANCH
         {
             if (points == null)
             {
@@ -123,8 +145,13 @@
                     point.AutoManual = row.GetValue<AutoManual>(AutoManualColumn);
                     point.Length = row.GetValue<int>(SizeColumn);
                     point.Label = row.GetValue<string>(LabelColumn);
+<<<<<<< HEAD
 
 
+=======
+                    
+                    
+>>>>>>> AIM_BRANCH
                 }
             }
             catch (Exception exception)
@@ -202,6 +229,7 @@
             {
                 var row = view.CurrentRow;
                 Index_EditProgramCode = row.GetValue<int>(NumberColumn) - 1;
+<<<<<<< HEAD
 
                 var form = new ProgramEditorForm();
                 form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {Prg.Programs[Index_EditProgramCode].Description}";
@@ -232,6 +260,36 @@
                 form.Send += Form_Send;
                 form.MdiParent = this.MdiParent;
 
+=======
+                
+                var form = new ProgramEditorForm();
+                form.Caption = $"Edit Code: Panel 1 - Program {Index_EditProgramCode } - Label {SelectedPrg.Programs[Index_EditProgramCode].Description}";
+
+                Debug.WriteLine("--------------ORIGINAL CODE-------------------");
+                CoderHelper.ConsolePrintBytes(Codes[Index_EditProgramCode].Code, "Original");
+
+                Decoder DECODER = new Decoder();
+                
+                DECODER.SetControlPoints(SelectedPrg);
+                string ProgramText = DECODER.DecodeBytes(Codes[Index_EditProgramCode].Code);
+
+                Debug.WriteLine("--------------NEW PROGRAM TEXT-------------------");
+                Debug.WriteLine(ProgramText);
+
+                //STEP 1: create a local copy of all identifiers
+                form.Identifiers = DECODER.Identifiers;
+
+                //STEP 2: Create a local copy for Control Basic program text
+                form.SetCode(ProgramText);
+
+                //STEP 3: Override Send Event Handler and encode program into bytes.
+                form.Send += Form_Send;
+
+                //STEP 4: Who's your daddy?!!
+                form.MdiParent = this.MdiParent ;
+
+                
+>>>>>>> AIM_BRANCH
                 form.Show();
                 //if (form.ShowDialog() != DialogResult.OK) return;
 
@@ -245,6 +303,7 @@
         private void Form_Send(object sender, SendEventArgs e)
         {
 
+<<<<<<< HEAD
             Console.WriteLine();
             Console.WriteLine("---------------------DEBUG STRINGS-----------------------");
             Console.WriteLine();
@@ -266,10 +325,38 @@
             //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
             //Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}.PRG");
 
+=======
+            Debug.WriteLine("");
+            Debug.WriteLine("---------------------DEBUG STRINGS-----------------------");
+            Debug.WriteLine("");
+            Debug.WriteLine($"Code:{Environment.NewLine}{e.Code}");
+            Debug.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
+
+
+            //Init a copy of controlpoints
+            Encoder ENCODER = new Encoder();
+
+            ENCODER.SetControlPoints(SelectedPrg);
+            //ENCODE THE PROGRAM
+            byte[] ByteEncoded = ENCODER.EncodeBytes(e.Tokens);
+            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
+            CoderHelper.ConsolePrintBytes(ByteEncoded, "Encoded");
+            MessageBox.Show($"Resource compiled succceded{System.Environment.NewLine}Total size 2000 bytes{System.Environment.NewLine}Already used {PSize} bytes.", "T3000");
+
+           // MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), "Tokens");
+            SelectedPrg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;
+            //The need of this code, means that constructor must accept byte array and fill with nulls to needSize value
+            SelectedPrg.ProgramCodes[Index_EditProgramCode].Count = 2000;
+            SelectedPrg.Programs[Index_EditProgramCode].Length = PSize;
+            //Also that save, must recalculate and save the lenght in bytes of every programcode into program.lenght
+            //Prg.Save($"{PrgPath.Substring(0,PrgPath.Length-4)}.PRG");
+           
+>>>>>>> AIM_BRANCH
 
         }
 
 
+<<<<<<< HEAD
 
 
         /// <summary>
@@ -606,6 +693,8 @@
 
 
 
+=======
+>>>>>>> AIM_BRANCH
         #endregion
 
 
@@ -629,4 +718,8 @@
 
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> AIM_BRANCH

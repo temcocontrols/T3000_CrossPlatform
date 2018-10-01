@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 //
+=======
+﻿//
+>>>>>>> AIM_BRANCH
 //  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
 //  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
@@ -11,6 +15,11 @@
 //  Copyright (C) Pavel Torgashov, 2013. 
 
 using Irony.Parsing;
+<<<<<<< HEAD
+=======
+using PRGReaderLibrary.Types.Enums.Codecs;
+using PRGReaderLibrary.Utilities;
+>>>>>>> AIM_BRANCH
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -30,10 +39,13 @@ namespace FastColoredTextBoxNS
         protected Parser parser;
         
         public Style WavyStyle = new WavyLineStyle(255, Color.Red);
+<<<<<<< HEAD
      
 
               
 
+=======
+>>>>>>> AIM_BRANCH
 
         /// <summary>
         /// Grammar of custom language
@@ -69,7 +81,11 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void SetParser(Grammar grammar)
         {
+<<<<<<< HEAD
             SetParser(new LanguageData(grammar));
+=======
+            SetParser(new LanguageData(grammar)); //call to overload based on languagedata
+>>>>>>> AIM_BRANCH
         }
 
         /// <summary>
@@ -77,7 +93,11 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void SetParser(LanguageData language)
         {
+<<<<<<< HEAD
             SetParser(new Parser(language));
+=======
+            SetParser(new Parser(language)); //call to overload based on parser
+>>>>>>> AIM_BRANCH
         }
 
         /// <summary>
@@ -86,6 +106,7 @@ namespace FastColoredTextBoxNS
         public virtual void SetParser(Parser parser)
         {
             this.parser = parser;
+<<<<<<< HEAD
             ClearStylesBuffer();
             AddStyle(WavyStyle);
 
@@ -97,10 +118,29 @@ namespace FastColoredTextBoxNS
             SyntaxHighlighter.VariableStyle = new TextStyle(variablebrush, null, FontStyle.Regular);
 
             SyntaxHighlighter.InitStyleSchema(Language.CSharp);
+=======
+            RefreshStyles();
+            
+        }
+
+        public virtual void RefreshStyles()
+        {
+            ClearStylesBuffer();
+            AddStyle(WavyStyle);
+
+        
+
+            //SyntaxHighlighter.InitStyleSchema(Language.ControlBasic);
+
+>>>>>>> AIM_BRANCH
             InitBraces();
             OnTextChanged(Range);
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> AIM_BRANCH
         /// <summary>
         /// Auto-hightlight delayed for text change
         /// </summary>
@@ -145,9 +185,12 @@ namespace FastColoredTextBoxNS
             }
 
             
+<<<<<<< HEAD
             SolidBrush brush1 = new SolidBrush(VariablesColor);
             SyntaxHighlighter.VariableStyle = new TextStyle(brush1, null, FontStyle.Regular);
 
+=======
+>>>>>>> AIM_BRANCH
 
             //highlight syntax
             ClearStyle(StyleIndex.All);
@@ -170,6 +213,7 @@ namespace FastColoredTextBoxNS
 
                 switch (t.Terminal.Name)
                 {
+<<<<<<< HEAD
                     case "INTERVAL":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.FunctionsStyle);
                         break;
@@ -201,6 +245,77 @@ namespace FastColoredTextBoxNS
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
                         break;
                 }
+=======
+                    case "INTERVAL": //Sample of how to color a single TOKEN, not working yet
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.FunctionsStyle);
+                        break;
+                    case "Identifier":
+                        //GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        //Identifier: Discover the correct type for identifier and hihglight.
+                        int CPIndex = 0;
+                        var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
+                        switch (IdentType)
+                        {
+
+                            case PCODE_CONST.OUTPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
+                                break;
+                            case PCODE_CONST.INPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
+                                break;
+                            case PCODE_CONST.VARPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                                break;
+                            case PCODE_CONST.PIDPOINTTYPE:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
+                                break;
+                            default:
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                                break;
+                        }
+                        break;
+                    case "INS":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
+                        break;
+                    case "OUTS":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
+                        break;
+                    case "VARS":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        break;
+                    case "PIDS":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
+                        break;
+                    case "LineNumber":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.InnerLinesNumberStyle);
+                        break;
+                    default: //parse by type: General highlighting
+                        switch (t.Terminal.GetType().Name)
+                        {
+                            case "KeyTerm":
+                                if ((t.Terminal.Flags & TermFlags.IsKeyword) != 0) //keywords are highlighted only
+                                    GetTokenRange(t).SetStyle(SyntaxHighlighter.KeywordStyle);
+                                break;
+                            case "FreeTextLiteral":
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
+                                break;
+
+                            case "NumberLiteral":
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.NumberStyle);
+                                break;
+                            case "StringLiteral":
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.StringStyle);
+                                break;
+                            case "CommentTerminal":
+                                GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
+                                break;
+                        }
+                        break;
+                  
+                }
+
+                
+>>>>>>> AIM_BRANCH
             }
         }
 
