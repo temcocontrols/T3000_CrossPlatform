@@ -11,15 +11,13 @@
 //  Copyright (C) Pavel Torgashov, 2013. 
 
 using Irony.Parsing;
+using PRGReaderLibrary.Types.Enums.Codecs;
+using PRGReaderLibrary.Utilities;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using PRGReaderLibrary;
-using PRGReaderLibrary.Extensions;
-using PRGReaderLibrary.Utilities;
-using PRGReaderLibrary.Types.Enums.Codecs;
 
 namespace FastColoredTextBoxNS
 {
