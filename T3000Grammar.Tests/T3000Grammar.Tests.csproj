@@ -63,6 +63,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Irony\Irony.csproj">
       <Project>{d81f5c91-d7db-46e5-bc99-49488fb6814c}</Project>
       <Name>Irony</Name>
@@ -71,9 +74,6 @@
       <Project>{6f1e65fa-e159-4543-a97d-78c0253d12fa}</Project>
       <Name>T3000Grammar</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

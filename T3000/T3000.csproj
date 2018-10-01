@@ -454,20 +454,6 @@
     <None Include="Resources\lock.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
-      <Project>{f32c40df-730f-4cb2-9a37-2b0950829c93}</Project>
-      <Name>ExceptionHandling</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
-      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
-      <Name>PRGReaderLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ProgramEditor\ProgramEditor.csproj">
-      <Project>{E8507121-5342-46C9-A158-228A6870CDFD}</Project>
-      <Name>ProgramEditor</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -478,6 +464,20 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
+      <Project>{f32c40df-730f-4cb2-9a37-2b0950829c93}</Project>
+      <Name>ExceptionHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
+      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
+      <Name>PRGReaderLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProgramEditor\ProgramEditor.csproj">
+      <Project>{e8507121-5342-46c9-a158-228a6870cdfd}</Project>
+      <Name>ProgramEditor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.2\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.2\build\net45\System.Data.SQLite.Core.targets')" />

@@ -178,7 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExceptionHandling\ExceptionHandling.csproj">
-      <Project>{F32C40DF-730F-4CB2-9A37-2B0950829C93}</Project>
+      <Project>{f32c40df-730f-4cb2-9a37-2b0950829c93}</Project>
       <Name>ExceptionHandling</Name>
     </ProjectReference>
     <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
