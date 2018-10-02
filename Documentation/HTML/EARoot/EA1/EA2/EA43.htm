@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Decode ProgramCode: Real</title>
+<link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {	
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+
+function nameClassifier(name, separator)
+{
+  var str = name;
+  var classifierName;
+  var node = document.getElementById('name_classifier');
+  if(node != null)
+  {
+    classifierName = node.innerHTML;
+  }
+  if(classifierName != "")
+  {
+   str += separator + classifierName;
+  }
+  
+  return str;
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<div id="name_classifier" style="display: none;"></div>
+	<span class="ObjectTitle"><script type="text/javascript">document.write(nameClassifier("Decode ProgramCode", " : "))</script> PGRReaderLibrary.Utilities.Decoder.DecodeBytes : Public  &lt;&lt;FC_Process&gt;&gt; Process</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">19/05/2018 14:55:09</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">28/05/2018 22:07:17</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue">Luis Ruiz</td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Difficult</td>
+		</tr>
+		<tr id="proj05" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Difficulty:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj06" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Priority:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj05" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Multiplicity:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{CA9D4F5F-D2C5-4d31-A53E-16195C3910A8}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA29.htm">Edit Program</a></td>
+		</tr>
+	</table>
+	<div class="ObjectDetailsNotes">Decodes the byte sequence of ProgramCode into plain text &quot;Control Basic&quot;&lt;br/&gt;&lt;br/&gt;PGRReaderLibrary.Utilities.Decoder class uses 3 helpers, preparing the semantic validations and as support to translating the code.&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;<br />&lt;li&gt;EditorJumpInfo&lt;/li&gt;&lt;li&gt;EditorLineInfo&lt;/li&gt;&lt;li&gt;EditorTokenInfo&lt;/li&gt;&lt;/ul&gt;<br />&lt;br/&gt;&lt;b&gt;Main method of this class is DecodeBytes()&lt;/b&gt;. It returns in plain text a fully decoded Control Basic program. As input, receives a byte array that contains 2000 bytes for a single ProgramCode object.&lt;br/&gt;&lt;br/&gt;Sample above is for initialization of internal copy of Program Text for a Editor FCBT Form.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Decoder.SetControlPoints(Prg);&lt;/i&gt;&lt;br/&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;&lt;br/&gt;&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;string&lt;/i&gt;&lt;/font&gt;&lt;i&gt; ProgramText = Decoder.DecodeBytes(Codes[Index_EditProgramCode].Code);&lt;/i&gt;&lt;br/&gt;&lt;i&gt;form.SetCode(ProgramText);&lt;/i&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;How it works&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;All tokens references here are provided by reading byte to byte ProgramCode. This process happens before any lexical or syntax validations. Irony parsing is only used once the code is translated and put in editor.&lt;br/&gt;&lt;br/&gt;DecodeBytes is a fully recursive and smart function, fully aware of when it has been called recursively, that returns a string (a part or whole of Control Basic program code), while doing so, it keeps record of a start offset and end offset of indexes inspected in the byte array while decoding.&lt;br/&gt;&lt;br/&gt;For the first time when this function is invoked, it takes apart the first two bytes that represents real length of program bytescodes, although ProgramCode section is always 2000 bytes.&lt;br/&gt;&lt;br/&gt;For the remaining bytes of ProgramCode, every byte is analyzed and compared to every predefined byte TOKEN values. For example: TOKEN value for REM is 0x1A. All tokens are predefined in enumerations according to their historical value in T3000 C++.&lt;br/&gt;&lt;br/&gt;While some tokens are expected in a certain order, others need to be inspected in POSTFIX notation, especially EXPRESSIONS.&lt;br/&gt;&lt;br/&gt;In order to achieve perfect translations from bytes to text, DecodeBytes uses special tokens as markers and delegates other translations to helper functions such as GetExpression, GetComment, GetElsePart... Do you see the pattern there? Right, every helper function starts with a &quot;Get&quot; prefix!&lt;br/&gt;&lt;br/&gt;Markers are special tokens, delimitating what can be found ahead while translating the bytecodes into plain text. Finally everything gets concatenated in order. Some of them are:&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;<br />&lt;li&gt;NUMBER (marker for a line number)&lt;/li&gt;&lt;li&gt;REM (marker for a comment statement)&lt;/li&gt;&lt;li&gt;IF THEN ELSE (and every variation of them)&lt;/li&gt;&lt;li&gt;ASSIGMENT (after an identifiers, EQ sign indicates that next step is to read an expression)&lt;/li&gt;&lt;li&gt;EOF&lt;/li&gt;&lt;/ul&gt;<br />&lt;br/&gt;While other markers are very simple, just like a single byte command, or two bytes commands. Many markers indicates a special treatment of the content ahead. So Simple markers are translated immediately, and more complex ones call their helpers.&lt;br/&gt;&lt;br/&gt;All identifiers, are checked against it proper type of ControlPoint arrays inside PRG object, in order to know if it exists and it is valid, and second but most important, to get its label or name.&lt;br/&gt;&lt;br/&gt;Numeric literals also known as numeric constant values to differentiate from other numbers like LINE NUMBERING and others. Those receive specialized treatment. Four bytes are bit reversed into a double precision value, divided by 1000, and tested to see if the result is a whole number or it has decimals, just to get a proper string representation of the numeric value.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;constvalue.Text = GetConstValue(source, &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;ref&lt;/i&gt;&lt;/font&gt;&lt;i&gt; offset); &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;br/&gt;&lt;/font&gt;&lt;b&gt;GetExpression and ParseRPN2Infix are the second and third more important functions. &lt;/b&gt;&lt;br/&gt;&lt;br/&gt;GetExpression creates and parses the list of bytes of a expression into a list of tokens, expected to be in RPN (Reverse Polish Notation) also known as Postfix. Later on, ParseRPN2Infix, uses stacks and precedence of operators to get the real representation of the expression, in a infix notation. This is the very&#160; basic technique for evaluating of RPN expressions and the soul of all classes and method (helpers) that translate from bytes into human readable form of Control Basic code according to its syntax, A.K.A. Decoding. &lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;p/&gt;</div>
+
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('FlowTo');" id="FlowToTitle">Flow To</li>
+			<li onClick="parent.toggleItem('FlowFrom');" id="FlowFromTitle">Flow From</li>
+			<li onClick="parent.toggleItem('CustomProperties');" id="CustomPropertiesTitle">Advanced</li>
+		</ul>
+		<div class="ItemBody" id="FlowToTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Name</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top">
+						<a href="EA41.htm">Code</a><br />
+						Object «FC_Connector» 
+					</td>
+					<td width="50%" class="TableRow" valign="top">&nbsp;</td>					
+				</tr>
+				<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageLinkFlow35" onclick="parent.toggleDiv('detailsDIVLinkFlow35', 'DetailsImageLinkFlow35')" />Details:
+							<div id="detailsDIVLinkFlow35" class="DetailsDiv" >
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="ItemBody" id="FlowFromTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Name</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top">
+						<a href="EA40.htm">Begin</a><br />
+						StateNode «FC_Connector» 
+					</td>
+					<td width="50%" class="TableRow" valign="top">&nbsp;</td>					
+				</tr>
+				<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageLinkFlow36" onclick="parent.toggleDiv('detailsDIVLinkFlow36', 'DetailsImageLinkFlow36')" />Details:
+							<div id="detailsDIVLinkFlow36" class="DetailsDiv" >
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="ItemBody" id="CustomPropertiesTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="30%" class="TableHeading">Property</td>
+					<td width="70%" class="TableHeading">Value</td>
+				</tr>
+			<tr>
+				<td width="30%" class="TableRow">isReadOnly:</td>
+				<td width="70%" class="TableRow">false</td>
+			</tr>
+
+
+			</table>
+		</div>	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

@@ -1,0 +1,12 @@
+tocTab[tocTab.length] = new Array("0.1.1:1", "", "Business Objects", "EARoot/EA1/EA1/EA12.htm", "189.png", "10", "0", "", "Analysis diagram0","{88953FEB-5A74-4980-91E7-33D342A1E0B3}");
+tocTab[tocTab.length] = new Array("0.1.1:2", "", "Code Editor Detailed", "EARoot/EA1/EA1/EA14.htm", "182.png", "19", "0", "", "CompositeStructure diagram0","{46A8796E-1EE6-449c-8BE1-4C23B0F91024}");
+tocTab[tocTab.length] = new Array("0.1.1:3", "", "«Binary File» .PRG or .PROG File", "EARoot/EA1/EA1/EA17.htm", "25.png", "E44", "0", "", "Object0","{BAC93986-7334-4932-966E-399AB6D5EC15}");
+tocTab[tocTab.length] = new Array("0.1.1:4", "", "«UserControl» FastColoredTextBox", "EARoot/EA1/EA1/EA19.htm", "5.png", "E115", "0", "", "Class0","{1B7B80A7-D06F-437e-AB59-6940D1E733C9}");
+tocTab[tocTab.length] = new Array("0.1.1:5", "", "«Namespace» FastColoredTextBoxNS", "EARoot/EA1/EA1/EA20.htm", "5.png", "E111", "0", "", "Class0","{C814391F-D645-47ce-B86F-204ADFBC0CF8}");
+tocTab[tocTab.length] = new Array("0.1.1:6", "", "Irony.Parsing", "EARoot/EA1/EA1/EA21.htm", "5.png", "E116", "0", "", "Class0","{C54E689E-651B-4aaa-851A-38D608C9AFFF}");
+tocTab[tocTab.length] = new Array("0.1.1:7", "", "«UserControl» IronyFCBT", "EARoot/EA1/EA1/EA22.htm", "5.png", "E113", "0", "", "Class0","{84B3426F-BEA1-4776-A1D9-B78E5A436CD6}");
+tocTab[tocTab.length] = new Array("0.1.1:8", "", "Parser", "EARoot/EA1/EA1/EA24.htm", "5.png", "E112", "0", "", "Class0","{6844B928-0FAB-4b93-A367-EEB4352796EA}");
+tocTab[tocTab.length] = new Array("0.1.1:9", "", "«FC_InputOutput» PRG Object", "EARoot/EA1/EA1/EA25.htm", "AB4A898F-B_FC_InputOutput.png", "E43", "0", "", "Object0","{07DB7F5B-9997-4b24-ACC7-AD5F7E9D754F}");
+tocTab[tocTab.length] = new Array("0.1.1:10", "", "«resource» ProgramEditorForm", "EARoot/EA1/EA1/EA26.htm", "25.png", "E75", "0", "", "Object0","{AFB6E8DA-4B63-4d85-A61A-D0DB9A02D7C4}");
+tocTab[tocTab.length] = new Array("0.1.1:11", "", "«resource» ProgramsForm", "EARoot/EA1/EA1/EA27.htm", "25.png", "E72", "0", "", "Object0","{7E138483-ED71-41f1-BEC9-7DC888A323E5}");
+tocTab[tocTab.length] = new Array("0.1.1:12", "", "T3000.Grammar", "EARoot/EA1/EA1/EA28.htm", "5.png", "E114", "0", "", "Class0","{FB0DE4DF-5115-4353-B147-BD4EB201CC99}");
