@@ -35,13 +35,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
-            this.cmdClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.cmdLoad = new System.Windows.Forms.ToolStripButton();
             this.cmdSave = new System.Windows.Forms.ToolStripButton();
             this.cmdRefresh = new System.Windows.Forms.ToolStripButton();
-            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.cmdRenumber = new System.Windows.Forms.ToolStripButton();
+            this.cmdClear = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.layStatistics = new System.Windows.Forms.FlowLayoutPanel();
             this.lblSrcLineCount = new System.Windows.Forms.Label();
@@ -55,7 +55,6 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.editTextBox = new FastColoredTextBoxNS.IronyFCTB();
             this.ruler1 = new FastColoredTextBoxNS.Ruler();
-            this.SettingsBag = new System.Windows.Forms.PropertyGrid();
             this.tsTopMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.layStatistics.SuspendLayout();
@@ -68,13 +67,13 @@
             // 
             this.tsTopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmdSend,
-            this.cmdClear,
             this.toolStripSeparator1,
+            this.cmdSettings,
             this.cmdLoad,
             this.cmdSave,
             this.cmdRefresh,
-            this.cmdSettings,
-            this.cmdRenumber});
+            this.cmdRenumber,
+            this.cmdClear});
             this.tsTopMenu.Location = new System.Drawing.Point(0, 0);
             this.tsTopMenu.Name = "tsTopMenu";
             this.tsTopMenu.Size = new System.Drawing.Size(579, 25);
@@ -91,20 +90,21 @@
             this.cmdSend.Text = "Send (F2)";
             this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
             // 
-            // cmdClear
-            // 
-            this.cmdClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
-            this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdClear.Name = "cmdClear";
-            this.cmdClear.Size = new System.Drawing.Size(61, 22);
-            this.cmdClear.Text = "Clear (F4)";
-            this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // cmdSettings
+            // 
+            this.cmdSettings.CheckOnClick = true;
+            this.cmdSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdSettings.Image = ((System.Drawing.Image)(resources.GetObject("cmdSettings.Image")));
+            this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdSettings.Name = "cmdSettings";
+            this.cmdSettings.Size = new System.Drawing.Size(76, 22);
+            this.cmdSettings.Text = "Settings (F4)";
+            this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
             // 
             // cmdLoad
             // 
@@ -113,7 +113,7 @@
             this.cmdLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdLoad.Name = "cmdLoad";
             this.cmdLoad.Size = new System.Drawing.Size(81, 22);
-            this.cmdLoad.Text = "Load File (F7)";
+            this.cmdLoad.Text = "Load File (F6)";
             this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
             // 
             // cmdSave
@@ -123,7 +123,7 @@
             this.cmdSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdSave.Name = "cmdSave";
             this.cmdSave.Size = new System.Drawing.Size(79, 22);
-            this.cmdSave.Text = "Save File (F6)";
+            this.cmdSave.Text = "Save File (F7)";
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
             // cmdRefresh
@@ -136,17 +136,6 @@
             this.cmdRefresh.Text = "Refresh (F8)";
             this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
             // 
-            // cmdSettings
-            // 
-            this.cmdSettings.CheckOnClick = true;
-            this.cmdSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdSettings.Image = ((System.Drawing.Image)(resources.GetObject("cmdSettings.Image")));
-            this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdSettings.Name = "cmdSettings";
-            this.cmdSettings.Size = new System.Drawing.Size(53, 22);
-            this.cmdSettings.Text = "Settings";
-            this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
-            // 
             // cmdRenumber
             // 
             this.cmdRenumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -157,6 +146,16 @@
             this.cmdRenumber.Text = "Renumber (F10)";
             this.cmdRenumber.ToolTipText = "Validate and Renumber Lines";
             this.cmdRenumber.Click += new System.EventHandler(this.cmdRenumber_Click);
+            // 
+            // cmdClear
+            // 
+            this.cmdClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
+            this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdClear.Name = "cmdClear";
+            this.cmdClear.Size = new System.Drawing.Size(67, 22);
+            this.cmdClear.Text = "Clear (F11)";
+            this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -312,24 +311,42 @@
         '\"',
         '\'',
         '\''};
-            this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.editTextBox.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\r\n^\\s*(case|default)\\s*[^:]" +
+    "*(?<range>:)\\s*(?<range>[^;]+);\r\n";
+            this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(227, 14);
             this.editTextBox.BackBrush = null;
-            this.editTextBox.BackColor = System.Drawing.Color.Beige;
+            this.editTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editTextBox.BookmarkColor = System.Drawing.Color.IndianRed;
+            this.editTextBox.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.editTextBox.CaretColor = System.Drawing.Color.White;
             this.editTextBox.CharHeight = 14;
             this.editTextBox.CharWidth = 8;
+            this.editTextBox.CommentPrefix = "REM";
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.editTextBox.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.editTextBox.Hotkeys = resources.GetString("editTextBox.Hotkeys");
             this.editTextBox.IsReplaceMode = false;
+            this.editTextBox.Language = FastColoredTextBoxNS.Language.ControlBasic;
+            this.editTextBox.LeftBracket = '(';
+            this.editTextBox.LeftBracket2 = '{';
             this.editTextBox.Location = new System.Drawing.Point(3, 53);
             this.editTextBox.Name = "editTextBox";
+            this.editTextBox.NumbersColor = System.Drawing.Color.CornflowerBlue;
+            this.editTextBox.OutputsColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.editTextBox.Paddings = new System.Windows.Forms.Padding(0);
+            this.editTextBox.PidsColor = System.Drawing.Color.Tan;
+            this.editTextBox.RightBracket = ')';
+            this.editTextBox.RightBracket2 = '}';
             this.editTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.editTextBox.ServiceColors = null;
+            this.editTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("editTextBox.ServiceColors")));
             this.editTextBox.Size = new System.Drawing.Size(573, 250);
-            this.editTextBox.TabIndex = 7;
+            this.editTextBox.StringsColor = System.Drawing.Color.DarkMagenta;
+            this.editTextBox.TabIndex = 11;
+            this.editTextBox.Text = "10 IF INIT THEN STOP INIT";
             this.editTextBox.Zoom = 100;
-            this.editTextBox.TextChangedDelayed += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.editTextBox_TextChangedDelayed);
             // 
             // ruler1
             // 
@@ -343,15 +360,6 @@
             this.ruler1.TabIndex = 11;
             this.ruler1.Target = this.editTextBox;
             // 
-            // SettingsBag
-            // 
-            this.SettingsBag.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.SettingsBag.Location = new System.Drawing.Point(47, 58);
-            this.SettingsBag.Name = "SettingsBag";
-            this.SettingsBag.Size = new System.Drawing.Size(247, 197);
-            this.SettingsBag.TabIndex = 10;
-            this.SettingsBag.Visible = false;
-            // 
             // ProgramEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,15 +367,12 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(579, 441);
-            this.Controls.Add(this.SettingsBag);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
             this.Name = "ProgramEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Edit code:";
-            this.ResizeEnd += new System.EventHandler(this.ProgramEditorForm_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProgramEditorForm_KeyDown);
-            this.Resize += new System.EventHandler(this.ProgramEditorForm_Resize);
             this.tsTopMenu.ResumeLayout(false);
             this.tsTopMenu.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -399,7 +404,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private FastColoredTextBoxNS.Ruler ruler1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.PropertyGrid SettingsBag;
         private System.Windows.Forms.ToolStripButton cmdRenumber;
         private System.Windows.Forms.Label lblSrcLineCount;
         private System.Windows.Forms.Label lblSrcTokenCount;
