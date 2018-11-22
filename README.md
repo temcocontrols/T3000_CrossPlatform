@@ -13,15 +13,15 @@ Travic CI(Mono) | AppVeyor
 + msvc14+/mono4.5+/.NET Framework 4.5
 
 # Contacts
-* [mail](mailto:havendv@gmail.com)
+* [mail](mailto:register3@temcocontrols.com)
 
-T3000 Building Automation System - for Linux-Win-Android deployment
+T3000 Building Automation System - for Linux-Win deployment
 
 # Windows
 
-1. Run the .sln file(VS2015 Community Edition)<details><summary>Image</summary>![](docs/run.png)</details>
-2. Install the executable project(Right click on T3000 Project and select the "Set as StartUp Project" option)<details><summary>Image</summary>![](docs/startup.png)</details>
-3. Start up(F5 or click to Start)<details><summary>Image</summary>![](docs/start.png)</details>
+1. Run the .sln file(VS2015 Community Edition)<details><summary>Image</summary>![](documentation/run.png)</details>
+2. Install the executable project(Right click on T3000 Project and select the "Set as StartUp Project" option)<details><summary>Image</summary>![](documentation/startup.png)</details>
+3. Start up(F5 or click to Start)<details><summary>Image</summary>![](documentation/start.png)</details>
 
 # Linux
 
