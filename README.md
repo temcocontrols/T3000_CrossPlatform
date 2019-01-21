@@ -36,18 +36,31 @@ Executable can be find into `T3000_CrossPlatform\ReleaseFiles\LastCompilation\T3
 # Linux
 
 Preinstall:
-```
-sudo apt install mono-complete git nuget
-```
-It's install Mono(libraries), Mono-tools(like xbuild), git(for git clone) and nuget(for nuget restore)
+Import [Mono](https://en.wikipedia.org/wiki/Mono_(software)) repository following official distro instructions from [Mono-Project](https://www.mono-project.com/) website. Then install the packages:
 
-Launch:
+```
+mono-complete git curl
+```
+Get `nuget`
+```
+sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+```
+Create an alias for nuget adding the following line in `.bash_aliases` (a logout can be required)
+```
+alias nuget="mono /usr/local/bin/nuget.exe"
+```
+Check `nuget`
+```
+nuget update -self
+```
+Then execute the following commands:
 ```
 rm -r -f T3000_CrossPlatform
 git clone https://github.com/temcocontrols/T3000_CrossPlatform
 nuget restore T3000_CrossPlatform/T3000_CrossPlatform.sln
 msbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
-T3000_CrossPlatform/T3000/bin/Release/T3000.exe
+chmod +x T3000_CrossPlatform/T3000/bin/Release/T3000.exe
+./T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
 
 Comments:
@@ -56,6 +69,8 @@ Comments:
 3. Download all require libraries for the solution from Nuget
 4. Build project with Configuration=Release
 5. Run the obtained exe file
+
+At the moment editing programs with Linux version return an error.
 
 # Plan:
 
