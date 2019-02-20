@@ -43,31 +43,35 @@ xTaskHandle xHandler_SPI;
 /***************************************************************************/
 
 
-U8_T	far flag_send_start_comm = 1;
-U8_T	far flag_get_chip_info = 0;
-U8_T data count_send_start_comm;
-static U8_T far flag_lose_comm = 0;
-static U8_T far count_lose_comm = 0;
+U8_T count_send_start_comm;
+static U8_T count_lose_comm = 0;
 
 
-U16_T far Test[50];
+U16_T Test[50];
 U8_T re_send_led_in = 0;
 U8_T re_send_led_out = 0;
 
+typedef struct {
+	unsigned flagLED_ether_tx : 1;
+	unsigned flagLED_ether_rx : 1;
+	unsigned flagLED_uart0_rx : 1;
+	unsigned flagLED_uart0_tx : 1;
+	unsigned flagLED_uart1_rx : 1;
+	unsigned flagLED_uart1_tx : 1;
+	unsigned flagLED_uart2_rx : 1;
+	unsigned flagLED_uart2_tx : 1;
+	unsigned flagLED_usb_rx : 1;
+	unsigned flagLED_usb_tx : 1;
+	unsigned flag_led_out_changed : 1;
+	unsigned flag_led_in_changed : 1;
+	unsigned flag_led_comm_changed : 1;
+	unsigned flag_high_spd_changed : 1;
+	unsigned flag_send_start_comm : 1;
+	unsigned flag_get_chip_info : 1;
+	unsigned flag_lose_comm: 1;
+} flags;
 
-bit flagLED_ether_tx = 0;
-bit flagLED_ether_rx = 0;
-bit flagLED_uart0_rx = 0;
-bit flagLED_uart0_tx = 0;
-bit flagLED_uart1_rx = 0; 
-bit flagLED_uart1_tx = 0;
-bit flagLED_uart2_rx = 0;
-bit flagLED_uart2_tx = 0;
-bit flagLED_usb_rx = 0;
-bit flagLED_usb_tx = 0;
-
-
-
+static flags Flags;
 
 U8_T uart0_heartbeat = 0;
 U8_T uart1_heartbeat = 0;
@@ -75,28 +79,22 @@ U8_T uart2_heartbeat = 0;
 U8_T etr_heartbeat = 0;
 U8_T usb_heartbeat = 0;	
 
-U8_T flag_led_out_changed = 0;	  
-U8_T flag_led_in_changed = 0;
-U8_T flag_led_comm_changed = 0;
-U8_T flag_high_spd_changed = 0;
 U8_T CommLed[2];
-U8_T far InputLed[32];  // high 4 bits - input type, low 4 bits - brightness
-extern U8_T far input_type[32];
-extern U8_T far input_type1[32];
+U8_T InputLed[32];  // high 4 bits - input type, low 4 bits - brightness
+extern U8_T input_type[32];
+extern U8_T input_type1[32];
 U8_T OutputLed[24];
 static U8_T OLD_COMM;
-U8_T far high_spd_flag[HI_COMMON_CHANNEL];
-U8_T far clear_high_spd[HI_COMMON_CHANNEL];
-U16_T far count_clear_hsp[HI_COMMON_CHANNEL] = {0,0,0,0,0,0};
+U8_T high_spd_flag[HI_COMMON_CHANNEL];
+U8_T clear_high_spd[HI_COMMON_CHANNEL];
+U16_T count_clear_hsp[HI_COMMON_CHANNEL] = {0,0,0,0,0,0};
 
-U8_T xdata tmpbuf[150];
+U8_T tmpbuf[150];
 
 //U32_T far input_raw_temp[32];
 //U8_T far raw_number[32];
 
-U8_T far spi_index;
-
-
+U8_T spi_index;
 
 void Updata_Comm_Led(void);
 
@@ -139,19 +137,8 @@ int spi_init(char filename[40]) {
 
 	return file;
 }
-
-/*void SPI_ByteWrite(char data)	commented as this idea will not work.
-{
-	int status;
-	status = ioctl(fd, SPI_IOC_MESSAGE(1), data);
-	if (status < 0) {
-		perror("SPI_IOC_MESSAGE");
-		return;
-	}
-}*/	
  
-void main(void)		//ronak - replaced the below function with the main function. this will be used for spi initialisation and other function.
-//void vStartCommToTopTasks( unsigned char uxPriority)
+void main(void)
 {
 //	U8_T base_hsp;
 	U8_T i;
@@ -169,29 +156,29 @@ void main(void)		//ronak - replaced the below function with the main function. t
 	memset(tmpbuf,0,150);
 	memset(CommLed,0,2);
 	OLD_COMM = 0;
-	flag_send_start_comm = 1;
-	flag_get_chip_info = 0;
+	Flags.flag_send_start_comm = 1;
+	Flags.flag_get_chip_info = 0;
 	count_send_start_comm = 0;
- 	flag_lose_comm = 0;
+ 	Flags.flag_lose_comm = 0;
 	count_lose_comm = 0;
 	re_send_led_in = 0;
 	re_send_led_out = 0;
 
-	flagLED_ether_tx = 0;
-	flagLED_ether_rx = 0;
-	flagLED_uart0_rx = 0;
-	flagLED_uart0_tx = 0;
-	flagLED_uart1_rx = 0; 
-	flagLED_uart1_tx = 0;
-	flagLED_uart2_rx = 0;
-	flagLED_uart2_tx = 0;
-	flagLED_usb_rx = 0;
-	flagLED_usb_tx = 0;		
+	Flags.flagLED_ether_tx = 0;
+	Flags.flagLED_ether_rx = 0;
+	Flags.flagLED_uart0_rx = 0;
+	Flags.flagLED_uart0_tx = 0;
+	Flags.flagLED_uart1_rx = 0;
+	Flags.flagLED_uart1_tx = 0;
+	Flags.flagLED_uart2_rx = 0;
+	Flags.flagLED_uart2_tx = 0;
+	Flags.flagLED_usb_rx = 0;
+	Flags.flagLED_usb_tx = 0;
 	
-	flag_led_out_changed = 0;	  
-	flag_led_in_changed = 0;
-	flag_led_comm_changed = 0;
-	flag_high_spd_changed = 0;
+	Flags.flag_led_out_changed = 0;
+	Flags.flag_led_in_changed = 0;
+	Flags.flag_led_comm_changed = 0;
+	Flags.flag_high_spd_changed = 0;
 
 	memset(high_spd_counter,0,4*HI_COMMON_CHANNEL);
 	memset(high_spd_counter_tempbuf,0,4*HI_COMMON_CHANNEL);
@@ -306,7 +293,7 @@ void Update_Led(void)
 	
 //	U8_T index,shift;
 //	U32_T tempvalue;
-	static U16_T pre_in[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	static U16_T pre_in[32] = {0};
 	U8_T error_in; // error of input raw value	
 	U8_T pre_status;
 	U8_T max_in,max_out,max_digout;
@@ -353,75 +340,70 @@ void Update_Led(void)
 		
 		if(inputs[loop].range == not_used_input)
 			InputLed[loop] = 0;	
-		else
-		{
-			if(inputs[loop].auto_manual == 0)
-			{
-				if(inputs[loop].digital_analog == 1) // analog 
-				{
-					if(inputs[loop].range <= A10K_60_200DegF)	  // temperature
-					{	//  10k termistor GREYSTONE
-						if(input_raw[loop]  > TEMPER_0_C) 	InputLed[loop] = 0;	   // 0 degree
-						else  if(input_raw[loop]  > TEMPER_10_C) 	InputLed[loop] = 1;	// 10 degree
-						else  if(input_raw[loop]  > TEMPER_20_C) 	InputLed[loop] = 2;	// 20 degree
-						else  if(input_raw[loop]  > TEMPER_30_C) 	InputLed[loop] = 3;	// 30 degree
-						else  if(input_raw[loop]  > TEMPER_40_C) 	InputLed[loop] = 4;	// 40 degree
+		else {
+			if(inputs[loop].auto_manual == 0) {
+				if(inputs[loop].digital_analog == 1) { // analog
+					if(inputs[loop].range <= A10K_60_200DegF) {	  // temperature //  10k termistor GREYSTONE
+						if(input_raw[loop]  > TEMPER_0_C)
+							InputLed[loop] = 0;		// 0 degree
+						else if(input_raw[loop]  > TEMPER_10_C)
+							InputLed[loop] = 1;		// 10 degree
+						else if(input_raw[loop]  > TEMPER_20_C)
+							InputLed[loop] = 2;		// 20 degree
+						else if(input_raw[loop]  > TEMPER_30_C)
+							InputLed[loop] = 3;		// 30 degree
+						else if(input_raw[loop]  > TEMPER_40_C)
+							InputLed[loop] = 4;		// 40 degree
 						else
-							InputLed[loop] = 5;	   // > 50 degree
+							InputLed[loop] = 5;		// > 50 degree
 
 						//InputLed high 4 bits - input type,
 	//					InputLed[loop] |= 0x30;   // input type is 3
 						
-					}						
-					else 	  // voltage or current
-					{
-						if(input_raw[loop]  < 50) 	InputLed[loop] = 0;
-						else  if(input_raw[loop]  < 200) 	InputLed[loop] = 1;
-						else  if(input_raw[loop]  < 400) 	InputLed[loop] = 2;
-						else  if(input_raw[loop]  < 600) 	InputLed[loop] = 3;
-						else  if(input_raw[loop]  < 800) 	InputLed[loop] = 4;
+					} else {	// voltage or current
+						if(input_raw[loop]  < 50)
+							InputLed[loop] = 0;
+						else if(input_raw[loop]  < 200)
+							InputLed[loop] = 1;
+						else if(input_raw[loop]  < 400)
+							InputLed[loop] = 2;
+						else if(input_raw[loop]  < 600)
+							InputLed[loop] = 3;
+						else if(input_raw[loop]  < 800)
+							InputLed[loop] = 4;
 						else
 							InputLed[loop] = 5;
-
 					}
-				}
-				else if(inputs[loop].digital_analog == 0) // digtial
-				{
-					if( inputs[loop].range >= ON_OFF  && inputs[loop].range <= HIGH_LOW )  // control 0=OFF 1=ON
-					{
+				} else if(inputs[loop].digital_analog == 0) {	// digtial
+					if( inputs[loop].range >= ON_OFF  && inputs[loop].range <= HIGH_LOW ) {	// control 0=OFF 1=ON
 						if(input_raw[loop]  >= 512)
 							InputLed[loop] = 0;
 						else
 							InputLed[loop] = 5;
-					}
-					else
-					{
-						if(input_raw[loop]  < 512)
+					} else {
+						if(input_raw[loop] < 512)
 							InputLed[loop] = 0;
 						else
 							InputLed[loop] = 5;				
 					}
 				}
-			}
-			else // manual
-			{
-				if(inputs[loop].digital_analog == 0) // digtial
-				{
-					if( inputs[loop].range >= ON_OFF  && inputs[loop].range <= HIGH_LOW )  // control 0=OFF 1=ON
-					{
+			} else {	// manual
+				if(inputs[loop].digital_analog == 0) {	// digtial
+					if( inputs[loop].range >= ON_OFF  && inputs[loop].range <= HIGH_LOW ) {	// control 0=OFF 1=ON
 						if(inputs[loop].control == 1) InputLed[loop] = 0;	
 						else
 							InputLed[loop] = 5;	
-					}
-					else
-					{
-						if(inputs[loop].control == 1) InputLed[loop] = 5;	
+					} else {
+						if(inputs[loop].control == 1)
+							InputLed[loop] = 5;
 						else
 							InputLed[loop] = 0;				
 					}
+
 					if( inputs[loop].range >= custom_digital1 && inputs[loop].range <= custom_digital8 )
 					{
-						if(inputs[loop].control == 1) InputLed[loop] = 5;	
+						if(inputs[loop].control == 1)
+							InputLed[loop] = 5;
 						else
 							InputLed[loop] = 0;	
 					}
@@ -433,44 +415,64 @@ void Update_Led(void)
 					tempvalue = swap_double(inputs[loop].value) / 1000;
 					if(inputs[loop].range <= A10K_60_200DegF)	  // temperature
 					{	//  10k termistor GREYSTONE
-						if(tempvalue <= 0) 	InputLed[loop] = 0;	   // 0 degree
-						else  if(tempvalue < 10) 	InputLed[loop] = 1;	// 10 degree
-						else  if(tempvalue < 20) 	InputLed[loop] = 2;	// 20 degree
-						else  if(tempvalue < 30) 	InputLed[loop] = 3;	// 30 degree
-						else  if(tempvalue < 40) 	InputLed[loop] = 4;	// 40 degree
+						if(tempvalue <= 0)
+							InputLed[loop] = 0;	// 0 degree
+						else if(tempvalue < 10)
+							InputLed[loop] = 1;	// 10 degree
+						else if(tempvalue < 20)
+							InputLed[loop] = 2;	// 20 degree
+						else if(tempvalue < 30)
+							InputLed[loop] = 3;	// 30 degree
+						else if(tempvalue < 40)
+							InputLed[loop] = 4;	// 40 degree
 						else
-							InputLed[loop] = 5;	   // > 50 degree						
+							InputLed[loop] = 5;	// > 50 degree
 					}		
 					else 	  // voltage or current
 					{						
 						//InputLed high 4 bits - input type,
 						if(inputs[loop].range == V0_5 || inputs[loop].range == P0_100_0_5V)	
 						{						
-							if(tempvalue <= 0) 	InputLed[loop] = 0;	   // 0 degree
-							else  if(tempvalue <= 1) 	InputLed[loop] = 1;	// 10 degree
-							else  if(tempvalue <= 2) 	InputLed[loop] = 2;	// 20 degree
-							else  if(tempvalue <= 3) 	InputLed[loop] = 3;	// 30 degree
-							else  if(tempvalue <= 4) 	InputLed[loop] = 4;	// 40 degree
+							if(tempvalue <= 0)
+								InputLed[loop] = 0;	   // 0 degree
+							else  if(tempvalue <= 1)
+								InputLed[loop] = 1;	// 10 degree
+							else  if(tempvalue <= 2)
+								InputLed[loop] = 2;	// 20 degree
+							else  if(tempvalue <= 3)
+								InputLed[loop] = 3;	// 30 degree
+							else  if(tempvalue <= 4)
+								InputLed[loop] = 4;	// 40 degree
 							else
 								InputLed[loop] = 5;	   // > 50 degree	
 						}
 						if(inputs[loop].range == I0_20ma)	
 						{
-							if(tempvalue <= 4) 	InputLed[loop] = 0;	   // 0 degree
-							else  if(tempvalue <= 7) 	InputLed[loop] = 1;	// 10 degree
-							else  if(tempvalue <= 10) 	InputLed[loop] = 2;	// 20 degree
-							else  if(tempvalue <= 14) 	InputLed[loop] = 3;	// 30 degree
-							else  if(tempvalue <= 18) 	InputLed[loop] = 4;	// 40 degree
+							if(tempvalue <= 4)
+								InputLed[loop] = 0;	   // 0 degree
+							else  if(tempvalue <= 7)
+								InputLed[loop] = 1;	// 10 degree
+							else  if(tempvalue <= 10)
+								InputLed[loop] = 2;	// 20 degree
+							else  if(tempvalue <= 14)
+								InputLed[loop] = 3;	// 30 degree
+							else  if(tempvalue <= 18)
+								InputLed[loop] = 4;	// 40 degree
 							else
 								InputLed[loop] = 5;	   // > 50 degree	
 						}
 						if(inputs[loop].range == V0_10_IN)	
 						{
-							if(tempvalue <= 0) 	InputLed[loop] = 0;	   // 0 degree
-							else  if(tempvalue <= 2) 	InputLed[loop] = 1;	// 10 degree
-							else  if(tempvalue <= 4) 	InputLed[loop] = 2;	// 20 degree
-							else  if(tempvalue <= 6) 	InputLed[loop] = 3;	// 30 degree
-							else  if(tempvalue <= 8) 	InputLed[loop] = 4;	// 40 degree
+							if(tempvalue <= 0)
+								InputLed[loop] = 0;	   // 0 degree
+							else  if(tempvalue <= 2)
+								InputLed[loop] = 1;	// 10 degree
+							else  if(tempvalue <= 4)
+								InputLed[loop] = 2;	// 20 degree
+							else  if(tempvalue <= 6)
+								InputLed[loop] = 3;	// 30 degree
+							else  if(tempvalue <= 8)
+								InputLed[loop] = 4;	// 40 degree
 							else
 								InputLed[loop] = 5;	   // > 50 degree	
 						}
@@ -482,7 +484,7 @@ void Update_Led(void)
 		
 		if(pre_status != InputLed[loop] && error_in > 50)
 		{  //  error is larger than 20, led of input is changed
-			flag_led_in_changed = 1;   
+			Flags.flag_led_in_changed = 1;
 			re_send_led_in = 0;
 		}
 		pre_in[loop] = input_raw[loop];
@@ -514,7 +516,8 @@ void Update_Led(void)
 			{
 				if(loop < max_digout)	  // digital
 				{
-					if(output_raw[loop] < 512 ) 	OutputLed[loop] = 0;
+					if(output_raw[loop] < 512 )
+						OutputLed[loop] = 0;
 					else
 						OutputLed[loop] = 5;
 				}
@@ -535,12 +538,14 @@ void Update_Led(void)
 				}
 			}
 		}
-		else if(outputs[loop].switch_status == SW_OFF)			 OutputLed[loop] = 0;
-		else if(outputs[loop].switch_status == SW_HAND)		 OutputLed[loop] = 5;
+		else if(outputs[loop].switch_status == SW_OFF)
+			OutputLed[loop] = 0;
+		else if(outputs[loop].switch_status == SW_HAND)
+			OutputLed[loop] = 5;
 
 		if(pre_status != OutputLed[loop])
 		{
-			flag_led_out_changed = 1;  
+			Flags.flag_led_out_changed = 1;
 			re_send_led_out = 0;
 		}
 	}
@@ -567,21 +572,57 @@ void Updata_Comm_Led(void)
 	{
 		if(Modbus.hardRev >= 21)  // swap UART0 and UART1 
 		{
-			if(flagLED_uart2_rx)	{ temp1 |= 0x02;	 	flagLED_uart2_rx = 0;}
-			if(flagLED_uart2_tx)	{	temp1 |= 0x01;		flagLED_uart2_tx = 0;}	
-			if(flagLED_uart0_rx)	{	temp1 |= 0x08;		flagLED_uart0_rx = 0;}
-			if(flagLED_uart0_tx)	{	temp1 |= 0x04;		flagLED_uart0_tx = 0;}	
+			if(Flags.flagLED_uart2_rx) {
+				temp1 |= 0x02;
+				Flags.flagLED_uart2_rx = 0;
+			}
+
+			if(Flags.flagLED_uart2_tx) {
+				temp1 |= 0x01;
+				Flags.flagLED_uart2_tx = 0;
+			}
+
+			if(Flags.flagLED_uart0_rx) {
+				temp1 |= 0x08;
+				Flags.flagLED_uart0_rx = 0;
+			}
+
+			if(Flags.flagLED_uart0_tx) {
+				temp1 |= 0x04;
+				Flags.flagLED_uart0_tx = 0;
+			}
 		}
 		else
 		{
-			if(flagLED_uart0_rx)	{ temp1 |= 0x02;	 	flagLED_uart0_rx = 0;}
-			if(flagLED_uart0_tx)	{	temp1 |= 0x01;		flagLED_uart0_tx = 0;}	
-			if(flagLED_uart2_rx)	{	temp1 |= 0x08;		flagLED_uart2_rx = 0;}
-			if(flagLED_uart2_tx)	{	temp1 |= 0x04;		flagLED_uart2_tx = 0;}
+			if(Flags.flagLED_uart0_rx) {
+				temp1 |= 0x02;
+				Flags.flagLED_uart0_rx = 0;
+			}
+
+			if(Flags.flagLED_uart0_tx) {
+				temp1 |= 0x01;
+				Flags.flagLED_uart0_tx = 0;
+			}
+
+			if(Flags.flagLED_uart2_rx) {
+				temp1 |= 0x08;
+				Flags.flagLED_uart2_rx = 0;
+			}
+			if(Flags.flagLED_uart2_tx) {
+				temp1 |= 0x04;
+				Flags.flagLED_uart2_tx = 0;
+			}
 		}
 		
-		if(flagLED_ether_rx)	{ temp1 |= 0x20;		flagLED_ether_rx = 0;}
-		if(flagLED_ether_tx)	{	temp1 |= 0x10;		flagLED_ether_tx = 0;}
+		if(Flags.flagLED_ether_rx) {
+			temp1 |= 0x20;
+			Flags.flagLED_ether_rx = 0;
+		}
+
+		if(Flags.flagLED_ether_tx) {
+			temp1 |= 0x10;
+			Flags.flagLED_ether_tx = 0;
+		}
 		
 		
 		
@@ -593,46 +634,105 @@ void Updata_Comm_Led(void)
 		
 		if(Modbus.com_config[1] == MODBUS_MASTER)
 		{
-			if(flagLED_uart1_rx)	{	temp1 |= 0x80;	 flagLED_uart1_rx = 0;}
-			if(flagLED_uart1_tx)	{	temp1 |= 0x40;	 flagLED_uart1_tx = 0;}
-		}
-		else
-		{
-			if(flagLED_uart1_rx)	{	temp2 |= 0x02;	 	flagLED_uart1_rx = 0;}
-			if(flagLED_uart1_tx)	{	temp2 |= 0x01;		flagLED_uart1_tx = 0;} 
-		}
-	}
-	else  if((Modbus.mini_type == MINI_SMALL) || (Modbus.mini_type == MINI_SMALL_ARM))
-	{				
-		if(flagLED_uart2_rx)	{ temp1 |= 0x02;	 	flagLED_uart2_rx = 0; }
-		if(flagLED_uart2_tx)	{	temp1 |= 0x01;		flagLED_uart2_tx = 0; }	
+			if(Flags.flagLED_uart1_rx) {
+				temp1 |= 0x80;
+				Flags.flagLED_uart1_rx = 0;
+			}
 
-		if(flagLED_ether_rx)	{	temp1 |= 0x08;		flagLED_ether_rx = 0; }			
-		if(flagLED_ether_tx)	{	temp1 |= 0x04;		flagLED_ether_tx = 0;}		
+			if(Flags.flagLED_uart1_tx) {
+				temp1 |= 0x40;
+				Flags.flagLED_uart1_tx = 0;
+			}
+		} else {
+			if(Flags.flagLED_uart1_rx) {
+				temp2 |= 0x02;
+				Flags.flagLED_uart1_rx = 0;
+			}
+
+			if(Flags.flagLED_uart1_tx) {
+				temp2 |= 0x01;
+				Flags.flagLED_uart1_tx = 0;
+			}
+		}
+	} else  if((Modbus.mini_type == MINI_SMALL) || (Modbus.mini_type == MINI_SMALL_ARM)) {
 		
-		if(flagLED_uart0_rx)	{ temp1 |= 0x20;		flagLED_uart0_rx = 0;}
-		if(flagLED_uart0_tx)	{	temp1 |= 0x10;		flagLED_uart0_tx = 0;}
+		if(Flags.flagLED_uart2_rx) {
+			temp1 |= 0x02;
+			Flags.flagLED_uart2_rx = 0;
+		}
+
+		if(Flags.flagLED_uart2_tx) {
+			temp1 |= 0x01;
+			Flags.flagLED_uart2_tx = 0;
+		}
+
+		if(Flags.flagLED_ether_rx) {
+			temp1 |= 0x08;
+			Flags.flagLED_ether_rx = 0;
+		}
+
+		if(Flags.flagLED_ether_tx) {
+			temp1 |= 0x04;
+			Flags.flagLED_ether_tx = 0;
+		}
+
+		if(Flags.flagLED_uart0_rx) {
+			temp1 |= 0x20;
+			Flags.flagLED_uart0_rx = 0;
+		}
+
+		if(Flags.flagLED_uart0_tx) {
+			temp1 |= 0x10;
+			Flags.flagLED_uart0_tx = 0;
+		}
 //		if(flagLED_usb_rx)		{	temp1 |= 0x40;	 	flagLED_usb_rx = 0;}
 //		if(flagLED_usb_tx)		{	temp1 |= 0x80;		flagLED_usb_tx = 0;} 
 		
 //		if(flagLED_uart1_tx)	{	temp2 |= 0x01;		flagLED_uart1_tx = 0;} 
 //		if(flagLED_uart1_rx)	{	temp2 |= 0x02;	 	flagLED_uart1_rx = 0;}
 
-		if(flagLED_uart1_tx)	{	temp1 |= 0x40;		flagLED_uart1_tx = 0;} 
-		if(flagLED_uart1_rx)	{	temp1 |= 0x80;	 	flagLED_uart1_rx = 0;}
-	}
-	else  if(Modbus.mini_type == MINI_TINY)
-	{
+		if(Flags.flagLED_uart1_tx)	{
+			temp1 |= 0x40;
+			Flags.flagLED_uart1_tx = 0;
+		}
+
+		if(Flags.flagLED_uart1_rx)	{
+			temp1 |= 0x80;
+			Flags.flagLED_uart1_rx = 0;
+		}
+	} else  if(Modbus.mini_type == MINI_TINY) {
 		// TBD: 
-		if(flagLED_uart2_rx)	{ temp1 |= 0x10;	 	flagLED_uart2_rx = 0;}
-		if(flagLED_uart2_tx)	{	temp1 |= 0x20;		flagLED_uart2_tx = 0;}	
-		if(flagLED_ether_rx)	{	temp1 |= 0x04;		flagLED_ether_rx = 0;}
-		if(flagLED_ether_tx)	{	temp1 |= 0x08;		flagLED_ether_tx = 0;}
-		if(flagLED_uart0_rx)	{ temp1 |= 0x01;		flagLED_uart0_rx = 0;}
-		if(flagLED_uart0_tx)	{	temp1 |= 0x02;		flagLED_uart0_tx = 0;}
-	}
-	else  if((Modbus.mini_type == MINI_NEW_TINY) || (Modbus.mini_type == MINI_TINY_ARM))
-	{
+
+		if(Flags.flagLED_uart2_rx) {
+			temp1 |= 0x10;
+			Flags.flagLED_uart2_rx = 0;
+		}
+
+		if(Flags.flagLED_uart2_tx) {
+			temp1 |= 0x20;
+			Flags.flagLED_uart2_tx = 0;
+		}
+
+		if(Flags.flagLED_ether_rx) {
+			temp1 |= 0x04;
+			Flags.flagLED_ether_rx = 0;
+		}
+
+		if(Flags.flagLED_ether_tx) {
+			temp1 |= 0x08;
+			Flags.flagLED_ether_tx = 0;
+		}
+
+		if(Flags.flagLED_uart0_rx) {
+			temp1 |= 0x01;
+			Flags.flagLED_uart0_rx = 0;
+		}
+
+		if(Flags.flagLED_uart0_tx) {
+			temp1 |= 0x02;
+			Flags.flagLED_uart0_tx = 0;
+		}
+	} else  if((Modbus.mini_type == MINI_NEW_TINY) || (Modbus.mini_type == MINI_TINY_ARM)) {
 		// TBD: 
 //		if(flagLED_uart2_rx)	{ temp1 |= 0x10;	 	flagLED_uart2_rx = 0;}
 //		if(flagLED_uart2_tx)	{	temp1 |= 0x20;		flagLED_uart2_tx = 0;}	
@@ -643,11 +743,11 @@ void Updata_Comm_Led(void)
 	}
 	CommLed[0] = temp1;
 	if(pre_status1 != CommLed[0])
-		flag_led_comm_changed = 1;
+		Flags.flag_led_comm_changed = 1;
 
 	CommLed[1] = temp2;
 	if(pre_status2 != CommLed[1])
-		flag_led_comm_changed = 1;
+		Flags.flag_led_comm_changed = 1;
 
 }
 
@@ -762,7 +862,7 @@ char * spi_read(int cmd, int nbytes)
 	if(!error) // no error
 	{
 		Test[1]++;
-		flag_lose_comm = 0;
+		Flags.flag_lose_comm = 0;
 		count_lose_comm = 0;
 		count_error = 0;
 		if(cmd == G_SWTICH_STATUS)
@@ -791,7 +891,7 @@ char * spi_read(int cmd, int nbytes)
 					Setting_Info.reg.pro_info.firmware_c8051 = chip_info[1];  
 					Setting_Info.reg.pro_info.frimware_sm5964 = chip_info[2];
 				}	
-				flag_get_chip_info = 1;
+				Flags.flag_get_chip_info = 1;
 				OLD_COMM = 0;				
 			}
 			else
@@ -801,7 +901,7 @@ char * spi_read(int cmd, int nbytes)
 					chip_info[i] = (U16_T)(tmpbuf[i * 2 + 1] + tmpbuf[i * 2] * 256);
 					Setting_Info.reg.pro_info.firmware_c8051 = chip_info[1];
 					Setting_Info.reg.pro_info.frimware_sm5964 = chip_info[2];
-					flag_get_chip_info = 1;
+					Flags.flag_get_chip_info = 1;
 					if(Setting_Info.reg.pro_info.firmware_c8051 >= 9)  // new comm
 					{					
 						OLD_COMM = 0;
@@ -879,7 +979,7 @@ char * spi_read(int cmd, int nbytes)
 	{
 		Test[0]++;
 
-		flag_lose_comm = 1;
+		Flags.flag_lose_comm = 1;
 		count_lose_comm++;
 	}
 
@@ -952,7 +1052,7 @@ char * spi_read(int cmd, int nbytes)
 	if(!error) // no error
 	{
 		Test[1]++;
-		flag_lose_comm = 0;
+		Flags.flag_lose_comm = 0;
 		count_lose_comm = 0;
 		count_error = 0;
 		if(cmd == G_SWTICH_STATUS)
@@ -981,7 +1081,7 @@ char * spi_read(int cmd, int nbytes)
 					Setting_Info.reg.pro_info.firmware_c8051 = chip_info[1];  
 					Setting_Info.reg.pro_info.frimware_sm5964 = chip_info[2];
 				}	
-				flag_get_chip_info = 1;
+				Flags.flag_get_chip_info = 1;
 				OLD_COMM = 0;				
 			}
 			else
@@ -991,7 +1091,7 @@ char * spi_read(int cmd, int nbytes)
 					chip_info[i] = (U16_T)(tmpbuf[i * 2 + 1] + tmpbuf[i * 2] * 256);
 					Setting_Info.reg.pro_info.firmware_c8051 = chip_info[1];
 					Setting_Info.reg.pro_info.frimware_sm5964 = chip_info[2];
-					flag_get_chip_info = 1;
+					Flags.flag_get_chip_info = 1;
 					if(Setting_Info.reg.pro_info.firmware_c8051 >= 9)  // new comm
 					{					
 						OLD_COMM = 0;
@@ -1069,7 +1169,7 @@ char * spi_read(int cmd, int nbytes)
 	{
 		Test[0]++;
 
-		flag_lose_comm = 1;
+		Flags.flag_lose_comm = 1;
 		count_lose_comm++;
 	}
 
@@ -1087,7 +1187,7 @@ void Check_whether_lose_comm(void)
 {	
 
 	Test[2] = count_lose_comm;
-	if(flag_lose_comm)	
+	if(Flags.flag_lose_comm)
 	{		
 		if(count_lose_comm > MAX_LOSE_TOP)
 		{	
@@ -1099,7 +1199,7 @@ void Check_whether_lose_comm(void)
 				RESET_8051 = 0;  // RESET c8051f023 
 				DELAY_Ms(100);
 				RESET_8051 = 1; 	
-				flag_send_start_comm = 1;
+				Flags.flag_send_start_comm = 1;
 				count_send_start_comm = 0;
 			}
 			if((Modbus.mini_type == MINI_SMALL) && (Modbus.hardRev <= 6))
@@ -1108,7 +1208,7 @@ void Check_whether_lose_comm(void)
 				RESET_8051 = 0;  // RESET c8051f023 
 				DELAY_Ms(100);
 				RESET_8051 = 1; 	
-				flag_send_start_comm = 1;
+				Flags.flag_send_start_comm = 1;
 				count_send_start_comm = 0;
 #endif
 			}
@@ -1131,7 +1231,7 @@ void Check_whether_lose_comm(void)
 				}
 			}
 			count_lose_comm = 0;
-			flag_lose_comm = 0;
+			Flags.flag_lose_comm = 0;
 
 		}
 	}
@@ -1165,7 +1265,7 @@ void SPI_Roution(void)
 				vTaskDelay(175 / portTICK_RATE_MS);
 		*/	
 			
-			if(flag_get_chip_info == 0) // get information first
+			if(Flags.flag_get_chip_info == 0) // get information first
 			{	
 				SPI_Get(G_TOP_CHIP_INFO,12);
 			}
@@ -1242,7 +1342,7 @@ void SPI_Roution(void)
 
 			vTaskDelay(75 / portTICK_RATE_MS);
 
-			if(flag_send_start_comm)
+			if(Flags.flag_send_start_comm)
 			{
 				if(count_send_start_comm < 30)
 				{	
@@ -1252,7 +1352,7 @@ void SPI_Roution(void)
 				{	
 					
 					Start_Comm_Top();
-					flag_send_start_comm = 0; 
+					Flags.flag_send_start_comm = 0;
 				}
 			}
 			else
@@ -1260,11 +1360,11 @@ void SPI_Roution(void)
 				
 				if(OLD_COMM == 1)
 				{
-					if(flag_get_chip_info == 0)
+					if(Flags.flag_get_chip_info == 0)
 					{
 						SPI_Get(G_TOP_CHIP_INFO,12);
 					}
-					else if(flag_led_out_changed)	
+					else if(Flags.flag_led_out_changed)
 					{
 						if(re_send_led_out < 10)
 						{	
@@ -1274,10 +1374,10 @@ void SPI_Roution(void)
 						else
 						{
 							re_send_led_out = 0;
-							flag_led_out_changed = 0;
+							Flags.flag_led_out_changed = 0;
 						}
 					}
-					else if(flag_led_in_changed)	
+					else if(Flags.flag_led_in_changed)
 					{	
 						if(re_send_led_in < 10)
 						{	
@@ -1287,7 +1387,7 @@ void SPI_Roution(void)
 						else
 						{
 							re_send_led_in = 0;
-							flag_led_in_changed = 0;
+							Flags.flag_led_in_changed = 0;
 						}
 					}
 					else 
@@ -1321,7 +1421,7 @@ void SPI_Roution(void)
 				}
 				else
 				{	
-					if(flag_get_chip_info == 0)
+					if(Flags.flag_get_chip_info == 0)
 					{	
 						SPI_Get(G_TOP_CHIP_INFO,12);
 					}
@@ -1356,8 +1456,8 @@ void SPI_Roution(void)
 							}
 							
 							spi_index = 1;
-							if(flag_led_comm_changed)
-								flag_led_comm_changed = 0;
+							if(Flags.flag_led_comm_changed)
+								Flags.flag_led_comm_changed = 0;
 						}
 						else 
 						{	
