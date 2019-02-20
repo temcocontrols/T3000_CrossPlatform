@@ -1,0 +1,9 @@
+#To test the communication use the spi.c file by compiling with the below mentioned command
+#Make sure you have selected the command which you want to reflect on hardware in main ()
+
+gcc spi.c -o Test
+
+and run the compiled binary
+
+./Test
+
