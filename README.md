@@ -20,13 +20,17 @@ T3000 Building Automation System - for Linux-Win deployment
 # Windows
 
 Preinstall:
-Download [Visual Studio Community 2017](https://visualstudio.microsoft.com/it/free-developer-offers/). .NET and C++ applications development should be selected during installation.
+Download [Visual Studio Community 2017](https://visualstudio.microsoft.com/it/free-developer-offers/) .NET and C++ applications development should be selected during installation.
 
 To clone the project:
 
 `File -> Open -> Open from source control`
 
-Then on the right bar `Local Git Repository` fill the field `Enter the URL of a Git repo to clone` with project URL `https://github.com/temcocontrols/T3000_CrossPlatform` and into `Enter a path for the cloned Git repo` insert your project directory (i.e. `My Documents/T3000_CrossPlatform`)
+![File>Open>Open from source](/Documentation/open_from_source.png)
+
+Then on the right bar `Local Git Repository` click on Clone, and fill the field `Enter the URL of a Git repo to clone` with project URL `https://github.com/temcocontrols/T3000_CrossPlatform` and into `Enter a path for the cloned Git repo` insert your project directory (i.e. `My Documents/T3000_CrossPlatform`). Then click `Clone`.
+
+![Clone Repository](/Documentation/clone_git.png)
 
 Wait for clone completion, then open `T3000_CrossPlatform.sln` and build the project with `Build -> Build Solution`
 
