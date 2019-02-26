@@ -28,7 +28,7 @@ To clone the project:
 
 ![File>Open>Open from source](/Documentation/open_from_source.png)
 
-Then on the right bar `Local Git Repository` click on Clone, and fill the field `Enter the URL of a Git repo to clone` with project URL `https://github.com/temcocontrols/T3000_CrossPlatform` and into `Enter a path for the cloned Git repo` insert your project directory (i.e. `My Documents/T3000_CrossPlatform`). Then click `Clone`.
+Then on the right bar `Local Git Repository` click on Clone, and fill the field `Enter the URL of a Git repo to clone` with project URL `https://github.com/temcocontrols/T3000_CrossPlatform` and into `Enter a path for the cloned Git repo` insert your project directory (i.e. `My Documents\Source\T3000_CrossPlatform`). Then click `Clone`.
 
 ![Clone Repository](/Documentation/clone_git.png)
 
@@ -40,22 +40,18 @@ Executable can be find into `T3000_CrossPlatform\ReleaseFiles\LastCompilation\T3
 # Linux
 
 Preinstall:
-Import [Mono](https://en.wikipedia.org/wiki/Mono_(software)) repository following official distro instructions from [Mono-Project](https://www.mono-project.com/) website. Then install the packages:
+Import [Mono](https://en.wikipedia.org/wiki/Mono_(software)) repository following official distro instructions from [Mono-Project](https://www.mono-project.com/download/stable/#download-lin) website. Then install the mono-complete, git and curl packages using the following command:
 
 ```
-mono-complete git curl
+sudo apt install mono-complete git curl
 ```
-Get `nuget`
+Install `nuget`
 ```
-sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-```
-Create an alias for nuget adding the following line in `.bash_aliases` (a logout can be required)
-```
-alias nuget="mono /usr/local/bin/nuget.exe"
+sudo sudo apt install nuget
 ```
 Check `nuget`
 ```
-nuget update -self
+sudo nuget update -self
 ```
 Then execute the following commands:
 ```
@@ -64,7 +60,7 @@ git clone https://github.com/temcocontrols/T3000_CrossPlatform
 nuget restore T3000_CrossPlatform/T3000_CrossPlatform.sln
 msbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
 chmod +x T3000_CrossPlatform/T3000/bin/Release/T3000.exe
-./T3000_CrossPlatform/T3000/bin/Release/T3000.exe
+mono ./T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
 
 Comments:
