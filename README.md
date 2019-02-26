@@ -40,7 +40,7 @@ Executable can be find into `T3000_CrossPlatform\ReleaseFiles\LastCompilation\T3
 # Linux
 
 Preinstall:
-Import [Mono](https://en.wikipedia.org/wiki/Mono_(software)) repository following official distro instructions from [Mono-Project](https://www.mono-project.com/download/stable/#download-lin) website. Then install the mono-complete, git and curl packages using the following command:
+Import [Mono](https://en.wikipedia.org/wiki/Mono_(software)) repository following official distro instructions from [Mono-Project](https://www.mono-project.com/download/stable/#download-lin) website. Then install the mono-complete, git and curl packages using the following command
 
 ```
 sudo apt install mono-complete git curl
@@ -53,16 +53,19 @@ Check `nuget`
 ```
 sudo nuget update -self
 ```
-Then execute the following commands:
+Then execute the following commands to clone the repo
 ```
 rm -r -f T3000_CrossPlatform
 git clone https://github.com/temcocontrols/T3000_CrossPlatform
 nuget restore T3000_CrossPlatform/T3000_CrossPlatform.sln
+```
+And to build from command line
+```
 msbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
 chmod +x T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 mono ./T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
-
+ 
 Comments:
 1. Clean directory T3000_CrossPlatform(if exists). It's need for exclude some bugs with reinstall
 2. Clone the remote repository to the T3000_CrossPlatform directory
