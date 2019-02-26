@@ -53,7 +53,7 @@ Check `nuget`
 ```
 sudo nuget update -self
 ```
-Then execute the following commands to clone the repo
+Execute the following commands to clone the repo
 ```
 rm -r -f T3000_CrossPlatform
 git clone https://github.com/temcocontrols/T3000_CrossPlatform
@@ -63,9 +63,15 @@ And to build from command line
 ```
 msbuild T3000_CrossPlatform/T3000_CrossPlatform.sln /p:Configuration=Release
 chmod +x T3000_CrossPlatform/T3000/bin/Release/T3000.exe
+```
+Run the application
+```
 mono ./T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
- 
+To install the MonoDevelop IDE
+```
+sudo apt install monodevelop
+```
 Comments:
 1. Clean directory T3000_CrossPlatform(if exists). It's need for exclude some bugs with reinstall
 2. Clone the remote repository to the T3000_CrossPlatform directory
