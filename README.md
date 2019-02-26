@@ -47,7 +47,7 @@ sudo apt install mono-complete git curl
 ```
 Install `nuget`
 ```
-sudo sudo apt install nuget
+sudo apt install nuget
 ```
 Check `nuget`
 ```
