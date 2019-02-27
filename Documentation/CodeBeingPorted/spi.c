@@ -24,6 +24,9 @@ struct spi_ioc_transfer xfer[2];
 
 int spi_init(char filename[40]) {
 	static int file;
+#if 0
+	printf("Hello ===== \n");
+#endif
 	__u8 mode = 0, lsb, bits = 8;
 	__u32 speed = 500000;
 
@@ -49,7 +52,6 @@ int spi_init(char filename[40]) {
 
 	printf("%s: spi mode %d, %d bits %sper word, %d Hz max\n", filename,
 			mode, bits, lsb ? "(lsb first) " : "", speed);
-
 	return file;
 }
 
@@ -109,34 +111,4 @@ void spi_write(int cmd, char *data, int data_length, int file) {
 }
 
 
-int main()
-{
-	int fd;
-	char *check, *send_buf;
-	int i;
 
-	send_buf = (char *) calloc(S_COMM_LED_LEN, sizeof(char));
-
-	fd = spi_init("/dev/spidev0.1");
-
-	send_buf[0] = 0xFF;
-	send_buf[1] = 0xFF;
-//	for (i = 2; i < 64; i++)
-//		send_buf[i] = 255;
-//
-//
-//	spi_write(S_ALL, send_buf , S_ALL_LEN, fd);
-//
-	spi_write(S_COMM_LED, send_buf, S_COMM_LED_LEN, fd);
-	free(send_buf);
-
-	check = spi_read(G_ALL, G_ALL_LEN, fd);
-
-	free(check);
-
-	spi_write(S_COMM_LED, send_buf, S_COMM_LED_LEN, fd);
-	free(send_buf);
-
-	close(fd);
-	return 0;
-}
