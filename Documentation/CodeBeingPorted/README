@@ -12,3 +12,10 @@ mcs -unsafe test.cs
 
 # To execute the test application
 mono test.exe
+
+# Function description
+
+There are total 3 functions in the library right now.
+1. spi_init() function which initializes the spi with the given port number
+2. spi_read() function which reads the data by sending some commands and prints data on the console. This can be changed if not required
+3. spi_write() function which writes the data along with the commands to perform certain operations.
