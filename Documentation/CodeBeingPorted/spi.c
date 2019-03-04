@@ -22,13 +22,20 @@ char buf2[10];
 
 struct spi_ioc_transfer xfer[2];
 
-int spi_init(char filename[40]) {
+int spi_init(int port) {
 	static int file;
+	char filename[40];
 #if 0
 	printf("Hello ===== \n");
 #endif
 	__u8 mode = 0, lsb, bits = 8;
 	__u32 speed = 500000;
+
+	if(port)
+		strcpy(filename,"/dev/spidev0.1");
+	else
+		strcpy(filename,"/dev/spidev0.0");
+
 
 	if ((file = open(filename, O_RDWR)) < 0) {
 		perror("Failed to open the bus.");

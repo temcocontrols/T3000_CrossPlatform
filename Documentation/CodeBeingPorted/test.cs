@@ -6,7 +6,7 @@ namespace SpiApplication {
 	class SpiLink {
 
 		[DllImport("libspi.so", EntryPoint="spi_init")]
-			public static extern int spi_init(string finename);
+			public static extern int spi_init(int port);
 
 		[DllImport("libspi.so", EntryPoint="spi_read")]
 
@@ -18,7 +18,7 @@ namespace SpiApplication {
 
 		unsafe static void Main() {
 
-			int fd = spi_init("/dev/spidev0.1");
+			int fd = spi_init(1);
 			char* ptr = spi_read(0x14, 67, fd);
 			Console.WriteLine("fp {0}",fd);
 
