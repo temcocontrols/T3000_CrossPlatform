@@ -1,9 +1,14 @@
-#To test the communication use the spi.c file by compiling with the below mentioned command
-#Make sure you have selected the command which you want to reflect on hardware in main ()
+# Introduction
+spi.c file is low level driver which communicates to SPI hardware using C.
+This file when compiled will generate a library with the name libspi.c
+There is one sample application to call library functions from C#, the application
+is test.cs.
 
-gcc spi.c -o Test
+# To compile the library
+gcc -shared -fPIC -o libspi.so spi.c
 
-and run the compiled binary
+# To compile the test application
+mcs -unsafe test.cs
 
-./Test
-
+# To execute the test application
+mono test.exe
