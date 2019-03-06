@@ -94,11 +94,7 @@ void spi_write(int cmd, char *data, int data_length, int file) {
 
 	int status;
 
-	printf("At line number %d\n",__LINE__);
-
 	char * buf = malloc(data_length * sizeof(char));
-
-	printf("At line number %d\n",__LINE__);
 
 	memset(buf, 0, data_length + 3);
 
