@@ -11,8 +11,8 @@
 //  Copyright (C) Pavel Torgashov, 2013. 
 
 using Irony.Parsing;
-using PRGReaderLibrary.Types.Enums.Codecs;
-using PRGReaderLibrary.Utilities;
+//using PRGReaderLibrary.Types.Enums.Codecs;
+//using PRGReaderLibrary.Utilities;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -30,8 +30,8 @@ namespace FastColoredTextBoxNS
     {
         public event EventHandler<StyleNeededEventArgs> StyleNeeded;
         protected Parser parser;
-        
-        public Style WavyStyle = new WavyLineStyle(255, Color.Red);
+
+        public Style WavyStyle = null;//new WavyLineStyle(255, Color.Red);
 
         /// <summary>
         /// Grammar of custom language
@@ -175,20 +175,20 @@ namespace FastColoredTextBoxNS
                         //GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
                         //Identifier: Discover the correct type for identifier and hihglight.
                         int CPIndex = 0;
-                        var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
+                        var IdentType = PRGReaderLibrary.Utilities.CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
                         switch (IdentType)
                         {
 
-                            case PCODE_CONST.OUTPOINTTYPE:
+                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.OUTPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
                                 break;
-                            case PCODE_CONST.INPOINTTYPE:
+                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.INPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
                                 break;
-                            case PCODE_CONST.VARPOINTTYPE:
+                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.VARPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
                                 break;
-                            case PCODE_CONST.PIDPOINTTYPE:
+                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.PIDPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
                                 break;
                             default:
