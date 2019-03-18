@@ -18,7 +18,8 @@
                 var property = properties[i];
 
                 builder.Append(shortMode ? "" : $"{property.Name}: ");
-                var value = property.GetValue(obj);
+                //TODO: Check if this is a correct call PropertyInfo.GetValue
+                var value = property.GetValue(obj,null);
                 if (value != null)
                 {
                     var valueType = value.GetType();

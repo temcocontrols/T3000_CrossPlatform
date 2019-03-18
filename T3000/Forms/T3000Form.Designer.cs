@@ -51,6 +51,8 @@
             this.chineseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LoadProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.LoadPartName = new System.Windows.Forms.ToolStripStatusLabel();
             this.buttonsToolStrip = new System.Windows.Forms.ToolStrip();
             this.inputsButton = new System.Windows.Forms.ToolStripButton();
             this.outputsButton = new System.Windows.Forms.ToolStripButton();
@@ -63,7 +65,7 @@
             this.panelBuildingView = new System.Windows.Forms.Panel();
             this.groupBoxBuildingView = new System.Windows.Forms.GroupBox();
             this.treeBuildingView = new System.Windows.Forms.TreeView();
-            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.splitterMain = new System.Windows.Forms.Splitter();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.buttonsToolStrip.SuspendLayout();
@@ -216,7 +218,9 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
+            this.statusLabel,
+            this.LoadProgressBar,
+            this.LoadPartName});
             resources.ApplyResources(this.statusStrip, "statusStrip");
             this.statusStrip.Name = "statusStrip";
             // 
@@ -224,6 +228,18 @@
             // 
             this.statusLabel.Name = "statusLabel";
             resources.ApplyResources(this.statusLabel, "statusLabel");
+            // 
+            // LoadProgressBar
+            // 
+            this.LoadProgressBar.Maximum = 624;
+            this.LoadProgressBar.Name = "LoadProgressBar";
+            resources.ApplyResources(this.LoadProgressBar, "LoadProgressBar");
+            this.LoadProgressBar.Step = 1;
+            // 
+            // LoadPartName
+            // 
+            this.LoadPartName.Name = "LoadPartName";
+            resources.ApplyResources(this.LoadPartName, "LoadPartName");
             // 
             // buttonsToolStrip
             // 
@@ -322,17 +338,17 @@
             this.treeBuildingView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             ((System.Windows.Forms.TreeNode)(resources.GetObject("treeBuildingView.Nodes")))});
             // 
-            // splitter1
+            // splitterMain
             // 
-            resources.ApplyResources(this.splitter1, "splitter1");
-            this.splitter1.Name = "splitter1";
-            this.splitter1.TabStop = false;
+            resources.ApplyResources(this.splitterMain, "splitterMain");
+            this.splitterMain.Name = "splitterMain";
+            this.splitterMain.TabStop = false;
             // 
             // T3000Form
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.splitterMain);
             this.Controls.Add(this.panelBuildingView);
             this.Controls.Add(this.buttonsToolStrip);
             this.Controls.Add(this.statusStrip);
@@ -392,6 +408,8 @@
         private System.Windows.Forms.Panel panelBuildingView;
         private System.Windows.Forms.GroupBox groupBoxBuildingView;
         private System.Windows.Forms.TreeView treeBuildingView;
-        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.Splitter splitterMain;
+        public System.Windows.Forms.ToolStripProgressBar LoadProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel LoadPartName;
     }
 }

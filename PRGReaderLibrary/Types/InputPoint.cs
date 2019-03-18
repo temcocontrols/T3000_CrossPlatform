@@ -132,7 +132,7 @@ namespace PRGReaderLibrary
             else
             {
                 Jumper = jumperIndex == 4
-                    ? (Jumper)4 //TODO: Fix for T3DemoRev6.prg
+                    ? (Jumper)4 //TODO: NOT MINE: Fix for T3DemoRev6.prg
                     : Jumper.Thermistor;
             }
 
