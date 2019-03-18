@@ -21,6 +21,7 @@ namespace PRGReaderLibrary
         Watts,
         Kw,
         KwH,
+
         Volts,
         KVolts,
         Amps,
@@ -32,6 +33,7 @@ namespace PRGReaderLibrary
         Days,
         Time,
         Ohms,
+
 
         [UnitsNames("%")]
         Percents,
@@ -134,6 +136,7 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Custom digital part
         /// </summary>
+       
         CustomDigital1 = 123,
         CustomDigital2,
         CustomDigital3,
@@ -142,6 +145,7 @@ namespace PRGReaderLibrary
         CustomDigital6,
         CustomDigital7,
         CustomDigital8,
+        CustomDigital9,
 
         /// <summary>
         /// Input analog part

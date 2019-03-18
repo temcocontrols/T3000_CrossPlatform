@@ -19,10 +19,6 @@ namespace PRGReaderLibrary.Utilities
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
         public ControlPoints Identifiers { get; set; } = new ControlPoints();
-        /// <summary>
-        /// Required copy con TimeBuffer entries
-        /// </summary>
-        public TimeBuffer TimeBuff { get; set; }
 
         /// <summary>
         /// Lists every single linenumber with it byte offset from start of programcode.
@@ -59,11 +55,6 @@ namespace PRGReaderLibrary.Utilities
 
                 Array.Copy(PCode, 0, prgsize, 0, 2);
 
-                //Get a local copy of TimeBuffer
-                if (Start == 0)
-                    if (Identifiers != null)
-                        TimeBuff = new TimeBuffer(Identifiers, PCode);
-
                 //2 bytes more for total bytes count.
                 int ProgLenght = BytesExtensions.ToInt16(prgsize) + 2;
                 //If defined, END for THEN or ELSE
@@ -77,7 +68,6 @@ namespace PRGReaderLibrary.Utilities
                 bool isFirstToken = true; //default values for first decoding
                 bool recursiveCall = false; //default value for first decoding
 
-
                 if (Start != 0)
                 {
                     offset = Start;
@@ -86,8 +76,6 @@ namespace PRGReaderLibrary.Utilities
                 }
                 else //normal start for offset
                     offset = 2;
-
-                int countStatements = 0; //Single line multi statements counter
 
                 while (offset <= ProgLenght)
                 {
@@ -101,7 +89,6 @@ namespace PRGReaderLibrary.Utilities
                                 string strLineNum = GetLineNumber(PCode, ref offset);
                                 CurrentLine = strLineNum;
                                 result += strLineNum;
-                                countStatements = 0; //Always reset when new linenumber
                             }
                             else throw new NotImplementedException($"Token NUMBER but not fistToken: {System.Environment.NewLine}{result}{System.Environment.NewLine}");
 
@@ -112,27 +99,23 @@ namespace PRGReaderLibrary.Utilities
 
                             result += " " + GetComment(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            countStatements = 0; //Always reset after comments
                             break;
 
 
                         #region ASSIGMENTS
                         case (byte)LINE_TOKEN.LET:
-                            //result += " LET"; //Deprecated
+                            result += " LET";
                             offset++;
                             if (PCode[offset] != (byte)LINE_TOKEN.ASSIGN)
                             {
-                                throw new NotSupportedException("Next token after (deprecated) LET, is not ASSIGMENT ");
+                                throw new Exception("Fatal Error: Next token after (deprecated) LET, is not an ASSIGMENT");
                             }
                             isFirstToken = false;
                             break;
 
                         case (byte)LINE_TOKEN.ASSIGN:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + GetAssigment(PCode, ref offset);// + System.Environment.NewLine;
-                            
                             isFirstToken = true;
-                            if(recursiveCall) countStatements++;
                             break;
                         #endregion
 
@@ -142,25 +125,19 @@ namespace PRGReaderLibrary.Utilities
                         #region Single byte commands
 
                         case (byte)LINE_TOKEN.CLEAR:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "CLEAR";// + System.Environment.NewLine;
                             offset++;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
                         case (byte)LINE_TOKEN.HANGUP:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "HANGUP";// + System.Environment.NewLine;
                             offset++;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
                         case (byte)LINE_TOKEN.RETURN:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "RETURN";// + System.Environment.NewLine;
                             offset++;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
                         case (byte)LINE_TOKEN.ENDPRG:
                             result += " " + "END";// + System.Environment.NewLine;
@@ -171,57 +148,45 @@ namespace PRGReaderLibrary.Utilities
 
                         #region 2+ bytes commands
                         case (byte)LINE_TOKEN.START:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "START ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.STOP:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "STOP ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.OPEN:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "OPEN ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.CLOSE:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "CLOSE ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.ENABLEX:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "ENABLE ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
 
                         case (byte)LINE_TOKEN.DISABLEX:
-                            if (countStatements > 0 && recursiveCall) result += ","; //Add comma when multiple sentences in single block
                             result += " " + "DISABLE ";
                             offset++;
                             result += GetIdentifierLabel(PCode, ref offset); // + System.Environment.NewLine;
                             isFirstToken = true;
-                            if (recursiveCall) countStatements++;
                             break;
                         #endregion
 
@@ -244,15 +209,13 @@ namespace PRGReaderLibrary.Utilities
                             offset++;
                             result += GetExpression(PCode, ref offset);
                             isFirstToken = false;
-                            countStatements=0;
-
                             //THEN PART BEGINS
                             result += " THEN";
                             offset++;
                             int OffsetTHEN = BitConverter.ToInt16(PCode, offset);
                             if(OffsetTHEN > 2000)
                             {
-                                throw new OverflowException("Out of bounds: THEN Offset it's over PRG capacity ");
+                                throw new Exception("Out of bounds: THEN Offset it's over PRG capacity ");
                             }
                             offset += 2;
 
@@ -273,7 +236,6 @@ namespace PRGReaderLibrary.Utilities
                             {
                                 case (byte)TYPE_TOKEN.NUMBER:
                                     isFirstToken = true;
-                                    countStatements = 0;
                                     break;
                                 case (byte)LINE_TOKEN.ELSE:
                                     result += " ELSE";
@@ -284,7 +246,6 @@ namespace PRGReaderLibrary.Utilities
                                         throw new Exception("Out of bounds: ELSE Offset it's over PRG capacity ");
                                     }
                                     offset += 2; //offset +2 bytes
-                                    countStatements = 0;
                                     result += RemoveCRLF(GetThenElsePart(PCode, ref offset, newElseOffset));
 
                                     if (PCode[offset] == (byte)LINE_TOKEN.EOE) offset++; //Ignore the token.
@@ -431,26 +392,6 @@ namespace PRGReaderLibrary.Utilities
             return result;
         }
 
-
-        private string GetOffset(byte[] PCode, ref int offset)
-        {
-            string result = "";
-
-            try
-            {
-                offset++; //1 byte = TOKEN {1}
-                short LineNumber = BytesExtensions.ToInt16(PCode, ref offset);
-                result += LineNumber.ToString(); //LINE NUMBER, 2 Bytes
-                                                 //Populate a list of offsets of every linenumbers
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.Show(ex, "GetOffset(), Exception found!");
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// Get comments, including REM token, autoincrements offset
         /// </summary>
@@ -565,21 +506,11 @@ namespace PRGReaderLibrary.Utilities
                             ExprTokens.Add(localpoint);
                             break;
 
-                        case (byte)PCODE_CONST.REMOTE_POINT_PRG:
-                            EditorTokenInfo remotepoint = new EditorTokenInfo("Register", "Register");
-                            remotepoint.Token = source[offset];
-                            remotepoint.Index = source[offset + 1];
-                            remotepoint.Type = source[offset + 2];
-                            //text will be ready with identifier label
-                            remotepoint.Text = GetIdentifierLabel(source, ref offset); //increments offset after reading identifier
-                            ExprTokens.Add(remotepoint);
-                            break;
-
                         #endregion
 
-                        #region Numeric Constants : Numbers and Time Formatted Values
+                        #region Numeric Constants
 
-                        case (byte)PCODE_CONST.CONST_VALUE_PRG: //Numbers and Time Formatted Values
+                        case (byte)PCODE_CONST.CONST_VALUE_PRG:
 
                             EditorTokenInfo constvalue = new EditorTokenInfo("NUMBER", "NUMBER");
                             constvalue.Token = source[offset];
@@ -587,6 +518,16 @@ namespace PRGReaderLibrary.Utilities
                             ExprTokens.Add(constvalue);
 
                             break;
+
+                        //case (byte)FUNCTION_TOKEN.TIME_FORMAT:
+
+                        //    EditorTokenInfo timeformatvalue = new EditorTokenInfo("NUMBER", "NUMBER");
+                        //    timeformatvalue.Token = source[offset];
+                        //    timeformatvalue.Text = GetConstValue(source, ref offset); //incrementes offset after reading const 
+                        //    ExprTokens.Add(timeformatvalue);
+                            
+
+                        //    break;
 
                         #endregion
 
@@ -865,43 +806,22 @@ namespace PRGReaderLibrary.Utilities
                             break;
                         case (byte)FUNCTION_TOKEN.TIME_ON:
                             fxtoken = new EditorTokenInfo("TIME-ON", "TIME_ON");
-                            fxtoken.Token = source[offset]; 
+                            fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            
-                            int BufferPosition = Convert.ToInt16(GetOffset(source, ref offset));
-                            byte[] cpi = TimeBuff.GetBytesAtPosition(BufferPosition);
-                            localpoint = new EditorTokenInfo("Identifier", "Identifier");
-                            localpoint.Token = cpi[0];
-                            localpoint.Index = cpi[1];
-                            localpoint.Type = cpi[2];
-                            //text will be ready with identifier label
-                            localpoint.Text = TimeBuff[BufferPosition]; //increments offset after reading identifier
-                            ExprTokens.Add(localpoint);
-                            ExprTokens.Add(fxtoken); //Make it POSTFIX for decoding purposes
+                            ExprTokens.Add(fxtoken);
+                            offset++;
                             break;
-
                         case (byte)FUNCTION_TOKEN.TIME_OFF:
                             fxtoken = new EditorTokenInfo("TIME-OFF", "TIME_OFF");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            
-                            int BufferPosition2 = Convert.ToInt16(GetOffset(source, ref offset));
-                            byte[] cpi2 = TimeBuff.GetBytesAtPosition(BufferPosition2);
-                            localpoint = new EditorTokenInfo("Identifier", "Identifier");
-                            localpoint.Token = cpi2[0];
-                            localpoint.Index = cpi2[1];
-                            localpoint.Type = cpi2[2];
-                            //text will be ready with identifier label
-                            localpoint.Text = TimeBuff[BufferPosition2]; //increments offset after reading identifier
-                            ExprTokens.Add(localpoint);
-                            ExprTokens.Add(fxtoken);//Make it POSTFIX for decoding purposes
-
+                            ExprTokens.Add(fxtoken);
+                            offset++;
                             break;
                         case (byte)FUNCTION_TOKEN.WR_ON:
                             fxtoken = new EditorTokenInfo("WR-ON", "WR_ON");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            fxtoken.Index = 2;
                             ExprTokens.Add(fxtoken);
                             offset++;
                             break;
@@ -909,7 +829,6 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("WR-OFF", "WR_OFF");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            fxtoken.Index = 2;
                             ExprTokens.Add(fxtoken);
                             offset++;
                             break;
@@ -931,7 +850,7 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("MAX", "MAX");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            fxtoken.Index = source[offset + 1]; //Index has the count
+                            fxtoken.Index = source[offset + 1];
                             ExprTokens.Add(fxtoken);
                             offset += 2;
                             break;
@@ -939,7 +858,7 @@ namespace PRGReaderLibrary.Utilities
                             fxtoken = new EditorTokenInfo("MIN", "MIN");
                             fxtoken.Token = source[offset];
                             fxtoken.Precedence = 200;
-                            fxtoken.Index = source[offset + 1]; //Index has the count
+                            fxtoken.Index = source[offset + 1];
                             ExprTokens.Add(fxtoken);
                             offset += 2;
                             break;
@@ -1019,13 +938,9 @@ namespace PRGReaderLibrary.Utilities
                         {
                             //Multiple expressions functions
                             case "AVG":
-                            case "MAX":
-                            case "MIN":
-                            case "WR_OFF":
-                            case "WR_ON":
 
                                 if (BTStack.Count < operatornode.Data.Index)
-                                    throw new ArgumentException("Not enough arguments in BTStack for Function");
+                                    throw new ArgumentException("Not enough arguments in BTStack for AVG Function");
 
                                 for (int i = 1; i < operatornode.Data.Index; i++)
                                     NodeAddCommaToken(ref operatornode, BTStack.Pop()); //default, add to the right.
@@ -1039,16 +954,9 @@ namespace PRGReaderLibrary.Utilities
                             default: //Other simple functions and operators
                                 
                                 if (BTStack.Count > 1) //avoid unary operators and functions exception
-                                    switch (token.TerminalName)
-                                    {
-                                        case "NOT":
-                                        //Decoding ok: NOT operator
-                                            break;
-                                        default:
-                                            operatornode.Right = BTStack.Pop();
-                                            break;
-                                    }
-                                
+                                    operatornode.Right = BTStack.Pop();
+                                //Decoding ok: NOT operator
+                                //Debug.Assert(operatornode.Data.TerminalName != "NOT");
                                 operatornode.Left = BTStack.Pop();
                                 BTStack.Push(operatornode);
 
@@ -1176,7 +1084,7 @@ namespace PRGReaderLibrary.Utilities
         
 
         /// <summary>
-        /// Get a numeric constant value from source
+        /// Get a numeric constant value from sourcec
         /// </summary>
         /// <param name="source">source bytes</param>
         /// <param name="offset">start</param>
@@ -1243,53 +1151,28 @@ namespace PRGReaderLibrary.Utilities
             short Token = source[offset];
             int TokenIdx = source[offset + 1];
             short TokenType = source[offset + 2];
-            short PanelID = source[offset + 3];
-            byte Subnet = source[offset + 4];
 
-            switch (Token)
+            offset += 3;
+
+            switch (TokenType)
             {
-                //LOCAL CONTROL POINTS, FIND LABEL
-                case (short)PCODE_CONST.LOCAL_POINT_PRG:
-                    offset += 3;
-
-                    switch (TokenType)
-                    {
-                        case (short)PCODE_CONST.VARPOINTTYPE:
-                            IdentLabel = Identifiers.Variables[TokenIdx].Label;
-                            break;
-                        case (short)PCODE_CONST.INPOINTTYPE:
-                            IdentLabel = Identifiers.Inputs[TokenIdx].Label;
-                            break;
-                        case (short)PCODE_CONST.OUTPOINTTYPE:
-                            IdentLabel = Identifiers.Outputs[TokenIdx].Label;
-                            break;
-                        case (short)PCODE_CONST.PIDPOINTTYPE:
-                            IdentLabel = $"PID{TokenIdx + 1}";// Identifiers.Controllers[TokenIdx].Label;
-                            break;
-
-                        default:
-                            throw new NotImplementedException($"Unsupported type of LOCAL POINT: {TokenType}");
-                    }
+                case (short)PCODE_CONST.VARPOINTTYPE:
+                    IdentLabel = Identifiers.Variables[TokenIdx].Label;
                     break;
-                //REMOTE CONTROL POINTS AS REGISTERS
-                case (short)PCODE_CONST.REMOTE_POINT_PRG: //REGISTERS
-                    offset += 6;
-                    switch (TokenType)
-                    {
-                        case (short)PCODE_CONST.VARPOINTTYPE:
-                            IdentLabel = $"{PanelID}.{Subnet}.REG{TokenIdx + 1}";
-                            break;
-
-                        default:
-                            throw new NotImplementedException($"Unsupported type of REMOTE POINT: {TokenType}");
-                    }
-                break;
+                case (short)PCODE_CONST.INPOINTTYPE:
+                    IdentLabel = Identifiers.Inputs[TokenIdx].Label;
+                    break;
+                case (short)PCODE_CONST.OUTPOINTTYPE:
+                    IdentLabel = Identifiers.Outputs[TokenIdx].Label;
+                    break;
+                case (short)PCODE_CONST.PIDPOINTTYPE:
+                    IdentLabel = $"PID{TokenIdx + 1}";// Identifiers.Controllers[TokenIdx].Label;
+                    //TODO : NEW: Add same for ENCODER, and retouch grammar to understand PIDxx
+                    break;
 
                 default:
-                    throw new NotImplementedException($"Unknown or unsupported type of IDENTIFIER: {Token}");
+                    break;
             }
-
-            
             return IdentLabel;
         }
     }
