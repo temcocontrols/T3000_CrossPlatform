@@ -1,0 +1,5 @@
+2019-03-19
+1.Fixed the errors that travis and appveyor can't compile T3000
+2.Added notes for T3000_CrossPlatform
+3.Added the latest T3000 Untis
+4.Added the  PanelID,Subnet,

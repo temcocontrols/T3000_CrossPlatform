@@ -730,7 +730,7 @@
                             NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
                             NewToken.Index = (short) (Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
                             NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
-                            NewToken.PanelID = tokenparts[0];
+                            NewToken.PanelID= tokenparts[0];
                             NewToken.Subnet = tokenparts[1];
                             //the final byte = 1, assumed to be added later by EncodeBytes
                         

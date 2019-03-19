@@ -38,18 +38,21 @@ namespace PRGReaderLibrary.Utilities
                 string UPTO64 = "6[0-4]|[1-5][0-9]?";
                 //string UPTO48 = "4[0-8]|[1-3][0-9]?";
                 //string UPTO32 = "3[0-2]|[1-2][0-9]?";
-                //string UPTO16 = "1[0-6]|[1-9]";
+               string UPTO16 = "1[0-6]|[1-9]";
                 //string UPTO8 = "[1-8]";
                 //string UPTO4 = "[1-4]";
                 //string UPTO31 = "3[0-1]|[1-2][0-9]?";
                 //string UPTO5 = "[1-5]";
 
                 //Same as in T3000Grammar, updated for Rev6
-                string VARS = "VAR(" + UPTO128 + ")";
+                
                 string OUTS = "OUT(" + UPTO64 + ")";
                 string INS = "IN(" + UPTO64 + ")";
+                string VARS = "VAR(" + UPTO128 + ")";
+                string PIDS = "PID(" + UPTO16 + ")";
 
-                string Generic = Regex.Match(Ident,VARS +"|" + OUTS + "|" + INS).Value;
+
+                string Generic = Regex.Match(Ident,VARS +"|" + OUTS + "|" + INS + "|" + PIDS).Value;
 
                 if (Generic.Trim()!="")
                 {
@@ -57,15 +60,19 @@ namespace PRGReaderLibrary.Utilities
 
                     switch (Generic.Substring(0,2))
                     {
-                        case "VA":
-                            Index = Convert.ToInt16(GenericIndex) - 1; //VAR1 will get index 0, and so on.
-                            return PCODE_CONST.VARPOINTTYPE;
+                       
                         case "OU":
                             Index = Convert.ToInt16(GenericIndex) - 1; //OUT1 will get index 0, and so on.
                             return PCODE_CONST.OUTPOINTTYPE; ;
                         case "IN":
                             Index = Convert.ToInt16(GenericIndex) - 1; //IN1 will get index 0, and so on.
                             return PCODE_CONST.INPOINTTYPE;
+                        case "VA":
+                            Index = Convert.ToInt16(GenericIndex) - 1; //VAR1 will get index 0, and so on.
+                            return PCODE_CONST.VARPOINTTYPE;
+                        case "PI":
+                            Index = Convert.ToInt16(GenericIndex) - 1; //PID1 will get index 0, and so on.
+                            return PCODE_CONST.PIDPOINTTYPE;
 
                         default:
                             break;
