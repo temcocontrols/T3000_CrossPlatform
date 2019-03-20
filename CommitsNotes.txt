@@ -1,3 +1,7 @@
+2019-03-20
+1.update VC Program Editor to be fit for TIME OF/OFF ,and PPANELID.ModbusID.REG+NUMBER
+2.Added the latest units for Minipanel,make it know the latest units(inputs,outputs,variables)
+
 2019-03-19
 1.Fixed the errors that travis and appveyor can't compile T3000
 2.Added notes for T3000_CrossPlatform
