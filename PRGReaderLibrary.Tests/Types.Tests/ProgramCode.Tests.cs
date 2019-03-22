@@ -12,7 +12,7 @@
         public void GetLinePart_Tests()
         {
             var path = TestUtilities.GetFullPathForPrgFile("BTUMeter.prg");
-            var prg = Prg.Load(path,null);
+            var prg = Prg.Load(path);
 
             var bytes = prg.ProgramCodes[0].Code;
             {

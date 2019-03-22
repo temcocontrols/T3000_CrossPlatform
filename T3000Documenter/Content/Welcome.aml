@@ -55,7 +55,7 @@
             Console.WriteLine($"Tokens:{Environment.NewLine}{e.ToString()}");
             
 
-            //Inician las pruebas de codificación
+            //Inician las pruebas de codificaciÃ³n
             byte[] ByteEncoded = EncodeBytes(e.Tokens);
             var PSize = BitConverter.ToInt16(ByteEncoded, 0);
             ConsolePrintBytes(ByteEncoded, "Encoded");

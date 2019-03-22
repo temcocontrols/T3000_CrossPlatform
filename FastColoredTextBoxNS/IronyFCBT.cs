@@ -1,4 +1,4 @@
-﻿//
+//
 //  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
 //  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
@@ -11,8 +11,6 @@
 //  Copyright (C) Pavel Torgashov, 2013. 
 
 using Irony.Parsing;
-//using PRGReaderLibrary.Types.Enums.Codecs;
-//using PRGReaderLibrary.Utilities;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -30,8 +28,12 @@ namespace FastColoredTextBoxNS
     {
         public event EventHandler<StyleNeededEventArgs> StyleNeeded;
         protected Parser parser;
+        
+        public Style WavyStyle = new WavyLineStyle(255, Color.Red);
+     
 
-        public Style WavyStyle = null;//new WavyLineStyle(255, Color.Red);
+              
+
 
         /// <summary>
         /// Grammar of custom language
@@ -67,7 +69,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void SetParser(Grammar grammar)
         {
-            SetParser(new LanguageData(grammar)); //call to overload based on languagedata
+            SetParser(new LanguageData(grammar));
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public virtual void SetParser(LanguageData language)
         {
-            SetParser(new Parser(language)); //call to overload based on parser
+            SetParser(new Parser(language));
         }
 
         /// <summary>
@@ -84,23 +86,20 @@ namespace FastColoredTextBoxNS
         public virtual void SetParser(Parser parser)
         {
             this.parser = parser;
-            RefreshStyles();
-            
-        }
-
-        public virtual void RefreshStyles()
-        {
             ClearStylesBuffer();
             AddStyle(WavyStyle);
 
-        
+            VariablesColor = Color.Crimson ;
+            InputsColor = Color.BlueViolet;
+            OutputsColor = Color.DarkBlue;
 
-            //SyntaxHighlighter.InitStyleSchema(Language.ControlBasic);
+            SolidBrush variablebrush = new SolidBrush(VariablesColor);
+            SyntaxHighlighter.VariableStyle = new TextStyle(variablebrush, null, FontStyle.Regular);
 
+            SyntaxHighlighter.InitStyleSchema(Language.CSharp);
             InitBraces();
             OnTextChanged(Range);
         }
-
 
         /// <summary>
         /// Auto-hightlight delayed for text change
@@ -146,6 +145,9 @@ namespace FastColoredTextBoxNS
             }
 
             
+            SolidBrush brush1 = new SolidBrush(VariablesColor);
+            SyntaxHighlighter.VariableStyle = new TextStyle(brush1, null, FontStyle.Regular);
+
 
             //highlight syntax
             ClearStyle(StyleIndex.All);
@@ -168,75 +170,37 @@ namespace FastColoredTextBoxNS
 
                 switch (t.Terminal.Name)
                 {
-                    case "INTERVAL": //Sample of how to color a single TOKEN, not working yet
+                    case "INTERVAL":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.FunctionsStyle);
                         break;
                     case "Identifier":
-                        //GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                        //Identifier: Discover the correct type for identifier and hihglight.
-                        int CPIndex = 0;
-                        var IdentType = PRGReaderLibrary.Utilities.CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
-                        switch (IdentType)
-                        {
-
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.OUTPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
-                                break;
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.INPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
-                                break;
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.VARPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                                break;
-                            case PRGReaderLibrary.Types.Enums.Codecs.PCODE_CONST.PIDPOINTTYPE:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
-                                break;
-                            default:
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
-                                break;
-                        }
-                        break;
-                    case "INS":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.InputStyle);
-                        break;
-                    case "OUTS":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.OutputStyle);
-                        break;
-                    case "VARS":
                         GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
                         break;
-                    case "PIDS":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
-                        break;
-                    case "LineNumber":
-                        GetTokenRange(t).SetStyle(SyntaxHighlighter.InnerLinesNumberStyle);
-                        break;
-                    default: //parse by type: General highlighting
-                        switch (t.Terminal.GetType().Name)
-                        {
-                            case "KeyTerm":
-                                if ((t.Terminal.Flags & TermFlags.IsKeyword) != 0) //keywords are highlighted only
-                                    GetTokenRange(t).SetStyle(SyntaxHighlighter.KeywordStyle);
-                                break;
-                            case "FreeTextLiteral":
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
-                                break;
-
-                            case "NumberLiteral":
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.NumberStyle);
-                                break;
-                            case "StringLiteral":
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.StringStyle);
-                                break;
-                            case "CommentTerminal":
-                                GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
-                                break;
-                        }
-                        break;
-                  
                 }
 
-                
+                switch (t.Terminal.GetType().Name)
+                {
+                    case "KeyTerm":
+                        if ((t.Terminal.Flags & TermFlags.IsKeyword) != 0) //keywords are highlighted only
+                            GetTokenRange(t).SetStyle(SyntaxHighlighter.KeywordStyle);
+                        break;
+                    case "FreeTextLiteral":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
+                        break;
+                    case "Identifier":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
+                        
+                        break;
+                    case "NumberLiteral":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.NumberStyle);
+                        break;
+                    case "StringLiteral":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.StringStyle);
+                        break;
+                    case "CommentTerminal":
+                        GetTokenRange(t).SetStyle(SyntaxHighlighter.CommentStyle);
+                        break;
+                }
             }
         }
 

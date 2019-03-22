@@ -1,7 +1,7 @@
 language: csharp
 solution: T3000_CrossPlatform.sln
 script:
-  - msbuild /p:Configuration=Release
+  - xbuild /p:Configuration=Release
   - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./PRGReaderLibrary.Tests/bin/Release/PRGReaderLibrary.Tests.dll
   - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./T3000.Tests/bin/Release/T3000.Tests.dll
   - mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./T3000Grammar.Tests/bin/Release/T3000Grammar.Tests.dll

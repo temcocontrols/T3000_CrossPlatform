@@ -936,9 +936,8 @@ namespace FastColoredTextBoxNS
         {
             Normalize();
 
-            var fts = tb.TextSource as FileTextSource; //<----!!!! ugly (BUT IT WORKS)
-            //var fts = (FileTextSource)tb.TextSource; //<----!!!! DOES NOT WORK
-
+            //var fts = tb.TextSource as FileTextSource; //<----!!!! ugly
+            var fts = (FileTextSource)tb.TextSource;
 
             //enumaerate lines
             for (int iLine = Start.iLine; iLine <= End.iLine; iLine++)

@@ -1,0 +1,43 @@
+These notes are for the bottom board: 
+
+bot.zip
+
+comm.c comm.h
+-> spi code with top board
+1. get input values , switch status
+2. set input type
+
+
+pic.c pic.h
+1. communication with pic chip 
+2. pic chip also enables the relays
+
+output.c output.h
+1. controls the analog outputs
+
+
+See TopBoardNotes.txt for info on the upper PCB. 
+
+/**************************************************************************/
+//3 commands between BOT and TOP
+//G_TOP_CHIP_INFO  -- return information of TOP. Hardware rev and firmware rev and so on. It is not important.
+//G_ALL -- return switch status (24 * 1 bytes)and input value( 32 * 2 bytes) and high speed counter( 6 * 4bytes)
+//S_ALL -- send LED status to TOP. Communication LED( 2 bytes) + output led( 24 * 1byte) + input led( 32 * 1) + flag of high speed counter( 6 * 1)
+/***************************************************************************/
+
+Any kind of panel have same format.
+For BB.  // 24 outputs + 32 inputs
+G_ALL  switch status (24 * 1 bytes) +  input value( 32 * 2 bytes)  +  high speed counter( 6 * 4bytes)
+S_ALL -- Communication LED( 2 bytes) + output led( 24 * 1byte) + input led( 32 * 1) + flag of high speed counter( 6 * 1)
+
+For LB  // 10 outputs + 16 inputs
+G_ALL  switch status (10 * 1 bytes) + Reserved bytes (14 bytes) +  input value( 16 * 2 bytes) + Reserved bytes (32 bytes)  +  high speed counter( 6 * 4bytes)
+S_ALL -- Communication LED( 2 bytes) + output led( 10 * 1byte) + Reserved bytes (14 bytes) + input led( 16 * 1)  + Reserved bytes (16 bytes)  +  flag of high speed counter( 6 * 1)
+
+For TB  new ARM version, no SPI communication
+
+In fact the code in zdrive is what I cleaned before. I explain the structure above, they are have same structure, I forgot that this morning.
+
+Thanks,
+Chelsea
+

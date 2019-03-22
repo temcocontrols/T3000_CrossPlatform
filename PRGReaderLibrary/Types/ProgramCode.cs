@@ -450,7 +450,7 @@
         /* return true if c is a space or a tab*/
         private bool iswhite(char c)
         {
-
+            
             return (c == ' ' || c == '\t' || c == Srt) ? true : false;
 
         }
@@ -458,11 +458,11 @@
 
         /* return true if c is a delimiter */
         private bool isdelim(char c)
-
+       
         {
             string delimiters = " :!;,<>'*^=()[]";
             if (c == 9 || c == '\r' || c == 0) return true;
-            return delimiters.Contains(c) ? true : false;
+            return delimiters.Contains(c) ? true:false;
 
         }
 
@@ -597,11 +597,11 @@
             if (offset != bytes.Length || expressions.Count != 1)
             {
                 Debug.WriteLine($@"Bad part:
-    bytes: {DebugUtilities.CompareBytes(bytes, bytes, onlyDif: false, toText: false)}
-    offset: {offset}
-    bytes.Length: {bytes.Length}
-    expressions: {expressions.Count}
-    ");
+bytes: {DebugUtilities.CompareBytes(bytes, bytes, onlyDif: false, toText: false)}
+offset: {offset}
+bytes.Length: {bytes.Length}
+expressions: {expressions.Count}
+");
             }
 
             //One expression
@@ -685,100 +685,98 @@
             return;
         }
 
+        /// <summary>
+        /// Raw Lines Constructor
+        /// </summary>
+        /// <remarks>Author: LRUIZ</remarks>
 
-        //DEPRECATED: Not used, because it's a obsolte method too, just like LINE
-        /////// <summary>
-        /////// Raw Lines Constructor
-        /////// </summary>
-        /////// <remarks>Author: LRUIZ</remarks>
+        static public byte[] RawLine(string line)
+        {
 
-        ////static public byte[] RawLine(string line)
-        ////{
+            List<byte> returnvalue = new List<byte>();
+            List<byte> Data = new List<byte>();
+            byte Type, Token;
+            short Number;
 
-        ////    List<byte> returnvalue = new List<byte>();
-        ////    List<byte> Data = new List<byte>();
-        ////    byte Type, Token;
-        ////    short Number;
-
-        ////    Type = (byte)TYPE_TOKEN.NUMBER; //1 Byte
-        ////    returnvalue.Add((byte)Type);
+            Type = (byte)TYPE_TOKEN.NUMBER; //1 Byte
+            returnvalue.Add((byte)Type);
 
 
-        ////    string[] separators = { " " };
-        ////    string[] LineParts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            string[] separators = { " " };
+            string[] LineParts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
-        ////    if (!LineParts.Any())
-        ////    {
-        ////        throw new Exception($"Not enough tokens in line: {line}");
-        ////    }
+            if (!LineParts.Any())
+            {
+                throw new Exception($"Not enough tokens in line: {line}");
+            }
 
-        ////    if (String.IsNullOrEmpty(LineParts[0]))
-        ////    {
-        ////        Number = 0;
-        ////    }
-        ////    else
-        ////    {
-        ////        Number = Convert.ToInt16(LineParts[0]);
-        ////    }
+            if (String.IsNullOrEmpty(LineParts[0]))
+            {
+                Number = 0;
+            }
+            else
+            {
+                Number = Convert.ToInt16(LineParts[0]);
+            }
 
 
 
-        ////    byte[] intBytes = BitConverter.GetBytes(Number);
-        ////    //if (BitConverter.IsLittleEndian)
-        ////    //    Array.Reverse(intBytes);
-        ////    if (intBytes.Count() < 2)
-        ////    {
-        ////        throw new Exception("Line Number less than 2 bytes");
-        ////    }
-        ////    byte[] result = intBytes;
+            byte[] intBytes = BitConverter.GetBytes(Number);
+            //if (BitConverter.IsLittleEndian)
+            //    Array.Reverse(intBytes);
+            if (intBytes.Count() < 2)
+            {
+                throw new Exception("Line Number less than 2 bytes");
+            }
+            byte[] result = intBytes;
 
 
-        ////    Debug.WriteLine($"Converting {Number} to bytes[] : {result}");
-        ////    returnvalue.AddRange(result);
+            Debug.WriteLine($"Converting {Number} to bytes[] : {result}");
+            returnvalue.AddRange(result);
 
 
-        ////    switch (LineParts[1] ?? "RAW")
-        ////    {
-        ////        case "REM":
-        ////            Token = (byte)LINE_TOKEN.REM;
-        ////            break;
-        ////        //case "IF+":
-        ////        //    Token = (byte)LineToken.IFP;
-        ////        //    break;
+            switch (LineParts[1] ?? "RAW")
+            {
+                case "REM":
+                    Token = (byte)LINE_TOKEN.REM;
+                    break;
+                //case "IF+":
+                //    Token = (byte)LineToken.IFP;
+                //    break;
 
-        ////        //case "IF-":
-        ////        //    Token = (byte)LineToken.IFM;
-        ////        //    break;
-        ////        //case "IF":
-        ////        //    Token = (byte)LineToken.IF;
-        ////        //    break;
-        ////        default:
-        ////            Token = (byte)LINE_TOKEN.RAWLINE;
-        ////            break;
-
-
-        ////    }
-        ////    returnvalue.Add(Token);
+                //case "IF-":
+                //    Token = (byte)LineToken.IFM;
+                //    break;
+                //case "IF":
+                //    Token = (byte)LineToken.IF;
+                //    break;
+                default:
+                    Token = (byte)LINE_TOKEN.RAWLINE;
+                    break;
 
 
-        ////    //Number = bytes.ToInt16(ref offset); //2 Bytes
-        ////    int OffSet = (Token == (byte)LINE_TOKEN.RAWLINE ? 1 : 2);
-
-        ////    line = string.Join(" ", LineParts, OffSet, LineParts.Count() - OffSet);
-
-        ////    Data.AddRange(line.ToBytes());
-
-        ////    //Data = PRGReaderLibrary.BytesExtensions.ToBytes(line.ToBytes());
-        ////    byte size = (byte)Data.Count();
-
-        ////    returnvalue.Add(size);
-        ////    returnvalue.AddRange(Data);
-
-        ////    return returnvalue.ToArray();
-        ////}
+            }
+            returnvalue.Add(Token);
 
 
-        //DEPRECATED: Incomplete and obsolete version to decode line by line a Program.
+            //Number = bytes.ToInt16(ref offset); //2 Bytes
+            int OffSet = (Token == (byte)LINE_TOKEN.RAWLINE ? 1 : 2);
+
+            line = string.Join(" ", LineParts, OffSet, LineParts.Count() - OffSet);
+
+            Data.AddRange(line.ToBytes());
+
+            //Data = PRGReaderLibrary.BytesExtensions.ToBytes(line.ToBytes());
+            byte size = (byte)Data.Count();
+
+            returnvalue.Add(size);
+            returnvalue.AddRange(Data);
+
+            return returnvalue.ToArray();
+        }
+
+
+
 
         public Line(byte[] bytes, Prg prg, ref int offset,
             FileVersion version = FileVersion.Current)
@@ -923,10 +921,10 @@
             catch (Exception exception)
             {
                 Debug.WriteLine($@"Exception on line: 
-        Type: {Type}
-        Number: {Number}
-        Token: {Token}
-        {exception.Message}");
+Type: {Type}
+Number: {Number}
+Token: {Token}
+{exception.Message}");
                 throw;
             }
         }
@@ -996,17 +994,13 @@
             var maxSize = GetSize(FileVersion);
 
             Version = bytes.ToInt16(ref offset);
+            while (offset < maxSize)
+            {
+                //Console.WriteLine($"{offset}: Line {Lines.Count}");
+                var line = new Line(bytes, prg, ref offset, FileVersion);
 
-            //DEPRECATED: Line objects are incomplete to decode Program.
-            //Leaving this task to the REAL DECODER
-
-            ////////while (offset < maxSize)
-            ////////{
-            ////////    //Console.WriteLine($"{offset}: Line {Lines.Count}");
-            ////////    var line = new Line(bytes, prg, ref offset, FileVersion);
-
-            ////////    Lines.Add(line);
-            ////////}
+                Lines.Add(line);
+            }
 
             offset = 2000;
             CheckOffset(offset, GetSize(FileVersion));
