@@ -96,7 +96,7 @@ namespace PRGReaderLibrary
 
             Value = new VariableValue(valueRaw, unit);
 
-            //TODO: Fix for digital values
+            //TODO: NOT MINE: Fix for digital values
             if (unit == Unit.OffOn)
             {
                 Value.MaxRange = 1000;
@@ -136,7 +136,7 @@ namespace PRGReaderLibrary
                     bytes.Add((byte)AutoManual);
                     bytes.Add((byte)DigitalAnalog);
                     bytes.Add((byte)Control);
-                    bytes.Add(2); //TODO: WTF (it equals 2)??
+                    bytes.Add(2); //TODO: NOT MINE: WTF (it equals 2)??
                     bytes.Add(ToByte(Value.Unit, DigitalAnalog));
                     break;
 

@@ -7,28 +7,39 @@
     using System.IO;
     using System.Linq;
     using System.Windows.Forms;
-    public partial class T3000Form : Form
+    using System.Diagnostics;
+    using ExceptionHandling;
+
+    public partial class T3000Form : Form, ILoadMessages
     {
-        private Prg _prg; 
-        public Prg Prg
+        private Prg _prg;
+        public Prg PRG
         {
             get { return _prg; }
-          
+
             private set { _prg = value; }
         }
 
         public string PrgPath { get; private set; }
-        public bool IsOpened => Prg != null;
+        public bool IsOpened => PRG != null;
 
 
 
         public T3000Form()
         {
-            InitializeComponent();
-            //LRUIZ: AutoExpand treeBuildingView
-            //TODO: Add dynamically nodes to tree Building View
-            treeBuildingView.ExpandAll();
-            treeBuildingView.FullRowSelect = true;
+
+            try
+            {
+                InitializeComponent();
+                //LRUIZ: AutoExpand treeBuildingView
+                //TODO: NOT MINE: Add dynamically nodes to tree Building View
+                treeBuildingView.ExpandAll();
+                treeBuildingView.FullRowSelect = true;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Initializing T3000");
+            }
         }
 
         #region File
@@ -45,13 +56,19 @@
 
             try
             {
+
                 var path = dialog.FileName;
 
-                
-                PrgPath = path;
-                Prg = Prg.Load(path);
 
-                
+                PrgPath = path;
+                //Reset progress bar and label
+                ResetLoadPrgBar(0);
+
+
+
+                PRG = Prg.Load(path, this);
+
+
 
                 statusLabel.Text = string.Format(Resources.CurrentFile, path);
 
@@ -80,14 +97,15 @@
                 schedulesButton.Enabled = true;
                 holidaysButton.Enabled = true;
 
-                if (Prg.FileVersion != FileVersion.Current)
+                if (PRG.FileVersion != FileVersion.Current)
                 {
                     upgradeMenuItem.Visible = true;
                 }
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Loading Program File");
             }
         }
 
@@ -99,88 +117,105 @@
                 return;
             }
 
+
+
             try
             {
                 var path = PrgPath;
 
-                Prg.Save(path);
+                PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Saving PRG File Exception Found");
             }
+
         }
 
         private void SaveAsPrg(object sender, EventArgs e)
         {
-            if (!IsOpened)
-            {
-                statusLabel.Text = Resources.FileIsNotOpen;
-                return;
-            }
 
-            var dialog = new SaveFileDialog();
-            dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
-            dialog.Title = Resources.SavePrgFile;
-            if (dialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-
-            var path = dialog.FileName;
             try
             {
-                Prg.Save(path);
+                if (!IsOpened)
+                {
+                    statusLabel.Text = Resources.FileIsNotOpen;
+                    return;
+                }
+
+                var dialog = new SaveFileDialog();
+                dialog.Filter = $"{Resources.PrgFiles}|*.prg;*.prog|{Resources.AllFiles} (*.*)|*.*";
+                dialog.Title = Resources.SavePrgFile;
+                if (dialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                var path = dialog.FileName;
+
+                PRG.Save(path);
                 statusLabel.Text = string.Format(Resources.Saved, path);
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Saving As .PRG, exception found");
             }
         }
 
         private void Upgrade(object sender, EventArgs e)
         {
-            if (!IsOpened)
-            {
-                statusLabel.Text = Resources.FileIsNotOpen;
-                return;
-            }
 
             try
             {
+                if (!IsOpened)
+                {
+                    statusLabel.Text = Resources.FileIsNotOpen;
+                    return;
+                }
+
+
                 var path = PrgPath;
 
-                Prg.Upgrade(FileVersion.Current);
+                PRG.Upgrade(FileVersion.Current);
                 statusLabel.Text = string.Format(Resources.Upgraded, path);
 
                 upgradeMenuItem.Visible = false;
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, "Upgrading File, Exception Found!");
             }
         }
 
         private void Exit(object sender, EventArgs e)
         {
-            if (IsOpened)
-            {
-                var result = MessageBox.Show(Resources.SaveBeforeExit,
-                    Resources.SaveBeforeExitTitle,
-                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (result == DialogResult.Cancel)
-                {
-                    return;
-                }
-                else if (result == DialogResult.Yes)
-                {
-                    SavePrg(sender, e);
-                }
-            }
 
-            Close();
+            try
+            {
+                if (IsOpened)
+                {
+                    var result = MessageBox.Show(Resources.SaveBeforeExit,
+                        Resources.SaveBeforeExitTitle,
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                    else if (result == DialogResult.Yes)
+                    {
+                        SavePrg(sender, e);
+                    }
+                }
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex);
+            }
         }
 
         #endregion
@@ -200,19 +235,22 @@
 
         private void ShowInputs(object sender, EventArgs e)
         {
+
             try
             {
+
                 if (!CheckIsOpened())
                 {
                     return;
                 }
 
-                var form = new InputsForm(Prg.Inputs, Prg.CustomUnits);
+                var form = new InputsForm(PRG.Inputs, PRG.CustomUnits);
                 form.Show();
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex);
             }
         }
 
@@ -225,7 +263,7 @@
                     return;
                 }
 
-                var form = new OutputsForm(Prg.Outputs, Prg.CustomUnits);
+                var form = new OutputsForm(PRG.Outputs, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -243,7 +281,7 @@
                     return;
                 }
 
-                var form = new VariablesForm(Prg.Variables, Prg.CustomUnits);
+                var form = new VariablesForm(PRG.Variables, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -261,7 +299,7 @@
                     return;
                 }
 
-                var form = new ControllersForm(Prg.Controllers, Prg.CustomUnits);
+                var form = new ControllersForm(PRG.Controllers, PRG.CustomUnits);
                 form.Show();
             }
             catch (Exception exception)
@@ -277,8 +315,10 @@
 
         private void ShowPrograms()
         {
+
             try
             {
+
                 if (!CheckIsOpened())
                 {
                     return;
@@ -289,38 +329,42 @@
                 form.MdiParent = this;
                 form.Show();
 
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex, Resources.ShowProgramException);
             }
         }
 
         private void ShowScreens(object sender, EventArgs e)
         {
-            
+
+
             try
             {
+
                 if (!CheckIsOpened())
                 {
                     return;
                 }
-                var f = new VariablesForm(Prg.Variables, Prg.CustomUnits);
-                var f2 = new ProgramsForm(ref _prg, PrgPath );
-                var form = new ScreensForm(Prg.Screens);
-                form.Prg = Prg;
-                form.PointsP=Prg.Programs;
-                form.CodesP = Prg.ProgramCodes;
+                var f = new VariablesForm(PRG.Variables, PRG.CustomUnits);
+                var f2 = new ProgramsForm(ref _prg, PrgPath);
+                var form = new ScreensForm(PRG.Screens);
+                form.Prg = PRG;
+                form.PointsP = PRG.Programs;
+                form.CodesP = PRG.ProgramCodes;
                 form.PrgPath = PrgPath;
 
                 form.Vars = f.Vars;
                 form.Progs = f2.Progs;
-                
+
                 form.Show();
+
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(ex);
             }
         }
 
@@ -333,12 +377,12 @@
                     return;
                 }
 
-                var form = new SchedulesForm(Prg.Schedules, Prg.ScheduleCodes);
+                var form = new SchedulesForm(PRG.Schedules, PRG.ScheduleCodes);
                 form.Show();
             }
             catch (Exception exception)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(exception);
             }
         }
 
@@ -351,12 +395,12 @@
                     return;
                 }
 
-                var form = new HolidaysForm(Prg.Holidays, Prg.HolidayCodes);
+                var form = new HolidaysForm(PRG.Holidays, PRG.HolidayCodes);
                 form.Show();
             }
             catch (Exception exception)
             {
-                MessageBoxUtilities.ShowException(exception);
+                ExceptionHandler.Show(exception);
             }
         }
 
@@ -387,6 +431,40 @@
                 }
             }
             e.Handled = true;
+        }
+
+        public void ResetLoadPrgBar(int newvalue)
+        {
+            this.LoadProgressBar.Value = newvalue;
+            this.LoadPartName.Text = "";
+        }
+
+
+        public void TickLoadPrgBar()
+        {
+            this.LoadProgressBar.PerformStep();
+        }
+
+        public void PassMessage(int counter, string theMessage)
+        {
+
+            try
+            {
+                LoadPartName.Text = "";
+                this.LoadPartName.Text = $"Parts({counter}) => Loaded {theMessage}";
+                this.LoadProgressBar.Value = counter;
+
+                Debug.WriteLine(this.LoadPartName.Text);
+                Application.DoEvents();
+
+
+                System.Threading.Thread.Sleep(50);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex);
+            }
+
         }
     }
 }
