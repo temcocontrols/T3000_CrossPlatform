@@ -1,3 +1,0 @@
-tocTab[tocTab.length] = new Array("0.1:1", "", "Business Process Model", "EARoot/EA1/EA1.htm", "189.png", "5", "0", "", "Analysis diagram0","{DA038383-AFA9-4199-93D7-8CAB248DC944}");
-tocTab[tocTab.length] = new Array("0.1.1", "1", "Business Objects", "EARoot/EA1/EA1/EA16.htm", "4.png", "", "", "{FD1D6D52-C866-4ea3-9762-93CB5035FFCC}", "Package");
-tocTab[tocTab.length] = new Array("0.1.2", "1", "Business Workflows", "EARoot/EA1/EA2/EA33.htm", "4.png", "", "", "{271EEC2E-00BE-4161-B141-C16D04D5F5CE}", "Package");

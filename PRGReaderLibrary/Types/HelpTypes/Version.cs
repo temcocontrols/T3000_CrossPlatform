@@ -9,8 +9,6 @@
             FileVersion = version;
         }
 
-        public Version() {; }
-
         protected void CheckSize(int size, int needSize)
         {
             if (size != needSize)
