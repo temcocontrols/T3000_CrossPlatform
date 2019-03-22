@@ -7,10 +7,10 @@ namespace PRGReaderLibrary
         /// </summary>
         Unused,
 
-        [UnitsNames("Deg.C")]
+        [UnitsNames("°C")]
         DegreesC,
 
-        [UnitsNames("Deg.F")]
+        [UnitsNames("°F")]
         DegreesF,
 
         Fpm,
@@ -21,7 +21,6 @@ namespace PRGReaderLibrary
         Watts,
         Kw,
         KwH,
-
         Volts,
         KVolts,
         Amps,
@@ -33,7 +32,6 @@ namespace PRGReaderLibrary
         Days,
         Time,
         Ohms,
-
 
         [UnitsNames("%")]
         Percents,
@@ -97,8 +95,7 @@ namespace PRGReaderLibrary
 
         [UnitsNames("Unoccupied/Occupied", "/")]
         UnoccupiedOccupied,
-        [UnitsNames("Low/High", "/")]
-        LowHigh,
+
         [UnitsNames("On/Off", "/")]
         OnOff,
 
@@ -117,7 +114,8 @@ namespace PRGReaderLibrary
         [UnitsNames("High/Normal", "/")]
         HighNormal,
 
-  
+        [UnitsNames("Low/High", "/")]
+        LowHigh,
 
         [UnitsNames("Low/Normal", "/")]
         LowNormal,
@@ -136,7 +134,6 @@ namespace PRGReaderLibrary
         /// <summary>
         /// Custom digital part
         /// </summary>
-       
         CustomDigital1 = 123,
         CustomDigital2,
         CustomDigital3,
@@ -145,7 +142,6 @@ namespace PRGReaderLibrary
         CustomDigital6,
         CustomDigital7,
         CustomDigital8,
-        CustomDigital9,
 
         /// <summary>
         /// Input analog part
@@ -153,40 +149,40 @@ namespace PRGReaderLibrary
         [UnitsNames("Unused", "Unused", "Unused")]
         InputAnalogUnused = 256,
 
-        [UnitsNames("Y3K/-40 to 150 Deg.C", "/")]
+        [UnitsNames("Y3K/-40 to 150 °C", "/")]
         DegCY3K150 = 257,
 
-        [UnitsNames("Y3K/-40 to 300 Deg.F", "/")]
+        [UnitsNames("Y3K/-40 to 300 °F", "/")]
         DegFY3K300,
 
-        [UnitsNames("10K/-40 to 120 Deg.C", "/")]
+        [UnitsNames("10K/-40 to 120 °C", "/")]
         DegC10K120,
 
-        [UnitsNames("10K/-40 to 250 Deg.F", "/")]
+        [UnitsNames("10K/-40 to 250 °F", "/")]
         DegF10K250,
 
-        [UnitsNames("G3K/-40 to 120 Deg.C", "/")]
+        [UnitsNames("G3K/-40 to 120 °C", "/")]
         DegCG3K120,
 
-        [UnitsNames("G3K/-40 to 250 Deg.F", "/")]
+        [UnitsNames("G3K/-40 to 250 °F", "/")]
         DegFG3K250,
 
-        [UnitsNames("KM10K/-40 to 120 Deg.C", "/")]
+        [UnitsNames("KM10K/-40 to 120 °C", "/")]
         DegCKM10K120,
 
-        [UnitsNames("KM10K/-40 to 250 Deg.F", "/")]
+        [UnitsNames("KM10K/-40 to 250 °F", "/")]
         DegFKM10K250,
 
-        [UnitsNames("A10K/-50 to 110 Deg.C", "/")]
+        [UnitsNames("A10K/-50 to 110 °C", "/")]
         DegCA10K110,
 
-        [UnitsNames("A10K/-60 to 200 Deg.F", "/")]
+        [UnitsNames("A10K/-60 to 200 °F", "/")]
         DegFA10K200,
 
         [UnitsNames("Volts/0.0 to 5.0", "/")]
         Volts5,
 
-        [UnitsNames("Amps/0.0 to 100.0", "/")]
+        [UnitsNames("Amps/0.0 to 10.0", "/")]
         Amps10,
 
         [UnitsNames("Ma/0.0 to 20.0", "/")]
@@ -198,16 +194,17 @@ namespace PRGReaderLibrary
         [UnitsNames("Counts/0.0 to 2^22", "/")]
         Counts2pow22,
 
-        [UnitsNames("%(0-10V)/0.0 to 100", "/")]
-        PercentsVolts10,
+        [UnitsNames("FPM/0.0 to 3000", "/")]
+        FPM3000,
 
         [UnitsNames("%(0-5V)/0.0 to 100", "/")]
         PercentsVolts5,
 
         [UnitsNames("%(4-20Ma)/0.0 to 100", "/")]
         PercentsMa20,
-        [UnitsNames("Volts/0.0 to 10.0", "/")]
-        Volts10,
+
+        [UnitsNames("Pulses/Min", "Pulses/Min", "")]
+        PulsesPerMin,
         /// <summary>
         /// Custom analog part
         /// </summary>
@@ -222,41 +219,6 @@ namespace PRGReaderLibrary
         [UnitsNames("Custom5", "Custom5", "")]
         InputAnalogCustom5,
 
-        [UnitsNames("Pulses Count(Fast 100HZ)", "/")]
-        PulsesPerMin,
-        [UnitsNames("Frequency(HZ)", "/")]
-        HZ,
-        [UnitsNames("Humidity(%)", "/")]
-        HUM,
-        [UnitsNames("Pressure inWc", "/")]
-        PreinWc,
-        [UnitsNames("Pressure Kpa", "/")]
-        PreKpa,
-        [UnitsNames("Pressure Psi", "/")]
-        PrePsi,
-        [UnitsNames("Pressure mmHg", "/")]
-        PremmHg,
-        [UnitsNames("Pressure inHg", "/")]
-        PreinHg,
-        [UnitsNames("Pressure Kgcm", "/")]
-        PreKgcm,
-        [UnitsNames("Pressure atmos", "/")]
-        Preatmos,
-        [UnitsNames("Pressure bar", "/")]
-        Prebar,
-        [UnitsNames("Reserved1", "", "")]
-        Reserved1,
-        [UnitsNames("Reserved2", "", "")]
-        Reserved2,
-        [UnitsNames("Reserved3", "", "")]
-        Reserved3,
-        [UnitsNames("20Amps", "", "")]
-        Amps20,
-        [UnitsNames("50Amps", "", "")]
-        Amps50,
-        [UnitsNames("75Amps", "", "")]
-        Amps75,
-        
         /// <summary>
         /// Output analog part
         /// </summary>
@@ -283,8 +245,6 @@ namespace PRGReaderLibrary
 
         [UnitsNames("%PWM/0.0 -> 100", "/")]
         OutputPercentsPWM,
-        [UnitsNames("0.0->100%(2-10V", "/")]
-        Output2_10V,
         /// <summary>
         /// Custom analog part
         /// </summary>

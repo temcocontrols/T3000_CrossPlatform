@@ -36,8 +36,7 @@
             this.cmdSaveToFile = new System.Windows.Forms.Button();
             this.lblCustomMessage = new System.Windows.Forms.Label();
             this.txtExceptionDetail = new System.Windows.Forms.TextBox();
-
-			 this.cmdTerminateApp = new System.Windows.Forms.Button();
+            this.cmdTerminateApp = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +81,7 @@
             this.cmdAccept.Text = "&Accept";
             this.cmdAccept.UseVisualStyleBackColor = true;
             this.cmdAccept.Click += new System.EventHandler(this.cmdAccept_Click);
-// 
+            // 
             // cmdCopy
             // 
             this.cmdCopy.DialogResult = System.Windows.Forms.DialogResult.Ignore;

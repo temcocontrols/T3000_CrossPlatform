@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Encode ProgramCode</title>
+<link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {	
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+
+function nameClassifier(name, separator)
+{
+  var str = name;
+  var classifierName;
+  var node = document.getElementById('name_classifier');
+  if(node != null)
+  {
+    classifierName = node.innerHTML;
+  }
+  if(classifierName != "")
+  {
+   str += separator + classifierName;
+  }
+  
+  return str;
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<div id="name_classifier" style="display: none;"></div>
+	<span class="ObjectTitle"><script type="text/javascript">document.write(nameClassifier("Encode ProgramCode", " : "))</script> Encode Control Basic into ByteCodes : Public  &lt;&lt;FC_Process&gt;&gt; Process</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">19/05/2018 15:22:56</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">29/05/2018 01:19:36</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue">Luis Ruiz</td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Difficult</td>
+		</tr>
+		<tr id="proj05" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Difficulty:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj06" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Priority:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj05" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Multiplicity:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{FD0D902B-A881-47aa-95B3-B71268027430}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA29.htm">Edit Program</a></td>
+		</tr>
+	</table>
+	<div class="ObjectDetailsNotes">Encodes a byte sequence of ProgramCode from plain text &quot;Control Basic&quot; contained in IronyFCBT user control.&lt;br/&gt;&lt;br/&gt;PGRReaderLibrary.Utilities.Encoder class uses 3 helpers, preparing the semantic validations and as support to translating the code.&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;<br />&lt;li&gt;EditorJumpInfo&lt;/li&gt;&lt;li&gt;EditorLineInfo&lt;/li&gt;&lt;li&gt;EditorTokenInfo&lt;/li&gt;&lt;/ul&gt;<br />&lt;br/&gt;&lt;b&gt;Main method of this class is EncodeBytes()&lt;/b&gt;. &lt;br/&gt;It returns a static byte array of fully encoded Control Basic program. As input, receives a list of EditorTokens representing a previously parsed list of tokens with Irony.Parsing plus some modifications needed to add more info to each regular token from parsing.&lt;br/&gt;&lt;br/&gt;Sample below is the real thing in ProgramsForm, where the encoding and updating of Prg object occurs, only when triggered the SEND event.&lt;br/&gt;&lt;br/&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;private&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;void&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Form_Send(&lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;object&lt;/i&gt;&lt;/font&gt;&lt;i&gt; sender, SendEventArgs e)&lt;/i&gt;&lt;br/&gt;&lt;br/&gt;e Object, receives a prepared copy of the list of EditorTokens directly from the editor.&lt;br/&gt;&lt;br/&gt;The next C# code, encodes the byte sequence, calculates its size and update the ProgramCode and ProgramPoint respectively.&lt;br/&gt;&lt;i&gt;&lt;br/&gt;&lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//Init a copy of controlpoints&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Encoder.SetControlPoints(Prg);&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//ENCODE THE PROGRAM&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;byte&lt;/i&gt;&lt;/font&gt;&lt;i&gt;[] ByteEncoded = Encoder.EncodeBytes(e.Tokens);&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;var&lt;/i&gt;&lt;/font&gt;&lt;i&gt; PSize = BitConverter.ToInt16(ByteEncoded, 0);&lt;/i&gt;&lt;br/&gt;&lt;i&gt;Encoder.ConsolePrintBytes(ByteEncoded, &lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;&quot;Encoded&quot;&lt;/i&gt;&lt;/font&gt;&lt;i&gt;);&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; MessageBox.Show(&lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;$&quot;Resource compiled succceded&lt;/i&gt;&lt;/font&gt;&lt;i&gt;{System.Environment.NewLine}&lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;Total size 2000 bytes&lt;/i&gt;&lt;/font&gt;&lt;i&gt;{System.Environment.NewLine}&lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;Already used &lt;/i&gt;&lt;/font&gt;&lt;i&gt;{PSize}&lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt; bytes.&quot;&lt;/i&gt;&lt;/font&gt;&lt;i&gt;, &lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;&quot;T3000&quot;&lt;/i&gt;&lt;/font&gt;&lt;i&gt;);&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&lt;br/&gt;&lt;/i&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;// MessageBox.Show(Encoding.UTF8.GetString(ByteEncoded), &quot;Tokens&quot;);&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;Prg.ProgramCodes[Index_EditProgramCode].Code = ByteEncoded;&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//The need of this code, means that constructor must accept byte array and fill with nulls to needSize value&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;Prg.ProgramCodes[Index_EditProgramCode].Count = 2000;&lt;/i&gt;&lt;br/&gt;&lt;i&gt;Prg.Programs[Index_EditProgramCode].Length = PSize;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;b&gt;How it works&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;All tokens references here are provided by a Preprocessed list of tokens cast into EditorTokens objects. A List generated not from the internal parser of editor, but from a specially separated parser inside ProgramEditorForm.&lt;br/&gt;&lt;br/&gt;This process happens only when SEND menu option triggered. Meanwhile, the last version of program text&#160; is only temporary stored in Editor control.&lt;br/&gt;&lt;br/&gt;&lt;font color=&quot;#800000&quot;&gt;&lt;b&gt;Encoder.EncodeBytes is very simple: just processing of a ordered&lt;/b&gt;&lt;/font&gt;&lt;br/&gt;&lt;font color=&quot;#800000&quot;&gt;&lt;b&gt;list of EditorTokens, BUT their helpers contained in ProgramEditorForm are not. These helpers could be the hardest methods to understand for the inexperienced programmer.&lt;/b&gt;&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Real work is done by &lt;/b&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;b&gt;public&lt;/b&gt;&lt;/font&gt;&lt;b&gt; &lt;/b&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;b&gt;void&lt;/b&gt;&lt;/font&gt;&lt;b&gt; ProcessTokens()&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Every time there is a compilation, ProcessTokens recreates a list of preprocessed tokens ready to be encoded.&lt;br/&gt;&lt;br/&gt;Assuming that you already read DECODE topic, (read it now please if you didn&#39;t&#160; &lt;a href=&quot;javascript:top.guidLink(&#39;{CA9D4F5F-D2C5-4d31-A53E-16195C3910A8}&#39;)&quot;&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;u&gt;Decode ProgramCode: Real&lt;/u&gt;&lt;/font&gt;&lt;/a&gt;) I&#39;m going to give you a quick overview of processes inside ProcessTokens and their helpers.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;ProcessTokens() &lt;/b&gt;receives nothing as parameters but finally it reconstruct an internal list of EditToken. To do so, it walks a ParseTree object &quot;_parseTree&quot; previously populated from Irony Parsing.&lt;br/&gt;Tokens in _parseTree are raw, as grammar and parser produce them. More over, some of this raw tokens are useless in the process like the starting terminal of parseTree &quot;CONTROL_BASIC&quot; and temporary tokens.&lt;br/&gt;&lt;br/&gt;While &lt;i&gt;walking &lt;/i&gt;the parseTree using infix order, every simple token gets immediately added to the list with more information, contained in his properties:&lt;br/&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;class&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#2b91af&quot;&gt;&lt;i&gt;EditorTokenInfo&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160; {&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Original text token from parsing&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;/summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;string&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Text { &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;get&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;set&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; }&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Associated Terminal Name from Grammar&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;/summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;string&lt;/i&gt;&lt;/font&gt;&lt;i&gt; TerminalName { &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;get&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;set&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; }&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Token Type (1 Byte)&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Token size for Comment string&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;/summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;short&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Type { &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;get&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;set&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; }&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Token value (1 Byte)&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;/summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;short&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Token { &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;get&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;set&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; }&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Control Point index&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;/summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;short&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Index { &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;get&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;set&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; }&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; Operators Precedence&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;///&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt; &lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#808080&quot;&gt;&lt;i&gt;#lt;/summary#gt;&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;public&lt;/i&gt;&lt;/font&gt;&lt;i&gt; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;short&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Precedence { &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;get&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;set&lt;/i&gt;&lt;/font&gt;&lt;i&gt;; }&lt;/i&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;<br />&lt;li&gt;TerminalName: AS produced by Irony Parser.&lt;/li&gt;&lt;li&gt;Token: Byte corresponding value&lt;/li&gt;&lt;li&gt;Index: for ControlPoint searching&lt;/li&gt;&lt;li&gt;Text: Real name of TERMINAL constant to match enumeration values like REM, IFP, etc.&lt;/li&gt;&lt;li&gt;Type of Terminal&lt;/li&gt;&lt;li&gt;Precedence: for operators and functions.&lt;/li&gt;&lt;/ul&gt;<br />&lt;br/&gt;Also after every token analysis, there is a counting (line numbers and their offsets), and stacking of branches (like jumps) to do all the semantic validations later on. ie: Suppose there is a GOTO followed by a number that indicates jump to line number 140, but there is no such a line number in the program. &lt;br/&gt;&lt;br/&gt;Very well, creating the list would be easy if not for the RPN or postfix notation used for expressions, functions&#160; and some other type of sentences. RPN is needed to assure the same result either way of translation, especially for expressions where precedence of operators is vital. That´s why it is the preferred way of saving intermediate or fully compiled code for expressions.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;But things are not that easy. &lt;/b&gt;The logic of ProcessTokens includes &lt;b&gt;&lt;i&gt;special appearance of a very obfuscated GetExpression helper&lt;/i&gt;&lt;/b&gt;&lt;b&gt;.&lt;/b&gt; A method even more complicated than the opposite in DecodeBytes.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Getting the job done. How to.&lt;/b&gt;&lt;br/&gt;&lt;b&gt;The power inside GetExpression Helper.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;The method GetExpression on Encoder class,&#160; takes a range of parser tokens contained in the internal parserTree of the class Encoder, to read it from a start offset and then try to create and return a list of EditTokens in RPN order, finishing its job when properly identifies the end of a expression, function or branch.&lt;br/&gt;&lt;br/&gt;To do so, it requires two special collections:&lt;br/&gt;&lt;br/&gt;&lt;i&gt;List#lt;EditorTokenInfo#gt; Expr = &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;new&lt;/i&gt;&lt;/font&gt;&lt;i&gt; List#lt;EditorTokenInfo#gt;();&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Stack#lt;EditorTokenInfo#gt; Oper = &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;new&lt;/i&gt;&lt;/font&gt;&lt;i&gt; Stack#lt;EditorTokenInfo#gt;();&lt;/i&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Simplifying: A list of expressions and Stack of Operators, used to &lt;b&gt;implement a Shunting-Yard Algorithm &lt;/b&gt;(thanks to Dijsktra).&lt;br/&gt;Read more here: &lt;a href=&quot;https://en.wikipedia.org/wiki/Shunting-yard_algorithm&quot;&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;u&gt;https://en.wikipedia.org/wiki/Shunting-yard_algorithm&lt;/u&gt;&lt;/font&gt;&lt;/a&gt; &lt;br/&gt;&lt;br/&gt;The stack becomes a temporary storage for testing all stages of every single expression or function to become a full expression, reading from the parseTree.Tokens list, until a end marker is found: LF, THEN, EOF, REM or ELSE.&lt;br/&gt;&lt;br/&gt;The list is used as final storage for all tokens read while walking the tree of EditorTokens in postfix order but according precedence of operators.&lt;br/&gt;&lt;br/&gt;Some special modifications were allowed in the method to make it work with functions, considering also that function calls are part of more complex expressions.&lt;br/&gt;&lt;br/&gt;After all that magic, a list of EditTokens (RPN version of expression) is returned to ProcessTokens and added to final list of preprocessed tokens.&lt;br/&gt;&lt;br/&gt;Finally, remember those semantic validations?&lt;br/&gt;Well, now the list of token is complete, EditorForm also has a complete list of Jumps, Lines Offsets and it&#39;s able to do those validations. When any semantic errors are found, every error is injected in the list of parseTree.ParserMessaages like any Syntax Error if any. ie.&lt;br/&gt;&lt;br/&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;if&lt;/i&gt;&lt;/font&gt;&lt;i&gt; (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//There is a semantic error here&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//Add error message to parser and cancel renumbering.&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#008000&quot;&gt;&lt;i&gt;//Don&#39;t break it inmediately, to show all possible errors of this type&lt;/i&gt;&lt;/font&gt;&lt;br/&gt;&lt;i&gt;_parseTree.ParserMessages.Add(&lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;new&lt;/i&gt;&lt;/font&gt;&lt;i&gt; LogMessage(ErrorLevel.Error,&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; tok.Location,&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;$&quot;Semantic Error: Undefined Identifier: &lt;/i&gt;&lt;/font&gt;&lt;i&gt;{tok.Text}{System.Environment.NewLine}&lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;Check if PRG object is valid.&quot;&lt;/i&gt;&lt;/font&gt;&lt;i&gt;,&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;new&lt;/i&gt;&lt;/font&gt;&lt;i&gt; ParserState(&lt;/i&gt;&lt;font color=&quot;#a31515&quot;&gt;&lt;i&gt;&quot;Validating Tokens&quot;&lt;/i&gt;&lt;/font&gt;&lt;i&gt;)));&lt;/i&gt;&lt;br/&gt;&lt;i&gt;ShowCompilerErrors();&lt;/i&gt;&lt;br/&gt;&lt;i&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Cancel = &lt;/i&gt;&lt;font color=&quot;#0000ff&quot;&gt;&lt;i&gt;true&lt;/i&gt;&lt;/font&gt;&lt;i&gt;;&lt;/i&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;This eases that when semantic errors occur, they are shown in the same control &quot;Compilation Errors&quot; together with syntax errors. &lt;/b&gt;&lt;br/&gt;&lt;br/&gt;In any case, successful or not, compilation ends with a list of EditorTokens, containing also semantic information, that EncodeBytes uses when triggered SAVE event, to get a final byte array for ProgramCode. In the last stage, EncodeBytes replaces line numbers with offsets of the byte array.&lt;p/&gt;</div>
+
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('FlowTo');" id="FlowToTitle">Flow To</li>
+			<li onClick="parent.toggleItem('FlowFrom');" id="FlowFromTitle">Flow From</li>
+			<li onClick="parent.toggleItem('CustomProperties');" id="CustomPropertiesTitle">Advanced</li>
+		</ul>
+		<div class="ItemBody" id="FlowToTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Name</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top">
+						<a href="EA49.htm">New ProgramCode</a><br />
+						Object «FC_Connector» 
+					</td>
+					<td width="50%" class="TableRow" valign="top">&nbsp;</td>					
+				</tr>
+				<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageLinkFlow40" onclick="parent.toggleDiv('detailsDIVLinkFlow40', 'DetailsImageLinkFlow40')" />Details:
+							<div id="detailsDIVLinkFlow40" class="DetailsDiv" >
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="ItemBody" id="FlowFromTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="50%" class="TableHeading">Element</td>
+					<td width="50%" class="TableHeading">Name</td>
+				</tr>
+				<tr>
+					<td width="50%" class="TableRow" valign="top">
+						<a href="EA55.htm">Send?</a><br />
+						Decision «FC_Connector» 
+					</td>
+					<td width="50%" class="TableRow" valign="top">Yes</td>					
+				</tr>
+				<tr>
+					<td class="TableRowBottomDashed"  colspan="2">
+						<div class="DetailsDivParent"><img src="../../../images/minus03.gif" align="absmiddle" id="DetailsImageLinkFlow41" onclick="parent.toggleDiv('detailsDIVLinkFlow41', 'DetailsImageLinkFlow41')" />Details:
+							<div id="detailsDIVLinkFlow41" class="DetailsDiv" >
+							&nbsp;
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="ItemBody" id="CustomPropertiesTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="30%" class="TableHeading">Property</td>
+					<td width="70%" class="TableHeading">Value</td>
+				</tr>
+			<tr>
+				<td width="30%" class="TableRow">isReadOnly:</td>
+				<td width="70%" class="TableRow">false</td>
+			</tr>
+
+
+			</table>
+		</div>	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

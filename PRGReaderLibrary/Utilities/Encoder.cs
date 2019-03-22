@@ -1,9 +1,10 @@
-using PRGReaderLibrary.Extensions;
+﻿using PRGReaderLibrary.Extensions;
 using PRGReaderLibrary.Types.Enums.Codecs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
+
 
 namespace PRGReaderLibrary.Utilities
 {
@@ -17,25 +18,29 @@ namespace PRGReaderLibrary.Utilities
         /// <summary>
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
-        static public ControlPoints Identifiers { get; set; } = new ControlPoints();
+        public ControlPoints Identifiers { get; set; } = new ControlPoints();
 
         /// <summary>
         /// Set a local copy of all identifiers in prg
         /// </summary>
         /// <param name="prg">Program prg</param>
-        static public void SetControlPoints(Prg prg)
+         public void SetControlPoints(Prg prg)
         {
             Identifiers = new ControlPoints(prg);
+            TimeBuff = new TimeBuffer(Identifiers);
         }
 
-
+        /// <summary>
+        /// Required copy con TimeBuffer entries
+        /// </summary>
+        public TimeBuffer TimeBuff { get; set; }
 
         /// <summary>
         /// Encode a ProgramCode Into Byte Array
         /// </summary>
         /// <param name="Tokens">Preprocessed list of tokens</param>
         /// <returns>byte array</returns>
-        public static byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
+        public byte[] EncodeBytes(List<EditorTokenInfo> Tokens)
         {
             var result = new List<byte>();
             byte[] prgsize = { (byte)0x00, (byte)0x00 };
@@ -49,7 +54,7 @@ namespace PRGReaderLibrary.Utilities
 
             int tokenIndex = 0;
             bool isFirstToken = true;
-
+            bool isTimeBuffered = false;
 
             for (tokenIndex = 0; tokenIndex < Tokens.Count; tokenIndex++)
             {
@@ -64,6 +69,7 @@ namespace PRGReaderLibrary.Utilities
                     case "THEN":
                     case "ELSE":
                     case "EOE":
+                        //TODO: Ver si es posible eliminar el último EOE antes de LF para evitar que se guarden como comas
                         result.Add((byte)token.Token);
                         offset++;
 
@@ -104,6 +110,7 @@ namespace PRGReaderLibrary.Utilities
                     #endregion
 
                     #region Special Numbers
+                    #region Line Numbers
                     case "LineNumber":
                         if (isFirstToken)
                         {
@@ -127,11 +134,10 @@ namespace PRGReaderLibrary.Utilities
                             offset += 2;
 
                         }
+                        break; 
+                    #endregion
 
-
-                        break;
-
-                    case "OFFSET":
+                    case "OFFSET": //2 Bytes
                         //push index of next byte for new offset.
                         offsets.Push(offset + 1);
                         short OffSetNumber = Convert.ToInt16(token.Token);
@@ -190,6 +196,8 @@ namespace PRGReaderLibrary.Utilities
                     case "AND":
                     case "XOR":
                     case "OR":
+                    case "NOT":
+
                     //FUNCTIONS
                     case "ABS":
                     case "INTERVAL":
@@ -203,8 +211,7 @@ namespace PRGReaderLibrary.Utilities
                     case "CONRESET":
                     case "TBL":
                     case "TIME":
-                    case "TIME_ON":
-                    case "TIME_OFF":
+                    
                     case "WR_ON":
                     case "WR_OFF":
                     case "DOY":
@@ -246,7 +253,16 @@ namespace PRGReaderLibrary.Utilities
                         offset++;
                         break;
 
-                    
+                    #region Buffer time functions
+                    case "TIME_ON":
+                    case "TIME_OFF":
+                        result.Add((byte)token.Token);
+                        offset++;
+                        //next token will be an identifier
+                        isTimeBuffered = true;
+                        break; 
+                    #endregion
+
                     #region Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
                     case "MAX":
@@ -258,33 +274,51 @@ namespace PRGReaderLibrary.Utilities
                         break; 
                     #endregion
 
-                    case "NOT":
-                        //TODO: Learn how to encode NOT operator -> tests and errors.
-                        break;
                     #endregion
 
-                    #region Identifiers: VARS, INS, OUTS, etc 3 bytes
+                    #region Identifiers, Registers, VARS, INS, OUTS, etc 3 bytes
                     case "Identifier":
+                    case "Register":
                     case "VARS":
                     case "INS":
                     case "OUTS":
+                    case "PIDS":
                         //Encode directly: Token + Index + Type
+                        if (!isTimeBuffered)
+                        {
+                            result.Add((byte)token.Token);
+                            result.Add((byte)token.Index);
+                            result.Add((byte)token.Type);
+                            offset += 3;
+                            //Register??
+                            if(token.Token == (short) PCODE_CONST.REMOTE_POINT_PRG)
+                            {
+                                //We need to add 3 bytes: PanelID, Subnet and 1
+                                result.Add((byte)Convert.ToInt16(token.PanelID));
+                                result.Add((byte)Convert.ToInt16(token.Subnet));
+                                result.Add((byte)1);
+                                offset += 3;
 
-                        result.Add((byte)token.Token);
-                        result.Add((byte)token.Index);
-                        result.Add((byte)token.Type);
-                        offset += 3;
-
+                            }
+                        }
+                        else //It's a time buffered function
+                        {
+                            //add to time buffer!!
+                            short TimeBufferPos= (short)TimeBuff.Add((IdentifierTypes)token.Type, token.Index);
+                            result.AddRange(TimeBufferPos.ToBytes());
+                            offset += 2;
+                        }
+                        isTimeBuffered = false;
                         break;
 
                     #endregion
 
-                    #region NUMBERS (4 BYTES ONLY)
+                    #region NUMBERS (4-5 BYTES ONLY)
                     case "Number":
                     case "CONNUMBER":
                     case "TABLENUMBER":
                     case "TIMER":
-
+                    case "WRNUMBER":
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -297,7 +331,27 @@ namespace PRGReaderLibrary.Utilities
                         result.AddRange(byteArray);
                         offset += 4;
                         break;
+
+                    case "TimeLiteral":
+
+                        //NEW: Added special treatment for TIME FORMAT numbers, see related TODO for DECODER
+                        result.Add((byte)token.Token);
+                        offset++;
+                        string hh, mm, ss;
+                        hh = token.Text.Substring(0, 2);
+                        mm = token.Text.Substring(3, 2);
+                        ss = token.Text.Substring(6, 2);
+                        int numericvalue = Convert.ToInt32(hh) * 3600 + Convert.ToInt32(mm) * 60 + Convert.ToInt32(ss);
+                        numericvalue *= 1000;
+                        byte[] timeByteArray = BitConverter.GetBytes(numericvalue);
+                        result.AddRange(timeByteArray);
+                        //extra byte to mark a TIME FORMAT VALUE
+                        result.Add((byte)token.Type);
+                        offset += 5;
+                        break;
+
                     #endregion
+
 
                     #region EOF CRLF
 
@@ -319,6 +373,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
+                    case "CMDSEPARATOR":
                     default:
                         Trace.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
@@ -352,13 +407,31 @@ namespace PRGReaderLibrary.Utilities
 
             }
 
-
+            //calculate SIZE of Program
             offset--;
             byte[] size = offset.ToBytes();
             result[0] = size[0];
             result[1] = size[1];
 
-            //fill with nulls til the end of block
+            //Add Time Buffer here
+
+            short bufferCount = (short)TimeBuff.BufferCount;
+
+            if (bufferCount>0)
+            {
+
+                //Test if it fits
+                byte[] btime = TimeBuff.ToBytes();
+                if (result.Count > (2000 - btime.Length))
+                    throw new OverflowException($"Time Buffer not allocated, exceeding 2000 bytes. Current PRG size is {result.Count} and TimeBuffer requires {btime.Length}");
+                else
+                    result.AddRange(btime);
+               
+
+            }
+
+            //////fill with nulls til the end of block
+
             while (result.Count < 2000)
             {
                 result.Add((byte)0x00);
@@ -366,81 +439,6 @@ namespace PRGReaderLibrary.Utilities
             return result.ToArray();
         }
 
-
-
-        /// <summary>
-        /// Prints a byte array
-        /// </summary>
-        /// <param name="ByteEncoded">Byte array to print</param>
-        /// <param name="HeaderString">Optional Header string</param>
-        public static void  ConsolePrintBytes(byte[] ByteEncoded, string HeaderString = "")
-        {
-            var PSize = BitConverter.ToInt16(ByteEncoded, 0);
-            Debug.Write(HeaderString);
-            //Console.Write(HeaderString); // different in 2015 vs 2017
-            Debug.Write(" Bytes = { ");
-            //Console.Write(" Bytes = { ");
-            for (var i = 0; i < PSize + 3; i++)
-            {
-                Debug.Write($"{ByteEncoded[i]} ");
-            }
-            Debug.WriteLine("}");
-        }
-
-        /// <summary>
-        /// Returns PCODE_CONST value and Index for the especified Identifier
-        /// </summary>
-        /// <param name="Ident">Label of Point Identifier</param>
-        /// <param name="Index">Out Index of Point Identifier</param>
-        /// <returns>PCODE_CONST value and Index</returns>
-        static public PCODE_CONST GetTypeIdentifier(string Ident, out int Index)
-        {
-            try
-            {
-                if (Identifiers == null) //Null object
-                {
-                    Index = -1;
-                    return PCODE_CONST.UNDEFINED_SYMBOL;
-                }
-
-                //Test Variables
-                Index = Identifiers.Variables.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.VARPOINTTYPE;
-
-                //Test Inputs
-                Index = Identifiers.Inputs.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.INPOINTTYPE;
-
-                //Test Outputs
-                Index = Identifiers.Outputs.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.OUTPOINTTYPE;
-
-
-                //TODO: SET CORRECT TOKENTYPE FOR PRG, SCH AND HOL.
-                //Test Programs
-                Index = Identifiers.Programs.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
-
-                //Test Schedules
-                Index = Identifiers.Schedules.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
-
-
-                //Test Holidays
-                Index = Identifiers.Holidays.FindIndex(v => v.Label == Ident);
-                if (!Index.Equals(-1)) return PCODE_CONST.LOCAL_POINT_PRG;
-
-            }
-            catch
-            {
-                Index = -1;
-                return PCODE_CONST.UNDEFINED_SYMBOL;
-            }
-
-            Index = -2;
-            return PCODE_CONST.UNDEFINED_SYMBOL;
-
-        }
 
     }
 
