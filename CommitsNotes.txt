@@ -1,3 +1,11 @@
+2019-03-22
+1.recovery the latest T3DRIVER
+2.update Highlight syntax for FastColoredText
+3.Update interpreter.
+
+2019-03-21
+1.Added some syntax for T3000 gramma.
+
 2019-03-20
 1.update VC Program Editor to be fit for TIME OF/OFF ,and PPANELID.ModbusID.REG+NUMBER
 2.Added the latest units for Minipanel,make it know the latest units(inputs,outputs,variables)

@@ -35,13 +35,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tsTopMenu = new System.Windows.Forms.ToolStrip();
             this.cmdSend = new System.Windows.Forms.ToolStripButton();
+            this.cmdClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.cmdLoad = new System.Windows.Forms.ToolStripButton();
             this.cmdSave = new System.Windows.Forms.ToolStripButton();
             this.cmdRefresh = new System.Windows.Forms.ToolStripButton();
+            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.cmdRenumber = new System.Windows.Forms.ToolStripButton();
-            this.cmdClear = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.layStatistics = new System.Windows.Forms.FlowLayoutPanel();
             this.lblSrcLineCount = new System.Windows.Forms.Label();
@@ -67,16 +67,16 @@
             // 
             this.tsTopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmdSend,
+            this.cmdClear,
             this.toolStripSeparator1,
-            this.cmdSettings,
             this.cmdLoad,
             this.cmdSave,
             this.cmdRefresh,
-            this.cmdRenumber,
-            this.cmdClear});
+            this.cmdSettings,
+            this.cmdRenumber});
             this.tsTopMenu.Location = new System.Drawing.Point(0, 0);
             this.tsTopMenu.Name = "tsTopMenu";
-            this.tsTopMenu.Size = new System.Drawing.Size(579, 25);
+            this.tsTopMenu.Size = new System.Drawing.Size(845, 23);
             this.tsTopMenu.TabIndex = 8;
             this.tsTopMenu.Text = "toolStrip1";
             // 
@@ -86,25 +86,24 @@
             this.cmdSend.Image = ((System.Drawing.Image)(resources.GetObject("cmdSend.Image")));
             this.cmdSend.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdSend.Name = "cmdSend";
-            this.cmdSend.Size = new System.Drawing.Size(60, 22);
+            this.cmdSend.Size = new System.Drawing.Size(66, 20);
             this.cmdSend.Text = "Send (F2)";
             this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
+            // 
+            // cmdClear
+            // 
+            this.cmdClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
+            this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdClear.Name = "cmdClear";
+            this.cmdClear.Size = new System.Drawing.Size(74, 20);
+            this.cmdClear.Text = "Clear (F11)";
+            this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // cmdSettings
-            // 
-            this.cmdSettings.CheckOnClick = true;
-            this.cmdSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdSettings.Image = ((System.Drawing.Image)(resources.GetObject("cmdSettings.Image")));
-            this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdSettings.Name = "cmdSettings";
-            this.cmdSettings.Size = new System.Drawing.Size(76, 22);
-            this.cmdSettings.Text = "Settings (F4)";
-            this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
             // 
             // cmdLoad
             // 
@@ -112,8 +111,8 @@
             this.cmdLoad.Image = ((System.Drawing.Image)(resources.GetObject("cmdLoad.Image")));
             this.cmdLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdLoad.Name = "cmdLoad";
-            this.cmdLoad.Size = new System.Drawing.Size(81, 22);
-            this.cmdLoad.Text = "Load File (F6)";
+            this.cmdLoad.Size = new System.Drawing.Size(89, 20);
+            this.cmdLoad.Text = "Load File (F7)";
             this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
             // 
             // cmdSave
@@ -122,8 +121,8 @@
             this.cmdSave.Image = ((System.Drawing.Image)(resources.GetObject("cmdSave.Image")));
             this.cmdSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(79, 22);
-            this.cmdSave.Text = "Save File (F7)";
+            this.cmdSave.Size = new System.Drawing.Size(87, 20);
+            this.cmdSave.Text = "Save File (F6)";
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
             // cmdRefresh
@@ -132,9 +131,20 @@
             this.cmdRefresh.Image = ((System.Drawing.Image)(resources.GetObject("cmdRefresh.Image")));
             this.cmdRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdRefresh.Name = "cmdRefresh";
-            this.cmdRefresh.Size = new System.Drawing.Size(73, 22);
+            this.cmdRefresh.Size = new System.Drawing.Size(81, 20);
             this.cmdRefresh.Text = "Refresh (F8)";
             this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
+            // 
+            // cmdSettings
+            // 
+            this.cmdSettings.CheckOnClick = true;
+            this.cmdSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.cmdSettings.Image = ((System.Drawing.Image)(resources.GetObject("cmdSettings.Image")));
+            this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdSettings.Name = "cmdSettings";
+            this.cmdSettings.Size = new System.Drawing.Size(83, 20);
+            this.cmdSettings.Text = "Settings (F4)";
+            this.cmdSettings.Click += new System.EventHandler(this.cmdSettings_Click);
             // 
             // cmdRenumber
             // 
@@ -142,20 +152,10 @@
             this.cmdRenumber.Image = ((System.Drawing.Image)(resources.GetObject("cmdRenumber.Image")));
             this.cmdRenumber.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdRenumber.Name = "cmdRenumber";
-            this.cmdRenumber.Size = new System.Drawing.Size(95, 22);
+            this.cmdRenumber.Size = new System.Drawing.Size(104, 20);
             this.cmdRenumber.Text = "Renumber (F10)";
             this.cmdRenumber.ToolTipText = "Validate and Renumber Lines";
             this.cmdRenumber.Click += new System.EventHandler(this.cmdRenumber_Click);
-            // 
-            // cmdClear
-            // 
-            this.cmdClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.cmdClear.Image = ((System.Drawing.Image)(resources.GetObject("cmdClear.Image")));
-            this.cmdClear.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdClear.Name = "cmdClear";
-            this.cmdClear.Size = new System.Drawing.Size(67, 22);
-            this.cmdClear.Text = "Clear (F11)";
-            this.cmdClear.Click += new System.EventHandler(this.cmdClear_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -170,12 +170,12 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 73.11179F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.88822F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(579, 441);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(845, 506);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // layStatistics
@@ -185,9 +185,9 @@
             this.layStatistics.Controls.Add(this.lblParseErrorCount);
             this.layStatistics.Controls.Add(this.lblParseTime);
             this.layStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layStatistics.Location = new System.Drawing.Point(3, 403);
+            this.layStatistics.Location = new System.Drawing.Point(3, 471);
             this.layStatistics.Name = "layStatistics";
-            this.layStatistics.Size = new System.Drawing.Size(573, 35);
+            this.layStatistics.Size = new System.Drawing.Size(839, 32);
             this.layStatistics.TabIndex = 9;
             // 
             // lblSrcLineCount
@@ -196,37 +196,37 @@
             this.lblSrcLineCount.Location = new System.Drawing.Point(3, 0);
             this.lblSrcLineCount.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.lblSrcLineCount.Name = "lblSrcLineCount";
-            this.lblSrcLineCount.Size = new System.Drawing.Size(35, 13);
+            this.lblSrcLineCount.Size = new System.Drawing.Size(41, 12);
             this.lblSrcLineCount.TabIndex = 0;
             this.lblSrcLineCount.Text = "Lines:";
             // 
             // lblSrcTokenCount
             // 
             this.lblSrcTokenCount.AutoSize = true;
-            this.lblSrcTokenCount.Location = new System.Drawing.Point(51, 0);
+            this.lblSrcTokenCount.Location = new System.Drawing.Point(57, 0);
             this.lblSrcTokenCount.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.lblSrcTokenCount.Name = "lblSrcTokenCount";
-            this.lblSrcTokenCount.Size = new System.Drawing.Size(46, 13);
+            this.lblSrcTokenCount.Size = new System.Drawing.Size(47, 12);
             this.lblSrcTokenCount.TabIndex = 1;
             this.lblSrcTokenCount.Text = "Tokens:";
             // 
             // lblParseErrorCount
             // 
             this.lblParseErrorCount.AutoSize = true;
-            this.lblParseErrorCount.Location = new System.Drawing.Point(110, 0);
+            this.lblParseErrorCount.Location = new System.Drawing.Point(117, 0);
             this.lblParseErrorCount.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.lblParseErrorCount.Name = "lblParseErrorCount";
-            this.lblParseErrorCount.Size = new System.Drawing.Size(37, 13);
+            this.lblParseErrorCount.Size = new System.Drawing.Size(47, 12);
             this.lblParseErrorCount.TabIndex = 2;
             this.lblParseErrorCount.Text = "Errors:";
             // 
             // lblParseTime
             // 
             this.lblParseTime.AutoSize = true;
-            this.lblParseTime.Location = new System.Drawing.Point(160, 0);
+            this.lblParseTime.Location = new System.Drawing.Point(177, 0);
             this.lblParseTime.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.lblParseTime.Name = "lblParseTime";
-            this.lblParseTime.Size = new System.Drawing.Size(59, 13);
+            this.lblParseTime.Size = new System.Drawing.Size(71, 12);
             this.lblParseTime.TabIndex = 3;
             this.lblParseTime.Text = "Parse time:";
             // 
@@ -234,9 +234,9 @@
             // 
             this.grpCompileErrors.Controls.Add(this.gridCompileErrors);
             this.grpCompileErrors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpCompileErrors.Location = new System.Drawing.Point(3, 309);
+            this.grpCompileErrors.Location = new System.Drawing.Point(3, 358);
             this.grpCompileErrors.Name = "grpCompileErrors";
-            this.grpCompileErrors.Size = new System.Drawing.Size(573, 88);
+            this.grpCompileErrors.Size = new System.Drawing.Size(839, 107);
             this.grpCompileErrors.TabIndex = 10;
             this.grpCompileErrors.TabStop = false;
             this.grpCompileErrors.Text = "Compile Errors";
@@ -252,14 +252,14 @@
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn1});
             this.gridCompileErrors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridCompileErrors.Location = new System.Drawing.Point(3, 16);
+            this.gridCompileErrors.Location = new System.Drawing.Point(3, 17);
             this.gridCompileErrors.MultiSelect = false;
             this.gridCompileErrors.Name = "gridCompileErrors";
             this.gridCompileErrors.ReadOnly = true;
             this.gridCompileErrors.RowHeadersVisible = false;
             this.gridCompileErrors.RowTemplate.Height = 24;
             this.gridCompileErrors.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.gridCompileErrors.Size = new System.Drawing.Size(567, 69);
+            this.gridCompileErrors.Size = new System.Drawing.Size(833, 87);
             this.gridCompileErrors.TabIndex = 3;
             this.gridCompileErrors.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridCompileErrors_CellDoubleClick);
             // 
@@ -296,7 +296,7 @@
             this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn1.ToolTipText = "Double-click grid cell to navigate to state details";
-            this.dataGridViewTextBoxColumn1.Width = 71;
+            this.dataGridViewTextBoxColumn1.Width = 83;
             // 
             // editTextBox
             // 
@@ -315,7 +315,7 @@
     "*(?<range>:)\\s*(?<range>[^;]+);\r\n";
             this.editTextBox.AutoScrollMinSize = new System.Drawing.Size(227, 14);
             this.editTextBox.BackBrush = null;
-            this.editTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(40)))), ((int)(((byte)(33)))));
             this.editTextBox.BookmarkColor = System.Drawing.Color.IndianRed;
             this.editTextBox.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.editTextBox.CaretColor = System.Drawing.Color.White;
@@ -325,14 +325,13 @@
             this.editTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.editTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.editTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.editTextBox.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.editTextBox.Hotkeys = resources.GetString("editTextBox.Hotkeys");
             this.editTextBox.IsReplaceMode = false;
             this.editTextBox.Language = FastColoredTextBoxNS.Language.ControlBasic;
             this.editTextBox.LeftBracket = '(';
             this.editTextBox.LeftBracket2 = '{';
-            this.editTextBox.Location = new System.Drawing.Point(3, 53);
+            this.editTextBox.Location = new System.Drawing.Point(3, 49);
             this.editTextBox.Name = "editTextBox";
             this.editTextBox.NumbersColor = System.Drawing.Color.CornflowerBlue;
             this.editTextBox.OutputsColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
@@ -342,7 +341,7 @@
             this.editTextBox.RightBracket2 = '}';
             this.editTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.editTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("editTextBox.ServiceColors")));
-            this.editTextBox.Size = new System.Drawing.Size(573, 250);
+            this.editTextBox.Size = new System.Drawing.Size(839, 303);
             this.editTextBox.StringsColor = System.Drawing.Color.DarkMagenta;
             this.editTextBox.TabIndex = 11;
             this.editTextBox.Text = "10 IF INIT THEN STOP INIT";
@@ -352,27 +351,29 @@
             // 
             this.ruler1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.ruler1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ruler1.Location = new System.Drawing.Point(3, 28);
-            this.ruler1.MaximumSize = new System.Drawing.Size(1073741824, 24);
-            this.ruler1.MinimumSize = new System.Drawing.Size(0, 24);
+            this.ruler1.Location = new System.Drawing.Point(3, 26);
+            this.ruler1.MaximumSize = new System.Drawing.Size(1073741824, 22);
+            this.ruler1.MinimumSize = new System.Drawing.Size(0, 22);
             this.ruler1.Name = "ruler1";
-            this.ruler1.Size = new System.Drawing.Size(573, 24);
+            this.ruler1.Size = new System.Drawing.Size(839, 22);
             this.ruler1.TabIndex = 11;
             this.ruler1.Target = this.editTextBox;
             // 
             // ProgramEditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(579, 441);
+            this.ClientSize = new System.Drawing.Size(845, 506);
             this.Controls.Add(this.tableLayoutPanel1);
             this.KeyPreview = true;
             this.Name = "ProgramEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Edit code:";
+            this.ResizeEnd += new System.EventHandler(this.ProgramEditorForm_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProgramEditorForm_KeyDown);
+            this.Resize += new System.EventHandler(this.ProgramEditorForm_Resize);
             this.tsTopMenu.ResumeLayout(false);
             this.tsTopMenu.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -70,10 +70,5 @@ namespace ExceptionHandling
 
             Close();
         }
-
-        private void cmdTerminateApp_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
     }
 }

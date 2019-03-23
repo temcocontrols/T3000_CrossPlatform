@@ -2347,16 +2347,6 @@
             <param name="fileName"></param>
             <param name="enc"></param>
         </member>
-        <member name="M:FastColoredTextBoxNS.FastColoredTextBox.LoadFile">
-            <summary>
-            Open file dialog to load a text file into editor
-            </summary>
-        </member>
-        <member name="M:FastColoredTextBoxNS.FastColoredTextBox.SaveFile">
-            <summary>
-            Open File dialog to save a copy of program code into a file.
-            </summary>
-        </member>
         <member name="M:FastColoredTextBoxNS.FastColoredTextBox.CloseBindingFile">
             <summary>
             Close file binding mode

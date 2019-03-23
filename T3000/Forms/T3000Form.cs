@@ -466,5 +466,11 @@
             }
 
         }
+
+        private void t3000EditorTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProgramEditorForm prgf = new ProgramEditorForm();
+            prgf.Show();
+        }
     }
 }

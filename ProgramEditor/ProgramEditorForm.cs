@@ -318,10 +318,6 @@
         {
             //local member Code is not cleared, to allow recovering with REFRESH (F8)
             editTextBox.Text = "";
-
-            //TODO: Check if original method clears bookmarks too, else try this.
-            //editTextBox.SelectAll();
-            //editTextBox.ClearSelected();
         }
 
         /// <summary>
@@ -336,7 +332,7 @@
         /// <summary>
         /// Get current code
         /// </summary>
-        /// <returns> FCBT.Text </returns>
+        /// <returns></returns>
         public string GetCode()
         {
             Code = editTextBox.Text;
@@ -451,7 +447,7 @@
             }//switch
         }
 
-        /// <summary>S
+        /// <summary>
         /// Shows a caret in editTextBox for a selected token
         /// </summary>
         /// <param name="position"></param>
@@ -492,21 +488,38 @@
             editTextBox.Text = Code;
 
         }
-
         private void ProgramEditorForm_KeyDown(object sender, KeyEventArgs e)
         {
+            //if(ModifierKeys == Keys.Shift)
+            //{
+            //    switch (e.KeyCode)
+            //    {
+            //        case Keys.Insert:
+            //            if(editTextBox.SelectedText != null)
+            //            {
+            //                //Changed to Shift+Insert as CTRL+INS = COPY
+            //                ShowIdentifier(this.Identifiers, editTextBox.SelectedText);
+
+            //            }
+            //            break;
+                    
+            //    }
+            //    e.Handled = true;
+            //}
+
 
             switch (e.KeyCode)
             {
                 //F1: Reserved for help
                 case Keys.F2:
                     SendCode(); e.Handled = true; break;
-                //F3: Find dialog => inside editor
-                //F4: Properties dialog =>inside editor
+                //F3: Find dialog inside editor
+                //F4: Properties dialog inside editor
                 //F5: Free
-                //F6: Load File => inside editor
-                //F7: Save File =>inside editor
-
+                case Keys.F6:
+                    SaveFile(); e.Handled = true; break;
+                case Keys.F7:
+                    LoadFile(); e.Handled = true; break;
                 case Keys.F8:
                     RefreshCode(); e.Handled = true; break;
                 case Keys.F10:
@@ -519,15 +532,100 @@
 
         }
 
+        /// <summary>
+        /// Show Identifiers Information in a dialog box
+        /// </summary>
+        /// <param name="Identifiers">Identifier's information</param>
+        /// <param name="selectedText"></param>
+        public static void ShowIdentifier(ControlPoints Identifiers, string selectedText)
+        {
+            frmIdentifierInfo frm = new frmIdentifierInfo();
+
+
+            int PointIndex = 0;
+            var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, selectedText, out PointIndex);
+            if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
+                return;
+        
+
+            frm.Text = selectedText;
+            
+            switch (TokenType)
+            {
+                case PCODE_CONST.OUTPOINTTYPE:
+                    frm.Label.Text = Identifiers.Outputs[PointIndex].Label;
+                    frm.FullLabel.Text = Identifiers.Outputs[PointIndex].FullLabel;
+                    frm.Value.Text = Identifiers.Outputs[PointIndex].Value;
+                    frm.Units.Text = Identifiers.Outputs[PointIndex].Units;
+                    frm.AutoManual.Text = Identifiers.Outputs[PointIndex].AutoManual;
+                    frm.ControlPointName.Text = Identifiers.Outputs[PointIndex].ControlPointName;
+                    frm.ControlPointType.Text = "OUTPUT";
+                    break;
+                case PCODE_CONST.INPOINTTYPE:
+                    frm.Label.Text = Identifiers.Inputs[PointIndex].Label;
+                    frm.FullLabel.Text = Identifiers.Inputs[PointIndex].FullLabel;
+                    frm.Value.Text = Identifiers.Inputs[PointIndex].Value;
+                    frm.Units.Text = Identifiers.Inputs[PointIndex].Units;
+                    frm.AutoManual.Text = Identifiers.Inputs[PointIndex].AutoManual;
+                    frm.ControlPointName.Text = Identifiers.Inputs[PointIndex].ControlPointName;
+                    frm.ControlPointType.Text = "INPUT";
+                    break;
+                case PCODE_CONST.VARPOINTTYPE:
+                    frm.Label.Text = Identifiers.Variables[PointIndex].Label;
+                    frm.FullLabel.Text = Identifiers.Variables[PointIndex].FullLabel;
+                    frm.Value.Text = Identifiers.Variables[PointIndex].Value;
+                    frm.Units.Text = Identifiers.Variables[PointIndex].Units;
+                    frm.AutoManual.Text = Identifiers.Variables[PointIndex].AutoManual;
+                    frm.ControlPointName.Text = Identifiers.Variables[PointIndex].ControlPointName;
+                    frm.ControlPointType.Text = "VARIABLE";
+                    break;
+                case PCODE_CONST.PID:
+                    //TODO: Resolve what's a PID? Program Identifier?
+                    break;
+                default:
+                    break;
+            }
+
+
+            frm.ShowDialog();
+
+
+
+        }
 
         private void cmdLoad_Click(object sender, EventArgs e)
         {
 
-            editTextBox.LoadFile();
+            LoadFile();
 
         }
 
+        /// <summary>
+        /// Open file dialog to load a text file into editor
+        /// </summary>
+        public void LoadFile()
+        {
+            // Create an instance of the open file dialog box.
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+
+            openFileDialog1.Multiselect = true;
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK)
+            {
+                string text = System.IO.File.ReadAllText(openFileDialog1.FileName);
+
+                editTextBox.Text = text;
+
+            }
+        }
 
         /// <summary>
         /// User call to SendCode event
@@ -559,24 +657,45 @@
 
         }
 
-        /// <summary>
-        /// On Click, call to SaveFile inside editor
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void cmdSave_Click(object sender, EventArgs e)
         {
-            editTextBox.SaveFile();
+            SaveFile();
+        }
+
+        /// <summary>
+        /// Open File dialog to save a copy of program code into a file.
+        /// </summary>
+        public void SaveFile()
+        {
+            // Create an instance of the open file dialog box.
+            SaveFileDialog openFileDialog1 = new SaveFileDialog();
+
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+
+
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK)
+            {
+                System.IO.File.WriteAllText(openFileDialog1.FileName, editTextBox.Text);
+
+            }
         }
 
 
-        /// <summary>
-        /// On Click, call to ShowProperties inside editor
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void cmdSettings_Click(object sender, EventArgs e)
         {
+            EditSettings();
+        }
+
+        private void EditSettings()
+        {
+
             editTextBox.ShowProperties();
 
 
@@ -585,6 +704,18 @@
             //Stream stream = new FileStream("EditorSettings.bin", FileMode.Create, FileAccess.Write, FileShare.None);
             //formatter.Serialize(stream, editTextBox  );
             //stream.Close();
+
+
+
+        }
+
+        private void ProgramEditorForm_ResizeEnd(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ProgramEditorForm_Resize(object sender, EventArgs e)
+        {
 
         }
 
@@ -622,10 +753,6 @@
                     var tokentext = tok.Text;
                     var terminalname = tok.Terminal.Name;
 
-
-                    //Prepared New Token for debugging, inspect this variable to see what it becomes
-                    var NewToken = new EditorTokenInfo(tokentext, terminalname);
-
                     switch (tok.Terminal.Name)
                     {
 
@@ -644,24 +771,21 @@
 
                         case "PhoneNumber":
                             var PhoneString = tok.Text.TrimEnd(' ');
-                            NewToken.Text = PhoneString;
-                            NewToken.TerminalName = "PhoneNumber";
-                            NewToken.Type = (short)PhoneString.Length;
-                            NewToken.Token = (short)LINE_TOKEN.STRING;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(PhoneString, "PhoneNumber"));
+                            Tokens.Last().Type = (short)PhoneString.Length;
+                            Tokens.Last().Token = (short)LINE_TOKEN.STRING;
                             break;
 
                         case "IntegerNumber":
                             //rename to LineNumber only if first token on line.
-                            NewToken.TerminalName = isFirstToken ? "LineNumber" : terminalname;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(tokentext, isFirstToken ? "LineNumber" : terminalname));
                             break;
 
                         case "LocalVariable":
-                            //EditorTokenInfo NewLocalVar = new EditorTokenInfo(tokentext, terminalname);
-                            NewToken.Type = (short)PCODE_CONST.LOCAL_VAR;
-                            NewToken.Token = (short)TYPE_TOKEN.IDENTIFIER;
-                            Tokens.Add(NewToken);
+                            EditorTokenInfo NewLocalVar = new EditorTokenInfo(tokentext, terminalname);
+                            NewLocalVar.Type = (short)PCODE_CONST.LOCAL_VAR;
+                            NewLocalVar.Token = (short)TYPE_TOKEN.IDENTIFIER;
+                            Tokens.Add(NewLocalVar);
                             break;
 
                         #region Control Points Generics | Identifiers, before any expressions
@@ -676,67 +800,47 @@
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
                             
                             //Prepare token identifier to encode: Token + Index + Type
-                            //EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, tok.Terminal.Name);
-                            NewToken.TerminalName = tok.Terminal.Name;
+                            EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, tok.Terminal.Name);
                             switch (tok.Terminal.Name)
                             {
                                 case "VARS":
-                                    NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
+                                    CPIdentifier.Type = (short)PCODE_CONST.VARPOINTTYPE;
                                     break;
                                 case "INS":
-                                    NewToken.Type = (short)PCODE_CONST.INPOINTTYPE;
+                                    CPIdentifier.Type = (short)PCODE_CONST.INPOINTTYPE;
                                     break;
                                 case "OUTS":
-                                    NewToken.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                    CPIdentifier.Type = (short)PCODE_CONST.OUTPOINTTYPE;
                                     break;
                                 default:
-                                    NewToken.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
+                                    CPIdentifier.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
                                     break;
                             }
 
-                            NewToken.Index = (short)CtrlPointIndex;
-                            NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
-                            Tokens.Add(NewToken);
+                            CPIdentifier.Index = (short)CtrlPointIndex;
+                            CPIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Tokens.Add(CPIdentifier);
                             break;
 
                         case "PRG":
                             string idxPRG = Regex.Match(tokentext, @"\d+").Value;
                             int CPIdx = Convert.ToInt16(idxPRG) - 1; //PRG1 will get index 0, and so on.
                                                                      //Prepare token identifier to encode: Index (single Byte)
-                            //EditorTokenInfo CPIdPRG = new EditorTokenInfo(tokentext, "PRG");
-                            NewToken.TerminalName = "PRG";
-                            NewToken.Type = (short)TYPE_TOKEN.KEYWORD;
-                            NewToken.Index = (short)CPIdx;
-                            NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
-                            Tokens.Add(NewToken);
+                            EditorTokenInfo CPIdPRG = new EditorTokenInfo(tokentext, "PRG");
+                            CPIdPRG.Type = (short)TYPE_TOKEN.KEYWORD;
+                            CPIdPRG.Index = (short)CPIdx;
+                            CPIdPRG.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Tokens.Add(CPIdPRG);
                             break;
 
                         case "MRK": //termporary marker for commas between arguments, generated when
                             //encoding ARGCOUNT for CALL PRG
                             //Translated to EOE
-                            NewToken = new EditorTokenInfo("EOE", "EOE");
-                            NewToken.Token = (short)LINE_TOKEN.EOE;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE;
 
                             break;
 
-                        case "Register":
-                            //Prepare token Register to encode: Token + Index + Type + PanelID + SubNet + 1
-
-                            string[] tokenparts = tokentext.Split('.');
-
-
-                            //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
-                            NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
-                            NewToken.Index = (short) (Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
-                            NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
-                            NewToken.PanelID = tokenparts[0];
-                            NewToken.Subnet = tokenparts[1];
-                            //the final byte = 1, assumed to be added later by EncodeBytes
-                        
-                            Tokens.Add(NewToken);
-
-                            break;
                         case "Identifier":
                             //Locate Identifier and Identify Token associated ControlPoint.
                             //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
@@ -757,11 +861,11 @@
                             else
                             {
                                 //Prepare token identifier to encode: Token + Index + Type
-                                //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
-                                NewToken.Type = (short)TokenType;
-                                NewToken.Index = (short)PointIndex;
-                                NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
-                                Tokens.Add(NewToken);
+                                EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                                NewIdentifier.Type = (short)TokenType;
+                                NewIdentifier.Index = (short)PointIndex;
+                                NewIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                                Tokens.Add(NewIdentifier);
                             }
                             break;
 
@@ -770,27 +874,23 @@
                         #region Assigments and Expressions
                         case "ASSIGN":
 
-                            //CALL PRG ASSIGMENT ARGS ...
                             if (Tokens.Last().TerminalName == "PRG")
                             {
-                                
-                                //counter for identifiers and registers as arguments
-                                NewToken = new EditorTokenInfo("ARGCOUNT", "ARGCOUNT");
-                                Tokens.Add(NewToken);
+                                //CALL PRG ASSIGMENT ARGS ...
+                                //counter for identifiers as arguments
+                                Tokens.Add(new EditorTokenInfo("ARGCOUNT", "ARGCOUNT"));
 
-                                //count arguments
+                                //count identifiers (arguments)
                                 var ArgIdx = Tokens.Count - 1;
                                 var idCnt = 0;
                                 var NxtId = idxToken + 1;
 
                                 while (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
-                                    || _parseTree.Tokens[NxtId].Terminal.Name == "Register"
                                     || _parseTree.Tokens[NxtId].Terminal.Name == "COMMA")
                                 {
-                                    if (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier"
-                                        || _parseTree.Tokens[NxtId].Terminal.Name == "Register")
+                                    if (_parseTree.Tokens[NxtId].Terminal.Name == "Identifier")
                                     {
-                                        //count this argument
+                                        //count this identifier
                                         idCnt++;
                                     }
                                     else
@@ -808,24 +908,21 @@
                             }
 
                             //Any other way, encode an assigment ↓ ↓ ↓ ↓ 
+                            EditorTokenInfo assignToken, last;
 
-                            //Get the assignar token
                             var index = Tokens.Count - 1;
-                            EditorTokenInfo AssignarToken = Tokens[index];
+                            last = Tokens[index];
                             Tokens.RemoveAt(index);
-
-                            NewToken = new EditorTokenInfo(tokentext, terminalname);
-                            NewToken.Token = (short)LINE_TOKEN.ASSIGN;
+                            assignToken = new EditorTokenInfo(tokentext, terminalname);
+                            assignToken.Token = (short)LINE_TOKEN.ASSIGN;
                             //insert it before assignar var.
-                            Tokens.Add(NewToken);
-                            Tokens.Add(AssignarToken);
+                            Tokens.Add(assignToken);
+                            Tokens.Add(last);
                             //get the expression in postfix
                             functions = new Stack<EditorTokenInfo>();
-
                             ///////////////////////////////////////////////
-                            // GET ALL FUNCTIONS AND LITERALS IN EXPRESSIONS
+                            // ALL FUNCTIONS AND LITERALS IN EXPRESSIONS
                             ///////////////////////////////////////////////
-
                             Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
                             //En caso que haya un then o un else en la pila
                             //extraer y poner un delimintador EOE
@@ -836,10 +933,9 @@
                                     case "THEN":
                                     case "ELSE":
                                         branches.Pop();
-                                        NewToken = new EditorTokenInfo("EOE", "EOE");
-                                        NewToken.Token = (short)LINE_TOKEN.EOE;
-                                        NewToken.Index = 0;
-                                        Tokens.Add(NewToken);
+                                        Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
+                                        Tokens.Last().Token = (short)LINE_TOKEN.EOE;
+                                        Tokens.Last().Index = 0;
                                         break;
                                     default:
                                         break;
@@ -855,18 +951,16 @@
                         case "SYSPRG":
                         case "TIMER":
                         case "PANEL":
-
-                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
-                            NewToken.Index = (short)Convert.ToInt16(tokentext);
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
                             break;
 
                         case "TimeLiteral":
-
-                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
-                            NewToken.Index = (short)Convert.ToInt16(tokentext);
-                            NewToken.Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Tokens.Last().Index = (short)Convert.ToInt16(tokentext);
+                            Tokens.Last().Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
                             break;
 
 
@@ -874,10 +968,10 @@
                         case "PRT_B":
                         case "PRT_0":
                         case "ALL":
-                            
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             PRT_TOKEN PrtToken = (PRT_TOKEN)Enum.Parse(typeof(PRT_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)PrtToken;
-                            Tokens.Add(NewToken);
+                            Tokens.Last().Token = (short)PrtToken;
+
                             break;
                         #endregion
 
@@ -885,13 +979,13 @@
                         case "IF":
                         case "IF+":
                         case "IF-":
-                            //EditorTokenInfo IfToken = new EditorTokenInfo(tokentext, terminalname);
+                            EditorTokenInfo IfToken = new EditorTokenInfo(tokentext, terminalname);
 
                             LINE_TOKEN TypeToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)TypeToken;
-                            NewToken.Precedence = 200;
-                            Tokens.Add(NewToken);
-                            branches.Push(NewToken);
+                            IfToken.Token = (short)TypeToken;
+                            IfToken.Precedence = 200;
+                            Tokens.Add(IfToken);
+                            branches.Push(IfToken);
                             var LastIdx = idxToken;
                             //GET IF CLAUSE
                             Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
@@ -900,10 +994,9 @@
 
                         case "THEN":
                             //START MARKER FOR THEN PART
-
-                            NewToken.Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
-                            NewToken.Index = (short) (Tokens.Count + 1) ; //Next token will be OFFSET
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            Tokens.Last().Index = (short)Tokens.Count; //Next token will be OFFSET
 
                             if (branches.Count > 0)
                             {
@@ -913,7 +1006,7 @@
                                     case "IF+":
                                     case "IF-":
                                         branches.Pop();//Pop last IF*
-                                        branches.Push(NewToken); //Push corresponding THEN
+                                        branches.Push(Tokens.Last()); //Push corresponding THEN
                                         break;
                                     default:
                                         break;
@@ -922,16 +1015,16 @@
                             }
 
                             //Offset to be treated as a 2 bytes NUMBER
-                            NewToken = new EditorTokenInfo("OFFSET", "OFFSET");
-                            NewToken.Token = 0;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo("OFFSET", "OFFSET"));
+                            Tokens.Last().Token = 0;
+
 
                             break;
 
                         case "ELSE":
                             //ELSE
-                            NewToken.Token = (short)LINE_TOKEN.ELSE; //End marker for Expr.
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Tokens.Last().Token = (short)LINE_TOKEN.ELSE; //End marker for Expr.
 
                             if (branches.Count > 0)
                             {
@@ -948,19 +1041,18 @@
 
                             }
 
-                            branches.Push(NewToken); //Push corresponding ELSE
+                            branches.Push(Tokens.Last()); //Push corresponding ELSE
 
                             //START MARKER FOR ELSE PART
-                            NewToken = new EditorTokenInfo("EOE", "EOE");
-                            NewToken.Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
-                            NewToken.Index = (short) (Tokens.Count + 1); //Next token will be OFFSET
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE; //End marker for Expr.
+                            Tokens.Last().Index = (short)Tokens.Count; //Next token will be OFFSET
+
 
 
                             //Offset to be treated as a NUMBER
-                            NewToken = new EditorTokenInfo("OFFSET", "OFFSET");
-                            NewToken.Token = 0;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo("OFFSET", "OFFSET"));
+                            Tokens.Last().Token = 0;
 
                             break;
                         #endregion
@@ -973,21 +1065,19 @@
                                 {
                                     case "THEN":
                                     case "ELSE":
-                                        var offsetIdx = branches.Pop().Index;//references token with end marker 
+                                        var offsetIdx = branches.Pop().Index;
+                                        //references token with end marker 
                                         Tokens[offsetIdx].Index = (short)Tokens.Count;
-                                        //TODO: Revisar si el token EOE al final de THEN Y ELSE, antes de LF Y EOF están causando un comma inncesaria en la codificación.
-                                        
-                                        //NewToken = new EditorTokenInfo("EOE", "EOE");
-                                        //NewToken.Token = (short)LINE_TOKEN.EOE;
-                                        //Tokens.Add(NewToken);
+                                        Tokens.Add(new EditorTokenInfo("EOE", "EOE"));
+                                        Tokens.Last().Token = (short)LINE_TOKEN.EOE;
                                         break;
                                     default:
                                         break;
                                 }
                             }
 
-                            NewToken= new EditorTokenInfo(tokentext, terminalname);
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+
                             break;
 
                         #region Commands
@@ -1012,19 +1102,18 @@
                         case "PHONE":
                         case "PRINT":
 
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN SimpleToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)SimpleToken;
-                            Tokens.Add(NewToken);
+                            Tokens.Last().Token = (short)SimpleToken;
                             break;
 
                         case "DECLARE":
 
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN DeclareToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)DeclareToken;
-                            Tokens.Add(NewToken);
+                            Tokens.Last().Token = (short)DeclareToken;
 
-                            NewToken = new EditorTokenInfo("ARGCOUNT", "ARGCOUNT");
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo("ARGCOUNT", "ARGCOUNT"));
 
                             //count identifiers (arguments)
                             var DeclareIdx = Tokens.Count - 1;
@@ -1038,37 +1127,27 @@
                             }
                             Tokens[DeclareIdx].Index = (short)idCount;
 
+
                             break;
-
                         case "WAIT":
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
                             LINE_TOKEN WaitToken = (LINE_TOKEN)Enum.Parse(typeof(LINE_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)WaitToken;
-                            Tokens.Add(NewToken);
-
+                            Tokens.Last().Token = (short)WaitToken;
                             Tokens.AddRange(GetExpression(ref idxToken, ref Cancel));
                             //Add EOE and counter
                             WaitCount++;
-                            NewToken = new EditorTokenInfo("WAITCOUNTER", "WAITCOUNTER");
-                            NewToken.Token = (short)LINE_TOKEN.EOE;
-                            NewToken.Index = (short)WaitCount;
-                            Tokens.Add(NewToken);
+                            Tokens.Add(new EditorTokenInfo("WAITCOUNTER", "WAITCOUNTER"));
+                            Tokens.Last().Token = (short)LINE_TOKEN.EOE;
+                            Tokens.Last().Index = (short)WaitCount;
 
                             break;
                         #endregion
 
                         #region Defaults
-
-                        case "CMDSEPARATOR":
-                            
-                            NewToken = new EditorTokenInfo("CMDSEPARATOR", "CMDSEPARATOR");
-                            NewToken.Text = ",";
-                            NewToken.Token = (short)LINE_TOKEN.EOE;
-                            Tokens.Add(NewToken);
-                            break;
                         case "LET":
                         default: // No special cases, or expected to be ready to encode.
-                            Tokens.Add(NewToken);
-                            Console.WriteLine($"ProcessTokens(): TOKEN TerminalName:{terminalname}-Text:{tokentext} passed by default");
+                            Tokens.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Console.WriteLine($"ProcessTokens(): TOKEN TerminalName:{terminalname}-Text:{tokentext} passed by defautl");
                             break;
                             #endregion
                     }
@@ -1096,9 +1175,8 @@
         /// <returns>RPN Expression, ready to be encoded</returns>
         public List<EditorTokenInfo> GetExpression(ref int Index, ref bool Cancel)
         {
-            //List of Prepared Tokens for Expression
+            // _parseTree.Tokens.Count
             List<EditorTokenInfo> Expr = new List<EditorTokenInfo>();
-            //Stack of OPERATORS
             Stack<EditorTokenInfo> Oper = new Stack<EditorTokenInfo>();
 
 
@@ -1113,8 +1191,6 @@
                     var tokentext = tok.Text;
                     var terminalname = tok.Terminal.Name;
 
-                    //Prepared New Token for debugging, inspect this variable to see what it becomes
-                    var NewToken = new EditorTokenInfo(tokentext, terminalname);
 
                     switch (terminalname)
                     {
@@ -1123,7 +1199,7 @@
 
                         case "(":
                             //If the incoming symbol is a left parenthesis, push it on the stack.
-                            Oper.Push(NewToken);
+                            Oper.Push(new EditorTokenInfo(tokentext, terminalname));
                             break;
 
                         case ")":
@@ -1141,8 +1217,7 @@
                                                             //see if those parenthesis were parts of a function call.
                             if (Oper.Count > 0 && Oper.Peek().Precedence == 200)
                             {
-                                //IS A FUNCTION CALL
-                                
+                                //Function Call
                                 //Add function token to expression.
                                 Expr.Add(Oper.Pop());
                                 if (functions.Count > 0)
@@ -1195,66 +1270,44 @@
                         #endregion
 
                         #region Identifier
-
-                        case "Register":
-                            //Prepare token Register to encode: Token + Index + Type + PanelID + SubNet + 1
-
-                            string[] tokenparts = tokentext.Split('.');
-
-
-                            //EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
-                            NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
-                            NewToken.Index = (short)(Convert.ToInt32(tokenparts[2].Substring(3)) - 1);
-                            NewToken.Token = (short)PCODE_CONST.REMOTE_POINT_PRG;
-                            NewToken.PanelID = tokenparts[0];
-                            NewToken.Subnet = tokenparts[1];
-                            //the final byte = 1, assumed to be added later by EncodeBytes
-
-                            Tokens.Add(NewToken);
-                            break;
-
+                        //TODO: NEW: PIDS debe ir acá: Acá faltan varios tipos de identificadores, agregarlos posteriormente
                         case "VARS":
                         case "INS":
                         case "OUTS":
                         case "PRG":
-                        case "PIDS":
                             string output = Regex.Match(tokentext, @"\d+").Value;
                             int CtrlPointIndex = Convert.ToInt16(output) - 1; //VAR1 will get index 0, and so on.
-                            //Prepare token identifier to encode: Token + Index + Type
-
+                                                                              //Prepare token identifier to encode: Token + Index + Type
+                            EditorTokenInfo CPIdentifier = new EditorTokenInfo(tokentext, "Identifier");
                             switch (terminalname)
                             {
-                                case "OUTS":
-                                    NewToken.Type = (short)PCODE_CONST.OUTPOINTTYPE;
+                                case "VARS":
+                                    CPIdentifier.Type = (short)PCODE_CONST.VARPOINTTYPE;
                                     break;
                                 case "INS":
-                                    NewToken.Type = (short)PCODE_CONST.INPOINTTYPE;
+                                    CPIdentifier.Type = (short)PCODE_CONST.INPOINTTYPE;
                                     break;
-                                case "VARS":
-                                    NewToken.Type = (short)PCODE_CONST.VARPOINTTYPE;
-                                    break;
-                                case "PIDS":
-                                    NewToken.Type = (short)PCODE_CONST.PIDPOINTTYPE;
+                                case "OUTS":
+                                    CPIdentifier.Type = (short)PCODE_CONST.OUTPOINTTYPE;
                                     break;
                                 default:
-                                    NewToken.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
+                                    CPIdentifier.Type = (short)PCODE_CONST.UNDEFINED_SYMBOL;
                                     break;
                             }
-                            //Rename the Raw ControlPoint to Identifier
-                            NewToken.TerminalName = "Identifier";
-                            NewToken.Index = (short)CtrlPointIndex;
-                            NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
-                            Expr.Add(NewToken);
+
+                            CPIdentifier.Index = (short)CtrlPointIndex;
+                            CPIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                            Expr.Add(CPIdentifier);
                             break;
 
                         case "Identifier":
-                            //Locate Identifier and get associated ControlPoint.
+                            //Locate Identifier and Identify Token associated ControlPoint.
                             //To include this info in TokenInfo.Type and update TokenInfo.TerminalName
                             int PointIndex = 0;
                             var TokenType = CoderHelper.GetTypeIdentifier(Identifiers, tokentext, out PointIndex);
                             if (TokenType == PCODE_CONST.UNDEFINED_SYMBOL)
                             {
-                                //Semantic Error
+                                //There is a semantic error here
                                 //Add error message to parser and cancel renumbering.
                                 //Don't break it inmediately, to show all possible errors of this type
                                 _parseTree.ParserMessages.Add(new LogMessage(ErrorLevel.Error,
@@ -1267,18 +1320,14 @@
                             else
                             {
                                 //Prepare token identifier to encode: Token + Index + Type
-                                ////EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
-
-                                NewToken.Type = (short)TokenType;
-                                NewToken.Index = (short)PointIndex;
-                                NewToken.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
-                                Expr.Add(NewToken);
+                                EditorTokenInfo NewIdentifier = new EditorTokenInfo(tokentext, terminalname);
+                                NewIdentifier.Type = (short)TokenType;
+                                NewIdentifier.Index = (short)PointIndex;
+                                NewIdentifier.Token = (short)PCODE_CONST.LOCAL_POINT_PRG;
+                                Expr.Add(NewIdentifier);
                             }
                             break;
 
-
-
-                        
                         #endregion
 
                         #region OPERATORS
@@ -1307,23 +1356,23 @@
                             {
                                 terminalname = "EQ";
                             }
-                            NewToken.TerminalName = terminalname;
+                            var op = new EditorTokenInfo(tokentext, terminalname);
                             TYPE_TOKEN TypeToken = (TYPE_TOKEN)Enum.Parse(typeof(TYPE_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)TypeToken;
-                            NewToken.Precedence = (short)tok.KeyTerm.Precedence;
+                            op.Token = (short)TypeToken;
+                            op.Precedence = (short)tok.KeyTerm.Precedence;
 
                             if (Oper.Count == 0)
                             {
-                                Oper.Push(NewToken);
+                                Oper.Push(op);
                             }
                             else
                             {
-                                while (Oper.Count > 0 && NewToken.Precedence <= Oper.Peek().Precedence)
+                                while (Oper.Count > 0 && op.Precedence <= Oper.Peek().Precedence)
                                 {
                                     Expr.Add(Oper.Pop());
                                 }
 
-                                Oper.Push(NewToken);
+                                Oper.Push(op);
                             }
                             break;
                         #endregion
@@ -1334,37 +1383,22 @@
                         case "TABLENUMBER":
                         case "SYSPRG":
                         case "TIMER":
-                        case "WRNUMBER":
-                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
-                            Expr.Add(NewToken);
-                            //Note: Time format values are encoded with a lookahead algorithm by ENCODER
-
+                            Expr.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            //Possible use to dif from TimeLiteral
+                            //Expr.Last().Type = (short)PCODE_CONST.CONST_VALUE_PRG;
 
                             break;
                         case "TimeLiteral":
-                            //TODO: I don't think this works. As ProcessTokens only sees NUMBERS. To See if a TIME FORMAT VALUE
-                            NewToken.Token = (short)PCODE_CONST.CONST_VALUE_PRG;
-                            NewToken.Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
-                            Expr.Add(NewToken);
+                            //NEW: See if a TIME FORMAT VALUE
+
+                            Expr.Add(new EditorTokenInfo(tokentext, terminalname));
+                            Expr.Last().Token = (short)PCODE_CONST.CONST_VALUE_PRG;
+                            Expr.Last().Type = (short)FUNCTION_TOKEN.TIME_FORMAT;
                             break;
                         #endregion
 
-                        #region Non PostFix FUNCTIONS
-                        //This functions are not encoded as postix
-                        case "TIME_ON":
-                        case "TIME_OFF":
-                            FUNCTION_TOKEN fxtokenvalue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)fxtokenvalue;
-
-                            NewToken.Precedence = 200;
-                            NewToken.Index = 1; //ONLY one expression to count
-                            //Token is ready
-                            Expr.Add(NewToken); //send to Expr as soon as they appear (INFIX).
-
-                            break;
-                        #endregion
-
-                        #region Posfix FUNCTIONS
+                        #region FUNCTIONS
                         case "ABS":
                         case "INTERVAL":
                         case "_INT":
@@ -1377,10 +1411,10 @@
                         case "CONRATE":
                         case "CONRESET":
                         case "TIME":
-
+                        case "TIME_ON":
+                        case "TIME_OFF":
                         case "WR_ON":
                         case "WR_OFF":
-
                         case "DOY":
                         case "DOM":
                         case "DOW":
@@ -1390,51 +1424,41 @@
                         case "USER_A":
                         case "USER_B":
 
+
+                        #region Functions with variable list of expressions, must add count of expressions as last token.
                         case "AVG":
                         case "MAX":
                         case "MIN":
 
                             //All operators are cast directly into token of TYPE_TOKEN and with precedence attribute.
                             //To allow further transforms by RPN Parser of Expressions
-
+                            var fxToken = new EditorTokenInfo(tokentext, terminalname);
                             FUNCTION_TOKEN tokenValue = (FUNCTION_TOKEN)Enum.Parse(typeof(FUNCTION_TOKEN), terminalname.ToString().Trim());
-                            NewToken.Token = (short)tokenValue;
+                            fxToken.Token = (short)tokenValue;
 
-                            NewToken.Precedence = 200;
-                            NewToken.Index = 1; //At least one expression to count
-                            //Token is ready
-
+                            //fx.Precedence = (short)tok.KeyTerm.Precedence;
+                            fxToken.Precedence = 200;
+                            fxToken.Index = 1; //At least one expression to count
                             if (Oper.Count == 0)
                             {
-                                Oper.Push(NewToken);
-                                functions.Push(NewToken);
+                                Oper.Push(fxToken);
+                                functions.Push(fxToken);
 
                             }
                             else
                             {
-                                switch (terminalname)
+                                while (Oper.Count > 0 && fxToken.Precedence <= Oper.Peek().Precedence)
                                 {
-                                    case "WR_ON":
-                                    case "WR_OFF":
-                                        if (Oper.Count >= 2)
-                                        {
-                                            for (int i = 0; i < 2; i++)
-                                                Expr.Add(Oper.Pop());
-                                        }
-                                        else throw new ArgumentException($"Not enough arguments for {terminalname}");
-                                        break;
-
-                                    default:
-                                        while (Oper.Count > 0 && NewToken.Precedence <= Oper.Peek().Precedence)
-                                            Expr.Add(Oper.Pop());
-                                        break;
+                                    Expr.Add(Oper.Pop());
                                 }
 
-                                Oper.Push(NewToken);
-                                functions.Push(NewToken);
+                                Oper.Push(fxToken);
+                                functions.Push(fxToken);
 
                             }
                             break;
+                            #endregion
+
                             #endregion
                     }
 
@@ -1451,7 +1475,7 @@
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Show(ex, "ProcessTokens()=>GetExpression() found an exception");
+                ExceptionHandler.Show(ex, "GetExpression() found an exception");
             }
 
             return Expr;

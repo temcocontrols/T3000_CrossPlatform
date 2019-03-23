@@ -12,7 +12,6 @@
 
 // #define debug
 
-//WARNING: This project has been modified and customized, do not UPGRADE version.
 
 // -------------------------------------------------------------------------------
 // By default the FastColoredTextbox supports no more 16 styles at the same time.
@@ -20,7 +19,6 @@
 // However, you can to compile FCTB with 32 styles supporting.
 // Uncomment following definition if you need 32 styles instead of 16:
 //
-
 #define Styles32
 
 using System;
@@ -4405,15 +4403,10 @@ namespace FastColoredTextBoxNS
                 case FCTBAction.Properties:
                     ShowProperties();
                     break;
-     
-                case FCTBAction.FileOpen :
-                    LoadFile();
-                    break;
 
-                case FCTBAction.FileSave :
-                    SaveFile();
-                    break;
-                    
+     
+                case FCTBAction.CustomAction3 :
+                case FCTBAction.CustomAction4 :
                 case FCTBAction.CustomAction5 :
                 case FCTBAction.CustomAction6 :
                 case FCTBAction.CustomAction7 :
@@ -4441,8 +4434,6 @@ namespace FastColoredTextBoxNS
         /// <param name="SelectedText"></param>
         public void ShowIdentifierInfoDialog(string SelectedText)
         {
-
-
 
             frmIdentifierInfo frm = new frmIdentifierInfo();
 
@@ -4484,7 +4475,7 @@ namespace FastColoredTextBoxNS
                     frm.ControlPointName.Text = Identifiers.Variables[PointIndex].ControlPointName;
                     frm.ControlPointType.Text = "VARIABLE";
                     break;
-                case PCODE_CONST.PIDPOINTTYPE:
+                case PCODE_CONST.PID:
                     //TODO: Resolve what's a PID? Program Identifier?
                     break;
                 default:
@@ -8043,76 +8034,6 @@ window.status = ""#print"";
             }
             Invalidate();
         }
-
-        /// <summary>
-        /// Open file dialog to load a text file into editor
-        /// </summary>
-        public void LoadFile()
-        {
-
-            try
-            {
-                // Create an instance of the open file dialog box.
-                OpenFileDialog openFileDialog1 = new OpenFileDialog();
-
-                // Set filter options and filter index.
-                openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-                openFileDialog1.FilterIndex = 1;
-
-                openFileDialog1.Multiselect = true;
-
-                // Call the ShowDialog method to show the dialog box.
-                DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-                // Process input if the user clicked OK.
-                if (userClickedOK == DialogResult.OK)
-                {
-                    string text = System.IO.File.ReadAllText(openFileDialog1.FileName);
-
-                    this.Text = text;
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.Show(ex, "Loading File");
-            }
-        }
-
-
-        /// <summary>
-        /// Open File dialog to save a copy of program code into a file.
-        /// </summary>
-        public void SaveFile()
-        {
-
-            try
-            {
-                // Create an instance of the open file dialog box.
-                SaveFileDialog openFileDialog1 = new SaveFileDialog();
-
-                // Set filter options and filter index.
-                openFileDialog1.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-                openFileDialog1.FilterIndex = 1;
-
-
-
-                // Call the ShowDialog method to show the dialog box.
-                DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-                // Process input if the user clicked OK.
-                if (userClickedOK == DialogResult.OK)
-                {
-                    System.IO.File.WriteAllText(openFileDialog1.FileName, this.Text);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.Show(ex, "Saving File");
-            }
-        }
-
 
         /// <summary>
         /// Close file binding mode
