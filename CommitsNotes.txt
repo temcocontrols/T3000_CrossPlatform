@@ -1,3 +1,6 @@
+2019-03-23
+1.PorgramEditor IDE support syntax highlight.
+
 2019-03-22
 1.recovery the latest T3DRIVER
 2.update Highlight syntax for FastColoredText
