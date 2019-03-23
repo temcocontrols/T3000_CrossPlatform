@@ -77,7 +77,7 @@
             var LoopVariable = new RegexBasedTerminal("LoopVariable", "[A-K]");
 
             var LocalVariable = new RegexBasedTerminal("LocalVariable", "[A-Z]{1}");
-
+            var LocalVariable1 = new RegexBasedTerminal("LocalVariable1", "[A-Z0-9]");
 
             string PrintAscii = "(3[2-9])|([4-9][0-9])|(1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|('[A-Za-z]')";
             var PrintableAscii = new RegexBasedTerminal("PrintableAscii", PrintAscii);

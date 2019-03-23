@@ -116,8 +116,8 @@ namespace FastColoredTextBoxNS
 
         protected virtual void DoHighlighting()
         {
-            if (parser == null)
-                return;
+            //if (parser == null)
+            //    return;
 
             //parse text
             ParseTree tree;
@@ -134,6 +134,7 @@ namespace FastColoredTextBoxNS
 
             //highlight errors
             if (tree.Status == ParseTreeStatus.Error)
+
             {
                 ClearStyle(GetStyleIndexMask(new Style[] { WavyStyle }));
                 foreach (var msg in tree.ParserMessages)
@@ -147,7 +148,7 @@ namespace FastColoredTextBoxNS
                 return;
             }
 
-            
+
 
             //highlight syntax
             ClearStyle(StyleIndex.All);

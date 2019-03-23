@@ -14,6 +14,10 @@ namespace PRGReaderLibrary.Utilities
     /// </summary>
     static public class CoderHelper
     {
+
+        public static Prg prgdata;
+
+
         /// <summary>
         /// Returns PCODE_CONST value and Index for the especified Identifier
         /// </summary>

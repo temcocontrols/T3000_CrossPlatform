@@ -9,7 +9,7 @@
     using System.Windows.Forms;
     using System.Diagnostics;
     using ExceptionHandling;
-
+    using PRGReaderLibrary.Extensions;
     public partial class T3000Form : Form, ILoadMessages
     {
         private Prg _prg;
@@ -470,6 +470,58 @@
         private void t3000EditorTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ProgramEditorForm prgf = new ProgramEditorForm();
+            ControlPointInfo pintinfor = new ControlPointInfo();
+            pintinfor.Label = "PS";
+            pintinfor.AutoManual = "Auto";
+            pintinfor.Value = "A1_ON";
+            pintinfor.FullLabel = "PUMP1 STATUS";
+            pintinfor.Units = "";
+            prgf.AddControlPoint(IdentifierTypes.INS, pintinfor, 1);
+            pintinfor.Label = "P2S";
+            pintinfor.AutoManual = "Auto";
+            pintinfor.Value = "A2_OFF";
+            pintinfor.FullLabel = "PUMP2 STATUS";
+            pintinfor.Units = "";
+            prgf.AddControlPoint(IdentifierTypes.INS, pintinfor, 2);
+
+            pintinfor.Label = "P1";
+            pintinfor.AutoManual = "";
+            pintinfor.Value = "A1_OFF";
+            pintinfor.FullLabel = "CIRC PUMP1";
+            pintinfor.Units = "";
+            prgf.AddControlPoint(IdentifierTypes.OUTS, pintinfor, 1);
+            pintinfor.Label = "P2";
+            pintinfor.AutoManual = "Auto";
+            pintinfor.Value = "A2_ON";
+            pintinfor.FullLabel = "CIRC PUMP2";
+            pintinfor.Units = "";
+            prgf.AddControlPoint(IdentifierTypes.OUTS, pintinfor, 2);
+
+            pintinfor.Label = "PFAIL";
+            pintinfor.AutoManual = "Auto";
+            pintinfor.Value = "Alarm";
+            pintinfor.FullLabel = "PUMP1 MODE";
+            pintinfor.Units = "Normal/Alarm";
+            prgf.AddControlPoint(IdentifierTypes.VARS, pintinfor, 1);
+            pintinfor.Label = "P2FAIL";
+            pintinfor.AutoManual = "Auto";
+            pintinfor.Value = "Alarm";
+            pintinfor.FullLabel = "PUMP2 MODE";
+            pintinfor.Units = "Normal/Alarm";
+            prgf.AddControlPoint(IdentifierTypes.VARS, pintinfor, 2);
+
+            pintinfor.Label = "LEADPMP";
+            pintinfor.AutoManual = "Manual";
+            pintinfor.Value = "A1_ON";
+            pintinfor.FullLabel = "LEAD PUMP";
+            pintinfor.Units = "A1_ON/A1_OFF";
+            prgf.AddControlPoint(IdentifierTypes.VARS, pintinfor, 3);
+            prgf.SetIndefier();
+
+            prgf.SetCode(@"10 IF TIME-ON   (  P1 )  > 00:00:10 AND NOT PS THEN START PFAIL 
+ ");
+
+
             prgf.Show();
         }
     }

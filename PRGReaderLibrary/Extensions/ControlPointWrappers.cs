@@ -110,7 +110,31 @@ namespace PRGReaderLibrary.Extensions
             }
 
         }
+        public void Add_VAR(ControlPointInfo variable, int index)
+        {
 
+            try
+            {
+                ControlPointInfo newCPInfo = new ControlPointInfo
+                {
+                    ControlPointName = "VAR" + index,
+                    Label = variable.Label,
+                    FullLabel = variable.FullLabel,
+                    Type = IdentifierTypes.VARS,
+                    Value = variable.Value.ToString(),
+                    Units = variable.Units,
+                    AutoManual = variable.AutoManual
+                };
+
+
+                Variables.Add(newCPInfo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Addition of new Variable to ControlPointsInfo");
+            }
+
+        }
 
         /// <summary>
         /// Add a Input control point info
@@ -142,7 +166,31 @@ namespace PRGReaderLibrary.Extensions
             }
 
         }
+        public void Add_INPUT(ControlPointInfo variable, int index)
+        {
 
+            try
+            {
+                ControlPointInfo newCPInfo = new ControlPointInfo
+                {
+                    ControlPointName = "IN" + index,
+                    Label = variable.Label,
+                    FullLabel = variable.FullLabel,
+                    Type = IdentifierTypes.INS,
+                    Value = variable.Value.ToString(),
+                    Units = variable.Units,
+                    AutoManual = variable.AutoManual
+                };
+
+
+                Inputs.Add(newCPInfo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Addition of new Variable to ControlPointsInfo");
+            }
+
+        }
         /// <summary>
         /// Add Output control point info
         /// </summary>
@@ -173,7 +221,31 @@ namespace PRGReaderLibrary.Extensions
             }
 
         }
+        public void Add_OUTPUT(ControlPointInfo variable, int index)
+        {
 
+            try
+            {
+                ControlPointInfo newCPInfo = new ControlPointInfo
+                {
+                    ControlPointName = "OUT" + index,
+                    Label = variable.Label,
+                    FullLabel = variable.FullLabel,
+                    Type = IdentifierTypes.OUTS,
+                    Value = variable.Value.ToString(),
+                    Units = variable.Units,
+                    AutoManual = variable.AutoManual
+                };
+
+
+                Outputs.Add(newCPInfo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Addition of new Variable to ControlPointsInfo");
+            }
+
+        }
 
         /// <summary>
         /// Add Program control point info
@@ -197,7 +269,7 @@ namespace PRGReaderLibrary.Extensions
                 };
 
 
-                Outputs.Add(newCPInfo);
+                Programs.Add(newCPInfo);
             }
             catch (Exception ex)
             {
@@ -205,7 +277,31 @@ namespace PRGReaderLibrary.Extensions
             }
 
         }
+        public void Add_PRG(ControlPointInfo variable, int index)
+        {
 
+            try
+            {
+                ControlPointInfo newCPInfo = new ControlPointInfo
+                {
+                    ControlPointName = "PRG" + index,
+                    Label = variable.Label,
+                    FullLabel = variable.FullLabel,
+                    Type = IdentifierTypes.PRGS,
+                    Value = variable.Value.ToString(),
+                    Units = variable.Units,
+                    AutoManual = variable.AutoManual
+                };
+
+
+                Programs.Add(newCPInfo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Addition of new Variable to ControlPointsInfo");
+            }
+
+        }
 
         /// <summary>
         /// Add Schedule control point info
@@ -228,7 +324,7 @@ namespace PRGReaderLibrary.Extensions
                     AutoManual = schedule.AutoManual == 0 ? "Auto" : "Manual"
                 };
 
-                Outputs.Add(newCPInfo);
+                Schedules.Add(newCPInfo);
             }
             catch (Exception ex)
             {
@@ -236,7 +332,31 @@ namespace PRGReaderLibrary.Extensions
             }
 
         }
+        public void Add_SCH(ControlPointInfo variable, int index)
+        {
 
+            try
+            {
+                ControlPointInfo newCPInfo = new ControlPointInfo
+                {
+                    ControlPointName = "SCH" + index,
+                    Label = variable.Label,
+                    FullLabel = variable.FullLabel,
+                    Type = IdentifierTypes.SCHS,
+                    Value = variable.Value.ToString(),
+                    Units = variable.Units,
+                    AutoManual = variable.AutoManual
+                };
+
+
+                Schedules.Add(newCPInfo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Addition of new Variable to ControlPointsInfo");
+            }
+
+        }
 
         /// <summary>
         /// Add Holiday control point info
@@ -267,7 +387,31 @@ namespace PRGReaderLibrary.Extensions
             }
 
         }
+        public void Add_HOLIDAY(ControlPointInfo variable, int index)
+        {
 
+            try
+            {
+                ControlPointInfo newCPInfo = new ControlPointInfo
+                {
+                    ControlPointName = "HOL" + index,
+                    Label = variable.Label,
+                    FullLabel = variable.FullLabel,
+                    Type = IdentifierTypes.HOLS,
+                    Value = variable.Value.ToString(),
+                    Units = variable.Units,
+                    AutoManual = variable.AutoManual
+                };
+
+
+                Holidays.Add(newCPInfo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Show(ex, "Addition of new Variable to ControlPointsInfo");
+            }
+
+        }
         /// <summary>
         /// Default constructor;
         /// </summary>
@@ -309,5 +453,7 @@ namespace PRGReaderLibrary.Extensions
 
 
         }
+
+
     }
 }

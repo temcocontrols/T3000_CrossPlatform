@@ -34,7 +34,7 @@
         /// Required copy of Control Points Labels just for semantic validations
         /// </summary>
         public ControlPoints Identifiers { get; set; } = new ControlPoints();
-
+        
 
         private string Code { get; set; }
 
@@ -113,8 +113,9 @@
                 editTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
                 editTextBox.Grammar = new T3000Grammar();
                 editTextBox.SetParser(new LanguageData(editTextBox.Grammar));
+
                 //LRUIZ :: Enable a new set of grammar, language and parser, to get Program Code Errors
-                _grammar = new T3000Grammar();
+             _grammar = new T3000Grammar();
                 _language = new LanguageData(_grammar);
                 _parser = new Parser(_language);
                 //LRUIZ
@@ -134,6 +135,7 @@
             };
                 keywords.AddRange(T3000Grammar.Functions);
 
+                
                 //foreach (var item in keywords)
                 //    items.Add(new AutocompleteItem(item) { ImageIndex = 1 });
 
@@ -295,13 +297,52 @@
             Code = code;
             //Create a local copy of identifiers for Editor, Async Mode
             //TODO: Identifiers copy: This has to be dynamically updated if n windows can be open at the same time.
+            
             if (Identifiers != null)
                 editTextBox.Identifiers = this.Identifiers;
+            
             editTextBox.Text = Code;
 
             //LRUIZ: Parse and show syntax errors
 
-            ParseCode(false);
+           ParseCode(false);
+
+        }
+        public void SetIndefier()
+        {
+            if (Identifiers != null)
+                editTextBox.Identifiers = this.Identifiers;
+        }
+      public  void AddControlPoint(IdentifierTypes type, ControlPointInfo pointinfor,int index)
+        {
+             if(type == IdentifierTypes.VARS)
+             {
+                Identifiers.Add_VAR(pointinfor, index);
+             }
+             else if(type == IdentifierTypes.INS)
+            {
+                Identifiers.Add_INPUT(pointinfor, index);
+            }
+            else if (type == IdentifierTypes.OUTS)
+            {
+                Identifiers.Add_OUTPUT(pointinfor, index);
+            }
+            else if (type == IdentifierTypes.PRGS)
+            {
+                Identifiers.Add_PRG(pointinfor, index);
+            }
+            else if (type == IdentifierTypes.SCHS)
+            {
+                Identifiers.Add_SCH(pointinfor, index);
+            }
+            else if (type == IdentifierTypes.HOLS)
+            {
+                Identifiers.Add_HOLIDAY(pointinfor, index);
+            }
+            else 
+            {
+                
+            }
 
         }
 
@@ -537,6 +578,7 @@
         /// </summary>
         /// <param name="Identifiers">Identifier's information</param>
         /// <param name="selectedText"></param>
+       
         public static void ShowIdentifier(ControlPoints Identifiers, string selectedText)
         {
             frmIdentifierInfo frm = new frmIdentifierInfo();
@@ -592,7 +634,7 @@
 
 
         }
-
+                         
         private void cmdLoad_Click(object sender, EventArgs e)
         {
 
