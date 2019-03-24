@@ -38,7 +38,7 @@ Wait for clone completion, then open `T3000_CrossPlatform.sln. When the project 
 
 Then select Build > Clean, and then Build > Batch Build, select all, and click 'Build'.
 
-Executable can be find into `T3000_CrossPlatform\ReleaseFiles\LastCompilation\T3000.exe`
+Executable can be found in the `T3000_CrossPlatform\ReleaseFiles\LastCompilation\T3000.exe` directory.
 
 
 # Linux
