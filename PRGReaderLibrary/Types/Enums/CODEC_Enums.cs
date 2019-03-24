@@ -56,7 +56,7 @@ namespace PRGReaderLibrary.Types.Enums.Codecs
         OUTPOINTTYPE= 1,
         INPOINTTYPE,
         VARPOINTTYPE,
-        PIDPOINTTYPE
+        PID
         
     }
 

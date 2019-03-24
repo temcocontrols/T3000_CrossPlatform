@@ -34,7 +34,7 @@ Value.ToFromToString(): {tempValue.ToString()}
         public void BaseTest(string name)
         {
             var path = TestUtilities.GetFullPathForPrgFile(name);
-            var prg = Prg.Load(path, null);
+            var prg = Prg.Load(path,null);
 
             var temp = Path.GetTempFileName();
 
@@ -375,6 +375,7 @@ See console log for details.
                 TestUtilities.GetFullPathForProgramCodeFile(path));
             
             //Console.WriteLine(DebugUtilities.CompareBytes(code.Code, code.Code, 0, 0, false, false, false));
+            File.WriteAllBytes("D:/code.code", code.Code);
 
             var lines = expectedCode.ToLines();
             for (var i = 0; i < lines.Count && i < code.Lines.Count; ++i)
@@ -392,7 +393,7 @@ See console log for details.
             #region TestData
 
             var path = TestUtilities.GetFullPathForPrgFile("BTUMeter.prg");
-            var prg = Prg.Load(path, null);
+            var prg = Prg.Load(path,null);
 
             #endregion
 
@@ -413,18 +414,18 @@ See console log for details.
             BaseTest("T3DemoRev6.prg");
 
             //Dos
-            //BaseTest("asy1.prg");
-            //BaseTest("panel2.prg"); //This is not a Rev6 File, so CI is failing this check
-            //BaseTest("panel11.prg");
-            //BaseTest("panel1.prg");
-            //BaseTest("testvariables.prg");
-            //BaseTest("temco.prg");
+            BaseTest("asy1.prg");
+            BaseTest("panel2.prg");
+            BaseTest("panel11.prg");
+            BaseTest("panel1.prg");
+            BaseTest("testvariables.prg");
+            BaseTest("temco.prg");
 
             //Unsupported
-            //UnsupportedTest("balsam2.prg");
-            //UnsupportedTest("90185.prg");
-            //UnsupportedTest("SelfTestRev3.prg");
-            //UnsupportedTest("ChamberRev5.prg");
+            UnsupportedTest("balsam2.prg");
+            UnsupportedTest("90185.prg");
+            UnsupportedTest("SelfTestRev3.prg");
+            UnsupportedTest("ChamberRev5.prg");
         }
 
         [Test]

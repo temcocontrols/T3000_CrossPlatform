@@ -11,13 +11,15 @@
 //  Copyright (C) Pavel Torgashov, 2013. 
 
 using Irony.Parsing;
-using PRGReaderLibrary.Types.Enums.Codecs;
-using PRGReaderLibrary.Utilities;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using PRGReaderLibrary;
+using PRGReaderLibrary.Extensions;
+using PRGReaderLibrary.Utilities;
+using PRGReaderLibrary.Types.Enums.Codecs;
 
 namespace FastColoredTextBoxNS
 {
@@ -114,8 +116,8 @@ namespace FastColoredTextBoxNS
 
         protected virtual void DoHighlighting()
         {
-            if (parser == null)
-                return;
+            //if (parser == null)
+            //    return;
 
             //parse text
             ParseTree tree;
@@ -132,6 +134,7 @@ namespace FastColoredTextBoxNS
 
             //highlight errors
             if (tree.Status == ParseTreeStatus.Error)
+
             {
                 ClearStyle(GetStyleIndexMask(new Style[] { WavyStyle }));
                 foreach (var msg in tree.ParserMessages)
@@ -145,7 +148,7 @@ namespace FastColoredTextBoxNS
                 return;
             }
 
-            
+
 
             //highlight syntax
             ClearStyle(StyleIndex.All);
@@ -175,7 +178,7 @@ namespace FastColoredTextBoxNS
                         //GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
                         //Identifier: Discover the correct type for identifier and hihglight.
                         int CPIndex = 0;
-                        var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
+                     var IdentType = CoderHelper.GetTypeIdentifier(Identifiers, t.Text, out CPIndex);
                         switch (IdentType)
                         {
 
@@ -188,7 +191,7 @@ namespace FastColoredTextBoxNS
                             case PCODE_CONST.VARPOINTTYPE:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.VariableStyle);
                                 break;
-                            case PCODE_CONST.PIDPOINTTYPE:
+                            case PCODE_CONST.PID:
                                 GetTokenRange(t).SetStyle(SyntaxHighlighter.PidStyle);
                                 break;
                             default:

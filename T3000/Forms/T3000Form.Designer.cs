@@ -66,6 +66,7 @@
             this.groupBoxBuildingView = new System.Windows.Forms.GroupBox();
             this.treeBuildingView = new System.Windows.Forms.TreeView();
             this.splitterMain = new System.Windows.Forms.Splitter();
+            this.t3000EditorTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.buttonsToolStrip.SuspendLayout();
@@ -79,7 +80,8 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.controlMenuItem,
-            this.languageMenuItem});
+            this.languageMenuItem,
+            this.t3000EditorTestToolStripMenuItem});
             resources.ApplyResources(this.menuStrip, "menuStrip");
             this.menuStrip.MdiWindowListItem = this.fileToolStripMenuItem;
             this.menuStrip.Name = "menuStrip";
@@ -344,6 +346,12 @@
             this.splitterMain.Name = "splitterMain";
             this.splitterMain.TabStop = false;
             // 
+            // t3000EditorTestToolStripMenuItem
+            // 
+            this.t3000EditorTestToolStripMenuItem.Name = "t3000EditorTestToolStripMenuItem";
+            resources.ApplyResources(this.t3000EditorTestToolStripMenuItem, "t3000EditorTestToolStripMenuItem");
+            this.t3000EditorTestToolStripMenuItem.Click += new System.EventHandler(this.t3000EditorTestToolStripMenuItem_Click);
+            // 
             // T3000Form
             // 
             resources.ApplyResources(this, "$this");
@@ -411,5 +419,6 @@
         private System.Windows.Forms.Splitter splitterMain;
         public System.Windows.Forms.ToolStripProgressBar LoadProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel LoadPartName;
+        private System.Windows.Forms.ToolStripMenuItem t3000EditorTestToolStripMenuItem;
     }
 }
