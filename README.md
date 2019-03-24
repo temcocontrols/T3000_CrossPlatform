@@ -32,7 +32,11 @@ Then on the right bar `Local Git Repository` click on Clone, and fill the field 
 
 ![Clone Repository](/Documentation/clone_git.png)
 
-Wait for clone completion, then open `T3000_CrossPlatform.sln` and build the project with `Build -> Build Solution`
+Wait for clone completion, then open `T3000_CrossPlatform.sln. When the project is opened the first time there will be a warning in the Nuget Package Manager Console about missing packages - click 'Restore'.
+
+![Restore Nuget Packages](/Documentation/restore_nuget_packages.png)
+
+Then select Build > Clean, and then Build > Batch Build, select all, and click 'Build'.
 
 Executable can be find into `T3000_CrossPlatform\ReleaseFiles\LastCompilation\T3000.exe`
 
