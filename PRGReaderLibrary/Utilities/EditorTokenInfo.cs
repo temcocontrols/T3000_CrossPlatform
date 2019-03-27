@@ -39,6 +39,16 @@ namespace PRGReaderLibrary.Utilities
         public short Precedence { get; set; }
 
         /// <summary>
+        /// Panel ID for Registers
+        /// </summary>
+        public string PanelID { get; set; } = "";
+
+        /// <summary>
+        /// Subnet for Registers
+        /// </summary>
+        public string Subnet { get; set; } = "";
+
+        /// <summary>
         /// Default constructor: Create Basic TokenInfo from Text and Terminal Name
         /// Expected to be fulfilled with more token info
         /// </summary>

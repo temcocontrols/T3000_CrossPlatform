@@ -621,7 +621,7 @@
                     frm.ControlPointName.Text = Identifiers.Variables[PointIndex].ControlPointName;
                     frm.ControlPointType.Text = "VARIABLE";
                     break;
-                case PCODE_CONST.PID:
+                case PCODE_CONST.PIDPOINTTYPE:
                     //TODO: Resolve what's a PID? Program Identifier?
                     break;
                 default:
