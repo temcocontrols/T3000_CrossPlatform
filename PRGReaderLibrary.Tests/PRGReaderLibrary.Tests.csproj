@@ -75,12 +75,6 @@
     <None Include="TestFiles\Prgs\testvariables.prg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
-      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
-      <Name>PRGReaderLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Types.Tests\AdditionalTypes\" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +82,12 @@
     <Content Include="TestFiles\ProgramCodes\BTUMeter5.txt" />
     <Content Include="TestFiles\ProgramCodes\BTUMeter4.txt" />
     <Content Include="TestFiles\ProgramCodes\BTUMeter3.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PRGReaderLibrary\PRGReaderLibrary.csproj">
+      <Project>{573991ef-5a2b-4bbf-8283-1307da619967}</Project>
+      <Name>PRGReaderLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

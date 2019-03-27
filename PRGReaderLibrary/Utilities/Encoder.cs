@@ -27,9 +27,13 @@ namespace PRGReaderLibrary.Utilities
          public void SetControlPoints(Prg prg)
         {
             Identifiers = new ControlPoints(prg);
+            TimeBuff = new TimeBuffer(Identifiers);
         }
 
-
+        /// <summary>
+        /// Required copy con TimeBuffer entries
+        /// </summary>
+        public TimeBuffer TimeBuff { get; set; }
 
         /// <summary>
         /// Encode a ProgramCode Into Byte Array
@@ -50,7 +54,7 @@ namespace PRGReaderLibrary.Utilities
 
             int tokenIndex = 0;
             bool isFirstToken = true;
-
+            bool isTimeBuffered = false;
 
             for (tokenIndex = 0; tokenIndex < Tokens.Count; tokenIndex++)
             {
@@ -65,6 +69,7 @@ namespace PRGReaderLibrary.Utilities
                     case "THEN":
                     case "ELSE":
                     case "EOE":
+                        //TODO: Ver si es posible eliminar el último EOE antes de LF para evitar que se guarden como comas
                         result.Add((byte)token.Token);
                         offset++;
 
@@ -206,8 +211,7 @@ namespace PRGReaderLibrary.Utilities
                     case "CONRESET":
                     case "TBL":
                     case "TIME":
-                    case "TIME_ON":
-                    case "TIME_OFF":
+                    
                     case "WR_ON":
                     case "WR_OFF":
                     case "DOY":
@@ -249,7 +253,16 @@ namespace PRGReaderLibrary.Utilities
                         offset++;
                         break;
 
-                    
+                    #region Buffer time functions
+                    case "TIME_ON":
+                    case "TIME_OFF":
+                        result.Add((byte)token.Token);
+                        offset++;
+                        //next token will be an identifier
+                        isTimeBuffered = true;
+                        break; 
+                    #endregion
+
                     #region Functions with variable list of expressions, must add count of expressions as last token.
                     case "AVG":
                     case "MAX":
@@ -263,18 +276,39 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
-                    #region Identifiers: VARS, INS, OUTS, etc 3 bytes
+                    #region Identifiers, Registers, VARS, INS, OUTS, etc 3 bytes
                     case "Identifier":
+                    case "Register":
                     case "VARS":
                     case "INS":
                     case "OUTS":
+                    case "PIDS":
                         //Encode directly: Token + Index + Type
+                        if (!isTimeBuffered)
+                        {
+                            result.Add((byte)token.Token);
+                            result.Add((byte)token.Index);
+                            result.Add((byte)token.Type);
+                            offset += 3;
+                            //Register??
+                            if(token.Token == (short) PCODE_CONST.REMOTE_POINT_PRG)
+                            {
+                                //We need to add 3 bytes: PanelID, Subnet and 1
+                                result.Add((byte)Convert.ToInt16(token.PanelID));
+                                result.Add((byte)Convert.ToInt16(token.Subnet));
+                                result.Add((byte)1);
+                                offset += 3;
 
-                        result.Add((byte)token.Token);
-                        result.Add((byte)token.Index);
-                        result.Add((byte)token.Type);
-                        offset += 3;
-
+                            }
+                        }
+                        else //It's a time buffered function
+                        {
+                            //add to time buffer!!
+                            short TimeBufferPos= (short)TimeBuff.Add((IdentifierTypes)token.Type, token.Index);
+                            result.AddRange(TimeBufferPos.ToBytes());
+                            offset += 2;
+                        }
+                        isTimeBuffered = false;
                         break;
 
                     #endregion
@@ -284,6 +318,7 @@ namespace PRGReaderLibrary.Utilities
                     case "CONNUMBER":
                     case "TABLENUMBER":
                     case "TIMER":
+                    case "WRNUMBER":
 
                         result.Add((byte)token.Token);
                         offset++;
@@ -317,6 +352,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
+
                     #region EOF CRLF
 
                     case "LF":
@@ -337,7 +373,7 @@ namespace PRGReaderLibrary.Utilities
 
                     #endregion
 
-                    
+                    case "CMDSEPARATOR":
                     default:
                         Trace.WriteLine($"Token ignored and not encoded: {token.ToString()}");
                         break;
@@ -371,14 +407,31 @@ namespace PRGReaderLibrary.Utilities
 
             }
 
-
+            //calculate SIZE of Program
             offset--;
             byte[] size = offset.ToBytes();
             result[0] = size[0];
             result[1] = size[1];
 
-            //fill with nulls til the end of block
-            //TODO: This is not correct. As far as I know now, there are posible time-buffer entries to add last.
+            //Add Time Buffer here
+
+            short bufferCount = (short)TimeBuff.BufferCount;
+
+            if (bufferCount>0)
+            {
+
+                //Test if it fits
+                byte[] btime = TimeBuff.ToBytes();
+                if (result.Count > (2000 - btime.Length))
+                    throw new OverflowException($"Time Buffer not allocated, exceeding 2000 bytes. Current PRG size is {result.Count} and TimeBuffer requires {btime.Length}");
+                else
+                    result.AddRange(btime);
+               
+
+            }
+
+            //////fill with nulls til the end of block
+
             while (result.Count < 2000)
             {
                 result.Add((byte)0x00);

@@ -40,7 +40,7 @@
             // 
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(23, 12);
+            this.comboBox1.Location = new System.Drawing.Point(23, 11);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(163, 28);
             this.comboBox1.TabIndex = 0;
@@ -49,7 +49,7 @@
             // 
             this.chkONOFF.AutoSize = true;
             this.chkONOFF.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkONOFF.Location = new System.Drawing.Point(207, 17);
+            this.chkONOFF.Location = new System.Drawing.Point(207, 16);
             this.chkONOFF.Name = "chkONOFF";
             this.chkONOFF.Size = new System.Drawing.Size(120, 20);
             this.chkONOFF.TabIndex = 1;
@@ -65,7 +65,7 @@
             0,
             0,
             0});
-            this.DimPercent.Location = new System.Drawing.Point(350, 15);
+            this.DimPercent.Location = new System.Drawing.Point(350, 14);
             this.DimPercent.Name = "DimPercent";
             this.DimPercent.Size = new System.Drawing.Size(50, 24);
             this.DimPercent.TabIndex = 2;
@@ -75,7 +75,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(404, 17);
+            this.label1.Location = new System.Drawing.Point(404, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 20);
             this.label1.TabIndex = 3;
@@ -83,12 +83,12 @@
             // 
             // LEDTestingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.LightGray;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(632, 612);
+            this.ClientSize = new System.Drawing.Size(632, 931);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DimPercent);
             this.Controls.Add(this.chkONOFF);
