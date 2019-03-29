@@ -98,7 +98,10 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Shift | KEYS.I] = FCTBAction.IdentifierInfo;
             //New KeyMapping for Properties: F4
             this[KEYS.F4] = FCTBAction.Properties;
-
+            //New KeyMapping for File Open: F6
+            this[KEYS.F6] = FCTBAction.FileOpen;
+            //New KeyMapping for File Save: F7
+            this[KEYS.F7] = FCTBAction.FileSave;
 
         }
 
@@ -122,6 +125,8 @@ namespace FastColoredTextBoxNS
 
         public static HotkeysMapping Parse(string s)
         {
+
+            //TODO: Linux error for PgUP
             var result = new HotkeysMapping();
             result.Clear();
             var cult = Thread.CurrentThread.CurrentUICulture;
@@ -131,10 +136,17 @@ namespace FastColoredTextBoxNS
             
             foreach (var p in s.Split(','))
             {
-                var pp = p.Split('=');
-                var k = (Keys)kc.ConvertFromString(pp[0].Trim());
-                var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
-                result[k] = a;
+
+                try
+                {
+                    var pp = p.Split('=');
+                    var k = (Keys)kc.ConvertFromString(pp[0].Trim());
+                    var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
+                    result[k] = a;
+                }
+                catch
+                {//Ignore this exceptions for a while.
+                }
             }
 
             Thread.CurrentThread.CurrentUICulture = cult;
@@ -217,8 +229,8 @@ namespace FastColoredTextBoxNS
         ZoomOut,
         IdentifierInfo,
         Properties,
-        CustomAction3,
-        CustomAction4,
+        FileOpen,
+        FileSave,
         CustomAction5,
         CustomAction6,
         CustomAction7,
