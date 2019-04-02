@@ -81,6 +81,8 @@ namespace TestDriver
             rpi.StartSPI();
             rpi.SPICommand = (byte)T3Commands.G_ALL;
             rpi.StartWatcher();
+            
+            Console.WriteLine("Here in TestSPI");
             //rpi.SetInterrupt();
 
             string chain = "";

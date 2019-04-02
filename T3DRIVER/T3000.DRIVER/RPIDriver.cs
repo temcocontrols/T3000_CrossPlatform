@@ -46,7 +46,7 @@ namespace T3000.DRIVER
         private GpioPin[] PINS = new GpioPin[MAX_GPIO_NUMBER];
         private GpioPin[] AOControl = new GpioPin[MAX_AO_CONF];
 
-        private OutputInfo[] OUT = new OutputInfo[MAX_OUTPUTS];
+        private OutputInfo[] OUTLED = new OutputInfo[MAX_OUTPUTS];
         private LedInfo[] LED = new LedInfo[MAX_LEDS];
         private InputInfo[] IN = new InputInfo[MAX_INPUTS];
         private HSPInfo[] HSP = new HSPInfo[MAX_HSP_COUNTERS];
@@ -106,41 +106,59 @@ namespace T3000.DRIVER
         /// </summary>
         public RPIDriver()
         {
+	    	Console.WriteLine("In the RPIDriver ctor 109");
             Log = new FileLogger();
+	    	Console.WriteLine("In the RPIDriver ctor 111");
             try
             {
                 //Same as WiringPiSetup
+	    		Console.WriteLine("In the RPIDriver ctor 115");
                 GPIO = new Gpio(Gpio.NumberingMode.Broadcom);
                 Log.Add($"Sucess! WiringPi setup in {GPIO.PinNumberingMode} mode");
                 Log.Add("PiBoard rev. = " + WiringPi.PiBoardRev().ToString());
                 //Export all pins
+	    		Console.WriteLine("In the RPIDriver ctor 120");
                 UpdatePinStates();
+	    		Console.WriteLine("In the RPIDriver ctor 122");
                 //Initialize OUTInfos
-                for (int i = 0; i < MAX_OUTPUTS; i++)
+/*                for (int i = 0; i < MAX_OUTPUTS; i++)
                 {
-                    OUT[i].Name = $"OUT{i}";
-                    OUT[i].SwitchStatus = 0;
+	    	   		Console.WriteLine("In the RPIDriver ctor 126");
+                    OUTLED[i].Name = $"OUT{i}";
+	    	    	Console.WriteLine("In the RPIDriver ctor 128");
+                    OUTLED[i].SwitchStatus = 0;
+	    	    	Console.WriteLine("In the RPIDriver ctor 130");
                 }
                 //Initialize LEDInfos
                 for (int i = 0; i < MAX_LEDS; i++)
                 {
+	    	    	Console.WriteLine("In the RPIDriver ctor 135");
                     LED[i].Name = $"LED{i}";
+	    	    	Console.WriteLine("In the RPIDriver ctor 137");
                     LED[i].LedStatus = 0;
+	    	    	Console.WriteLine("In the RPIDriver ctor 139");
                 }
                 //Initialize InputsInfos
                 for (int i = 0; i < MAX_INPUTS; i++)
                 {
+	    	    	Console.WriteLine("In the RPIDriver ctor 144");
                     IN[i].Name = $"IN{i}";
+	    	    	Console.WriteLine("In the RPIDriver ctor 147");
                     IN[i].ADValue = new byte[] { 0, 0 };
+	    	    	Console.WriteLine("In the RPIDriver ctor");
                     IN[i].Range = (int)RANGES.V3_0; //Default is Thermistor as seen in c++
+	    	    	Console.WriteLine("In the RPIDriver ctor");
                 }
 
                 //Initialize HSPInfos
                 for (int i = 0; i < MAX_HSP_COUNTERS; i++)
                 {
+	    	    	Console.WriteLine("In the RPIDriver ctor");
                     HSP[i].Name = $"HSP{i}";
+	    	    	Console.WriteLine("In the RPIDriver ctor");
                     HSP[i].HSPValue = new byte[] { 0, 0, 0, 0 };
-                }
+	    	    	Console.WriteLine("In the RPIDriver ctor");
+                }*/
             }
             catch (Exception ex)
             {
@@ -164,12 +182,15 @@ namespace T3000.DRIVER
         /// </summary>
         protected void UpdatePinStates()
         {
+        	Console.WriteLine("In the RPIDriver ctor 185");
             try
             {
-                for (int i = 0; i <= MAX_GPIO_NUMBER; i++)
+            	Console.WriteLine("In the RPIDriver ctor 188");
+                for (int i = 0; i < MAX_GPIO_NUMBER; i++)
                 {
                     PINS[i] = GPIO.GetPin(i);
                 }
+                Console.WriteLine("In the RPIDriver ctor 193");
             }
             catch (Exception ex)
             {
@@ -206,7 +227,7 @@ namespace T3000.DRIVER
             string retval = "SW STATES:";
             for (int i = 0; i < MAX_OUTPUTS; i++)
             {
-                retval += Environment.NewLine +  $"{OUT[i].Name}->{OUT[i].State}" ;
+                retval += Environment.NewLine +  $"{OUTLED[i].Name}->{OUTLED[i].State}" ;
             }
 
             return retval;
@@ -233,7 +254,7 @@ namespace T3000.DRIVER
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public SWSTATES SwitchState(int index) => index < MAX_OUTPUTS ?  OUT[index].State:0;
+        public SWSTATES SwitchState(int index) => index < MAX_OUTPUTS ?  OUTLED[index].State:0;
 
         //TODO: Add method to get Input AD Values
         //TODO: Add method to get HSP values
@@ -332,7 +353,7 @@ namespace T3000.DRIVER
                             //Get switches status
                             for (i = 0; i < 24; i++)
                             {
-                                OUT[i].SwitchStatus = (byte) SPIRXBuffer[i + 3]; //skip first 3 0xAA
+                                OUTLED[i].SwitchStatus = (byte) SPIRXBuffer[i + 3]; //skip first 3 0xAA
                                 //Switch_Status[array_index] = SPIRXBuffer[i + 3]; //skip first 3 0xAA
                                 array_index++;
                             }
