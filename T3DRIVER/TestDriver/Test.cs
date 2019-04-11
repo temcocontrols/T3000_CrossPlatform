@@ -9,7 +9,7 @@ using T3000.DRIVER;
 
 namespace TestDriver
 {
-    class Test
+    public class Test
     {
         public RPIDriver rpi;
 

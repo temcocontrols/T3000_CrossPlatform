@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using TestDriver;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using T3000.LEDS.Controls;
@@ -20,6 +21,8 @@ namespace T3000.LEDS
         List<Led> DOUT = new List<Led>(); //12
 
         //SPIManager driver = new SPIManager();
+	Test tester = new Test();
+        //    tester.TestSetup(); //Test Passed!!!
 
         public LEDTestingForm()
         {
@@ -27,6 +30,8 @@ namespace T3000.LEDS
             //TestI2C testForm = new TestI2C();
             //testForm.Show();
             //driver.TestSPI();
+	    tester.TestSetup();
+	    tester.TestSPI(); //Test passed!! SPI1 is open, test SPI Commands passed!!
         }
 
 

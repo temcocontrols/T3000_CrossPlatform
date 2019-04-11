@@ -85,6 +85,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ExceptionHandling">
+      <HintPath>..\ExceptionHandling\bin\Debug\ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="PRGReaderLibrary">
+      <HintPath>..\PRGReaderLibrary\bin\Debug\PRGReaderLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ColorConstants.cs" />

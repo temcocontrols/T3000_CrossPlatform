@@ -86,6 +86,10 @@
       <Project>{f2876539-59cd-49a7-87e9-219d439bed94}</Project>
       <Name>T3000.LEDCONTROL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestDriver\TestDriver.csproj">
+      <Project>{3EEAEB00-85E1-470D-A15A-3235F4BE95D0}</Project>
+      <Name>TestDriver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
