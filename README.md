@@ -83,7 +83,7 @@ Comments:
 3. Download all require libraries for the solution from Nuget
 4. Build project with Configuration=Release
 5. Run the obtained exe file
-6. This Software only demonstarte the reading and writing of program file of T3000 on other operating systems like linux . Sample Program File can be load from the Path T3000_CrossPlatform\Documentation\ExampleProgFiles 
+6. This Software only demonstrat the reading and writing of program file of T3000 on other operating systems like linux . Sample Program File can be load from the Path T3000_CrossPlatform\Documentation\ExampleProgFiles 
 7. Device Discovery or Connection is not currenlty available in this version
 8. The turminal you are using in case on linux it should support X server. otherwise on running the EXE it will give error.
 At the moment editing programs with Linux version return an error.
