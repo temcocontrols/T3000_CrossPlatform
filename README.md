@@ -32,7 +32,7 @@ Then on the right bar `Local Git Repository` click on Clone, and fill the field 
 
 ![Clone Repository](/Documentation/clone_git.png)
 
-Wait for clone completion, then open `T3000_CrossPlatform.sln. When the project is opened the first time there will be a warning in the Nuget Package Manager Console about missing packages - click 'Restore'.
+Wait for clone completion, then open 'T3000_CrossPlatform.sln'. When the project is opened the first time there will be a warning in the Nuget Package Manager Console about missing packages - click 'Restore'.
 
 ![Restore Nuget Packages](/Documentation/restore_nuget_packages.png)
 
@@ -57,6 +57,10 @@ Check `nuget`
 ```
 sudo nuget update -self
 ```
+To install the MonoDevelop IDE
+```
+sudo apt install monodevelop
+```
 Execute the following commands to clone the repo
 ```
 rm -r -f T3000_CrossPlatform
@@ -72,17 +76,16 @@ Run the application
 ```
 mono ./T3000_CrossPlatform/T3000/bin/Release/T3000.exe
 ```
-To install the MonoDevelop IDE
-```
-sudo apt install monodevelop
-```
+
 Comments:
 1. Clean directory T3000_CrossPlatform(if exists). It's need for exclude some bugs with reinstall
 2. Clone the remote repository to the T3000_CrossPlatform directory
 3. Download all require libraries for the solution from Nuget
 4. Build project with Configuration=Release
 5. Run the obtained exe file
-
+6. This Software only demonstrat the reading and writing of program file of T3000 on other operating systems like linux . Sample Program File can be load from the Path T3000_CrossPlatform\Documentation\ExampleProgFiles 
+7. Device Discovery or Connection is not currenlty available in this version
+8. The turminal you are using in case on linux it should support X server. otherwise on running the EXE it will give error.
 At the moment editing programs with Linux version return an error.
 
 # Plan:
